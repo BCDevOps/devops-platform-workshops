@@ -1,0 +1,13 @@
+{
+    "title": "OpenShift Workshop Labs",
+    "plugins": ["fancybox"],
+    "links": {
+        "sidebar": {
+            "Download PDF": "/download.pdf"
+        }
+    },
+    "pluginsConfig": {
+        "fancybox": {}
+    }
+}		
+
