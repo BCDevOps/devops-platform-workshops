@@ -11,7 +11,7 @@ mkdir -p .ssh
 cp bin/ssh_config .ssh/config
 
 git clone $GIT_URL
-cd devops-platform-workshops/workshop-labs/docs
+cd $WORKSHOP_FOLDER/docs
 gitbook install
 #cd ${APP_ROOT}/docs
 
