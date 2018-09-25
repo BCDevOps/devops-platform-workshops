@@ -36,7 +36,7 @@ Note Placeholder
 
 
 ---
-#### Lab/Demo: Access Management
+#### Lab/Demo: Access Management (20 minutes)
 - DevOps Team Services provisions project set and assigns admin
 - Students nominate the first `admin`
   - admin user grants `edit` access to developers in team to projects in project set
