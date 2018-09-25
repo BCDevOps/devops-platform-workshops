@@ -39,9 +39,8 @@ Note Placeholder
 #### Lab/Demo: Access Management
 - DevOps Team Services Provisions Project Set and assigns admin
 - admin user grants `edit` access to developers in team to projects in project set
-- developers create BuildConfigurations in `-tools` project for a sample app (provided)
-- developers create DeploymentConfigurationS in `dev` project for the app that is being built; deployments fails due to image pull auth failure
-- admin user runs policy command to grant `default` service account in `dev` project `image-puller` role; deployments succeeds
+- users confirm access
+- demonstrate/show `rolebindings` resources
 
 
 ---
@@ -88,7 +87,7 @@ Note Placeholder
   - Deploying a new version of an app is often as simple as updating the image version tag in the deployment config
     - This can be used to change to any version, new or old, of an image
   - From CLI:   
-    - Running `oc rollout latest [deployment config name]` will deploy the latest versoin
+    - Running `oc rollout latest [deployment config name]` will deploy the latest version
     - Running `oc rollback  [deployment config name]` will roll back to the latest functional version
 
 Note:
@@ -106,6 +105,15 @@ Note Placeholder
 
 Note:
 Note Placeholder
+
+
+---
+#### Lab: Deployment
+- developers create BuildConfigurations in `-tools` project for a sample app (provided)
+- developers create DeploymentConfigurationS in `dev` project for the app that is being built; deployments fails due to image pull auth failure
+- admin user runs policy command to grant `default` service account in `dev` project `image-puller` role; deployments succeeds
+- developers change an environment value to trigger redeployment with default deployment strategy, noticing sequence of changes
+- developers change deploymentr strategy and change environment variable to trigger deployment again
 
 
 ---
@@ -131,3 +139,9 @@ Note Placeholder
 
 Note:
 Note Placeholder
+
+
+---
+#### Lab/Demonstrate: Application Availability
+- developers scale up their applications to more than one replica
+- demonstrate autoscaling configuration and trigger with simulated load
