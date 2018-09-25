@@ -12,7 +12,7 @@ cp bin/ssh_config .ssh/config
 
 git clone $GIT_URL
 cd devops-platform-workshops/workshop-labs/docs
-gitbook install
+#gitbook install
 #cd ${APP_ROOT}/docs
 
 # Create PDF
