@@ -70,7 +70,7 @@ Note Placeholder
 ---
 #### Tooling Project Components
 - CI & CD related tooling
-- Dedicated Jenkins instance with access to dev/test/prod environments
+- Jenkins instance dedicated to a given team
 - Sonarqube for code coverage 
 - Teams can bring any additional tools into this project space as needed
 
@@ -90,7 +90,7 @@ Note Placeholder
 
 ---
 #### Developer Functions
-- Createing awesome code and apps, duh!
+- Creating awesome code and apps, duh!
 - Providing in-depth knowledge and support of the applications in production
 - Developing to support a 'cloud-native' framework such that platform operations do not disrupt application availability
 

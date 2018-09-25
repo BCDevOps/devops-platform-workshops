@@ -8,13 +8,17 @@ We will focus on the three groups that support the Pathfinder Platform
 ---
 #### (Who) are the people?
 - Ministry development teams (ie. You!) / platform users
-- Pathfinder support teams
-    - Platform Services (BCDevEx prime, Arctiq support)
-        - Daily support and education of platform users
+- Platform support teams
+    - DevOps Platform Services (OCIO DevOps/BCDevExchange Branch prime, Arctiq support)
+        - Clecio Varjao - DevOps Specialist, Todd Wilson - Director
+        - Onboarding/project provisioning
+        - Assistance and education of platform users
         - Improvements in platform usability
         - Education / hands-on knowledge transfer
-    - Platform Operations (DXC/ESIT prime, Arctiq support)
-        - 24x7 operational support of the platform
+        - Community Leadership        
+    - Technical Platform Operations (DXC/ESIT prime, Arctiq support)
+        - Dan Deane - Team Lead, Steven Barre, William Hutchison - Platform Admins
+        - 24x7 operational support of the platform (DXC on-call team)
         - Patching, upgrades, etc. 
         - Platform service improvement (new platform-wide features/capabilities)
 
@@ -41,7 +45,7 @@ Note Placeholder
 - Speed of delivery and continuous product improvement OVER governance, standardization and legacy compatibility.
 - Strong preference for Open Source development and frameworks.
 - Select mainstream stacks that have upward momentum in Dev community
-- Architect solutions leveraging containerization, micro services and RESTful endpoints from the start.
+- Architect solutions leveraging containerization, micro services and APIs from the start.
 - Data is bound to the line of business and shared through API integration.
 
 Note:
@@ -98,7 +102,7 @@ Note Placeholder
         - [https://console.pathfinder.gov.bc.ca:8443/console/](https://console.pathfinder.gov.bc.ca:8443/console/)
 - Slack
     - Pathfiner slack [instance](https://devopspathfinder.slack.com)
-        - #general - company-wide / work related announcements
+        - #general - team-wide / work related announcements
         - #requests - requests for access to github, slack, and openshift
         - #alerts - platform wide alerts / announcements
         - #help-me - community sourced assistance across teams

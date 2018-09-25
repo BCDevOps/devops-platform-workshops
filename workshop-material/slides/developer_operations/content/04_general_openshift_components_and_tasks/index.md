@@ -25,7 +25,7 @@ Note Placeholder
 - Team 'admins' are in control of user access to each project
   - Use of default roles should be leveraged
       - Project admin
-      - Projet editor
+      - Project editor
       - Project viewer
 - Service accounts are used to 
   - permit pulling of images from one namespace to another
@@ -33,6 +33,15 @@ Note Placeholder
 
 Note:
 Note Placeholder
+
+
+---
+#### Lab/Demo: Access Management
+- DevOps Team Services Provisions Project Set and assigns admin
+- admin user grants `edit` access to developers in team to projects in project set
+- developers create BuildConfigurations in `-tools` project for a sample app (provided)
+- developers create DeploymentConfigurationS in `dev` project for the app that is being built; deployments fails due to image pull auth failure
+- admin user runs policy command to grant `default` service account in `dev` project `image-puller` role; deployments succeeds
 
 
 ---
@@ -116,7 +125,7 @@ Note Placeholder
 #### Application Availability
 - Pods to not 'migrate', but rather stop and restart
 - Node evacuations (for maintenance) kill a pod, but do not 'redeploy'
-- High Availability requires mode than one pod to be active to service requests
+- High Availability requires more than one pod to be active to service requests
 - OpenShift will distribute multiple pods across different nodes where possible
 - Pod affinity, anti-affinity, and pod disruption budgets can be used in complex scenarios
 
