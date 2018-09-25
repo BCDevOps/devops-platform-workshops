@@ -5,7 +5,9 @@ MAINTAINER stewartshea <shea.stewart@arctiq.ca>
 ENV APP_ROOT=/opt/app-root
 ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
 COPY bin/ ${APP_ROOT}/bin/
-COPY docs/ ${APP_ROOT}/docs/
+
+# Not needed if running clone in deployment
+#COPY docs/ ${APP_ROOT}/docs/
 RUN chmod -R u+x ${APP_ROOT}/bin && \
     chgrp -R 0 ${APP_ROOT} && \
     chmod -R g=u ${APP_ROOT} /etc/passwd 
