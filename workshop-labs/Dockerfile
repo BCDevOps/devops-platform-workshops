@@ -11,8 +11,8 @@ RUN chmod -R u+x ${APP_ROOT}/bin && \
     chmod -R g=u ${APP_ROOT} /etc/passwd 
 
 # Install gitbook plugins
-RUN cd ${APP_ROOT}/docs && \
-    gitbook install
+# RUN cd ${APP_ROOT}/docs && \
+#     gitbook install
 
 WORKDIR ${APP_ROOT}
 
