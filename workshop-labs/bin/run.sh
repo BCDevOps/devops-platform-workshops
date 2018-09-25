@@ -7,7 +7,8 @@ fi
 exec "$@"
 
 ## Set github ssh config
-cp /opt/app-root/bin/ssh_config /opt/app-root/.ssh/config
+mkdir -p .ssh
+cp bin/ssh_config .ssh/config
 
 git clone $GIT_URL
 cd devops-platform-workshops/workshop-labs/docs
