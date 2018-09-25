@@ -1,2 +1,3 @@
 Host github.com
   IdentityFile /opt/ssh/ssh_key
+  StrictHostKeyChecking no
