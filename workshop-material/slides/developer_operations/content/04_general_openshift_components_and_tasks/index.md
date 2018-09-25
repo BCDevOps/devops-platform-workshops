@@ -37,11 +37,12 @@ Note Placeholder
 
 ---
 #### Lab/Demo: Access Management
-- DevOps Team Services Provisions Project Set and assigns admin
-- admin user grants `edit` access to developers in team to projects in project set
-- users confirm access
-- demonstrate/show `rolebindings` resources
-
+- DevOps Team Services provisions project set and assigns admin
+- Students nominate the first `admin`
+  - admin user grants `edit` access to developers in team to projects in project set
+  - users confirm access
+  - demonstrate/show `rolebindings` resources
+[Lab Link]()
 
 ---
 #### Deployment Styles
@@ -70,8 +71,8 @@ Note Placeholder
 #### Deployment Styles
 - Blue - Green
   - Two versions of an application "blue" and "green"
-  - “Green” version hosts current production application
-  - "Blue" version is the new version
+  - 'Green' version hosts current production application
+  - 'Blue' version is the new version
   - OpenShift Route can be configured to split traffic between Green and Blue (by %)
   - After validating new software version, can switch all traffic to new version
 

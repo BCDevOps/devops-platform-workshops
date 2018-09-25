@@ -6,10 +6,12 @@ if ! whoami &> /dev/null; then
 fi
 exec "$@"
 
+## Set github ssh config
+cp /opt/app-root/bin/ssh_config /opt/app-root/.ssh/config
 
-#git clone -b  $BRANCH $GIT_URL data
-#cd data/docs
-cd ${APP_ROOT}/docs
+git clone $GIT_URL
+cd devops-platform-workshops/workshop-labs/docs
+#cd ${APP_ROOT}/docs
 
 # Create PDF
 gitbook pdf ./ ./download.pdf
