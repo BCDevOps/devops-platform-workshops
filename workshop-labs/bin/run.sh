@@ -12,6 +12,7 @@ cp bin/ssh_config .ssh/config
 
 git clone $GIT_URL
 cd $WORKSHOP_FOLDER/docs
+gitbook install
 #cd ${APP_ROOT}/docs
 
 # Create PDF
