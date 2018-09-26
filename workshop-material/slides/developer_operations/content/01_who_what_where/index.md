@@ -68,7 +68,7 @@ Note Placeholder
 - Security is to be considered at every stage of the application lifecycle
 - Use 'cloud-native'/12factor architectures/principles (https://12factor.net/)
 - Leverage/survey community for assistance/opinions on technology choices/approaches 
-- Leverage platform’s DevOps pipeline tooling
+- Leverage platform's DevOps pipeline tooling
 - Assume continual evolution/improvement of applications on platform
 - Recognize shared aspect of platform - some level of uniformity required
 - Design applications for resiliency/high availability
