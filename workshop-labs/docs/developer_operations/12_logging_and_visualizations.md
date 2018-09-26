@@ -10,22 +10,22 @@ The shortcut towards accessing the Kibana is from the `Logs` tab of a running po
 
 - Select the runing `rocketchat-[username]` pod and select the Logs tab
 
-![](../assets/12_logging_01.png.png)
+![](../assets/12_logging_01.png)
 
 - Select the view archive link to be taken to Kibana
 
 - Review the logging interface and the query that has been automatically populated
 
-![](../assets/12_logging_02.png.png)
+![](../assets/12_logging_02.png)
 
 
 - Modify the query and time picker to select the entire namespace within the last few hours
 
-![](../assets/12_logging_03.png.png)
+![](../assets/12_logging_03.png)
 
 - Review how Kibana surfaces key information about the log sources in the left panel
 
-![](../assets/12_logging_04.png.png)
+![](../assets/12_logging_04.png)
 
 - Create a simple visualization of the information surfaced by Kibana
 
