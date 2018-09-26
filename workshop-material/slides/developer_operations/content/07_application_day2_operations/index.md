@@ -5,7 +5,7 @@ Note Placeholder
 
 
 ---
-#### Topics
+#### Discussion and Labs (30 Minutes)
 - Application Day 2 Ops
   - Event Streams
   - Pod / Container Debugging
@@ -38,7 +38,7 @@ Note Placeholder
 - Local container debugging
 - Debug pod options
 - rsh, rsync, and logs 
-- Telepresence (for local to shared platform debugging in development)
+- [Telepresence](https://www.telepresence.io/) (for local to shared platform debugging in development)
 - Port-forwarding (for app specific debugging)
   
 Note:

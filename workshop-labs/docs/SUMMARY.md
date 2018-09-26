@@ -1,8 +1,24 @@
 # Summary
 
-* [Setup](developer_operations/01_general_openshift_components_and_tasks/setup.md)
-* [Developer Operations](developer_operations/01_developer_operations/readme.md)
-    * [Deployments](developer_operations/01_general_openshift_components_and_tasks/deployment.md)
-    * [Application Availability](developer_operations/01_general_openshift_components_and_tasks/application_availability.md)
+* [Setup](developer_operations/setup.md)
+---
+* [Developer Operations](developer_operations/readme.md)
+    * [Builds](developer_operations/01_builds.md)
+    * [Registry Console](developer_operations/02_registry_console.md)
+    * [Deployments](developer_operations/03_deployment.md)
+    * [Application Availability](developer_operations/04_application_availability.md)
+    * [Autoscaling](developer_operations/05_application_availability.md)
+    * [Persistent Storage](developer_operations/06_persistent_storage.md)
+    * [Persistent Configurations](developer_operations/07_persistent_configurations.md)
+    * [CI & CD with Jenkins](developer_operations/08_cd_cd_with_jenkins.md)
+    * [Event Streams](developer_operations/09_event_streams.md)
+    * [Debugging Containers](developer_operations/10_debugging_containers.md)
+    * [Storage Debugging](developer_operations/11_storage_debugging.md)
+    * [Storage Debugging](developer_operations/12_logging_and_visualizations.md)
+
+
+
+
+
 
 

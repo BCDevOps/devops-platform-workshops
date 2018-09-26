@@ -6,7 +6,7 @@ Note Placeholder
 
 
 ---
-#### Discussion and Labs
+#### Discussion and Labs (1.5 Hours)
 - Project Access Control
 - Deployment Styles (to cover a few)
   - Rolling vs. Recreate

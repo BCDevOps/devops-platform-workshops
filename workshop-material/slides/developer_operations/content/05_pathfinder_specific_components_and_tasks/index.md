@@ -6,7 +6,7 @@ Note Placeholder
 
 
 ---
-#### Discussion and Labs
+#### Discussion and Labs (30 Minutes)
 - Storage
   - RWO vs. RWX
   - Retain vs. Delete
@@ -111,7 +111,7 @@ Note Placeholder
 #### Jenkins Pipelines - Promotion across environments
 - Jenkins should only run in the `tools` project
   - Service accounts are provided access to `dev`, `test`, and `prod` projects
-  - The `prod` namespace service accounts group is provided `system:image-puller` role with permission to pull from the tools project
+  - Each project service accounts group is provided `system:image-puller` role with permission to pull from the tools project
   - Image tagging should be used diligently to ensure the right images are depoyed to the appropriate namespaces
 
 Note:

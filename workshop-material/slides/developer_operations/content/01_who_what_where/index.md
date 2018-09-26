@@ -1,5 +1,5 @@
 ---
-# Who, What, Where
+# Who, What, Where (20  Minutes)
 
 Note:
 We will focus on the three groups that support the Pathfinder Platform

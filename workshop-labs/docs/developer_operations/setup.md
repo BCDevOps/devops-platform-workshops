@@ -23,4 +23,13 @@ These labs will require access to the pathfinder production environment:
 
 The environment can be accessed from a web browser such as Chrome or Firefox. For 
 users that also leverage the CLI, the `oc` binary is available for download [here](https://github.com/openshift/origin/releases). 
-The current version of OpenShift is 3.9/3.10. 
+The current version of OpenShift is 3.9/3.10 and should be installed into your PATH. 
+
+- To login with the oc utility: 
+    - Login to the [Pathfinder Web Console](https://console.pathfinder.gov.bc.ca:8443/console/) with your GitHub ID
+    - Navigate to the top right corner, select the drop-down from your username, and select `Copy Login Command`
+    - Paste the copied command into your terminal of choice
+
+```
+oc login https://console.lab.pathfinder.gov.bc.ca:8443 --token=[token]
+```
