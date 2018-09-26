@@ -14,7 +14,7 @@ Developer Operations
 * [Persistent Storage](developer_operations/06_persistent_storage.md)
 * [Event Streams](developer_operations/09_event_streams.md)
 * [Debugging Containers](developer_operations/10_debugging_containers.md)
-
+* [Logging and Visualizations](developer_operations/12_logging_and_visualizations.md)
 
 
 
