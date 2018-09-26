@@ -6,7 +6,7 @@ Note Placeholder
 
 
 ---
-#### Discussion and Labs (1.5 Hours)
+#### Discussion and Labs 
 - Project Access Control
 - Deployment Styles (to cover a few)
   - Rolling vs. Recreate
@@ -36,13 +36,14 @@ Note Placeholder
 
 
 ---
-#### Lab/Demo: Access Management (20 minutes)
+#### Lab/Demo: Access Management
 - DevOps Team Services provisions project set and assigns admin
 - Students nominate the first `admin`
   - admin user grants `edit` access to developers in team to projects in project set
   - users confirm access
   - demonstrate/show `rolebindings` resources
-[Lab Link]()
+  
+[http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca)
 
 ---
 #### Deployment Styles
@@ -109,15 +110,6 @@ Note Placeholder
 
 
 ---
-#### Lab: Deployment
-- developers create BuildConfigurations in `-tools` project for a sample app (provided)
-- developers create DeploymentConfigurationS in `dev` project for the app that is being built; deployments fails due to image pull auth failure
-- admin user runs policy command to grant `default` service account in `dev` project `image-puller` role; deployments succeeds
-- developers change an environment value to trigger redeployment with default deployment strategy, noticing sequence of changes
-- developers change deploymentr strategy and change environment variable to trigger deployment again
-
-
----
 #### StatefulSets and Application Clustering
 - Some applications cannot simply be scaled by increasing pods because they hold state
   - These are referred to as stateful applications
@@ -140,9 +132,3 @@ Note Placeholder
 
 Note:
 Note Placeholder
-
-
----
-#### Lab/Demonstrate: Application Availability
-- developers scale up their applications to more than one replica
-- demonstrate autoscaling configuration and trigger with simulated load
