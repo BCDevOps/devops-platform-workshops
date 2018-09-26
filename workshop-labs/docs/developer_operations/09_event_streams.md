@@ -17,7 +17,5 @@ The Web Console is the primary tool to visualize events sorted by time.
 ```
 oc get events --sort-by='.lastTimestamp'
 ```
-
-### Debug Containers
-- Add a crap command into the container
-- Identify / notice CrashLoopBackoff
+- Navigate through some of the events and review some of the output that could be helpful 
+in debugging pods
