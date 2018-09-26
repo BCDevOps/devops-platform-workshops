@@ -13,6 +13,8 @@ Developer Operations
 * [Autoscaling](developer_operations/05_autoscaling.md)
 * [Persistent Storage](developer_operations/06_persistent_storage.md)
 * [Event Streams](developer_operations/09_event_streams.md)
+* [Debugging Containers](developer_operations/10_debugging_containers.md)
+
 
 
 
