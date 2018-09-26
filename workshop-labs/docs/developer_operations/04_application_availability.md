@@ -1,4 +1,5 @@
-## Application Availability
+# Application Availability
+Prior to beginning this lab, nagivate to the public route you created and finish the initial setup of your application. 
 
 ### Single Pod Applications
 - Delete single pod

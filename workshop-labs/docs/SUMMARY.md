@@ -13,7 +13,6 @@ Developer Operations
 * [Autoscaling](developer_operations/05_autoscaling.md)
 * [Persistent Storage](developer_operations/06_persistent_storage.md)
 * [Persistent Configurations](developer_operations/07_persistent_configurations.md)
-* [CI & CD with Jenkins](developer_operations/08_ci_cd_with_jenkins.md)
 * [Event Streams](developer_operations/09_event_streams.md)
 * [Debugging Containers](developer_operations/10_debugging_containers.md)
 * [Storage Debugging](developer_operations/11_storage_debugging.md)
