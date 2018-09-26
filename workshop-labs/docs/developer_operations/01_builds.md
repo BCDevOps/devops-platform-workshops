@@ -74,7 +74,7 @@ oc new-build https://github.com/BCDevOps/devops-platform-workshops-labs/ --conte
     imagestream "rocketchat-[username]" created
     buildconfig "rocketchat-[username]" created
 --> Success
-    Build configuration "rocketchat-stewartshea" created and build triggered.
+    Build configuration "rocketchat-[username]" created and build triggered.
     Run 'oc logs -f bc/rocketchat-[username]' to stream the build progress.
 ```
 
