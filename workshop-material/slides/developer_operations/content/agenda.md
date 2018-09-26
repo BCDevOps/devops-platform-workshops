@@ -4,7 +4,7 @@ Hour 1
 
 Hour 2
 03 - Pathfinder Specific Patterns - 15 Minutes
-04 - General OpenShift Components and Tasks - 45 Minutes
+04 - General OpenShift Components and Tasks - 1 hour
 
 Hour 3
 05 - Pathfinder Specific Components and Tasks - 30 Minutes
