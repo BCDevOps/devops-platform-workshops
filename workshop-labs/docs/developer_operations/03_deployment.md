@@ -19,6 +19,7 @@
 #### Changing the Deployment Strategy Option
 
 ### Deploying the Database
+
 #### Troubleshoot Deployment Issues
 
 #### Create Mongo Database with Ephemeral Storage

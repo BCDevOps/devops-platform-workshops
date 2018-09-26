@@ -7,7 +7,7 @@
 ### Viewing Common Errors
 - Change image name
 - Review output
-- Add incorrect configmap
+- Attempt to use the privileged SCC
 - Review output
 
 ### Debug Containers
