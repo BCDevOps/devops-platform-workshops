@@ -16,17 +16,31 @@ In this lab, edit the `mongodb-[username]` deployment config.
 
 - Click on `Debug container`
 - Explore your capabilities within this container
+- Once done, remove the previously added command, and notice how its placement and structure changed. 
 
 
 ### RSH and RSYNC
-- RSH into container to test things (like curl, etc)
+RSH is available to all normal pods through the web console under the `Terminal` tab, as well as through the 
+`oc rsh` command. 
 
+- With your choice of access, rsh into one of the application pods and test access within the namespace
+    - cURL internal and external resources
+    - Test name resolution etc. 
 
-### Telepresence (Demonstration)
-- Run test against cluster
-- Demonstrate pod running in OpenShift
-- Links / Use Cases
-- Cleanup
+RSYNC is also available in many pods, available through the `oc rsync` command. 
+- On the CLI, type `oc rsync -h` 
+- Using this command, copy the contents of the mongo data directory to your local machine, or from your machine to the remote pod
 
 
 ### Port Forwarding
+The `oc port-forward` command enables users to forward remote ports running in the cluster
+into a local development machine. 
+
+- Find your pod and use the port forward command
+
+```
+oc get pods  | grep rocketchat-[username]
+oc port forward -p [pod name from above] 8000:3000
+```
+
+- Navigate to http://127.0.0.1:8000
