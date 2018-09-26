@@ -42,8 +42,9 @@ Note Placeholder
   - admin user grants `edit` access to developers in team to projects in project set
   - users confirm access
   - demonstrate/show `rolebindings` resources
-  
+
 [http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca)
+
 
 ---
 #### Deployment Styles
