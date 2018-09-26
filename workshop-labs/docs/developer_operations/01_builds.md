@@ -76,7 +76,7 @@ oc new-build https://github.com/BCDevOps/devops-platform-workshops-labs/ --conte
 - You can now explore the Web Console to watch the build status from `Builds -> Builds`
 *note* you will see multiple builds from each team member
 
-![](01_builds.png)
+![](../assets/01_builds.png)
 
 - Or this can be done on the CLI
 
