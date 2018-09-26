@@ -14,11 +14,26 @@ The shortcut towards accessing the Kibana is from the `Logs` tab of a running po
 
 - Select the view archive link to be taken to Kibana
 
-- Review the 
+- Review the logging interface and the query that has been automatically populated
+
+![](../assets/12_logging_02.png.png)
+
+
+- Modify the query and time picker to select the entire namespace within the last few hours
+
+![](../assets/12_logging_03.png.png)
+
+- Review how Kibana surfaces key information about the log sources in the left panel
+
+![](../assets/12_logging_04.png.png)
+
+- Create a simple visualization of the information surfaced by Kibana
+
+![](../assets/12_logging_viz_01.png)
 
 
 #### Access the kibana interface directly 
-    - Explore filters, etc. 
-#### Simple queries across namespaces
-#### Simple Visualizations
+Kibana can also be accessed directly at the url: 
+- [https://kibana.pathfinder.gov.bc.ca](https://kibana.pathfinder.gov.bc.ca)
 
+The namespaces you have access to view will be directly related to your project permissions. 
