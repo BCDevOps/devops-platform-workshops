@@ -21,9 +21,12 @@ would create an app named `app1-stewartshea`.
 These labs will require access to the pathfinder production environment: 
 - [Pathfinder Web Console](https://console.pathfinder.gov.bc.ca:8443/console/)
 
+
 The environment can be accessed from a web browser such as Chrome or Firefox. For 
 users that also leverage the CLI, the `oc` binary is available for download [here](https://github.com/openshift/origin/releases/tag/v3.10.0). 
-The current version of OpenShift is 3.10 and should be installed into your PATH. 
+The current version of OpenShift is 3.10 and should be installed into your PATH.
+
+In addition, developers require GIT locally installed and must have a 2FA device to support access to GitHub. 
 
 - To login with the oc utility: 
     - Login to the [Pathfinder Web Console](https://console.pathfinder.gov.bc.ca:8443/console/) with your GitHub ID
