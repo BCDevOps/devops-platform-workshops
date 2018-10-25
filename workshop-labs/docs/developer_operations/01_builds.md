@@ -41,11 +41,12 @@ OpenShift build components.
 Ensure that all team members have edit rights into the project. Once complete, 
 each member can create their own Rocket.Chat docker build. 
 
-- To start, switch to your new project
+- To start, switch to your new project. *Ensure that you are in the tools project in this lab*
 
 ```
 oc project [project-name]
 ```
+
 - With the `oc` cli, create the build
 
 ```
