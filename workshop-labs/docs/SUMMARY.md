@@ -17,6 +17,8 @@ Developer Operations
 * [Resource Requests and Limits](developer_operations/13_resource_management.md)
 * [Debugging Containers](developer_operations/10_debugging_containers.md)
 * [Logging and Visualizations](developer_operations/12_logging_and_visualizations.md)
+* [Pod Lifecycle](developer_operations/14_pod_lifecycle.md)
+
 
 
 
