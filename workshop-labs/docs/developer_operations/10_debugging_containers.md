@@ -84,7 +84,7 @@ into a local development machine.
 
 ```
 oc get pods  | grep rocketchat-[username]
-oc port forward -p [pod name from above] 8000:3000
+oc port-forward -p [pod name from above] 8000:3000
 ```
 
 - Navigate to http://127.0.0.1:8000
