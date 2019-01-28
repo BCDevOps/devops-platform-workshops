@@ -110,7 +110,7 @@ Note Placeholder
 - GitHub
     - bcgov GitHub [cheatsheet](https://github.com/bcgov/BC-Policy-Framework-For-GitHub/blob/master/BC-Gov-Org-HowTo/Cheatsheet.md)
     - BCDevOps GitHub [organization](https://github.com/orgs/BCDevOps)
-    - OpenShift Wiki [gitbook](https://pathfinder-faq-ocio-pathfinder-prod.pathfinder.gov.bc.ca/) [github-source](https://github.com/BCDevOps/openshift-wiki)
+    - DevHub [developer.gov.bc.ca](https://developer.gov.bc.ca)
 
 Note:
 Note Placeholder
