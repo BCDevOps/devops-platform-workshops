@@ -34,5 +34,5 @@ In addition, developers require GIT locally installed and must have a 2FA device
     - Paste the copied command into your terminal of choice
 
 ```
-oc login https://console.lab.pathfinder.gov.bc.ca:8443 --token=[token]
+oc login https://console.pathfinder.gov.bc.ca:8443 --token=[token]
 ```
