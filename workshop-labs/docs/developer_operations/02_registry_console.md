@@ -51,7 +51,7 @@ oc get imagestreams
 ![](../assets/02_registry_console_project_member_add.png)
 ![](../assets/02_registry_console_project_member_add_02.png)
 
-* There is currently a [bug](https://bugzilla.redhat.com/show_bug.cgi?id=1582238) if your username has upper case characters you wll see "The member name contains invalid characters. Only letters, numbers, spaces and the following symbols are allowed: , = @ . _" You can skip this step as it just for informational purposes. You can also to this from the command line `oc policy add-role-to-user system:image-puller UpperUsername`
+* There is currently a [bug](https://bugzilla.redhat.com/show_bug.cgi?id=1582238) if your username has upper case characters you wll see "The member name contains invalid characters. Only letters, numbers, spaces and the following symbols are allowed: , = @ . _" You can skip this step as it just for informational purposes. You can also do this from the command line `oc policy add-role-to-user system:image-puller UpperUsername`
 
 - Notice that the change is reflected in the Web Console
 
