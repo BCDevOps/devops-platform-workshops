@@ -21,6 +21,7 @@ Note Placeholder
 - Events can be viewed
     - From the CLI or Web Console
     - At the project level, or the object (ie. pod) level
+    - Default is to expire after 2 hours
 - Provides valuable troubleshooting detail if not related to specific container issues
     - Storage / configMap mount issues
     - Scheduling issues
@@ -70,3 +71,17 @@ Note Placeholder
 
 Note:
 Note Placeholder
+
+
+---
+#### Lab Time
+
+[Lab 8 - Event Streams](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/08_event_streams.html)
+
+[Lab 9 - Debugging Containers](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/09_debugging_containers.html)
+
+[Lab 10 - Logging and Visualizations](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/10_logging_and_visualizations.html)
+
+[Lab 11 - Resource Requests and Limits](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/11_resource_management.html)
+
+[Lab 12 - Pod Lifecycle](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/12_pod_lifecycle.html)

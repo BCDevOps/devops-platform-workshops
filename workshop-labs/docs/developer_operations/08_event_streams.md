@@ -7,11 +7,11 @@ The Web Console is the primary tool to visualize events sorted by time.
 
 - Explore the events of a pod
 
-![](../assets/09_event_stream_01.png)
+![](../assets/08_event_stream_01.png)
 
 - For project wide events, navigate to `Monitoring -> Events` and select `View Details`
 
-![](../assets/09_event_stream_02.png)
+![](../assets/08_event_stream_02.png)
 
 - Or on the CLI in your project 
 
