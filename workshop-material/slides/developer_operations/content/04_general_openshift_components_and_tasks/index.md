@@ -133,3 +133,13 @@ Note Placeholder
 
 Note:
 Note Placeholder
+
+
+---
+#### Lab Time
+
+[Lab 3 - Deployments](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/03_deployment.html)
+
+[Lab 4 - Application Availability](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/04_application_availability.html)
+
+[Lab 5 - Autoscaling](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/05_autoscaling.html)

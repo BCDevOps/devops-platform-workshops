@@ -5,7 +5,7 @@ Logs of a running pod can be accessed from the Web Console or from the `oc` cli:
 
 - The `Logs` tab of any running pod can be used to view active logs for the current pod
 
-![](../assets/10_debugging_00.png)
+![](../assets/09_debugging_00.png)
 
 - The `oc` command can be used to view or tail the logs: 
 
@@ -28,7 +28,7 @@ In this lab, edit the `mongodb-[username]` deployment config.
     ```
 - Once the deployment change takes effect, notice the CrashLoopBackoff
 
-![](../assets/10_debugging_01.png)
+![](../assets/09_debugging_01.png)
 
 - Click on `Debug container`
 - Explore your capabilities within this container

@@ -11,7 +11,7 @@ Init containers are best used to prepare the pod for normal operation. In this l
     - If you wish to perform this from the cli with the `oc` tool, type `oc edit dc/rocketchat-[username]`
 - Select `Actions -> Edit YAML`
 
-![](../assets/14_pod_lifecycle_01.png)
+![](../assets/12_pod_lifecycle_01.png)
 
 - Add the following section of code under `spec: -> template: -> spec:`
 
@@ -26,7 +26,7 @@ Init containers are best used to prepare the pod for normal operation. In this l
 - Ask the instructor to ensure the slack instance is displayed to the class
 - Explore the `Pod Details` to notice the differente with the Init Container 
 
-![](../assets/14_pod_lifecycle_02.png)
+![](../assets/12_pod_lifecycle_02.png)
 
 In order to obtain logs from the init container, the `oc` command can be used by specifying `-c init`: 
 

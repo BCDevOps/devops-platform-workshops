@@ -96,6 +96,8 @@ The platform keeps track of Service endpoints and automatically proxies and load
 #### What about access from outside the platform?
 ![](content/02_openshift_architecture_overview/09_flow.png)<!-- .element style="border: 0; background: None; box-shadow: None" -->
 
+* .bcgov route can be used for access only inside gov network
+
 Note:
 Not everything lives inside the platform, and the routing layer provides access for external resources. External clients communicate with user defined “routes”. Users create routes using a similar label/selector model. The routing layer, like the service layer, keeps track of route endpoints, and load balances and proxies those external connections to the endpoints. The routing layer is pluggable and the default implementation uses HAProxy. HAProxy runs in pods inside the platform and receives all the same platform benefits. A typical N-tier application involves several platform components:
 

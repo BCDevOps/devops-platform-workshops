@@ -125,6 +125,8 @@ echo "randomnewguy" | base64
 cmFuZG9tbmV3Z3V5Cg==
 ```
 
+Or visit https://www.base64encode.org/ for encoding & decoding base64
+ 
 - Similar to `configMaps`, the updated secret is automatically applied to the pod; no additional deployment is required
 
 ![](../assets/07_persistent_config_15.png)

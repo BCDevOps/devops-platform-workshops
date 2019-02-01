@@ -7,15 +7,15 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 
 - Navigate to your rocketchat deployment and select `Actions -> Edit Resource Limits`
 
-![](../assets/13_resources_01.png)
+![](../assets/11_resources_01.png)
 
 - Notice the defaults that are applied (in a light grey to indicate they are automatically set)
 
-![](../assets/13_resources_02.png)
+![](../assets/11_resources_02.png)
 
 - Review the current metrics of your `rocketchat-<username>` pod
 
-![](../assets/13_resources_03.png)
+![](../assets/11_resources_03.png)
 
 - Reduce the CPU request and limit to `50 millicores` and `100 Megabytes` and monitor the startup time of the pod
 
@@ -23,7 +23,7 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 
 - Remove the limits previously imposed, and set your pod to 4 cores for the request and limit
 
-![](../assets/13_resources_04.png)
+![](../assets/11_resources_04.png)
 
 - Monitor the status and speed of the new deployment
 

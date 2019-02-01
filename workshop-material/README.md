@@ -16,7 +16,7 @@ condifured as:
 - Build a new container with updated content
 
 ```
-dockebuild -t preso .
+docker build -t preso .
 ```
 
 - Run the container locally specifying the desired content folder
