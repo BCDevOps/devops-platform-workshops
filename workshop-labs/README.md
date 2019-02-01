@@ -1,7 +1,7 @@
 # Workshop Lab Content
 The workshop lab content is delivered via `GitBook` and takes in the markdown content hosted in `docs` using the `SUMMARY.md` file to render the appropriate content. 
 
-## Slow Release of Worksho Lab Content
+## Slow Release of Workshop Lab Content
 It is common to `slow-release` labs during a workshop to keep students focused on the labs that relate to the appropriate lecture material. In order to slow release the content: 
 - Update `docs/SUMMARY.md` with the desired labs
 - Commit and push the change to GitHub
