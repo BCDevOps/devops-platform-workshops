@@ -17,7 +17,7 @@ If there is more than one container in a given pod, the `-c <container-name>` sw
 ### Using a Debug Container
 
 #### From the Web Console
-In this lab, edit the `mongodb-[username]` deployment config. 
+In this lab, edit yaml of the `mongodb-[username]` deployment config. 
 - Under `spec` and `containers`, locate the line:  
     ```
               name: mongodb
