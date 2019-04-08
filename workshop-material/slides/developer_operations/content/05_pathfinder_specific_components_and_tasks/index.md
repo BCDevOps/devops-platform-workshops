@@ -49,7 +49,7 @@ Note Placeholder
 - StorageClass Decisions for Database Storage
   - `gluster-file-db` is currently the recommended storage class for databases such as postgres
   - Some databases prefer block storage
-    - Guidance, through slack, will be provided when new storage classes are released
+    - Guidance, through Rocket.Chat, will be provided when new storage classes are released
     - These storage classes are designed to be supported by Red Hat
 - Database Utilities
   - Operator framework (coming, not yet released!)

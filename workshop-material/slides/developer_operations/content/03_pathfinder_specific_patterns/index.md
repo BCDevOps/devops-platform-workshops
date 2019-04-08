@@ -18,7 +18,7 @@ Note Placeholder
 
 ---
 #### Team Provisioning
-- Slack #requests channel is used to add members to GitHub/Slack/OpenShift
+- Rocket.Chat #devops-requests channel is used to add members to GitHub/Rocket.Chat/OpenShift
 - Groups/GitHub Teams are NOT widely used today
     - Individual usernames are used for collaborating on projects
 - Team 'admins' are delegated access control for their teams

@@ -84,9 +84,10 @@ Note Placeholder
 - Product Teams should aim for self-sufficiency WRT management of pipelines, definition of OCP assets, deployments, scaling, monitoring, etc.
     - Training, tutorials, books, are available to help with the learning curve
 - Community (Internet, and Gov) are the support mechanisms - not individual DevOps Team resources
-- Primary communication mechanism is (currently) Slack
+- Primary communication mechanism is RocketChat
     - Teams should  monitor (for alerts/notifications, etc.) and participate (answer questions, share findings, etc.)
     - Follow community conventions/etiquette WRT use of specific channels, appropriate @ mentions, DMs, etc.
+    - [Chat-Channel-Conventions](https://developer.gov.bc.ca/Community-Enablers-and-Events/Chat-Channel-Conventions)
 - Technical team members should join and participate in DevOps Commons community - meetups, etc.
 - Product Owner/Managers should join Product Manager commons
 - Teams should share timelines of major milestones (e.g. first release, expected increased volume) ahead of time with PM Commons and platform team
@@ -100,13 +101,15 @@ Note Placeholder
 - OpenShift
     - Production cluster in Kamloops
         - [https://console.pathfinder.gov.bc.ca:8443/console/](https://console.pathfinder.gov.bc.ca:8443/console/)
-- Slack
-    - Pathfiner slack [instance](https://devopspathfinder.slack.com)
+- Rocket.Chat
+    - Pathfiner Rocket.Chat: https://chat.pathfinder.gov.bc.ca/
+    - [Chat-Channel-Conventions](https://developer.gov.bc.ca/Community-Enablers-and-Events/Chat-Channel-Conventions)
         - #general - team-wide / work related announcements
-        - #requests - requests for access to github, slack, and openshift
-        - #alerts - platform wide alerts / announcements
-        - #help-me - community sourced assistance across teams
-        - #operations - watch and participate in platform operations discussions
+        - #devops-requests - requests for access to GitHub, Rocket.Chat, and OpenShift
+        - #devops-alerts - platform wide alerts / announcements
+        - #devops-how-to - I need help with `how to ... `
+        - #devops-sos - My app is having problems, and I suspect is a platform issue
+        - #devops-operations - primarily for communications between the OCIO DevOps Team Services team, DXC Operations Team, and Red Hat.
 - GitHub
     - bcgov GitHub [cheatsheet](https://github.com/bcgov/BC-Policy-Framework-For-GitHub/blob/master/BC-Gov-Org-HowTo/Cheatsheet.md)
     - BCDevOps GitHub [organization](https://github.com/orgs/BCDevOps)
