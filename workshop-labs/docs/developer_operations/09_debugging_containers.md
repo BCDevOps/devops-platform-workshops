@@ -30,7 +30,7 @@ In this lab, edit yaml of the `mongodb-[username]` deployment config.
 
 ![](../assets/09_debugging_01.png)
 
-- Click on `Debug container`
+- Click on `Debug in Terminal`
 - Explore your capabilities within this container
 - Once done, remove the previously added command, and notice how its placement and structure changed. 
 
