@@ -30,7 +30,7 @@ In this lab, edit yaml of the `mongodb-[username]` deployment config.
 
 ![](../assets/09_debugging_01.png)
 
-- Click on `Debug container`
+- Click on `Debug in Terminal`
 - Explore your capabilities within this container
 - Once done, remove the previously added command, and notice how its placement and structure changed. 
 
@@ -84,7 +84,7 @@ into a local development machine.
 
 ```
 oc get pods  | grep rocketchat-[username]
-oc port-forward -p [pod name from above] 8000:3000
+oc port-forward [pod name from above] 8000:3000
 ```
 
 - Navigate to http://127.0.0.1:8000
