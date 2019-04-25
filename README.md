@@ -9,8 +9,7 @@ This folder has the content to create an OpenShift compatible `GitBook` based ap
 
 http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/
 
-
-## workshop-material
+## workshop-material (Slides)
 This folder has the content to create an OpenShift compatible `RevealJS` based application that hosts the desired material for instructors to deliver during a workshop. 
 
 http://content-devops-platform-workshops.lab.pathfinder.gov.bc.ca/
