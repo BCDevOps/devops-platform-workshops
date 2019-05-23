@@ -1,0 +1,6 @@
+{
+  "namespaces":{
+    "tools": "ocp101-tools",
+    "deploy": "ocp101-dev"
+  }
+}

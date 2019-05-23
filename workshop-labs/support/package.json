@@ -1,0 +1,18 @@
+{
+  "name": "openshift101-workshop-labs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^6.1.4"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Clecio Varjao",
+  "license": "Apache-v2"
+}

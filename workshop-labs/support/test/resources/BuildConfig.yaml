@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Template
+parameters:
+- name: USERNAME
+  required: true
+- name: TRIGGER_SECRET
+  from: '[A-Z0-9]{20}'
+  generate: expression
+objects:
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewBuild
+    creationTimestamp: null
+    labels:
+      build: rocketchat-${USERNAME}
+    name: rocketchat-${USERNAME}
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: rocketchat-${USERNAME}:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      contextDir: apps/rocketchat
+      git:
+        uri: https://github.com/BCDevOps/devops-platform-workshops-labs/
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: nodejs-8-rhel7:latest
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - github:
+        secret: ${TRIGGER_SECRET}
+      type: GitHub
+    - generic:
+        secret: ${TRIGGER_SECRET}
+      type: Generic
+    - type: ConfigChange
+    - imageChange:
+        lastTriggeredImageID: registry.access.redhat.com/rhscl/nodejs-8-rhel7@sha256:9341ddb15986901b5228ebf050cb27b72b4ba861e955f5bb6e8d8142b7d6019b
+      type: ImageChange
+  status:
+    lastVersion: 0
