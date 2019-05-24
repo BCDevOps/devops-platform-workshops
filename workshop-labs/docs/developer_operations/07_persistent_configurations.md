@@ -90,10 +90,10 @@ password:  11 bytes
 username:  11 bytes
 ```
 
-- Export the secret to view the contents with `secret rocketchat-[username]-secret -o yaml`
+- Export the secret to view the contents with `oc get --export secret rocketchat-[username]-secret -o yaml`
 
 ```
-oc export secret rocketchat-sheastewart-secret -o yaml
+oc get --export secret rocketchat-sheastewart-secret -o yaml
 apiVersion: v1
 data:
   password: c2hlYXN0ZXdhcnQ=
