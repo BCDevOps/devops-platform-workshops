@@ -11,7 +11,7 @@ Currently CPU and memory metrics are supported, with additional arbitrary metric
 This lab will provide a simple demonstration of autoscaling based on CPU, as this is configurable in the 
 Web Console. 
 
-- Navigate to your rocketchat deployment and select the `Actions` dropdown
+- Navigate to your __rocketchat deployment__ (___not your mongodb deployment!__) and select the `Actions` dropdown 
 - Select `Add Autoscaler`
 - Configure an upper and lower limit of pods
 - Configure a very low CPU Request Target (such as 1 or 2%) so that you can test it easily by browsing the web application
