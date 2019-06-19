@@ -10,7 +10,7 @@ exec "$@"
 mkdir -p .ssh
 cp bin/ssh_config .ssh/config
 
-git clone $GIT_URL
+git clone $GIT_URL -b ${WORKSHOP_BRANCH:-master}
 cd $WORKSHOP_FOLDER/docs
 gitbook install
 #cd ${APP_ROOT}/docs
