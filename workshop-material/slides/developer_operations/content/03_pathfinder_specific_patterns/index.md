@@ -34,8 +34,9 @@ Note Placeholder
 - 4 projects are created per team/application
     - [project-name]-tools
         - All the devopsy goodness (Jenkins, sonarqube)
+        - Builds happen here
     - [project-name]-dev
-        - General development workspace (builds happen here)
+        - General development workspace
     - [project-name]-test
         - Pre-prod testing happens here
     - [project-name]-prod
