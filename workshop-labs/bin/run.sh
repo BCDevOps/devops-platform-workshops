@@ -10,13 +10,13 @@ exec "$@"
 mkdir -p .ssh
 cp bin/ssh_config .ssh/config
 
-## Copy the SUMMARY.md file from mounted dir
-cp /etc/SUMMARY.md /opt/app-root/devops-platform-workshops/workshop-labs/docs
-
 git clone $GIT_URL -b ${WORKSHOP_BRANCH:-master}
 cd $WORKSHOP_FOLDER/docs
 gitbook install
 #cd ${APP_ROOT}/docs
+
+## Copy the SUMMARY.md file from mounted dir
+cp /etc/SUMMARY.md /opt/app-root/devops-platform-workshops/workshop-labs/docs
 
 # Create PDF
 gitbook pdf ./ ./download.pdf
