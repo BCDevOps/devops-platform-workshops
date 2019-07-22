@@ -7,6 +7,19 @@
   command: > 
     oc --as="{{ service_account }}" label namespace "{{ project_name }}-{{ env }}" workshop="{{ unique_id }}-{{ project_suffix }}"
   ignore_errors: true
+
+- name: Add pathfinder labels
+  command: > 
+    oc --as="{{ service_account }}" label namespace "{{ project_name }}-{{ env }}" "{{ item.name }}"="{{ item.value }}"
+  ignore_errors: true
+  with_items:
+    - { name: category, value: "pathfinder" }
+    - { name: environment, value: "{{ env }}" }
+    - { name: name, value: "{{ project_name }}" }
+    - { name: team, value: "BCDEVOPS" }
+    - { name: status, value: "active" }
+    - { name: product, value: "{{ project_suffix }}-labs" }
+
 - name: Add user as admin
   command: > 
     oc --as="{{ service_account }}" policy add-role-to-user admin "{{ item }}" -n "{{ project_name }}-{{ env }}"
