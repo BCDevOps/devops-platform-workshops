@@ -1,0 +1,19 @@
+---
+- name: Create {{ item }} project set
+  command: >
+    oc --as="{{ service_account }}" new-project "{{ project_name }}-{{ env }}" --display-name="OpenShift 101 ({{ env }})"
+#  ignore_errors: true
+- name: Label projects
+  command: > 
+    oc --as="{{ service_account }}" label namespace "{{ project_name }}-{{ env }}" workshop="{{ unique_id }}-{{ workshop_name }}"
+  ignore_errors: true
+- name: Add instructors to each project
+  command: > 
+    oc --as="{{ service_account }}" policy add-role-to-user admin "{{ instructor_username }}" -n "{{ project_name }}-{{ env }}"
+  with_items: 
+    - "{{ instructor_list }}"
+  loop_control: 
+    loop_var: instructor_username
+  ignore_errors: true
+
+
