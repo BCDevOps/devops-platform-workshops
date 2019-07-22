@@ -1,0 +1,10 @@
+---
+- name: Set project name fact
+  set_fact: 
+    project_name: "{{unique_id }}-{{ item }}-{{ project_suffix }}"
+- name: Create "{{ item }}" project
+  include_tasks: create_projects.yaml
+  with_items: 
+    - "{{ environments }}"
+  loop_control: 
+    loop_var: env

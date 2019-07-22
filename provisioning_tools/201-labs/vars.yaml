@@ -1,0 +1,13 @@
+action: "notta"
+student_list: 
+  - jefkel
+  - filiy
+instructor_list: 
+  - jefkel
+environments: 
+  - tools
+  - dev
+  - prod
+unique_id: "{{ lookup('password', 'unique_id chars=ascii_lowercase,digits length=6') }}"
+project_suffix: "ocp201-tst"
+service_account: "system:serviceaccount:openshift:bcdevops-admin"

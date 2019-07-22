@@ -1,2 +1,6 @@
 # OpenShift Developer Workshop Labs
-This lab content is aligned with the OpenShift 101 course. 
+
+This application supports the following workshops at the BCDevOps / BC Developers Exchange / BC Gov CSI Lab:
+
+- OpenShift 101 - Developer Operations
+- OpenShift 201 - Pipeline your DevOps

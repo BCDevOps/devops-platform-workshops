@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  become: false
+  vars_files: 
+    vars.yaml
+  tasks: 
+    - name: Create Projects
+      include_tasks: tasks/create_environments.yaml
+      with_items: "{{ student_list|lower}}"
+      when: action == "create"
+    - name: Delete Projects
+      include_tasks: tasks/delete_projects.yaml
+      when: action == "delete"
