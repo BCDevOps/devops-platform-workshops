@@ -26,24 +26,24 @@ From right where you are today!
 
 - Deploy your application as you are used to (oc new-build, oc new-app, etc)
 - Configure your application with extra objects (secrets, configmaps, routes, etc)
-- To export an initial template that includes all the objects:
+- To export a group of objects:
     ```
-    oc export all --as-template=new-tmpl > new-tmpl.yaml
-    oc export svc,dc,route --as-template=filtered-tmpl -l FOO=BAR > filtered-tmpl.yaml
+    oc get --export all -o yaml > new-objects.yaml
+    oc get --export svc,dc,route -l FOO=BAR -o yaml > filtered-objects.yaml
     ```
 - To export an individual object manifest file:
     ```
-    oc get {object/name} --export=true -o yaml > new-object-manifest.yaml
+    oc get --export {object/name} -o yaml > new-object-manifest.yaml
     ```
 
 Note:
-- Break your project into separate templates by using labels or object types as filters to the `oc export` command
+- Break your project into separate templates by using labels or object types as filters to the `oc get --export` command
 - oc "all" is not everything
 
 
 ---
 #### Draw your Stuff
-Sometimes having a whiteboard session to draw out the connected pieces and dependencies can really help in the design.
+Having a whiteboard session to draw out the connected pieces and dependencies can really help in the design.
 
 ![](content/02_template_your_deployments/drawing_objects.png)<!-- .element style="border: 0; background: None; box-shadow: None; height: 60%; width: 60%;" -->
 
