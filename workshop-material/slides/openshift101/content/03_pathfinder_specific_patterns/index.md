@@ -35,7 +35,7 @@ Note Placeholder
     - [project-name]-tools
         - All the devopsy goodness (Jenkins, sonarqube)
     - [project-name]-dev
-        - General development workspace (builds happen here)
+        - General development workspace
     - [project-name]-test
         - Pre-prod testing happens here
     - [project-name]-prod
@@ -56,7 +56,7 @@ Note Placeholder
 
 ---
 #### Access Control Between Projects
-- Each project has it's own: 
+- Each project has it's own:
     - Network isolation
     - User access control policy
 - Team 'admins' can determine who should have access to each project
@@ -71,7 +71,7 @@ Note Placeholder
 #### Tooling Project Components
 - CI & CD related tooling
 - Jenkins instance dedicated to a given team
-- Sonarqube for code coverage 
+- Sonarqube for code coverage
 - Teams can bring any additional tools into this project space as needed
 
 Note:

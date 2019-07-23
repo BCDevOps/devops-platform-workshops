@@ -15,11 +15,11 @@ We will focus on the three groups that support the Pathfinder Platform
         - Assistance and education of platform users
         - Improvements in platform usability
         - Education / hands-on knowledge transfer
-        - Community Leadership        
+        - Community Leadership
     - Technical Platform Operations (DXC/ESIT prime, Arctiq support)
         - Dan Deane - Team Lead, Steven Barre, William Hutchison - Platform Admins
         - 24x7 operational support of the platform (DXC on-call team)
-        - Patching, upgrades, etc. 
+        - Patching, upgrades, etc.
         - Platform service improvement (new platform-wide features/capabilities)
 
 Note:
@@ -29,11 +29,11 @@ Note Placeholder
 ---
 #### Pathfinder
 - Ongoing OCIO initiative
-- Testbeds for government to explore the potential of emerging technology solutions, and to capture the benefits. 
+- Testbeds for government to explore the potential of emerging technology solutions, and to capture the benefits.
 - Deliver business value through a 'learn by doing' process, matching known business problems with emerging technologies.
 - Releasing leading edge solutions to production.
 - What is learned is shared, so other projects have a path to follow, with a focus on corporate enablement.
-- To facilitate speed and innovation, Pathfinder projects are provided greater latitude when adhering to existing standards 
+- To facilitate speed and innovation, Pathfinder projects are provided greater latitude when adhering to existing standards
 - The learning gathered will inform any necessary standards/revisions going forward.
 
 Note:
@@ -67,7 +67,7 @@ Note Placeholder
 - Supported by RedHat (updates, patches, etc.)
 - Security is to be considered at every stage of the application lifecycle
 - Use 'cloud-native'/12factor architectures/principles (https://12factor.net/)
-- Leverage/survey community for assistance/opinions on technology choices/approaches 
+- Leverage/survey community for assistance/opinions on technology choices/approaches
 - Leverage platform's DevOps pipeline tooling
 - Assume continual evolution/improvement of applications on platform
 - Recognize shared aspect of platform - some level of uniformity required
@@ -127,5 +127,4 @@ Note Placeholder
 
 Note:
 Note Placeholder
-
 

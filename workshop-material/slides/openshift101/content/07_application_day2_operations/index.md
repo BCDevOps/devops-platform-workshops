@@ -76,12 +76,12 @@ Note Placeholder
 ---
 #### Lab Time
 
-[Lab 8 - Event Streams](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/08_event_streams.html)
+Lab 8 - Event Streams
 
-[Lab 9 - Debugging Containers](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/09_debugging_containers.html)
+Lab 9 - Debugging Containers
 
-[Lab 10 - Logging and Visualizations](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/10_logging_and_visualizations.html)
+Lab 10 - Logging and Visualizations
 
-[Lab 11 - Resource Requests and Limits](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/11_resource_management.html)
+Lab 11 - Resource Requests and Limits
 
-[Lab 12 - Pod Lifecycle](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/12_pod_lifecycle.html)
+Lab 12 - Pod Lifecycle

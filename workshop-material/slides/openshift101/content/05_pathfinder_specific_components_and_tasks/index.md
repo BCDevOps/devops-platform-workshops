@@ -121,6 +121,6 @@ Note Placeholder
 ---
 #### Lab Time
 
-[Lab 6 - Persistent Storage](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/06_persistent_storage.html)
+Lab 6 - Persistent Storage
 
-[Lab 7 - Persistent Configuration](http://labs-devops-platform-workshops.lab.pathfinder.gov.bc.ca/developer_operations/07_persistent_configurations.html)
+Lab 7 - Persistent Configuration
