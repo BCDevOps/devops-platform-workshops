@@ -147,7 +147,7 @@ parameters:
 - description: Image Source Namespace
   displayName: Image Namespace
   name: IMAGE_NAMESPACE
-  value: devops-workshops-tools
+  value: wpvqx7-tools
 - description: Image Name
   displayName: Image Name
   name: IMAGE_NAME
