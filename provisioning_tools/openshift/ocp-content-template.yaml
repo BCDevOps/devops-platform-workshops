@@ -1,0 +1,158 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ocp-content-template
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APP}
+    name: ${APP}-${COMPONENT}
+  spec:
+    ports:
+    - name: 8000-tcp
+      port: 8000
+      protocol: TCP
+      targetPort: 8000
+    selector:
+      app: ${APP}
+      deploymentconfig: ${APP}-${COMPONENT}
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APP}
+    name: ${APP}-${COMPONENT}
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 5
+    selector:
+      app: ${APP}
+      deploymentconfig: ${APP}-${COMPONENT}
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: ${APP}
+          deploymentconfig: ${APP}-${COMPONENT}
+      spec:
+        containers:
+        - env:
+          - name: WORKSHOP_NAME
+            value: ${WORKSHOP_NAME}
+          - name: WORKSHOP_FOLDER
+            value: ${WORKSHOP_FOLDER}
+          - name: WORKSHOP_BRANCH
+            value: ${GIT_BRANCH}
+          - name: GIT_URL
+            value: ${GIT_URL}
+          image: ${IMAGE_REGISTRY}/${IMAGE_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
+          imagePullPolicy: Always
+          name: ${APP}-${COMPONENT}
+          ports:
+          - containerPort: 8000
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 180
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 50m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/host.generated: "true"
+    labels:
+      app: ${APP}
+    name: ${APP}-${COMPONENT}
+  spec:
+    host: ${APP}-${COMPONENT}${SUFFIX}.pathfinder.gov.bc.ca
+    tls:
+      termination: edge
+    port:
+      targetPort: 8000-tcp
+    to:
+      kind: Service
+      name: ${APP}-${COMPONENT}
+      weight: 100
+    wildcardPolicy: None
+parameters:
+- description: The name of the application for labeling all artifacts.
+  displayName: Application Name
+  name: APP
+  value: ocp101
+- description: The name of the application component for labeling all artifacts.
+  displayName: Application component
+  name: COMPONENT
+  value: content
+- description: Suffix for URL name
+  displayName: URL Suffix
+  name: SUFFIX
+- description: The workshop foldername
+  displayName: Workshop Folder
+  name: WORKSHOP_FOLDER
+  value: devops-platform-workshops/workshop-material
+- description: The name of the workshop to launch
+  displayName: Workshop Name
+  name: WORKSHOP_NAME
+  value: openshift101
+- description: Git repository URL
+  displayName: Git URL
+  name: GIT_URL
+  value: https://github.com/BCDevOps/devops-platform-workshops.git
+- description: Git workshop branch
+  displayName: Workshop Branch
+  name: GIT_BRANCH
+  value: master
+- description: Image registry
+  displayName: Image registry
+  name: IMAGE_REGISTRY
+  value: docker-registry.default.svc:5000
+- description: Image Source Namespace
+  displayName: Image Namespace
+  name: IMAGE_NAMESPACE
+  value: devops-workshops-tools
+- description: Image Name
+  displayName: Image Name
+  name: IMAGE_NAME
+  value: workshop-content
+- description: Image Tag
+  displayName: Image Tag
+  name: IMAGE_TAG
+  value: v2-stable
