@@ -1,0 +1,40 @@
+---
+- name: Create {{ item }} project set
+  command: >
+    oc --as="{{ service_account }}" new-project "{{ project_name }}-{{ env }}" --display-name="OpenShift 201 {{ item }} ({{ env }})"
+  ignore_errors: true
+- name: Label projects
+  command: > 
+    oc --as="{{ service_account }}" label namespace "{{ project_name }}-{{ env }}" workshop="{{ unique_id }}-{{ project_suffix }}"
+  ignore_errors: true
+
+- name: Add pathfinder labels
+  command: > 
+    oc --as="{{ service_account }}" label namespace "{{ project_name }}-{{ env }}" "{{ item.name }}"="{{ item.value }}"
+  ignore_errors: true
+  with_items:
+    - { name: category, value: "pathfinder" }
+    - { name: environment, value: "{{ env }}" }
+    - { name: name, value: "{{ project_name }}" }
+    - { name: team, value: "BCDEVOPS" }
+    - { name: status, value: "active" }
+    - { name: product, value: "{{ project_suffix }}-labs" }
+
+- name: Add user as admin
+  command: > 
+    oc --as="{{ service_account }}" policy add-role-to-user admin "{{ item }}" -n "{{ project_name }}-{{ env }}"
+  ignore_errors: true
+- name: Add tools-jenkins service account as editor on project
+  command: > 
+    oc --as="{{ service_account }}" policy add-role-to-user edit system:serviceaccount:"{{ project_name }}"-tools:jenkins -n "{{ project_name }}-{{ env }}"
+  ignore_errors: true
+- name: Add instructors to each project
+  command: > 
+    oc --as="{{ service_account }}" policy add-role-to-user admin "{{ instructor_username }}" -n "{{ project_name }}-{{ env }}"
+  with_items: 
+    - "{{ instructor_list }}"
+  loop_control: 
+    loop_var: instructor_username
+  ignore_errors: true
+
+

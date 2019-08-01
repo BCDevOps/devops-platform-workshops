@@ -1,0 +1,14 @@
+---
+- name: Get list of projects
+  command: > 
+    oc --as="{{ service_account }}" get projects -l  workshop="{{ unique_id }}-{{ workshop_name }}"
+  register: delete_list
+- name: Print list of projects
+  debug: msg="{{ delete_list.stdout_lines }}"
+- pause:
+    prompt: "Do you want to delete the listed projects (yes/no)?"
+  register: delete_prompt
+- name: Delete  projects
+  command: >
+    oc --as="{{ service_account }}" delete projects -l  workshop="{{ unique_id }}-{{ workshop_name }}"
+  when: delete_prompt.user_input | bool
