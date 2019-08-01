@@ -6,13 +6,9 @@ The workshop lab content is delivered via `GitBook` and takes in the markdown co
 
 It is common to `slow-release` labs during a workshop to keep students focused on the labs that relate to the appropriate lecture material. In order to slow release the content:
 
-- Update `docs/SUMMARY-${WORKSHOP_NAME}.md` with the desired labs
-- Commit and push the change to GitHub
+- Go to the summary configmap attached to the deplyment
+- Update the summary list in the corresponding workshop, and save the configmap
 - Redeploy the application in OpenShift
-
-``` bash
-oc rollout latest labs -n devops-platform-workshops
-```
 
 Note: The `docs/MASTER-${WORKSHOP_NAME}.md` file is used to keep a record of all labs available for use.
 
