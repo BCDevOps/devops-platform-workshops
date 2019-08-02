@@ -8,7 +8,7 @@ objects:
   metadata:
     labels:
       app: ${APP}
-      course-session: ${APP}-${COMPONENT}${SUFFIX}-${VOLUMN_NAME}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
     name: ${APP}-${COMPONENT}${SUFFIX}-${VOLUMN_NAME}
   data:
     SUMMARY-openshift101.md: |
@@ -58,7 +58,7 @@ objects:
   metadata:
     labels:
       app: ${APP}
-      course-session: ${APP}-${COMPONENT}${SUFFIX}-${VOLUMN_NAME}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
     name: ${APP}-${COMPONENT}${SUFFIX}
   spec:
     ports:
@@ -78,7 +78,7 @@ objects:
   metadata:
     labels:
       app: ${APP}
-      course-session: ${APP}-${COMPONENT}${SUFFIX}-${VOLUMN_NAME}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
     name: ${APP}-${COMPONENT}${SUFFIX}
   spec:
     replicas: 1
@@ -161,7 +161,7 @@ objects:
       openshift.io/host.generated: "true"
     labels:
       app: ${APP}
-      course-session: ${APP}-${COMPONENT}${SUFFIX}-${VOLUMN_NAME}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
     name: ${APP}-${COMPONENT}${SUFFIX}
   spec:
     host: ${APP}-${COMPONENT}${SUFFIX}.pathfinder.gov.bc.ca
