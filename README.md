@@ -19,6 +19,13 @@ oc process -f ./provisioning_tools/openshift/ocp-lab-template.yaml \
  --param-file=./provisioning_tools/openshift/sample-lab.env | oc apply -f -
 ```
 
+When workshop is finished and not needed anymore, make sure to delete the instance
+
+``` bash
+oc get all,configmap -l course-session=<lab session lable>
+oc delete all,configmap -l course-session=<lab session lable>
+```
+
 ### workshop-material
 
 This folder has the content to create an OpenShift compatible `RevealJS` based application that hosts the desired material for instructors to deliver during a workshop.  Each course will require it's own deployment with the specific course detail configured in the deployment environment variables.
