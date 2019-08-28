@@ -139,9 +139,7 @@ objects:
           terminationMessagePolicy: File
           volumeMounts:
           - name: ${VOLUMN_NAME}
-            mountPath: /${WORKSHOP_FOLDER}/docs/summaries/SUMMARY-${WORKSHOP_NAME}.md
-            subPath: SUMMARY-${WORKSHOP_NAME}.md
-            readOnly: true
+            mountPath: ${WORKSHOP_SUMMARY_FOLDER}
         volumes:
         - name: ${VOLUMN_NAME}
           configMap:
@@ -189,7 +187,11 @@ parameters:
 - description: The workshop foldername
   displayName: Workshop Folder
   name: WORKSHOP_FOLDER
-  value: devops-platform-workshops/workshop-labs
+  value: /opt/app-root/devops-platform-workshops/workshop-labs
+- description: The workshop summary files foldername
+  displayName: Workshop Summary Files Folder
+  name: WORKSHOP_SUMMARY_FOLDER
+  value: /opt/app-root/summaries
 - description: The name of the workshop to launch
   displayName: Workshop Name
   name: WORKSHOP_NAME
