@@ -2,12 +2,21 @@
 
 The workshop lab content is delivered via `GitBook` and takes in the markdown content hosted in `docs` using the `SUMMARY-${WORKSHOP_NAME}.md` file to render the appropriate content.
 
+## Deploying Workshop Lab Content
+Use the lab deployment configuration in provisioning_tools/openshift/ocp-lab-template.yaml to create a session specific instantce.
+
+```bash
+cd provisioning_tools/openshift
+# To distingurish different sessions, use a suffix with the date and a session (a or b)
+# Image tag is latest for now, looking to start versioning in the future
+oc process -f ocp-lab-template.yaml -p SUFFIX=-<month>-<year>-<session> -p IMAGE_TAG=latest | oc apply -f -
+```
+
 ## Slow Release of Workshop Lab Content
 
 It is common to `slow-release` labs during a workshop to keep students focused on the labs that relate to the appropriate lecture material. In order to slow release the content:
 
-- Go to the summary configmap attached to the deplyment
-- Update the summary list in the corresponding workshop, and save the configmap
+- Update the summary list (comment/uncomment the items in list) in the corresponding workshop's summary file configmap
 - Redeploy the application in OpenShift
 
 Note: The `docs/MASTER-${WORKSHOP_NAME}.md` file is used to keep a record of all labs available for use.
