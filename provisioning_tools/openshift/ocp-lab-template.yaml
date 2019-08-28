@@ -25,13 +25,13 @@ objects:
       * [Deployments](openshift101/03_deployment.md)
       * [Application Availability](openshift101/04_application_availability.md)
       * [Autoscaling](openshift101/05_autoscaling.md)
-      * [Persistent Storage](openshift101/06_persistent_storage.md)
-      * [Persistent Configurations](openshift101/07_persistent_configurations.md)
-      * [Event Streams](openshift101/08_event_streams.md)
-      * [Debugging Containers](openshift101/09_debugging_containers.md)
-      * [Logging and Visualizations](openshift101/10_logging_and_visualizations.md)
-      * [Resource Requests and Limits](openshift101/11_resource_management.md)
-      * [Pod Lifecycle](openshift101/12_pod_lifecycle.md)
+      # * [Persistent Storage](openshift101/06_persistent_storage.md)
+      # * [Persistent Configurations](openshift101/07_persistent_configurations.md)
+      # * [Event Streams](openshift101/08_event_streams.md)
+      # * [Debugging Containers](openshift101/09_debugging_containers.md)
+      # * [Logging and Visualizations](openshift101/10_logging_and_visualizations.md)
+      # * [Resource Requests and Limits](openshift101/11_resource_management.md)
+      # * [Pod Lifecycle](openshift101/12_pod_lifecycle.md)
     SUMMARY-openshift201.md: |
       # Summary - 201
 
@@ -108,6 +108,8 @@ objects:
             value: ${WORKSHOP_NAME}
           - name: WORKSHOP_FOLDER
             value: ${WORKSHOP_FOLDER}
+          - name: WORKSHOP_SUMMARY_FOLDER
+            value: ${WORKSHOP_SUMMARY_FOLDER}
           - name: WORKSHOP_BRANCH
             value: ${GIT_BRANCH}
           - name: GIT_URL
@@ -219,7 +221,7 @@ parameters:
 - description: Image Tag
   displayName: Image Tag
   name: IMAGE_TAG
-  value: v2-stable
+  value: latest
 - description: Volumn name
   displayName: Volumn name
   name: VOLUMN_NAME
