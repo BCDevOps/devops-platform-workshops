@@ -11,7 +11,11 @@
 
 > Links to distribute:
 [Resources](https://developer.gov.bc.ca)
+
 [Course Content](https://ocp101-content.pathfinder.gov.bc.ca/)
+
 [Workshop Content](https://ocp101-labs.pathfinder.gov.bc.ca/)
+
 [BCDK: developer kit to quickly setup pipeline](https://github.com/BCDevOps/bcdk)
+
 [Backup and restore](https://github.com/BCDevOps/backup-container)
