@@ -25,8 +25,8 @@ Note Placeholder
 - Team 'admins' are in control of user access to each project
   - Use of default roles should be leveraged
       - Project admin
-      - Project editor
-      - Project viewer
+      - Project edit
+      - Project view
 - Service accounts are used to 
   - permit pulling of images from one namespace to another
   - manage resources across multiple projects from a CI & CD tool (ie. Jenkins)
