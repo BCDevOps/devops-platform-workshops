@@ -5,7 +5,7 @@ A Pod can be extended beyond the normal operation of the container by allowing d
 - modify the default `entrypoint` of a container
 
 ### Init Containers
-Init containers are best used to prepare the pod for normal operation. In this lab, you will add a simple init container that posts a message to slack with your pod hostname.
+Init containers are best used to prepare the pod for normal operation. In this lab, you will add a simple init container that posts a message to rocketchat with your pod hostname.
 
 - From the Web Console, navigate to `Applications -> Deployments` and select your `rocketchat-[username]` deploymentconfig
     - If you wish to perform this from the cli with the `oc` tool, type `oc edit dc/rocketchat-[username]`
@@ -19,11 +19,11 @@ Init containers are best used to prepare the pod for normal operation. In this l
       initContainers:
       - name: init
         image: giantswarm/tiny-tools
-        command: ["/bin/sh", "-c", "c=$(curl -XPOST 'https://hooks.slack.com/services/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' -H 'Content-type: application/json' --data '{\"text\": \"'\"$HOSTNAME\"' is starting with the INIT \"}')"]
+        command: ["/bin/sh", "-c", "c=$(curl -X POST -H 'Content-Type: application/json' --data '{\"text\":\"Say Hello\"}' https://chat.pathfinder.gov.bc.ca/hooks/xxx/xxx)"]
 ```
 
 - Select Save
-- Ask the instructor to ensure the slack instance is displayed to the class
+- Ask the instructor to ensure the rocketchat instance is displayed to the class
 - Explore the `Pod Details` to notice the differente with the Init Container 
 
 ![](../assets/12_pod_lifecycle_02.png)
@@ -47,14 +47,14 @@ Lifecycle hooks can be configured to start and stop a container properly. The li
           lifecycle:
             postStart:
               exec:
-                command:  ["/bin/sh", "-c", "c=$(curl -XPOST 'https://hooks.slack.com/services/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' -H 'Content-type: application/json' --data '{\"text\": \"'\"$HOSTNAME\"' is at the postStart phase, huzzah! \"}')"]
+                command:  ["/bin/sh", "-c", "c=$(curl -X POST -H 'Content-Type: application/json' --data '{\"text\": \"'\"$HOSTNAME\"' is at the postStart phase, huzzah! "}' https://chat.pathfinder.gov.bc.ca/hooks/xxx/xxx)"]
             preStop:
               exec:
-                command:  ["/bin/sh", "-c", "c=$(curl -XPOST 'https://hooks.slack.com/services/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' -H 'Content-type: application/json' --data '{\"text\": \"'\"$HOSTNAME\"' is just about to STOPPPPPP! \"}')"]
+                command:  ["/bin/sh", "-c", "c=$(curl -X POST -H 'Content-Type: application/json' --data '{\"text\": \"'\"$HOSTNAME\"' is just about to STOPPPPPP! \"}' https://chat.pathfinder.gov.bc.ca/hooks/xxx/xxx)"]
 ```
 
 - Select Save
-- Ask the instructor to ensure the slack instance is displayed to the class
+- Ask the instructor to ensure the rocketchat instance is displayed to the class
 
 
 
@@ -68,9 +68,9 @@ It may be necessary, from time to time, to override the intitial command/entrypo
 - Add the following section of code under `spec: -> template: -> spec: -> containers`
 
 ```
-          command:  ["/bin/sh", "-c", "c=$(curl -XPOST 'https://hooks.slack.com/services/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' -H 'Content-type: application/json' --data '{\"text\": \"'\"$HOSTNAME\"' is AN OVERRIDING COMMAND! \"}')"]
+          command:  ["/bin/sh", "-c", "c=$(curl -X POST -H 'Content-Type: application/json' --data '{\"text\": \"'\"$HOSTNAME\"' is AN OVERRIDING COMMAND! \"}' https://chat.pathfinder.gov.bc.ca/hooks/xxx/xxx)"]
 ```
-- Take note of the pattern that will happen in the Slack notification screen
+- Take note of the pattern that will happen in the rocketchat notification screen
 - Remove the previous command to enable the rocketchat instance to start properly again
 
 ### References
