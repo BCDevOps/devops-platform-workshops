@@ -4,10 +4,61 @@ metadata:
   name: ocp-lab-template
 objects:
 - apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    labels:
+      app: ${APP}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}-${VOLUMN_NAME}
+  data:
+    SUMMARY-openshift101.md: |
+      # Summary - 101
+
+      * [Setup](openshift101/setup.md)
+
+      OpenShift 101 - Developer Operations
+      ---
+
+      * [Overview](openshift101/readme.md)
+      * [Builds](openshift101/01_builds.md)
+      * [Registry Console](openshift101/02_registry_console.md)
+      * [Deployments](openshift101/03_deployment.md)
+      * [Application Availability](openshift101/04_application_availability.md)
+      * [Autoscaling](openshift101/05_autoscaling.md)
+      # * [Persistent Storage](openshift101/06_persistent_storage.md)
+      # * [Persistent Configurations](openshift101/07_persistent_configurations.md)
+      # * [Event Streams](openshift101/08_event_streams.md)
+      # * [Debugging Containers](openshift101/09_debugging_containers.md)
+      # * [Logging and Visualizations](openshift101/10_logging_and_visualizations.md)
+      # * [Resource Requests and Limits](openshift101/11_resource_management.md)
+      # * [Pod Lifecycle](openshift101/12_pod_lifecycle.md)
+    SUMMARY-openshift201.md: |
+      # Summary - 201
+
+      * [Setup](openshift201/setup.md)
+
+      OpenShift 201 - Pipeline your DevOps
+      ---
+
+      * [Overview](openshift201/readme.md)
+      * [GitFlow](openshift201/01_git_setup.md)
+      * [Using OpenShift Templates](openshift201/02_templates_openshift.md)
+      * [Helm Templates](openshift201/02_templates_helm.md)
+      * [Building OpenShift Templates](openshift201/02_building_openshift_templates.md)
+      * [Jenkins Pipeline As Code](openshift201/04_jenkins_pipeline_as_code.md)
+      * [Jenkins Build Pipeline](openshift201/04_jenkins_build_pipeline.md)
+      * [Jenkins Pipeline Parallelization](openshift201/04_jenkins_pipelines_parallel.md)
+      * [HA DB Installation](openshift201/05_ha_db_create.md)
+      * [DB Configuration](openshift201/05_ha_db_reconfigure.md)
+      * [DB Backup and Restore](openshift201/06_db_backup.md)
+      * [Failure Testing](openshift201/07_failover.md)
+      * [Health Checks](developer_ops_201/09_health_check.md)
+- apiVersion: v1
   kind: Service
   metadata:
     labels:
       app: ${APP}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
     name: ${APP}-${COMPONENT}${SUFFIX}
   spec:
     ports:
@@ -27,6 +78,7 @@ objects:
   metadata:
     labels:
       app: ${APP}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
     name: ${APP}-${COMPONENT}${SUFFIX}
   spec:
     replicas: 1
@@ -56,6 +108,8 @@ objects:
             value: ${WORKSHOP_NAME}
           - name: WORKSHOP_FOLDER
             value: ${WORKSHOP_FOLDER}
+          - name: WORKSHOP_SUMMARY_FOLDER
+            value: ${WORKSHOP_SUMMARY_FOLDER}
           - name: WORKSHOP_BRANCH
             value: ${GIT_BRANCH}
           - name: GIT_URL
@@ -85,6 +139,13 @@ objects:
               memory: 1Gi
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+          volumeMounts:
+          - name: ${VOLUMN_NAME}
+            mountPath: ${WORKSHOP_SUMMARY_FOLDER}
+        volumes:
+        - name: ${VOLUMN_NAME}
+          configMap:
+            name: ${APP}-${COMPONENT}${SUFFIX}-${VOLUMN_NAME}
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
@@ -100,6 +161,7 @@ objects:
       openshift.io/host.generated: "true"
     labels:
       app: ${APP}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
     name: ${APP}-${COMPONENT}${SUFFIX}
   spec:
     host: ${APP}-${COMPONENT}${SUFFIX}.pathfinder.gov.bc.ca
@@ -127,7 +189,11 @@ parameters:
 - description: The workshop foldername
   displayName: Workshop Folder
   name: WORKSHOP_FOLDER
-  value: devops-platform-workshops/workshop-labs
+  value: /opt/app-root/devops-platform-workshops/workshop-labs
+- description: The workshop summary files foldername
+  displayName: Workshop Summary Files Folder
+  name: WORKSHOP_SUMMARY_FOLDER
+  value: /opt/app-root/summaries
 - description: The name of the workshop to launch
   displayName: Workshop Name
   name: WORKSHOP_NAME
@@ -155,4 +221,8 @@ parameters:
 - description: Image Tag
   displayName: Image Tag
   name: IMAGE_TAG
-  value: v2-stable
+  value: latest
+- description: Volumn name
+  displayName: Volumn name
+  name: VOLUMN_NAME
+  value: summary

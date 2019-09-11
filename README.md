@@ -8,7 +8,7 @@ The workshop training material is currently hosted out of the pathfinder cluster
 
 ### workshop-labs
 
-This folder has the content to create an OpenShift compatible `GitBook` based application (docker image) that hosts the desired lab content for students to use during a workshop.  This image does NOT need to be re-built to incorporate content changes, rather, a re-deploy will pull the latest content based on the environment variable configuration.  To support running multiple courses overlapping, ensure that a branch is created for your course, and then add a "-a|b|c" to the deployment SUFFIX.
+This folder has the content to create an OpenShift compatible `GitBook` based application (docker image) that hosts the desired lab content for students to use during a workshop.  This image does NOT need to be re-built to incorporate content changes, rather, a re-deploy will pull the latest content based on the environment variable configuration. A Configmap with GitBook summary files is required to enable dynamic lab contents, refer to [Slow Release](workshop-labs/README.md) for details. To support running multiple courses overlapping, ensure that a branch is created for your course, and then add a "-a|b|c" to the deployment SUFFIX.
 
 Example URL: <http://ocp101-labs-a.pathfinder.gov.bc.ca/>
 
@@ -17,6 +17,13 @@ Create your parameter file and run the following to deploy (assuming the base im
 ``` bash
 oc process -f ./provisioning_tools/openshift/ocp-lab-template.yaml \
  --param-file=./provisioning_tools/openshift/sample-lab.env | oc apply -f -
+```
+
+When workshop is finished and not needed anymore, make sure to delete the instance
+
+``` bash
+oc get all,configmap -l course-session=<lab session lable>
+oc delete all,configmap -l course-session=<lab session lable>
 ```
 
 ### workshop-material
