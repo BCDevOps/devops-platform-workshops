@@ -112,7 +112,7 @@ Note Placeholder
     - Adding / removing team members for collaboration
     - Creating service accounts across namespaces
 - Tagging procedures
-    - Enuring a consistent codified tagging structure to support new deployments
+    - Ensuring a consistent codified tagging structure to support new deployments
 - Pipeline setup between environments
     - Configuring the codified CI & CD pipelines (ie. Jenkinsfiles) between projects
 - Build orchestration / support

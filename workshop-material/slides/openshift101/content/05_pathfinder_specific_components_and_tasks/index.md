@@ -29,6 +29,13 @@ Note Placeholder
   - Persistent Volume Claim (PVC) is a request for storage (developers create this)
   - Persistent Volume is the actual storage volume (automatically created or created by ops teams)
       - Dynamic storage provisioning is the automatic creation of a PV when a PVC is created
+
+Note:
+Note Placeholder
+
+
+---
+#### PVC Specs
 - RWO vs. RWX
   - RWO (ReadWriteOnce) is the equivalent of having a dedicated disk attached to your app
     - Cannot be shared with other pods

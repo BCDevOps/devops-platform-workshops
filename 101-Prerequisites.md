@@ -9,7 +9,7 @@
 6. [ ] - RocketChat channel created for the class.
 7. [x] - Project set (tools and dev) created for the class with session a/b.
 
-> Links to distribute:
+> Links to distribute, save in a pinned message when creating rocketchat channel:
 - [Resources](https://developer.gov.bc.ca)
 
 - [Course Content](https://ocp101-content.pathfinder.gov.bc.ca/)

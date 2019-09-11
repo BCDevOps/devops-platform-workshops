@@ -87,7 +87,7 @@ Note Placeholder
 - Primary communication mechanism is RocketChat
     - Teams should  monitor (for alerts/notifications, etc.) and participate (answer questions, share findings, etc.)
     - Follow community conventions/etiquette WRT use of specific channels, appropriate @ mentions, DMs, etc.
-    - [Chat-Channel-Conventions](https://developer.gov.bc.ca/Community-Enablers-and-Events/Chat-Channel-Conventions)
+    - [Chat-Channel-Conventions](https://developer.gov.bc.ca/Chat-Channel-Conventions)
 - Technical team members should join and participate in DevOps Commons community - meetups, etc.
 - Product Owner/Managers should join Product Manager commons
 - Teams should share timelines of major milestones (e.g. first release, expected increased volume) ahead of time with PM Commons and platform team
@@ -103,7 +103,7 @@ Note Placeholder
         - [https://console.pathfinder.gov.bc.ca:8443/console/](https://console.pathfinder.gov.bc.ca:8443/console/)
 - Rocket.Chat
     - Pathfiner Rocket.Chat: https://chat.pathfinder.gov.bc.ca/
-    - [Chat-Channel-Conventions](https://developer.gov.bc.ca/Community-Enablers-and-Events/Chat-Channel-Conventions)
+    - [Chat-Channel-Conventions](https://developer.gov.bc.ca/Chat-Channel-Conventions)
         - #general - team-wide / work related announcements
         - #devops-requests - requests for access to GitHub, Rocket.Chat, and OpenShift
         - #devops-alerts - platform wide alerts / announcements

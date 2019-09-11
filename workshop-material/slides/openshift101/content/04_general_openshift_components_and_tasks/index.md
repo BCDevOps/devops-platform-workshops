@@ -25,8 +25,8 @@ Note Placeholder
 - Team 'admins' are in control of user access to each project
   - Use of default roles should be leveraged
       - Project admin
-      - Project editor
-      - Project viewer
+      - Project edit
+      - Project view
 - Service accounts are used to 
   - permit pulling of images from one namespace to another
   - manage resources across multiple projects from a CI & CD tool (ie. Jenkins)
@@ -83,7 +83,7 @@ Note Placeholder
 ---
 #### Deployment Styles
 - New deployments and rollbacks
-  - If not doing blue-green, a the rollout and rollback commands can be used
+  - If not doing blue-green, a rollout and rollback commands can be used
   - Each modification to a deployment creates a new version of the deployment (and often auto-starts a rollout)
   - Deploying a new version of an app is often as simple as updating the image version tag in the deployment config
     - This can be used to change to any version, new or old, of an image
@@ -123,7 +123,7 @@ Note Placeholder
 
 ---
 #### Application Availability
-- Pods to not 'migrate', but rather stop and restart
+- Pods do not 'migrate', but rather stop and restart
 - Node evacuations (for maintenance) kill a pod, but do not 'redeploy'
 - High Availability requires more than one pod to be active to service requests
 - OpenShift will distribute multiple pods across different nodes where possible
