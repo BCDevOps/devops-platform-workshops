@@ -290,7 +290,7 @@ Similarily if you manually scale a deployment, it will not rescale between deplo
 
 # Day 2
 
-
+TO DO
 
 ## Bonus Demonstrations
 
