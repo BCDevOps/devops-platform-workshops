@@ -9,6 +9,11 @@ TO DO
 
   I tell the class that the namespace will be available for up to a week. This is manually deleted so it is a bit inconsistent!
 
+- How much does it cost to join the platform?
+
+  From the application teams perspective, there is zero cost to run in Openshift, Openshift is capital expenditure for the OCIO. No cost is relayed to other Ministries.
+ 
+
 ## Some Considerations
 You will be working with a mixed bag of individuals with a wide array of skill sets. Some may not be
 technically trained and may have never interacted with a command line tool!
@@ -86,3 +91,16 @@ Things to talk about:
   - from the platform operations perspective you first need to have Openshift installed somewhere
   - this is not a development team task but it is important to know that your apps will be running inside of Kamloops data center on physical machines!
   - tbd
+
+
+
+
+
+## Bonus Demonstrations
+
+If the class is speedy and you have a couple of hours at the end of day two. One thing I've offered is demonstrating how to run a simple application from start to finish leveraging:
+- S2I builds
+- Saving configuration as code and running with `oc apply`
+- Running a simple deployment (against using `--dry-run` then `oc apply`) using `oc new-app` *keep in mind oc new app will create an image stream in your deploy namespace which is not needed
+
+If there is a lot of time I actually demonstrate how to convert Openshift objects into templates and how to leverage them with the BCDK start to finish. This includes standing up Jenkins, creating jobs, and setting up a pipeline for the app. This obviously requires familiarity with using the bcdk for such purposes. 
