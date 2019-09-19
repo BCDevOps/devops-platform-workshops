@@ -1,7 +1,9 @@
 
-# How to use
+## How to use
 
 TO DO
+
+# Day 1
 
 ## Common Questions
 
@@ -185,10 +187,8 @@ The answer is generally 3. This allows for one pod to be lost due to node evacua
 - double up on that pods do not communicate to pods directly. YOu leverage the service DNS record inside your application to communicate instead. 
 > I like to demonstrate the difference between a traditional mongo connection string with an ip, and one that uses a service name as the 'host'
 
-## 10:30AM Break 15 minutes
-- this is a lot of information so ask if people want to take a break
-- if they do turn on the ac (if it's warm) and make sure to turn it off once the workshop resumes
 
+> When it gets to around 10:30, 10:45ish check in with the class, if they are glazing over suggest going for a quick 10 minute break to stretch their legs!
 ## Pathfinder Specific Patterns
 
 ### Project Name Space Provisioning
@@ -211,8 +211,79 @@ The answer is generally 3. This allows for one pod to be lost due to node evacua
 ![img1](./IMG_0406.png)
 
 
+### Remaining slides are pretty explanatory 
+
+
+## General Openshift Tasks
+> at this point it is up to you how you want to divy up slides and lab work. I like to do the deployment/build labs together and so I only go over those slides initially. This gives time to answer and questions and fill any gaps between those labs and persistant storage.
+
+> Ask the class if they can name any of the Openshift Objects that we have already pointed out and write them on the board
+> Pods, Nodes, Namespaces, Services, Routes, Storage (PVC)
+
+- although the slides dives right into deployments, we have found it helpful to talk about how images are built in openshift
+  - images are built using 'BuildConfig' Objects
+  - BuildConfigs take source code and typically a base image or a docker file to create another image
+  - Common build strategies are S2I and Docker strategy (go into those if they are interested)
+> add BuildConfig and ImageStreams/ImagestreamTags to the object list (you may have to answer questions about what an image stream is, this is easier done after discussing deployment triggers)
+
+## Project Access Control
+- all namespaces must have atleast one admin, it is up to the admins to delegate access control and be aware of what that means
+
+> Let the class know that they will need one person to serve as the 'Dev Ops Specialist' in the labs, this is so that they can be granted admin priviledges and add other members to the namespaces. Ask for a volunteer and assign one if no one volunteers. As a tip, the devops specialist can delegate other users to add team members by giving them admin privildges to speed up this process. 
+
+- demonstrate how to access the cluster at https://console.pathfinder.gov.bc.ca:8443
+> only users that belong to BCDevOps org can see the cluster
+
+- demo the two namespaces and show how to add your volunteer as a member with admin privileges in the gui
+- demo how to add a user via the command line using `oc policy`
+> this may require you to show them the login command. Explain that the login command is long lives (it cycles every 12 hours) and should not be shared or distributed. If someone gets that token they can impersonate you!
+> it is helpful to show that all `oc` commands have the `-h` helper flag which is REALLY useful!
+
+### Deployment Styles, and remaining slides before deployment labs
+> let the class know they will be getting to the labs fairly soon and will be spending the rest of the day on them (unless they are quick!)
+> they have already done the first lab exercise by working with project access control together and can ignore the first lab exercise in the lab website
+- in addition let them know there are some examples that will only work if you have admin priviledges. Demonstrate those examples for the class so no one is left out
+> if you are running late or getting close to lunch time just take a break and get back to this after lunch!
+
+- explain that deploymentconfigs tell openshift how to run pods. If the class is into it, show them the `spec.containers` and `spec.replicas` inside of a deployment config yaml file
+- add deployment config to your openshift objects list
+- explain that deployment configs create `ReplicationControllers` which ultimately is responsible for deploying your pods. 
+> RC's are snapshots of your DC during a deployment or rollback, this way RC's maintain the state of how your pods were configured, what images they used and can be rolled back too :)
+- add ReplicationController to the object list
+
+> Sometimes it is helpful to draw a mind map of how all objects, BC to Pod are connected
+
+## Labs (Builds and Deployments)
+This is a good time to say that the labs are designed to fail at certain points. We encourage the students to read
+further ahead and troubleshoot. If they are having issues though we are happy to help!
+
+- the builds can take some time, it is not unusual for them to take up to 18minutes!
+- monitor where builds and deploys are happening, builds should be in tools, deploys in dev
+- when someone gets the image pull back off issue take a moment to explain what is going on. 
+
+### Registry Console
+the registry console is iffy, some students have not been able to access it :( . I explain that it is a way to 
+visualize and track changes in your image history. The same information is presented in your images in the Openshift GUI however
+
+### Autoscaling
+
+There has been confusion of pod scaling when autoscalling is turned off. __If your pods have been scaled up by
+__ the autoscaler and then you remove it. It will _NOT_ automatically scale down. You will have to manually do this. 
+
+Similarily if you manually scale a deployment, it will not rescale between deployments. (if it was scaled to zero, it will stay at zero!)
+
+
+# Day 2
+
+
+
 ## Bonus Demonstrations
 
+### `oc explain`
+Demonstrate how amazing oc explain is to understand different object specs
+`oc explain bc.spec.foo` for example
+
+### Building and Deploying From Scratch
 If the class is speedy and you have a couple of hours at the end of day two. One thing I've offered is demonstrating how to run a simple application from start to finish leveraging:
 - S2I builds
 - Saving configuration as code and running with `oc apply`
