@@ -18,8 +18,7 @@ TO DO
 You will be working with a mixed bag of individuals with a wide array of skill sets. Some may not be
 technically trained and may have never interacted with a command line tool!
 
-People will be running the workshop on a variety of operating systems. Most of our lab examples assume you are
-using a unix based terminal, for windows users this is not helpful when they are told to run commands like `grep`!
+People will be running the workshop on a variety of operating systems. Most of our lab examples assume you are using a unix based terminal, for windows users this is not helpful when they are told to run commands like `grep`!
 
 ## 8:30 AM - 8:50AM Setup
 - Turn on AC to cool down room if its stuffy,
@@ -30,7 +29,7 @@ using a unix based terminal, for windows users this is not helpful when they are
 
 ## 9:00 AM - 9:15 AM Introduction
 > Lead Facilitator
-
+- Ensure AC is off
 Opening Remarks, things to include: 
 - Standard introduction (Traditional Territory Acknowledgement) 
 - Washroom locations (2nd and 3rd floor of Exchange Lab), 2nd floor has a pw! 54321                                        
