@@ -22,6 +22,18 @@ technically trained and may have never interacted with a command line tool!
 
 People will be running the workshop on a variety of operating systems. Most of our lab examples assume you are using a unix based terminal, for windows users this is not helpful when they are told to run commands like `grep`!
 
+## Format
+Days are from 9AM to 4PM. 
+
+### Day 1
+- lecture heavy for the morning
+- 1hr lunch break
+- labs in the afternoon
+
+### Day 2
+- less lectures, then labs at your own pace
+- 1hr lunch break
+
 ## 8:30 AM - 8:50AM Setup
 - Turn on AC to cool down room if its stuffy,
 - ensure there are enough extension cords and power bars for everyone
