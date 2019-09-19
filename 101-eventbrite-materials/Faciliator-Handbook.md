@@ -61,11 +61,14 @@ that are noted in the [101-Prereqs document](../101-Prerequisites.md), including
 
 > From here on pacing the slides will be variable based on you, and how many questions you are asked. Try to hit these deadlines for a nice flow :)
 
+# Lectures
+The lecture section is based on the devops platform workshop slides. I've noted some key points to get across during the slides and a rough guideline for times. Timing I feel will be variable based on class size, number of questions, and your tempo. 
+
 ## 9:30AM Who, What, Where
 Things to talk about:
 [ to do]
 
-## 10:00AM Openshift Architecture
+## 9:45AM Openshift Architecture
 Things to talk about:
 
 ### Very high level overview
@@ -89,9 +92,32 @@ Things to talk about:
 ### Runs on your choice of infrastructure
   - from the platform operations perspective you first need to have Openshift installed somewhere
   - this is not a development team task but it is important to know that your apps will be running inside of Kamloops data center on physical machines!
-  - tbd
 
+### One or more docker contaienrs run as a unit: a pod
 
+  - the smallest deployable unit in Openshift/Kubernetes is a pod. 
+
+  - a pod can be comprised of 1 to n containers. In our platform it is generally a 1 to 1 ratio between pods and the containers inside of them.
+
+  - all containers within a pod share the same assigned ip.
+
+  - pods are assigned a new ip every time they are created
+
+### Where do pods run?
+
+  - just like in traditional infra, a host is needed to the run the process
+  - in Openshift, a node is where pods are run
+  - we currently have 20 + (we are procuring more application nodes as we speak) nodes for running pods
+  - all application based nodes are run on physical hardware in the data center
+
+### I want to scale
+- to scale your application, you scale pods
+
+At this point I like to point out with a 1 node cluster there are some issues. I ask the class what is wrong with a 1 node cluster? 
+
+_You can scale up pods but if the node goes down so does your application_
+
+>  this is a good time to explain the key differences between containerized platforms and traditional infrastructure. Containers come and go, you depend on fairly lightweight images, configuration stored in reliable places to spawn instances of image (a container) quickly and reliably. Whenever a node goes down for maintenance all the pods that were running go down with it. In summary, we don't care to keep pods running for as long as possible. Up time is not a consideration. We care that we can bring up a new pod to replace dead ones quickly and reliably. In traditional infrastructure, you depend on up time, if things go wrong it can be a tenuous process to bring your app up back to life. 
 
 
 
