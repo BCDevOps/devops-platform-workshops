@@ -226,7 +226,7 @@ The answer is generally 3. This allows for one pod to be lost due to node evacua
 ### Remaining slides are pretty explanatory 
 
 
-## General Openshift Tasks
+## 11:00AM General Openshift Tasks 
 > at this point it is up to you how you want to divy up slides and lab work. I like to do the deployment/build labs together and so I only go over those slides initially. This gives time to answer and questions and fill any gaps between those labs and persistant storage.
 
 > Ask the class if they can name any of the Openshift Objects that we have already pointed out and write them on the board
@@ -251,7 +251,7 @@ The answer is generally 3. This allows for one pod to be lost due to node evacua
 > this may require you to show them the login command. Explain that the login command is long lives (it cycles every 12 hours) and should not be shared or distributed. If someone gets that token they can impersonate you!
 > it is helpful to show that all `oc` commands have the `-h` helper flag which is REALLY useful!
 
-### Deployment Styles, and remaining slides before deployment labs
+### 11:20AM to 12:00PM Deployment Styles, and remaining slides before deployment labs
 > let the class know they will be getting to the labs fairly soon and will be spending the rest of the day on them (unless they are quick!)
 > they have already done the first lab exercise by working with project access control together and can ignore the first lab exercise in the lab website
 - in addition let them know there are some examples that will only work if you have admin priviledges. Demonstrate those examples for the class so no one is left out
@@ -264,6 +264,9 @@ The answer is generally 3. This allows for one pod to be lost due to node evacua
 - add ReplicationController to the object list
 
 > Sometimes it is helpful to draw a mind map of how all objects, BC to Pod are connected
+
+## Lunch Time (1 hr)
+- turn ac on if the room is stuffy and turn it off back as people are coming back
 
 ## Labs (Builds and Deployments)
 This is a good time to say that the labs are designed to fail at certain points. We encourage the students to read
