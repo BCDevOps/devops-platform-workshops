@@ -44,9 +44,9 @@ Days are from 9AM to 4PM.
 ## 9:00 AM - 9:15 AM Introduction
 > Lead Facilitator
 - Ensure AC is off
-Opening Remarks, things to include: 
+###  Opening Remarks (things to include): 
 - Standard introduction (Traditional Territory Acknowledgement) 
-- Washroom locations (2nd and 3rd floor of Exchange Lab), 2nd floor has a pw! 54321                                        
+- Washroom locations (2nd and 3rd floor of Exchange Lab), 2nd floor has a pw! _54321_                                        
 - In case of fire, muster point across Broughton, it is in-between the church and the Broughton street parkade
 - Lunch is for 1 hour, I like to give the class the choice on when they want to take it but usually it should be between 11:30 and 12:15
 - Introduce the facilitators and get a round table intro from attendees (this also helps to identify the technical skills  spectrum)                                                     
@@ -70,7 +70,7 @@ that are noted in the [101-Prereqs document](../101-Prerequisites.md), including
 - Ask all attendees to post their Github ID into the rocket chat channel. This will allow your co facilitator to check their github ids against the BCDevOps Org and add them to it if needed. 
 - Demonstrate opening up the command terminal for people who are unfamiliar with cli's and how to check your oc version (for Windows users they may be using Command prompt, powershell, gitbash, or other tools)
 > Co Facilitator
-- once students list their github ids in rocketchat, verify their ids are in the github bcdevops org and add them if not. Let the class know to check the email they registered their github account with for an email if they were invited. 
+- once students list their github ids in rocketchat, verify their ids are in the github BCDevOps org and add them if not. Let the class know to check the email they registered their github account with for an email if they were invited. 
   It is helpful to add a reaction checkmark icon beside their github id message in rocketchat when completed
 
 > From here on pacing the slides will be variable based on you, and how many questions you are asked. Try to hit these deadlines for a nice flow :)
@@ -107,7 +107,7 @@ Things to talk about:
   - from the platform operations perspective you first need to have Openshift installed somewhere
   - this is not a development team task but it is important to know that your apps will be running inside of Kamloops data center on physical machines!
 
-### One or more docker contaienrs run as a unit: a pod
+### One or more docker containers run as a unit: a pod
 
   - the smallest deployable unit in Openshift/Kubernetes is a pod. 
 
@@ -131,7 +131,7 @@ At this point I like to point out with a 1 node cluster there are some issues. I
 
 _You can scale up pods but if the node goes down so does your application_
 
->  this is a good time to explain the key differences between containerized platforms and traditional infrastructure. Containers come and go, you depend on fairly lightweight image reliable places to spawn instances of image (a container) quickly and reliably. Whenever a node goes down for maintenance all the pods that were running go down with it. In summary, we don't care to keep pods running for as long as possible. Up time is not a consideration. We care that we can bring up a new pod to replace dead ones quickly and reliably. In traditional infrastructure, you depend on up time, if things go wrong it can be a tenuous process to bring your app up back to life. 
+>  this is a good time to explain the key differences between containerized platforms and traditional infrastructure. Containers come and go, you depend on the lightweightedness and portability of an image to reliably spawn instances of an image (a container) quickly and across a variety of platforms. Whenever a node goes down for maintenance all the pods that were running go down with it. In summary, we don't care to keep pods running for as long as possible. Up time is not a consideration. We care that we can bring up a new pod to replace dead ones quickly and reliably. In traditional infrastructure, you depend on up time, if things go wrong it can be a tenuous process to bring your app up back to life. 
 
 
 ### Additional Nodes Provide Capacity
@@ -140,7 +140,7 @@ _You can scale up pods but if the node goes down so does your application_
 > ask the class how many instances of an application (how many pods) should be running at a minimum to be considered highly available?
 The answer is generally 3. This allows for one pod to be lost due to node evacuation, and another pod to be lost due to an unexpected failure. 
 
-- multiple instances of your application can, and most likely will exist in different nodes, how do they communicate with eachother, how is data shared?
+- multiple instances of your application can, and most likely will exist in different nodes, how do they communicate with each other, how is data shared?
 
 ### What about my data
 
@@ -282,8 +282,7 @@ visualize and track changes in your image history. The same information is prese
 
 ### Autoscaling
 
-There has been confusion of pod scaling when autoscalling is turned off. __If your pods have been scaled up by
-__ the autoscaler and then you remove it. It will _NOT_ automatically scale down. You will have to manually do this. 
+There has been confusion of pod scaling when autoscalling is turned off. __If your pods have been scaled up by__ the autoscaler and then you remove it. It will _NOT_ automatically scale down. You will have to manually do this. 
 
 Similarily if you manually scale a deployment, it will not rescale between deployments. (if it was scaled to zero, it will stay at zero!)
 
