@@ -225,6 +225,12 @@ The answer is generally 3. This allows for one pod to be lost due to node evacua
 
 ### Remaining slides are pretty explanatory 
 
+### Closing Remarks
+
+The slides do not explicably say much about how our Openshift is a shared cluster. Multiple production applications are running and sharing resources. 
+- Mention best practices when it comes to resource allocation (memory and cpu)
+- Mention how  the difference between what the cluster uses versus how much is actually requested is huge! This can impact scheduling of pods which, although not now, can affect you and everyone else's app.
+- Right now, teams are asked to be good citizens in this shared environment, we are leaving a lot of the responsibility to you to use your allocated quota efficiently.
 
 ## 11:00AM General Openshift Tasks 
 > at this point it is up to you how you want to divy up slides and lab work. I like to do the deployment/build labs together and so I only go over those slides initially. This gives time to answer and questions and fill any gaps between those labs and persistant storage.
