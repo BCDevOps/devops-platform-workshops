@@ -61,11 +61,11 @@ Note Placeholder
 
 
 ---
-#### General Guidlines - Architecture and Technology
+#### General Guidelines - Architecture and Technology
 - Leverage platform-provided templates/components when possible
     - Already adapted for OpenShift
 - Supported by RedHat (updates, patches, etc.)
-- Security is to be considered at every stage of the application lifecycle
+- Security is to be considered at every stage of the application life cycle
 - Use 'cloud-native'/12factor architectures/principles (https://12factor.net/)
 - Leverage/survey community for assistance/opinions on technology choices/approaches
 - Leverage platform's DevOps pipeline tooling
@@ -102,7 +102,7 @@ Note Placeholder
     - Production cluster in Kamloops
         - [https://console.pathfinder.gov.bc.ca:8443/console/](https://console.pathfinder.gov.bc.ca:8443/console/)
 - Rocket.Chat
-    - Pathfiner Rocket.Chat: https://chat.pathfinder.gov.bc.ca/
+    - Pathfinder Rocket.Chat: https://chat.pathfinder.gov.bc.ca/
     - [Chat-Channel-Conventions](https://developer.gov.bc.ca/Chat-Channel-Conventions)
         - #general - team-wide / work related announcements
         - #devops-requests - requests for access to GitHub, Rocket.Chat, and OpenShift
