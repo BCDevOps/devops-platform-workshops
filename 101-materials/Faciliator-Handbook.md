@@ -233,7 +233,7 @@ The slides do not explicably say much about how our Openshift is a shared cluste
 - Right now, teams are asked to be good citizens in this shared environment, we are leaving a lot of the responsibility to you to use your allocated quota efficiently.
 
 ## 11:00AM General Openshift Tasks 
-> at this point it is up to you how you want to divy up slides and lab work. I like to do the deployment/build labs together and so I only go over those slides initially. This gives time to answer and questions and fill any gaps between those labs and persistant storage.
+> at this point it is up to you how you want to divvy up slides and lab work. I like to do the deployment/build labs together and so I only go over those slides initially. This gives time to answer and questions and fill any gaps between those labs and persistent storage.
 
 > Ask the class if they can name any of the Openshift Objects that we have already pointed out and write them on the board
 > Pods, Nodes, Namespaces, Services, Routes, Storage (PVC)
