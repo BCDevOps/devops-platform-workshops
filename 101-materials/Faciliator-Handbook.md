@@ -284,7 +284,7 @@ visualize and track changes in your image history. The same information is prese
 
 There has been confusion of pod scaling when autoscalling is turned off. __If your pods have been scaled up by__ the autoscaler and then you remove it. It will _NOT_ automatically scale down. You will have to manually do this. 
 
-Similarily if you manually scale a deployment, it will not rescale between deployments. (if it was scaled to zero, it will stay at zero!)
+Similarly, if you manually scale a deployment, it will not rescale between deployments. (if it was scaled to zero, it will stay at zero!)
 
 
 # Day 2
