@@ -187,9 +187,7 @@ Note Placeholder
 - Multitenant SDN
     - Each project is an isolated network namespace
     - Access into the namespace is granted via `routes`
-    - Namespaces can be 'joined' by the ops team if required (not a common practice)
-        - Joining is discouraged to promote communication through public API's
-- Internal service discovery enables pods to automatically comunicate
+- Internal service discovery enables pods to automatically communicate
     - Services automatically obtain a dns record 
         - `service-name.namespace.svc.cluster.local`
     - Discover can be shortened to just the service name within a project
