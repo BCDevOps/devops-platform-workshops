@@ -111,6 +111,9 @@ oc apply -f [username]-prometheus.yaml
 ```
 oc get service
 oc expose service [service name] --name prometheus -l app=prometheus
+
+# OR
+oc expose service "$(oc get service -l app=prometheus -o custom-columns=NAME:.metadata.name --no-headers)" --name prometheus -l app=prometheus
 ```
 - Monitor the pod for the config change
 
@@ -128,6 +131,12 @@ caller=klog.go:86 component=k8s_client_runtime func=Warningf msg="/app/discovery
 - Validate that the prometheus target itself is available
 ![](../assets/openshift201/02_prometheus_service.png)
 ![](../assets/openshift201/02_prometheus_targets.png)
+
+### Cleanup
+
+```
+oc delete all,configmap,pvc -l app=prometheus
+```
 
 ## Deploy Another App with Helm
 In this section, deploy [Loki](https://grafana.com/loki) using the same process as the above.
