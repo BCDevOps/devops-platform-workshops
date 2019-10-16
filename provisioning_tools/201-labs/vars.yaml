@@ -1,9 +1,10 @@
 action: "notta"
 student_list: 
-  - jefkel
+  - stewartshea
   - filiy
 instructor_list: 
-  - jefkel
+  - stewartshea
+  - filiy
 environments: 
   - tools
   - dev
