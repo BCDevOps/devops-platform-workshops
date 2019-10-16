@@ -17,4 +17,4 @@ OpenShift 201 - Pipeline your DevOps
 * [DB Configuration](openshift201/05_ha_db_reconfigure.md)
 * [DB Backup and Restore](openshift201/06_db_backup.md)
 * [Failure Testing](openshift201/07_failover.md)
-* [Health Checks](developer_ops_201/09_health_check.md)
+* [Health Checks](openshift201/09_health_check.md)
