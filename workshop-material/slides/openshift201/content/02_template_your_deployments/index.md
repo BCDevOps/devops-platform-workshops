@@ -151,9 +151,9 @@ Note Placeholder
 - Helm is a (well... the official) Package Manager for Kubernetes
   - package multiple K8s resources into a single logical deployment unit: Chart
   - but it's not just a Package Manager
-- Helm is a Deployment Management for Kubernetes
-  - do a repeatable deployment
-  - management dependencies: reuse and share
+- Helm is a Deployment Manager for Kubernetes to; 
+  - perform a repeatable deployment
+  - manage dependencies: reuse and share
   - manage multiple configurations
   - update, rollback and test application deployments (Releases)
 
