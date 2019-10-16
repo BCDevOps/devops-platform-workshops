@@ -25,7 +25,7 @@ oc expose service [username]-grafana --name [username]-grafana
 ```
 
 - Login to the interface with the default admin password (admin/admin)
-- Create 2 datasources and a sample dashboard
+- Create 2 datasources and a sample dashboard make sure your URLs are correct
 
 ![](../assets/openshift201/02_grafana_datasource_01.png)
 
