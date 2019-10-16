@@ -172,10 +172,10 @@ Placholder
 ---
 #### OpenShift Templates vs Helm
 - OpenShift templates are simple "deployment" tools
-  - Requires OpenShift; does NOT work across 
+  - Requires OpenShift; does NOT work across other kubernetes platforms
 - Helm is more of a package manager
   - Requires Tiller for package management
-  - We do NOT run Tiller in the OpenShift environment due to the privileges it requires
+  - We do NOT run Tiller in the OpenShift environment due to the elevated privileges it requires
   - Many kubernetes-native apps are being distributed with Helm charts
 - Helm CAN be used to deploy applications (without package management)
   - Helm is used in client-only mode
