@@ -132,10 +132,10 @@ caller=klog.go:86 component=k8s_client_runtime func=Warningf msg="/app/discovery
 ![](../assets/openshift201/02_prometheus_service.png)
 ![](../assets/openshift201/02_prometheus_targets.png)
 
-### Cleanup
+### List prometheus resources
 
 ```
-oc delete all,secret,configmap,pvc -l app=prometheus
+oc get all,secret,configmap,pvc -l app=prometheus
 ```
 
 ## Deploy Another App with Helm
