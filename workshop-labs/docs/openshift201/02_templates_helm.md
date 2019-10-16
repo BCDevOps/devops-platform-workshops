@@ -145,7 +145,7 @@ In this deployment, only deploy loki and no other components.
 - Using Helm, create the OpenShift artifacts to deploy Loki with a minimal configuration
 ```
 helm repo add loki https://grafana.github.io/loki/charts
-helm fetch loki/loki
+helm fetch loki/loki --version=0.8.3
 helm template ./loki-0.8.3.tgz --name=[username]-loki \
   --set rbac.create=false,rbac.pspEnabled=false,serviceAccount.create=false \
   > loki_template.yaml
