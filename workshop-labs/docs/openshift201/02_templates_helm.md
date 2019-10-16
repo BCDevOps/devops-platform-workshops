@@ -5,11 +5,18 @@ The OpenShift cluster is not running Tiller, but Helm can still be used to help 
 - Navigate to GitHub to obtain the appropriate version of Helm for your Operating System: 
     - [https://github.com/helm/helm/releases/latest](https://github.com/helm/helm/releases/latest)
 - Initialize helm in client-only mode
-
-
+```
     helm init --client-only
+```
+- Update repositories (Necessary if you already have helm installed)
+
+```
+helm repo update
+```
 
 ## Deploy Prometheus into Dev Namespace
+
+
 - Review the list of chart repositories and validate `https://kubernetes-charts.storage.googleapis.com` is available
     
 ```
@@ -23,7 +30,7 @@ helm search prometheus
 - Fetch the prometheus chart and verify the tgz package is downloaded
 
 ```
-helm fetch stable/prometheus
+helm fetch stable/prometheus --version=8.11.1
 ls -lha  | grep prometheus
 ```
 
