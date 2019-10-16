@@ -37,11 +37,11 @@ Note:
 Note Placeholder
 
 
----
+<!-- ---
 #### Bonus Round: Cronjob
 
 ![Lab Time](content/07_stateful_sets/lab_01.gif)<!-- .element style="border: 0; background: None; box-shadow: None" -->
 
 Note:
-Build your own cronjob using the backup deployment as a starting point.
+Build your own cronjob using the backup deployment as a starting point. -->
 
