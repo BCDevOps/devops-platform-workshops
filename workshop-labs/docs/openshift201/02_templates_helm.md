@@ -135,7 +135,7 @@ caller=klog.go:86 component=k8s_client_runtime func=Warningf msg="/app/discovery
 ### Cleanup
 
 ```
-oc delete all,configmap,pvc -l app=prometheus
+oc delete all,secret,configmap,pvc -l app=prometheus
 ```
 
 ## Deploy Another App with Helm
@@ -157,5 +157,5 @@ oc apply -f loki_template.yaml
 - Explore the objects created by the loki helm chart
 
 ```
-oc get all -l app=loki
+oc get all,secret,configmap,pvc -l app=loki
 ```
