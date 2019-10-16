@@ -69,7 +69,7 @@ node {
 oc new-build https://github.com/[username]/devops-platform-workshops-labs.git#[username]-201 --context-dir=blackbox_exporter/.pipeline --name blackbox
 ```
 
-- Either link up the the webhook to this build config as well, or manuall start the pipeline as required
+- Either link up the the webhook to this build config as well, or manually start the pipeline as required
 
 - Add additional stage to create the app in the `dev` namespace
 
