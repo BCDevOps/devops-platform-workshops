@@ -73,6 +73,6 @@ oc status
 - Remove all objects, including the template
 
 ```
-oc get all,templates,template,secret -l template=postgresql-ephemeral-template
+oc get all,template,secret -l template=postgresql-ephemeral-template
 oc delete all,template,secret -l template=postgresql-ephemeral-template
 ```
