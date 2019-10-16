@@ -55,6 +55,7 @@ oc apply -f [username]-prometheus.yaml
 - Review the logs and notice that prometheus is trying to scrape every OpenShift project/namespace
 - Adjust the configMap 
     - disable the full cluster scraping configuration by editing the manifest and **commenting out or deleteing lines 30 to 156**
+    - Also delete the securityContext section as this is invalid for OpenShift and will cause the deployment to fail
     - edit the `kubernetes-pod` job to add only the current project/namespace; such as
 
 
