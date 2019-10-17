@@ -2,9 +2,19 @@ action: "notta"
 student_list: 
   - stewartshea
   - filiy
+  - patricksimonian
+  - rloisell
+  - pdittaro
+  - mtcarto
+  - andrea-williams
+  - WalterMoar
+  - mitovskaol
+  - MaxWardle
+  - cvarjao
 instructor_list: 
   - stewartshea
   - filiy
+  - patricksimonian
 environments: 
   - tools
   - dev
