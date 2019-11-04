@@ -70,7 +70,7 @@ Note Placeholder
 ---
 #### Tooling Project Components
 - CI & CD related tooling
-- Jenkins instance dedicated to a given team
+- Jenkins instance hosted by project team that's dedicated to their application pipeline
 - Sonarqube for code coverage
 - Teams can bring any additional tools into this project space as needed
 
