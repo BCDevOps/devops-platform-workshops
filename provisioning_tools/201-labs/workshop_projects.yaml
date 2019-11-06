@@ -6,7 +6,7 @@
   tasks: 
     - name: Create Projects
       include_tasks: tasks/create_environments.yaml
-      with_items: "{{ student_list|lower}}"
+      with_items: "{{ student_list }}"
       when: action == "create"
     - name: Delete Projects
       include_tasks: tasks/delete_projects.yaml

@@ -65,7 +65,7 @@ oc process postgresql-ephemeral DATABASE_SERVICE_NAME=myawesomedb -o yaml | oc a
 oc status 
 ```
 
-- From the CLI, the template can also be viewed
+- From the GUI, the template can also be viewed
 ![](../assets/openshift201/02_template_gui.png)
 
 

@@ -151,9 +151,9 @@ Note Placeholder
 - Helm is a (well... the official) Package Manager for Kubernetes
   - package multiple K8s resources into a single logical deployment unit: Chart
   - but it's not just a Package Manager
-- Helm is a Deployment Management for Kubernetes
-  - do a repeatable deployment
-  - management dependencies: reuse and share
+- Helm is a Deployment Manager for Kubernetes to; 
+  - perform a repeatable deployment
+  - manage dependencies: reuse and share
   - manage multiple configurations
   - update, rollback and test application deployments (Releases)
 
@@ -172,10 +172,10 @@ Placholder
 ---
 #### OpenShift Templates vs Helm
 - OpenShift templates are simple "deployment" tools
-  - Requires OpenShift; does NOT work across 
+  - Requires OpenShift; does NOT work across other kubernetes platforms
 - Helm is more of a package manager
   - Requires Tiller for package management
-  - We do NOT run Tiller in the OpenShift environment due to the privileges it requires
+  - We do NOT run Tiller in the OpenShift environment due to the elevated privileges it requires
   - Many kubernetes-native apps are being distributed with Helm charts
 - Helm CAN be used to deploy applications (without package management)
   - Helm is used in client-only mode

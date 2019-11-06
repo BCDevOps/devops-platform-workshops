@@ -32,7 +32,7 @@ Create a simple folder structure in your forked repo for the openshift201 materi
 └── README.md
 ```
 
-- Create a `.pipeline` folder and `Jenkinsfile` under the openshift201 folder
+- Create a `.pipeline` folder under the openshift201 folder and add the `Jenkinsfile` into the `.pipline` folder.
 
 - Place the following contents into the Jenkinsfile, changing the definitions to your specific environment names
 

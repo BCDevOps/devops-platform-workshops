@@ -25,7 +25,7 @@ oc expose service [username]-grafana --name [username]-grafana
 ```
 
 - Login to the interface with the default admin password (admin/admin)
-- Create 2 datasources and a sample dashboard
+- Create 2 datasources and a sample dashboard make sure your URLs are correct
 
 ![](../assets/openshift201/02_grafana_datasource_01.png)
 
@@ -605,7 +605,7 @@ oc process grafana-template \
 ```
 
 ## Create a Template for Prometheus and Loki
-Using the experience gained above, create 2 additional templates for Prometheus and Loki. This should not require any GUI/UI driven changes since the you alreadh have the configuration artifacts from the `Helm` lab. 
+Using the experience gained above, create 2 additional templates for Prometheus and Loki. This should not require any GUI/UI driven changes since the you already have the configuration artifacts from the `Helm` lab. 
 
 - Test each template in the dev namespace by passing a separate name for the service and ensuring the resources come up properly
 
