@@ -70,7 +70,7 @@ Note Placeholder
 
 ---
 #### Jenkins Pipelines - BuildConfig / OpenShift Integration
-- Each application team is provided their own Jenkins instance in the `tools` project
+- Each application team will create their own Jenkins instance in the `tools` project
 - This instance can be customized by the application team and has no dependency on other components
 - [Shared Jenkins libraries](https://pathfinder-faq-ocio-pathfinder-prod.pathfinder.gov.bc.ca/Jenkins/UsingTheSharedLib.html) and documented examples exist to speed up Jenkins configuartion adoption
 - Jenkins instances are automatically integrated with OpenShift for: 

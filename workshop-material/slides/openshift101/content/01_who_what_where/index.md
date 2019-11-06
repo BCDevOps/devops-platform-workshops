@@ -85,7 +85,7 @@ Note Placeholder
     - Training, tutorials, books, are available to help with the learning curve
 - Community (Internet, and Gov) are the support mechanisms - not individual DevOps Team resources
 - Primary communication mechanism is RocketChat
-    - Teams should  monitor (for alerts/notifications, etc.) and participate (answer questions, share findings, etc.)
+    - Teams should monitor (for alerts/notifications, etc.) and participate (answer questions, share findings, etc.)
     - Follow community conventions/etiquette WRT use of specific channels, appropriate @ mentions, DMs, etc.
     - [Chat-Channel-Conventions](https://developer.gov.bc.ca/Chat-Channel-Conventions)
 - Technical team members should join and participate in DevOps Commons community - meetups, etc.
@@ -104,12 +104,6 @@ Note Placeholder
 - Rocket.Chat
     - Pathfinder Rocket.Chat: https://chat.pathfinder.gov.bc.ca/
     - [Chat-Channel-Conventions](https://developer.gov.bc.ca/Chat-Channel-Conventions)
-        - #general - team-wide / work related announcements
-        - #devops-requests - requests for access to GitHub, Rocket.Chat, and OpenShift
-        - #devops-alerts - platform wide alerts / announcements
-        - #devops-how-to - I need help with `how to ... `
-        - #devops-sos - My app is having problems, and I suspect is a platform issue
-        - #devops-operations - primarily for communications between the OCIO DevOps Team Services team, DXC Operations Team, and Red Hat.
 - GitHub
     - bcgov GitHub [cheatsheet](https://github.com/bcgov/BC-Policy-Framework-For-GitHub/blob/master/BC-Gov-Org-HowTo/Cheatsheet.md)
     - BCDevOps GitHub [organization](https://github.com/orgs/BCDevOps)
