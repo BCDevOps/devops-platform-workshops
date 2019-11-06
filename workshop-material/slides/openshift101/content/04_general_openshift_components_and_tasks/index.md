@@ -7,6 +7,7 @@ Note Placeholder
 
 ---
 #### Discussion and Labs 
+- Zero Trust Networking
 - Project Access Control
 - Deployment Styles (to cover a few)
   - Rolling vs. Recreate
@@ -15,6 +16,79 @@ Note Placeholder
   - Triggers
 - Stateful Sets and Application Clustering
 - Application Availability
+
+Note:
+Note Placeholder
+
+
+#### Zero-Trust Network Model
+- All projects are created with zero network access
+- Project teams need to put thought into the network flow of their applications
+- 3 basic network security policies can be used as a starting point
+- More restrictive policy creation is encouraged
+  
+Note:
+Note Placeholder
+
+
+---
+#### Zero-Trust Networking: Thinking About Traffic Flow
+- Default / QuickStart Policies
+
+| Name                       | Description                                                               |
+|----------------------------|---------------------------------------------------------------------------|
+| egress-internet            | Allow Pods to communicate with the Internet.                              |
+| int-cluster-k8s-api-permit | Allow Pods to communicate to the k8s API; this is needed for deployments. |
+| intra-namespace-comms      | Allow Pods to communicate amongst themselves within a namespace.          |
+|  |  |
+
+- **Important considerations with policy creation**
+  - Identifying the `source` and `destination` objects
+  - Understanding `egress` and `ingress` flows
+  
+Note:
+Note Placeholder
+
+
+---
+#### Zero-Trust Networking: Creating Network Security Policies
+- Tools for creating NetworkSecurityPolicy objects: 
+  - Using the `oc` commandline tool
+  - Inserting `yaml` into the OpenShift Web Console
+  - Within your deployment pipeline
+- What's happening? 
+  - An ansible-based operator is reading your policy configuration
+  - The operator maps that configuration to an Aporeto based network policy
+  - The operator creates / updates / or deletes the policy from the Aporeto control plane
+
+Note:
+Note Placeholder
+
+
+---
+#### NetworkSecurityPolicy: Architecture Overview
+<img src="content/04_general_openshift_components_and_tasks/bcgov-aporeto-high-level.png" height= "80%" width="80%">
+
+Note: 
+Note placeholder
+
+
+---
+#### Zero-Trust Networking: Developer Resources
+- [developer.gov.bc.ca](http://developer.gov.bc.ca)
+  - [NetworkSecurityPolicy: Zero Trust Model Landing Page](https://developer.gov.bc.ca/NetworkSecurityPolicy:-Zero-Trust-Security-Model-on-the-Platform:-Trust-No-One)
+  - [NetworkSecurityPolicy: QuickStart](https://developer.gov.bc.ca/NetworkSecurityPolicy:-Quick-Start)
+  - [NetworkSecurityPolicy: Custom Policies](https://developer.gov.bc.ca/NetworkSecurityPolicy:-Custom-Policy-Development)
+
+Note:
+Note Placeholder
+
+
+---
+#### Demo / Lab
+As a group, review the NetworkSecurityPolicy lab and create the 3 basic policies
+
+![](content/04_general_openshift_components_and_tasks/enhance.gif)
 
 Note:
 Note Placeholder
@@ -135,6 +209,10 @@ Note Placeholder
 
 ---
 #### Lab Time
+
+Lab 1 - Builds
+
+Lab 2 - Registry Console
 
 Lab 3 - Deployments
 
