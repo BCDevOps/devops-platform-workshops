@@ -76,12 +76,12 @@ Note Placeholder
 ---
 #### Lab Time
 
-Lab 8 - Event Streams
+Lab 9 - Event Streams
 
-Lab 9 - Debugging Containers
+Lab 10 - Debugging Containers
 
-Lab 10 - Logging and Visualizations
+Lab 11 - Logging and Visualizations
 
-Lab 11 - Resource Requests and Limits
+Lab 12 - Resource Requests and Limits
 
-Lab 12 - Pod Lifecycle
+Lab 13 - Pod Lifecycle

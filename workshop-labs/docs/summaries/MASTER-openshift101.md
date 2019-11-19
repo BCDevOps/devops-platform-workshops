@@ -6,6 +6,7 @@ OpenShift 101 - Developer Operations
 ---
 
 * [Overview](openshift101/readme.md)
+* [Network Security Policy](openshift101/00_networksecuritypolicy.md)
 * [Builds](openshift101/01_builds.md)
 * [Registry Console](openshift101/02_registry_console.md)
 * [Deployments](openshift101/03_deployment.md)
