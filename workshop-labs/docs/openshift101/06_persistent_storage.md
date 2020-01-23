@@ -23,10 +23,12 @@ Now that we notice all messages and configuaration is gone, let's add persistent
 
 ![](../assets/06_persistent_storage_04.png)
 
-- Select the `gluster-block` storage class, set the type to RWO (which is block storage), and the size to 1GB, with a name of `mongodb-[username]`
+> you will notice that there options to select `gluster-file/gluster-file-db`. Provisioning for __gluster__ type storage has been disabled in favor of our new storage solution __netapp__
+- Select the `net-app-file-standard` storage class, set the type to RWO (which is block storage), and the size to 1GB, with a name of `mongodb-[username]`
 **note** Each application will have a preferred storage type. This is NOT the recommended storageclass for 
 mongo, but is useful in an upcoming lab. 
 
+> PLEASE NOTE: 
 ![](../assets/06_persistent_storage_05.png)
 ![](../assets/06_persistent_storage_06.png)
 
@@ -58,7 +60,7 @@ RWX storage allows muliple pods to access the same PV at the same time.
 
 ![](../assets/06_persistent_storage_09.png)
 
-- Remove the previous storage volume and recreate as `gluster-file-db` with type RWX
+- Remove the previous storage volume and recreate as `netapp-file-standard` with type RWX
 
 ![](../assets/06_persistent_storage_10.png)
 
