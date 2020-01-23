@@ -131,10 +131,17 @@ As a result of using a generic `new-app` style deployment, as opposed to openshi
 By default we currently have no environment variables attached to our deployment configuration. So, while the app trying to start, and 
 a database has been deployed, the app does not know how or where to connect to. Add an environment variable to the deployment configuration. 
 
-- In the Web Console, navigate to `Applications -> Deployments`, and select your deployment
+- In the Web Console, navigate to `Applications -> Deployments`, and select your rocketchat deployment
 - Select the `Environment Tab`
 - Add the following environment variable with the connection string details configured for mongodb
 ![](../assets/03_deploy_config_01.png)
+  ```
+  MONGO_URL=mongodb://dbuser:dbpass@mongodb-stewartshea:27017/rocketchat
+  ```
+  you can also use the CLI to apply the environment variable
+  ```
+  oc -n ocp101-dev set env dc/rocketchat-stewartshea "MONGO_URL=mongodb://dbuser:dbpass@mongodb-stewartshea:27017/rocketchat"
+  ```
 - Click save and take note of what happens next
     - Navigate to `Applications -> Pods` and `Applications -> Deployments` to notice the changes
 ![](../assets/03_deploy_config_02.png)
