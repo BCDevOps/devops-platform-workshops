@@ -136,11 +136,11 @@ a database has been deployed, the app does not know how or where to connect to. 
 - Add the following environment variable with the connection string details configured for mongodb
 ![](../assets/03_deploy_config_01.png)
   ```
-  MONGO_URL=mongodb://dbuser:dbpass@mongodb-stewartshea:27017/rocketchat
+  MONGO_URL=mongodb://dbuser:dbpass@mongodb-[username]:27017/rocketchat
   ```
   you can also use the CLI to apply the environment variable
   ```
-  oc -n ocp101-dev set env dc/rocketchat-stewartshea "MONGO_URL=mongodb://dbuser:dbpass@mongodb-stewartshea:27017/rocketchat"
+  oc -n ocp101-dev set env dc/rocketchat-[username] "MONGO_URL=mongodb://dbuser:dbpass@mongodb-stewartshea:27017/rocketchat"
   ```
 - Click save and take note of what happens next
     - Navigate to `Applications -> Pods` and `Applications -> Deployments` to notice the changes
