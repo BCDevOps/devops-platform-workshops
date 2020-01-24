@@ -64,7 +64,7 @@ RWX storage allows muliple pods to access the same PV at the same time.
 
 ![](../assets/06_persistent_storage_10.png)
 
-- Scale down `mongodb-[username]` to 1 pods
+- Scale up `mongodb-[username]` to 1 pods
 
 - Redeploy with Rolling deployment
 
