@@ -48,7 +48,7 @@ RWO storage (which was selected above) can only be attached to a single pod at a
 - Redeploy with Rolling Deployment
 
 - Notice and investigate the issue
-
+> rolling deployments will start up a new version of your application pod before killing the previous one. There is a brief moment where two pods for the mongo application exist at the same time. Because the storage type is __RWO__ it is unable to mount to two pods at the same time. This will cause the rolling deployment to hang and eventually time out. 
 ![](../assets/06_persistent_storage_08.png)
 
 - Switch to recreate
