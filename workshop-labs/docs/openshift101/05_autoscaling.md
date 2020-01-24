@@ -24,7 +24,7 @@ Web Console.
 
 ![](../assets/05_autoscaling-02.png)
 
-- Review the deployment configuraiton and try to add or remove repicas
+- Review the deployment configuraiton and try to add or remove replicas
 
 ![](../assets/05_autoscaling-03.png)
 

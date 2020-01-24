@@ -147,6 +147,8 @@ a database has been deployed, the app does not know how or where to connect to. 
 ![](../assets/03_deploy_config_02.png)
 ![](../assets/03_deploy_config_03.png)
 
+### Creating a Route for your Rocket.Chat App
+
 While you are waiting for the application to redeploy, expose the route to the public internet.
 - From the Web Console, navigate to `Applications -> Routes`
 - Select `Create Route`
