@@ -24,7 +24,7 @@ Now that we notice all messages and configuaration is gone, let's add persistent
 ![](../assets/06_persistent_storage_04.png)
 
 > you will notice that there options to select `gluster-file/gluster-file-db`. Provisioning for __gluster__ type storage has been disabled in favor of our new storage solution __netapp__
-- Select the `net-app-file-standard` storage class, set the type to RWO (which is block storage), and the size to 1GB, with a name of `mongodb-[username]`
+- Select the `net-app-block-standard` storage class, set the type to RWO (which is block storage), and the size to 1GB, with a name of `mongodb-[username]`
 **note** Each application will have a preferred storage type. This is NOT the recommended storageclass for 
 mongo, but is useful in an upcoming lab. 
 
