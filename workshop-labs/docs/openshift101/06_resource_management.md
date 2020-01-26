@@ -13,7 +13,7 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 
 ![](../assets/11_resources_02.png)
 
-- Review the current metrics of your `rocketchat-<username>` pod
+- Review the current metrics of your `rocketchat-[username]` pod
 
 ![](../assets/11_resources_03.png)
 
