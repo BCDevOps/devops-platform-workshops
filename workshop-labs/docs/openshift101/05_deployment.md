@@ -1,8 +1,11 @@
 # Deployment
-Since the build and deploy stages are separate, and we have a built image, we can deploy this 
-image into our remining project spaces. 
+Since the build and deploy stages are separate, and we have a built image, we can now deploy this 
+image into our dev project. 
 
-#### Create an Image-Based Deployment
+## The Dev Project
+The dev project is what will hold the actual deployed applications. In this case, we will deploy RocketChat and MongoDB to the dev namespace.
+
+## Create an Image-Based Deployment
 Navigate to the configured `dev` project and deploy an image. 
 
 - From the Overview tab, select `Deploy Image`, or from the top right corner from the drop down `Add to Project`
@@ -17,7 +20,7 @@ Navigate to the configured `dev` project and deploy an image.
 - Or do this from the CLI
 
 ```
-oc new-app [devops-training-namespace]-tools/rocketchat-[username]:dev --name=rocketchat-[username]
+oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[username]
 ```
 
 - If performed with the CLI, the output should be as follows
@@ -49,7 +52,7 @@ oc new-app [devops-training-namespace]-tools/rocketchat-[username]:dev --name=ro
 - 
 
 
-#### Troubleshoot Image Pull Access
+## Troubleshoot Image Pull Access
 As the Web UI indicated, the `dev` project service accounts do not have the appropriate access to pull the image from the `tools`
 project. 
 
@@ -61,7 +64,7 @@ project.
 
 ![](../assets/03_deploy_image_05.png)
 
-#### Create Proper Access Rights Across Projects
+## Create Proper Access Rights Across Projects
 Any team member with admin rights on the `tools` project can create the appropriate permissions for each other project. 
 
 - From the Web Console
@@ -71,9 +74,7 @@ Any team member with admin rights on the `tools` project can create the appropri
 - From the CLI: 
 
 ```
-oc policy add-role-to-user system:image-puller system:serviceaccount:[devops-training-namespace]-dev:default -n [devops-training-namespace]-tools
-oc policy add-role-to-user system:image-puller system:serviceaccount:[devops-training-namespace]-test:default -n [devops-training-namespace]-tools
-oc policy add-role-to-user system:image-puller system:serviceaccount:[devops-training-namespace]-prod:default -n [devops-training-namespace]-tools
+oc -n [-tools] policy add-role-to-user system:image-puller system:serviceaccount:[-dev]:default
 ```
 
 With the appropriate access in place, redeploy the application. 
@@ -84,15 +85,12 @@ With the appropriate access in place, redeploy the application.
 - OR from the CLI
 
 ```
-oc rollout latest rocketchat-[username]
+oc -n [-dev] rollout latest rocketchat-[username]
 ```
 - Validate that the image is able to be pulled
 
-### Deploying the Database
-Before going into further deployment configuration options, review the current status of the application container.  
-
-#### Troubleshoot Deployment Issues
-Navigate to the pod and review the logs to determine why we the container will not start. 
+## Troubleshoot Deployment Issues
+Navigate to the pod and review the logs to determine why the container will not start. 
 
 - From the Web Console navigate to `Applications -> Pods -> rocketchat-[username]-[randomid]` and select Logs
 
@@ -101,13 +99,18 @@ Navigate to the pod and review the logs to determine why we the container will n
 - Or from the CLI
 
 ```
-oc get pods  | grep rocketchat-[username]
-oc logs rocketchat-[username]-[randomid]
+# Find your pod's name
+oc -n [-dev] get pods  | grep rocketchat-[username]
+
+# Show your pod's log
+oc -n [-dev] logs rocketchat-[username]-[randomid]
 ```
-*note* you can follow the logs with `oc -f`
+*note* you can follow the logs with `-f` argument
 
+## Deploying the Database
+Before going into further deployment configuration options, review the current status of the application container.  
 
-#### Create Mongo Database with Ephemeral Storage
+### Create Mongo Database with Ephemeral Storage
 Having identified that the application is trying to connect to a mongo database, add a mongo database to the project
 for your application. 
 
@@ -128,8 +131,8 @@ for your application.
 As a result of using a generic `new-app` style deployment, as opposed to openshift specific templates, a lot of defaults are leveraged. 
 
 ### Environment Variables
-By default we currently have no environment variables attached to our deployment configuration. So, while the app trying to start, and 
-a database has been deployed, the app does not know how or where to connect to. Add an environment variable to the deployment configuration. 
+By default your rocketchat deployment have no environment variables defined. So, while RocketChat is trying to start, and 
+a database has not been deployed, the app does not know how or where to connect to MongoDB. We will beed to add an environment variable to the deployment configuration. 
 
 - In the Web Console, navigate to `Applications -> Deployments`, and select your rocketchat deployment
 - Select the `Environment Tab`
@@ -140,14 +143,21 @@ a database has been deployed, the app does not know how or where to connect to. 
   ```
   you can also use the CLI to apply the environment variable
   ```
-  oc -n ocp101-dev set env dc/rocketchat-[username] "MONGO_URL=mongodb://dbuser:dbpass@mongodb-stewartshea:27017/rocketchat"
+  oc -n [-dev] set env dc/rocketchat-[username] "MONGO_URL=mongodb://dbuser:dbpass@mongodb-stewartshea:27017/rocketchat"
   ```
+  *HINT*: You may use OpenShift [Downward API](https://docs.openshift.com/container-platform/3.11/dev_guide/downward_api.html#dapi-environment-variable-references) to refer to the secret created by MongoDB.
+  ```
+  oc -n [-dev] patch dc/rocketchat-cvarjao -p '{"spec":{"template":{"spec":{"containers":[{"name":"mongodb-[username]", "env":[{"name":"MONGO_USER", "valueFrom":{"secretKeyRef":{"key":"database-user", "name":"MONGO_USER"}}}]}]}}}}'
+  oc -n [-dev] set env dc/rocketchat-[username] 'MONGO_URL=mongodb://$(MONGO_USER):dbpass@mongodb-stewartshea:27017/rocketchat'
+  ```
+  *bonus*: Try to figure out how to use Downward API for the password, and database name as well.
+
 - Click save and take note of what happens next
     - Navigate to `Applications -> Pods` and `Applications -> Deployments` to notice the changes
 ![](../assets/03_deploy_config_02.png)
 ![](../assets/03_deploy_config_03.png)
 
-### Creating a Route for your Rocket.Chat App
+## Creating a Route for your Rocket.Chat App
 
 While you are waiting for the application to redeploy, expose the route to the public internet.
 - From the Web Console, navigate to `Applications -> Routes`
@@ -156,7 +166,7 @@ While you are waiting for the application to redeploy, expose the route to the p
     - Ensure the service it points to is your particular service
 ![](../assets/03_deploy_route.png)
 
-### Exploring Health Checks
+## Exploring Health Checks
 With the new deployment running, monitor the readiness of the pod. 
 - Navigate to `Applications -> Pods`
 - Notice that `1/1` containers are ready
@@ -166,7 +176,7 @@ With the new deployment running, monitor the readiness of the pod.
 ![](../assets/03_deploy_health_02.png)
 
 
-#### Adding a Healthcheck
+### Adding a Healthcheck
 A container that is marked `ready` when it is not is an indication of a lack of (or misconfigured) healthcheck. 
 Let's add a healthcheck. 
 
@@ -185,17 +195,17 @@ Let's add a healthcheck.
 ### Exploring Deployment Configuration Options
 Additional actions are avalable to edit your deployment configuration. Review and explore; 
 - Resource Limits
-- Healthcheck liveliness probes
+- Healthcheck liveness probes
 - YAML 
 
-#### Versioning a Deployment Configuration
+## Versioning a Deployment Configuration
 At this point in time, your deployment configuration has undergone many changes, such as adding environment variables and adding health checks. 
 Review the deployment configuration `History` tab: 
 - Select Deployment #1, right-click, and open in a new tab
 - Select your latest deployment version, right-click, and open in a new tab
 - Compare the differences - this can be done through the UI or by comparing the YAML
 
-#### Changing Deployment Configuration Triggers
+## Changing Deployment Configuration Triggers
 While reviewing the different deployment versions, take note of the `Trigger` column. 
 
 ![](../assets/03_deploy_versions.png)
@@ -217,7 +227,7 @@ Explore how an Image can also trigger a deployment
 
 ![](../assets/03_deploy_build_trigger_03.png)
 
-#### Changing the Deployment Strategy Option
+## Changing the Deployment Strategy Option
 The default deployment configuration provides a `Rolling Update` style deployment, which waits for the container to be ready prior to 
 cutting over traffic and terminating the previous container. 
 

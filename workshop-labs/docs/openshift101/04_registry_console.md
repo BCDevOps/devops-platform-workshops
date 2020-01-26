@@ -28,7 +28,7 @@ In preparation for deployment to our dev environment, we will tag the latest ver
 - From the CLI
 
 ```
-oc tag rocketchat-[username]:latest rocketchat-[username]:dev
+oc -n [-tools] tag rocketchat-[username]:latest rocketchat-[username]:dev
 ```
 
 - In the Registry Console, notice that the tag has now been added: 
@@ -38,7 +38,7 @@ oc tag rocketchat-[username]:latest rocketchat-[username]:dev
 - From the CLI
 
 ```
-oc get imagestreams
+oc -n [-tools] get imagestreams
 ```
 
 ### Changing Project Image Permissions

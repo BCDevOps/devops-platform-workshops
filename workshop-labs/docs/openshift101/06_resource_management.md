@@ -21,7 +21,7 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 
 - Monitor the startup events of your pod and measure the time it takes to start
 
-- Remove the limits previously imposed, and set your pod to 4 cores for the request and limit
+- Remove the limits previously imposed, and set your pod to `1 core` (or `1000 millicores`) for the request and limit
 
 ![](../assets/11_resources_04.png)
 

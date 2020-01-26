@@ -1,39 +1,10 @@
 # Builds
-In this lab, you will create a simple Docker based build for the Rocket Chat application. 
+In this lab, you will create a simple Docker based build for the Rocket Chat application.
 
-### Team Permissions
-Once all projects have been created by the Platform Services team, the team admin
-must navigate to each project and assign your users the appropriate permissions. 
+## The Tools Project
+The tools project is what will hold various support tools for the application. In this case, all builds will run in this project.
 
-As a team, find each project and add the rest of the team members. Feel free to experiment with
-the default roles.  
-
-![](../assets/01_projects.png)
-
-- Once in the project, navigate to `Resources -> Membership -> Users`
-
-- Select `Edit Membership`
-
-![](../assets/01_membership.png)
-
-- Add each user based on their GitHub id
-
-![](../assets/01_edit.png)
-
-- Select `Done Editing`
-
-
-This can also be done on the CLI with the `oc` utility: 
-
-```
-oc policy add-role-to-user [role] [username]
-```
-
-#### The Tools Project
-The tools project is what will hold various support tools for the application. In this case, 
-Jenkins will run here (later), and all builds will run in this project. 
-
-#### Creating a Docker-Based Build
+## Creating a Docker-Based Build
 The Rocket.Chat application build will be based off a minimal Dockerfile in a [public repository](https://github.com/BCDevOps/devops-platform-workshops-labs/tree/master/apps/rocketchat). 
 Leveraging the commandline, you can use the `oc new-build` command to create all of the necessary 
 OpenShift build components. 
@@ -44,13 +15,13 @@ each member can create their own Rocket.Chat docker build.
 - To start, switch to your new project. *Ensure that you are in the tools project in this lab*
 
 ```
-oc project [project-name]
+oc project [-tools]
 ```
 
 - With the `oc` cli, create the build
 
 ```
-oc new-build https://github.com/BCDevOps/devops-platform-workshops-labs/ --context-dir=apps/rocketchat --name=rocketchat-[username]
+oc -n [-tools] new-build https://github.com/BCDevOps/devops-platform-workshops-labs/ --context-dir=apps/rocketchat --name=rocketchat-[username]
 ```
 
 - The output of the previous command should be similar to the following: 
@@ -87,8 +58,8 @@ oc new-build https://github.com/BCDevOps/devops-platform-workshops-labs/ --conte
 - Or this can be done on the CLI
 
 ```
-oc get bc
-oc status
+oc -n [-tools] get bc
+oc -n [-tools] status
 ```
 
 - The build status can be monitored from the Web Console by selecting  the `View Logs` link

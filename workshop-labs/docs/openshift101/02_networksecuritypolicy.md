@@ -1,6 +1,7 @@
 # Network Security Policy
 By default, the new OpenShift namespace has been configured with zero network access. 
 
+## Testing Network Security Policy
 - Attempt a general build
 
 ```
@@ -9,58 +10,11 @@ oc new-build https://github.com/ArctiqTeam/random-beer-giphy
 
 - Notice that the build will fail
 
-- Create the 3 basic NetworkSecurityPolicy objects
-  - Obtain the sample policy
-    
-    ```
-    wget https://raw.githubusercontent.com/BCDevOps/platform-services/master/security/aporeto/docs/sample/quickstart-nsp.yaml
-    ```
-
-  - Modify the policy with the appropriate namespace
+## Create Basic (ZoneB) Network Security Policy
+  - Process and apply provided template
 
     ```
-    ---
-    apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
-    kind: NetworkSecurityPolicy
-    metadata:
-      name: egress-internet
-    spec:
-      description: |
-        allow the [INSERT NAMESPACE HERE] namespace to talk to the internet.
-      source:
-        - - $namespace=[INSERT NAMESPACE HERE]
-      destination:
-        - - ext:network=any
-    ---
-    apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
-    kind: NetworkSecurityPolicy
-    metadata:
-      name: intra-namespace-comms
-    spec:
-      description: |
-        allow the [INSERT NAMESPACE HERE] namespace to talk to itself
-      source:
-        - - $namespace=[INSERT NAMESPACE HERE]
-      destination:
-        - - $namespace=[INSERT NAMESPACE HERE]
-    ---
-    apiVersion: secops.pathfinder.gov.bc.ca/v1alpha1
-    kind: NetworkSecurityPolicy
-    metadata:
-      name: int-cluster-k8s-api-comms
-    spec:
-      description: |
-        allow [INSERT NAMESPACE HERE] pods to talk to the k8s api
-      destination:
-      - - int:network=internal-cluster-api-endpoint
-      source:
-      - - $namespace=[INSERT NAMESPACE HERE]
-
-    ```
-  - Apply the policy again
-
-    ```
-    oc apply -f quickstart-nsp.yaml
+    oc -n ocp101-tools process -p NAMESPACE=ocp101-tools -f https://raw.githubusercontent.com/BCDevOps/platform-services/00091a2ea5e442260cd46b13dac1f6c7727b25e5/security/aporeto/docs/sample/quickstart-nsp.yaml
     ```
 
   - Check the status of the networksecuritypolicy objects
@@ -68,6 +22,7 @@ oc new-build https://github.com/ArctiqTeam/random-beer-giphy
     ```
     oc describe networksecuritypolicy
     ```
+## Testing Network Security Policy (Cont.)
 
 - Attempt the build again
 
@@ -75,8 +30,11 @@ oc new-build https://github.com/ArctiqTeam/random-beer-giphy
 oc start-build random-beer-giphy
 ```
 
+## Cleanup Test
 - Remove the previous test build
 
 ```
 oc delete buildconfig random-beer-giphy
 ```
+
+## Create Basic (ZoneB) Network Security Policy
