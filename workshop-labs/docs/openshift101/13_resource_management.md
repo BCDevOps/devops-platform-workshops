@@ -1,8 +1,8 @@
-## Resource Requests and Limits
+# Resource Requests and Limits
 Tuning the resources assigned to a pod will have a direct effect on the performance of the application. 
 Many templates include reasonable CPU and Memory resource configurations, however, new apps simply are deployed with the platform default. 
 
-### Explore Default Resource Configurations
+## Explore Default Resource Configurations
 Since the Rocket Chat application was built from scratch and not deployed from a template, explore the current resources allocated to the pods: 
 
 - Navigate to your rocketchat deployment and select `Actions -> Edit Resource Limits`
