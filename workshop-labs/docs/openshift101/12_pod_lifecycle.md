@@ -47,7 +47,7 @@ Lifecycle hooks can be configured to start and stop a container properly. The li
           lifecycle:
             postStart:
               exec:
-                command:  ["/bin/sh", "-c", "c=$(curl -X POST -H 'Content-Type: application/json' --data '{\"text\": \"'\"$HOSTNAME\"' is at the postStart phase, huzzah! "}' https://chat.pathfinder.gov.bc.ca/hooks/xxx/xxx)"]
+                command:  ["/bin/sh", "-c", "c=$(curl -X POST -H 'Content-Type: application/json' --data '{\"text\": \"'\"$HOSTNAME\"' is at the postStart phase, huzzah! \"}' https://chat.pathfinder.gov.bc.ca/hooks/xxx/xxx)"]
             preStop:
               exec:
                 command:  ["/bin/sh", "-c", "c=$(curl -X POST -H 'Content-Type: application/json' --data '{\"text\": \"'\"$HOSTNAME\"' is just about to STOPPPPPP! \"}' https://chat.pathfinder.gov.bc.ca/hooks/xxx/xxx)"]
