@@ -34,9 +34,9 @@ mongo, but is useful in an upcoming lab.
 
 - Scale up `mongodb-[username]` instance to 1 pod
 - When mongo is running, scale `rocketchat-[username]` to 1 pod
-- Configure RocketChat again
+- Access the RocketChat URL and complete the Setup Wizard again
 - Scale down and scale back up both the database and the rocketchat app
-- Verify that data was persisted
+- Verify that data was persisted by accessing RocketCHat URL and observing that it doesn't show the Setup Wizard.
 
 #### RWO Storage
 RWO storage (which was selected above) can only be attached to a single pod at a time, which causes issues in certain deployment stategies. 
@@ -68,4 +68,20 @@ RWX storage allows muliple pods to access the same PV at the same time.
 
 - Redeploy with Rolling deployment
 
+### Fixing it
+After using the file storage class and rolling deployment, you got to a point where your mongodb is now corrupted.
+
+To fix that:
+- Create a new PVC using block storage with RWO
+- Scale down `rocketchat-[username]` to 0 pods
+- Scale down `mongodb-[username]` to 0 pods
+- Go to the `mongodb-[username]` DeploymentConfig and `Pause Rollouts` (under `Actions` menu on the top right side)
+- Change the deployment strategy to use `Recreate` deployment strategy
+- Remove the mount to the file storage class
+- Add a mount to the new block storage class to the same path (`/var/lib/mongodb/data`)
+- Go to the `mongodb-[username]` DeploymentConfig and `Resume Rollouts` (under `Actions` menu on the top right side)
+  Check a new deployment is being rollout. If not, please do a manual deployment by cliclig on `Deploy`
+- Scale up `mongodb-[username]` to 1 pod, and wait for the pod to become ready
+- Scale up `rocketchat-[username]` to 1 pod, and wait for the pod to become ready
+- Access RocketChat URL and go over the Setup Wizard again
 
