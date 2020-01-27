@@ -22,25 +22,6 @@ to see similar details.
 
 ![](../assets/02_registry_console_image_01.png)
 
-### Adding an Image Tag
-In preparation for deployment to our dev environment, we will tag the latest version of our image with the tag `dev`. 
-
-- From the CLI
-
-```
-oc -n [-tools] tag rocketchat-[username]:latest rocketchat-[username]:dev
-```
-
-- In the Registry Console, notice that the tag has now been added: 
-
-![](../assets/02_registry_console_image_tag.png)
-
-- From the CLI
-
-```
-oc -n [-tools] get imagestreams
-```
-
 ### Changing Project Image Permissions
 - Navigate to the Projects tab of the registry console and notice that the security for the project can be changed with the edit icon
 

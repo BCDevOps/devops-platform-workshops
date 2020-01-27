@@ -5,8 +5,25 @@ image into our dev project.
 ## The Dev Project
 The dev project is what will hold the actual deployed applications. In this case, we will deploy RocketChat and MongoDB to the dev namespace.
 
+### Create an ImageStreamTag
+In preparation for deployment to our dev environment, we will tag the latest version of our image with the tag `dev`. 
+
+- From the CLI
+
+```
+oc -n [-tools] tag rocketchat-[username]:latest rocketchat-[username]:dev
+```
+
+- Verify that the `dev` tag has been created
+
+```
+oc -n [-tools] get ImageStream
+# OR
+oc -n [-tools] get ImageStreamTag/rocketchat-[username]:dev
+```
+
 ## Create an Image-Based Deployment
-Navigate to the configured `dev` project and deploy an image. 
+Navigate to the configured `[-dev]]` project and deploy an image. 
 
 - From the Overview tab, select `Deploy Image`, or from the top right corner from the drop down `Add to Project`
 
