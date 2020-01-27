@@ -2,3 +2,4 @@
 *creds/*
 **/node_modules/
 **/.rc.env
+**/.env
