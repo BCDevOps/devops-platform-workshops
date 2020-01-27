@@ -131,7 +131,32 @@ Before going into further deployment configuration options, review the current s
 Having identified that the application is trying to connect to a mongo database, add a mongo database to the project
 for your application. 
 
-- From the Web Console
+### From CLI
+  - Find out what 'mongodb-ephemeral' is
+```
+oc -n [-dev] new-app --search mongodb-ephemeral
+```
+  - The output will tell us that `mongodb-ephemeral` is a template in the `openshift` project.
+```
+Templates (oc new-app --template=<template>)
+-----
+mongodb-ephemeral
+  Project: openshift
+  MongoDB database service, without persistent storage. For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/mongodb-container/blob/master/3.2/README.md.
+
+WARNING: Any data stored will be lost upon pod destruction. Only use this template for testing
+```
+  - List available parameters of the template
+```
+oc -n [-dev] process openshift//mongodb-ephemeral --parameters=true
+```
+
+  - Create MongoDB based on a template in the catalog
+```
+  oc -n [-dev] new-app --template=mongodb-ephemeral -p MONGODB_VERSION=2.6 -p DATABASE_SERVICE_NAME=mongodb-[username] -p MONGODB_USER=dbuser -p MONGODB_PASSWORD=dbpass -p MONGODB_DATABASE=rocketchat --name=rocketchat-[username]
+```
+
+### From the Web Console
     - From the `Add to Project` dropdown, select `Browse Catalog`
     - In the search catalog area, type `mongo` and select `mongodb-ephemeral`
     - Ensure to customize the details with a service name such as `mongodb-[username]`, username/password and default database such as `rocketchat`
@@ -141,8 +166,6 @@ for your application.
 ![](../assets/03_deploy_mongo_03.png)
 ![](../assets/03_deploy_mongo_04.png)
 ![](../assets/03_deploy_mongo_05.png)
-
-- Bonus: determine how to create this from the CLI
 
 ### Deployment Configuration Options
 As a result of using a generic `new-app` style deployment, as opposed to openshift specific templates, a lot of defaults are leveraged. 
