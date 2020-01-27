@@ -69,9 +69,9 @@ RWX storage allows muliple pods to access the same PV at the same time.
 - Redeploy with Rolling deployment
 
 ### Fixing it
-After using the file storage class and rolling deployment, you got to a point where your mongodb is now corrupted.
+After using the `netapp-file-standard` storage class with rolling deployment, you got to a point where your mongodb is now corrupted. That happens because MongoDB does NOT support multiple processes/pods reading/writing to the same location/mount (`/var/lib/mongodb/data`) of single/shared pvc.
 
-To fix that:
+To fix that we will need to replace `netapp-file-standard` with `netapp-block-standard` and change the deployment strategy from `Rolling` to `Recreate`
 - Create a new PVC using block storage with RWO
 - Scale down `rocketchat-[username]` to 0 pods
 - Scale down `mongodb-[username]` to 0 pods

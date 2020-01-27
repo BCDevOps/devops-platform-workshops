@@ -197,9 +197,23 @@ a database has not been deployed, the app does not know how or where to connect 
 ![](../assets/03_deploy_config_02.png)
 ![](../assets/03_deploy_config_03.png)
 
-## Creating a Route for your Rocket.Chat App
+## Create a Route for your Rocket.Chat App
 
 While you are waiting for the application to redeploy, expose the route to the public internet.
+### CLI
+
+There are 2 ways of creating routes using CLI.
+
+  - Using `oc expose` for unsecure (http) route
+```
+oc -n [-dev] expose svc/rocketchat-[username]
+```
+  - Using `oc create route` for secure (https) route
+```
+oc -n [-dev create route edge rocketchat-[username] --service=rocketchat-[username] --insecure-policy=Redirect
+```
+
+### Web Console
 - From the Web Console, navigate to `Applications -> Routes`
 - Select `Create Route`
     - Customize the name of the route, such as `rocketchat-[username]`
