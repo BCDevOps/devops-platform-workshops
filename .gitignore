@@ -1,3 +1,4 @@
 # Creds
 *creds/*
 **/node_modules/
+**/.rc.env
