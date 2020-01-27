@@ -2,10 +2,10 @@
 By default, the new OpenShift namespace has been configured with zero network access. 
 
 ## Testing Network Security Policy
-- Attempt a general build
+- Attempt a simple build in the tools project
 
 ```
-oc new-build https://github.com/ArctiqTeam/random-beer-giphy
+oc -n [-tools] new-build https://github.com/ArctiqTeam/random-beer-giphy
 ```
 
 - Notice that the build will fail
@@ -13,28 +13,28 @@ oc new-build https://github.com/ArctiqTeam/random-beer-giphy
 ## Create Basic (ZoneB) Network Security Policy
   - Process and apply provided template
 
-    ```
-    oc -n ocp101-tools process -p NAMESPACE=ocp101-tools -f https://raw.githubusercontent.com/BCDevOps/platform-services/00091a2ea5e442260cd46b13dac1f6c7727b25e5/security/aporeto/docs/sample/quickstart-nsp.yaml
-    ```
+```
+oc -n [-tools] process -p NAMESPACE=[-tools] -f https://raw.githubusercontent.com/BCDevOps/platform-services/00091a2ea5e442260cd46b13dac1f6c7727b25e5/security/aporeto/docs/sample/quickstart-nsp.yaml
+```
 
   - Check the status of the networksecuritypolicy objects
     
-    ```
-    oc describe networksecuritypolicy
-    ```
+```
+oc -n [-tools] describe networksecuritypolicy
+```
+
 ## Testing Network Security Policy (Cont.)
 
 - Attempt the build again
 
 ```
-oc start-build random-beer-giphy
+oc -n [-tools] start-build random-beer-giphy
 ```
+-  Apply the same Network Security Policy to the [-dev] project 
 
 ## Cleanup Test
 - Remove the previous test build
 
 ```
-oc delete buildconfig random-beer-giphy
+oc -n [-tools] delete buildconfig random-beer-giphy
 ```
-
-## Create Basic (ZoneB) Network Security Policy
