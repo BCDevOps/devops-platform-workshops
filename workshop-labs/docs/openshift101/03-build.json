@@ -1,0 +1,64 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "rocketchat-cvarjao"
+  },
+  "objects": [
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "build.openshift.io/v1",
+      "metadata": {
+        "name": "rocketchat-cvarjao",
+        "creationTimestamp": null,
+        "labels": {},
+        "annotations": {}
+      },
+      "spec": {
+        "triggers": [],
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "https://github.com/BCDevOps/devops-platform-workshops-labs/"
+          },
+          "contextDir": "apps/rocketchat"
+        },
+        "strategy": {
+          "type": "Docker",
+          "dockerStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "nodejs-8-rhel7:latest"
+            },
+            "imageOptimizationPolicy": "SkipLayers"
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "rocketchat-cvarjao:latest"
+          }
+        },
+        "resources": {
+          "requests": {
+            "cpu": "1",
+            "memory": "1Gi"
+          },
+          "limits": {
+            "cpu": "2",
+            "memory": "2Gi"
+          }
+        },
+        "postCommit": {},
+        "nodeSelector": null,
+        "runPolicy": "SerialLatestOnly"
+      },
+      "status": {
+        "lastVersion": 0
+      }
+    }
+  ],
+  "labels": {
+    "template": "rocketchat-cvarjao"
+  }
+}

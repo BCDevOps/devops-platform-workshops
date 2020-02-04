@@ -23,7 +23,7 @@ oc -n [-tools] get ImageStreamTag/rocketchat-[username]:dev
 ```
 
 ## Create an Image-Based Deployment
-Navigate to the configured `[-dev]]` project and deploy an image. 
+Navigate to the configured `[-dev]` project and deploy an image. 
 
 - From the Overview tab, select `Deploy Image`, or from the top right corner from the drop down `Add to Project`
 
@@ -133,10 +133,13 @@ for your application.
 
 ### From CLI
   - Find out what 'mongodb-ephemeral' is
+
 ```
 oc -n [-dev] new-app --search mongodb-ephemeral
 ```
-  - The output will tell us that `mongodb-ephemeral` is a template in the `openshift` project.
+
+  - The output will tell us that `mongodb-ephemeral` is a template in the `openshift` project:
+
 ```
 Templates (oc new-app --template=<template>)
 -----
@@ -146,20 +149,26 @@ mongodb-ephemeral
 
 WARNING: Any data stored will be lost upon pod destruction. Only use this template for testing
 ```
+
   - List available parameters of the template
+
 ```
 oc -n [-dev] process openshift//mongodb-ephemeral --parameters=true
 ```
 
   - Create MongoDB based on a template in the catalog
+
 ```
   oc -n [-dev] new-app --template=mongodb-ephemeral -p MONGODB_VERSION=2.6 -p DATABASE_SERVICE_NAME=mongodb-[username] -p MONGODB_USER=dbuser -p MONGODB_PASSWORD=dbpass -p MONGODB_DATABASE=rocketchat --name=rocketchat-[username]
 ```
 
 ### From the Web Console
-    - From the `Add to Project` dropdown, select `Browse Catalog`
-    - In the search catalog area, type `mongo` and select `mongodb-ephemeral`
-    - Ensure to customize the details with a service name such as `mongodb-[username]`, username/password and default database such as `rocketchat`
+
+  - From the `Add to Project` dropdown, select `Browse Catalog`
+
+  - In the search catalog area, type `mongo` and select `mongodb-ephemeral`
+
+  - Ensure to customize the details with a service name such as `mongodb-[username]`, username/password and default database such as `rocketchat`
 
 ![](../assets/03_deploy_mongo_01.png)
 ![](../assets/03_deploy_mongo_02.png)
@@ -183,12 +192,12 @@ a database has not been deployed, the app does not know how or where to connect 
   ```
   you can also use the CLI to apply the environment variable
   ```
-  oc -n [-dev] set env dc/rocketchat-[username] "MONGO_URL=mongodb://dbuser:dbpass@mongodb-stewartshea:27017/rocketchat"
+  oc -n [-dev] set env dc/rocketchat-[username] "MONGO_URL=mongodb://dbuser:dbpass@mongodb-[username]]:27017/rocketchat"
   ```
   *HINT*: You may use OpenShift [Downward API](https://docs.openshift.com/container-platform/3.11/dev_guide/downward_api.html#dapi-environment-variable-references) to refer to the secret created by MongoDB.
   ```
-  oc -n [-dev] patch dc/rocketchat-cvarjao -p '{"spec":{"template":{"spec":{"containers":[{"name":"mongodb-[username]", "env":[{"name":"MONGO_USER", "valueFrom":{"secretKeyRef":{"key":"database-user", "name":"MONGO_USER"}}}]}]}}}}'
-  oc -n [-dev] set env dc/rocketchat-[username] 'MONGO_URL=mongodb://$(MONGO_USER):dbpass@mongodb-stewartshea:27017/rocketchat'
+  oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_USER", "valueFrom":{"secretKeyRef":{"key":"database-user", "name":"mongodb-[username]"}}}]}]}}}}'
+  oc -n [-dev] set env dc/rocketchat-[username] 'MONGO_URL=mongodb://$(MONGO_USER):dbpass@mongodb-[username]:27017/rocketchat'
   ```
   *bonus*: Try to figure out how to use Downward API for the password, and database name as well.
 
@@ -214,19 +223,21 @@ oc -n [-dev create route edge rocketchat-[username] --service=rocketchat-[userna
 ```
 
 ### Web Console
-- From the Web Console, navigate to `Applications -> Routes`
-- Select `Create Route`
+  - From the Web Console, navigate to `Applications -> Routes`
+  - Select `Create Route`
     - Customize the name of the route, such as `rocketchat-[username]`
     - Ensure the service it points to is your particular service
 ![](../assets/03_deploy_route.png)
 
 ## Exploring Health Checks
 With the new deployment running, monitor the readiness of the pod. 
-- Navigate to `Applications -> Pods`
-- Notice that `1/1` containers are ready
+  - Navigate to `Applications -> Pods`
+  - Notice that `1/1` containers are ready
+
 ![](../assets/03_deploy_health_01.png)
 
 - Visit the application route, however, and notice that the application is not ready
+
 ![](../assets/03_deploy_health_02.png)
 
 
@@ -234,50 +245,51 @@ With the new deployment running, monitor the readiness of the pod.
 A container that is marked `ready` when it is not is an indication of a lack of (or misconfigured) healthcheck. 
 Let's add a healthcheck. 
 
-- Navigate to `Applications -> Deployments`
-- Select the appropriate deployment
-- Select `Actions` and then `Edit Health Checks`
+  - Navigate to `Applications -> Deployments`
+  - Select the appropriate deployment
+  - Select `Actions` and then `Edit Health Checks`
 
 ![](../assets/03_deploy_health_03.png)
 
-- Select `Add Readiness Probe` and leverage the HTTP GET defaults for this application, setting an initial delay of 15 seconds
+  - Select `Add Readiness Probe` and leverage the HTTP GET defaults for this application, setting an initial delay of 15 seconds
+
 ![](../assets/03_deploy_health_04.png)
 
-- While the new deployment rolls out, continue to refresh the public route and validate that it stays up
-- At the same time, monitor the pod `Containers Ready` column from `Applications -> Pods` and notice what happens when it becomes ready
+  - While the new deployment rolls out, continue to refresh the public route and validate that it stays up
+  - At the same time, monitor the pod `Containers Ready` column from `Applications -> Pods` and notice what happens when it becomes ready
 
 ### Exploring Deployment Configuration Options
 Additional actions are avalable to edit your deployment configuration. Review and explore; 
-- Resource Limits
-- Healthcheck liveness probes
-- YAML 
+  - Resource Limits
+  - Healthcheck liveness probes
+  - YAML 
 
 ## Versioning a Deployment Configuration
 At this point in time, your deployment configuration has undergone many changes, such as adding environment variables and adding health checks. 
 Review the deployment configuration `History` tab: 
-- Select Deployment #1, right-click, and open in a new tab
-- Select your latest deployment version, right-click, and open in a new tab
-- Compare the differences - this can be done through the UI or by comparing the YAML
+  - Select Deployment #1, right-click, and open in a new tab
+  - Select your latest deployment version, right-click, and open in a new tab
+  - Compare the differences - this can be done through the UI or by comparing the YAML
 
 ## Changing Deployment Configuration Triggers
 While reviewing the different deployment versions, take note of the `Trigger` column. 
 
 ![](../assets/03_deploy_versions.png)
 
-- Navigate to the `Configuration` tab of the deployment and review the currently configured Triggers
+  - Navigate to the `Configuration` tab of the deployment and review the currently configured Triggers
 
 ![](../assets/03_deploy_triggers.png)
 
-Explore how an Image can also trigger a deployment
-- Navigate to your original build and investigate the available triggers
+  Explore how an Image can also trigger a deployment
+  - Navigate to your original build and investigate the available triggers
 
 ![](../assets/03_deploy_build_trigger_01.png)
 
-- Edit the buildconfig to change the output image to the `dev` tag
+  - Edit the buildconfig to change the output image to the `dev` tag
 
-![](../assets/03_delploy_build_trigger_02.png)
+![](../assets/03_deploy_build_trigger_02.png)
 
-- Start a new build and monitor your the `dev` deployment when the build completes
+  - Start a new build and monitor your the `dev` deployment when the build completes
 
 ![](../assets/03_deploy_build_trigger_03.png)
 
@@ -287,6 +299,6 @@ cutting over traffic and terminating the previous container.
 
 ![](../assets/03_deployment_strategy_01.png)
 
-- Change the strategy to a `Recreate` and redeploy a couple of times
-- Refresh the browser URL right after a new deployment and observe the behavior
-- Change the strategy back to `Rolling`
+  - Change the strategy to a `Recreate` and redeploy a couple of times
+  - Refresh the browser URL right after a new deployment and observe the behavior
+  - Change the strategy back to `Rolling`

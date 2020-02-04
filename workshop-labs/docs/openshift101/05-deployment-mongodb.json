@@ -1,0 +1,242 @@
+{
+  "kind": "Template",
+  "apiVersion": "template.openshift.io/v1",
+  "metadata": {
+    "resourceVersion": "",
+    "selfLink": "",
+    "name": "rocketchat-cvarjao"
+  },
+  "objects": [
+    {
+      "kind": "Secret",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "mongodb-cvarjao",
+        "creationTimestamp": null,
+        "labels": {
+          "app": "mongodb-ephemeral",
+          "template": "mongodb-ephemeral-template"
+        },
+        "annotations": {
+          "template.openshift.io/expose-admin_password": "{.data['database-admin-password']}",
+          "template.openshift.io/expose-database_name": "{.data['database-name']}",
+          "template.openshift.io/expose-password": "{.data['database-password']}",
+          "template.openshift.io/expose-username": "{.data['database-user']}"
+        }
+      },
+      "data": {
+        "database-admin-password": "QlBrRmRYcmRVVnhUQTF4Yg==",
+        "database-name": "cm9ja2V0Y2hhdA==",
+        "database-password": "ZGJwYXNz",
+        "database-user": "ZGJ1c2Vy"
+      },
+      "type": "Opaque"
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "mongodb-cvarjao",
+        "creationTimestamp": null,
+        "labels": {
+          "app": "mongodb-ephemeral",
+          "template": "mongodb-ephemeral-template"
+        },
+        "annotations": {
+          "template.openshift.io/expose-uri": "mongodb://{.spec.clusterIP}:{.spec.ports[?(.name==\"mongo\")].port}"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "mongo",
+            "protocol": "TCP",
+            "port": 27017,
+            "targetPort": 27017
+          }
+        ],
+        "selector": {
+          "name": "mongodb-cvarjao"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      },
+      "status": {
+        "loadBalancer": {}
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "apps.openshift.io/v1",
+      "metadata": {
+        "name": "mongodb-cvarjao",
+        "creationTimestamp": null,
+        "labels": {
+          "app": "mongodb-ephemeral",
+          "template": "mongodb-ephemeral-template"
+        },
+        "annotations": {
+          "template.alpha.openshift.io/wait-for-ready": "true"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Recreate",
+          "recreateParams": {
+            "timeoutSeconds": 300
+          },
+          "resources": {},
+          "activeDeadlineSeconds": 21600
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "mongodb"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "namespace": "openshift",
+                "name": "mongodb:2.6"
+              }
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": 1,
+        "test": false,
+        "selector": {
+          "name": "mongodb-cvarjao"
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "app": "mongodb-ephemeral",
+              "name": "mongodb-cvarjao"
+            },
+            "annotations": {
+              "openshift.io/generated-by": "OpenShiftNewApp"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "mongodb-cvarjao-data",
+                "emptyDir": {}
+              }
+            ],
+            "containers": [
+              {
+                "name": "mongodb",
+                "image": " ",
+                "ports": [
+                  {
+                    "containerPort": 27017,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "MONGODB_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "mongodb-cvarjao",
+                        "key": "database-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "MONGODB_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "mongodb-cvarjao",
+                        "key": "database-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "MONGODB_ADMIN_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "mongodb-cvarjao",
+                        "key": "database-admin-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "MONGODB_DATABASE",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "mongodb-cvarjao",
+                        "key": "database-name"
+                      }
+                    }
+                  }
+                ],
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  },
+                  "limits": {
+                    "memory": "512Mi",
+                    "cpu": "1000m"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "mongodb-cvarjao-data",
+                    "mountPath": "/var/lib/mongodb/data"
+                  }
+                ],
+                "livenessProbe": {
+                  "tcpSocket": {
+                    "port": 27017
+                  },
+                  "initialDelaySeconds": 30,
+                  "timeoutSeconds": 1,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "failureThreshold": 3
+                },
+                "readinessProbe": {
+                  "exec": {
+                    "command": [
+                      "/bin/sh",
+                      "-i",
+                      "-c",
+                      "mongo 127.0.0.1:27017/$MONGODB_DATABASE -u $MONGODB_USER -p $MONGODB_PASSWORD --eval=\"quit()\""
+                    ]
+                  },
+                  "initialDelaySeconds": 3,
+                  "timeoutSeconds": 1,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "failureThreshold": 3
+                },
+                "imagePullPolicy": "IfNotPresent",
+                "securityContext": {
+                  "capabilities": {},
+                  "privileged": false
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "securityContext": {},
+            "schedulerName": "default-scheduler"
+          }
+        }
+      }
+    }
+  ],
+  "labels": {
+    "template": "rocketchat-cvarjao"
+  }
+}

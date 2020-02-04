@@ -17,7 +17,7 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 
 ![](../assets/11_resources_03.png)
 
-- Reduce the CPU request and limit to `50 millicores` and `100 Megabytes` and monitor the startup time of the pod
+- Reduce the CPU (request and limit) to `50 millicores` and Memory (request and limits) to `100 Megabytes` and monitor the startup time of the pod
 
 - Monitor the startup events of your pod and measure the time it takes to start
 

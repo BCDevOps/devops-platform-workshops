@@ -42,17 +42,18 @@ oc scale dc/rocketchat-[username] --replicas=2
 ![](../assets/04_app_availability_06.png)
 ![](../assets/04_app_availability_07.png)
 
-- Or from the CLI notice the hosts the pod runs on (in the last field)
+  - Or from the CLI notice the hosts the pod runs on (in the last field)
 
 ```
 oc get pods -o wide  | grep rocketchat-[username]
 ```
-    - The output should look similar to this: 
-    ```
-    $ oc get pods -o wide  | grep rocketchat-stewartshea
-    rocketchat-stewartshea-7-k6kcc    1/1       Running   0          16m       172.51.68.135   ociopf-p-186.dmz
-    rocketchat-stewartshea-7-k82w2    0/1       Running   0          1m        172.51.76.32    ociopf-p-187.dmz
-    ```
+  - The output should look similar to this:
+
+```
+$ oc get pods -o wide  | grep rocketchat-[username]
+rocketchat-[username]-7-k6kcc    1/1       Running   0          16m       172.51.68.135   ociopf-p-186.dmz
+rocketchat-[username]-7-k82w2    0/1       Running   0          1m        172.51.76.32    ociopf-p-187.dmz
+```
 
 - Delete single pod, refresh the URL of application and notice that the application is served by the surviving pods
 

@@ -1,7 +1,53 @@
 
-## How to use
+# How to use
 
-TO DO
+
+## Setting up the environment
+### RocketChat
+  Create Rocketchat webhook
+
+### Projects
+#### Platform Services
+  ```
+  echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm new-project 'ocp101a-{}' "--display-name=OpenShift 101 ({})" "--description=OpenShift 101 ({})"
+
+  echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm label --overwrite 'namespace/ocp101a-{}' 'name=ocp101a' 'environment={}' 'product=OCP101' 'category=workshop'
+
+  
+  #Instructor Access
+  echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm -n 'ocp101a-{}' policy add-role-to-user admin cvarjao
+  ```
+#### Instructor
+  ```
+  oc -n ocp101a-workbench create role student --verb=get,create --resource=pods,pods/exec
+
+  oc -n ocp101a-workbench create serviceaccount student
+
+  echo -e "tools\ndev" | xargs -t -I {} oc -n 'ocp101a-{}' policy add-role-to-user admin 'system:serviceaccount:ocp101a-workbench:student'
+  ```
+
+### Instructor
+- Edit `.openshift/.env`.
+  Example:
+  ```
+  NS_TOOLS='ocp101-tools'
+  NS_DEPLOY='ocp101-dev'
+  ```
+
+- Build the lab material (docs)
+  ```
+    (cd .openshift && ./setup build-docs)
+  ```
+
+- Deploy the lab material (docs)
+  ```
+    (cd .openshift && ./setup deploy-docs)
+  ```
+
+### Students
+  ```
+    (cd .openshift && ./setup.sh students)
+  ```
 
 # Day 1
 

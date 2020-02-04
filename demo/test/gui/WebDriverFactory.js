@@ -17,12 +17,12 @@ class WebDriverFactory {
         const chromeOptions = new chrome.Options()
         chromeOptions.addArguments("test-type");
         chromeOptions.addArguments('--start-maximized')
-        chromeOptions.addArguments(`--user-data-dir=${path.resolve(__dirname, '../.chrome')}`)
+        chromeOptions.addArguments(`--user-data-dir=${path.resolve(__dirname, '../../.chrome')}`)
         chromeOptions.addArguments('--disable-infobars')
         //fs.mkdirSync(dataDir)
         //chromeCapabilities.set('chromeOptions', chromeOptions);
         return new Builder().forBrowser('chrome').setChromeOptions(chromeOptions).build().then((instance) => {
-          console.log('New Browser!!')
+          //console.log('New Browser!!')
           global.singletonSeleniumWebDriver = instance;
           return global.singletonSeleniumWebDriver
         })
@@ -30,7 +30,7 @@ class WebDriverFactory {
         
       }
 
-      console.log('Reusing Browser!!')
+      //console.log('Reusing Browser!!')
       return global.singletonSeleniumWebDriver
     })
   }
