@@ -1,2 +1,7 @@
 # Creds
 *creds/*
+**/node_modules/
+**/.rc.env
+**/.env
+**/.chrome
+.DS_Store
