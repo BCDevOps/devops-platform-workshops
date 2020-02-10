@@ -54,10 +54,11 @@ Note Placeholder
 ---
 #### Databases
 - StorageClass Decisions for Database Storage
-  - `gluster-file-db` is currently the recommended storage class for databases such as postgres
-  - Some databases prefer block storage
-    - Guidance, through Rocket.Chat, will be provided when new storage classes are released
+  - `netapp-file-standard` is currently the recommended storage class for most persistant storage solutions
+  - Some databases prefer block storage for performance, in which case a case can be made to provision __Netapp Block__ storage
+    - Guidance, through Rocket.Chat and Devhub, will be provided when new storage classes are released
     - These storage classes are designed to be supported by Red Hat
+  - Teams are asked to utilize `netapp-file-standard` whenever possible and use `block` type storage when performance is needed in production environment.
 - Database Utilities
   - Operator framework (coming, not yet released!)
   - For now: 
