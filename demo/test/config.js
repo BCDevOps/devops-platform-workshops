@@ -1,8 +1,9 @@
 const config = {
   "name":"cvarjao",
   "namespace":{
-    "tools": "ocp101a-tools",
-    "dev": "ocp101a-dev"
+    "prefix":"ocp101b",
+    "tools": "ocp101b-tools",
+    "dev": "ocp101b-dev"
   }
 }
 Object.assign(config, {"rocketchat":{"imageStream":`rocketchat-${config.name}`}})

@@ -1,3 +1,4 @@
+require('chromedriver');
 const { Builder, Capabilities} = require('selenium-webdriver')
 const chrome = require("selenium-webdriver/chrome");
 const path = require('path');

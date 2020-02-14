@@ -18,7 +18,13 @@ function _gtar {
         ;;
     esac
   done
-  GZIP=-n gtar -cz --format=ustar --numeric-owner --no-acls --no-selinux --no-xattrs --owner=0 --group=0 --numeric-owner --mtime="2019-01-01 00:00Z" --dereference "$@"
+
+  declare -a excludes=()
+  while read line; do
+    excludes+=("--exclude=${line}")
+  done < <(git clean -ndX | cut -c14-)
+
+  GZIP=-n gtar -cz --format=ustar --numeric-owner --no-acls --no-selinux --no-xattrs --owner=0 --group=0 --numeric-owner --mtime="2019-01-01 00:00Z" --dereference "${excludes[@]}" "$@"
 }
 
 function _ocb {

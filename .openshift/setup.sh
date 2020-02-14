@@ -13,6 +13,12 @@ GIT_TOP_DIR="$(git rev-parse --show-toplevel)"
 source "${SCRIPT_PATH}/_common.sh"
 source "${SCRIPT_PATH}/.env"
 
+TEMPLATES_DIR="${SCRIPT_PATH}/templates"
+LABS_BUILD_TEMPLATE_PATH="${TEMPLATES_DIR}/labs-build.json"
+LABS_MAIN_DEPLOYMENT_TEMPLATE_PATH="${TEMPLATES_DIR}/labs-main-deployment.json"
+LABS_STUDENT_DEPLOYMENT_TEMPLATE_PATH="${TEMPLATES_DIR}/labs-student-deployment.json"
+WORKBENCH_BUILD_TEMPLATE_PATH="${TEMPLATES_DIR}/workbench-build.json"
+WORKBENCH_DEPLOYMENT_TEMPLATE_PATH="${TEMPLATES_DIR}/workbench-deployment.json"
 
 if ! oc whoami >/dev/null ; then
   echo -e "Sorry. You are not logged in!\nPlease visit https://console.pathfinder.gov.bc.ca:8443/console/ and use the provided login command."

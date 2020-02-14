@@ -2,8 +2,8 @@ set -e
 echo "Setting up students environment"
 source .rc.env
 
-rocketchat_announcement=1
-dry_run=0
+rocketchat_announcement=0
+dry_run=1
 
 function rc_curl {
   curl -D "rocketchat-headers.txt" -H "X-Auth-Token: ${rc_user_token}" -H "X-User-Id: ${rc_user_id}" -H "Content-type:application/json" "$@"
@@ -28,17 +28,27 @@ function deploy_student {
     ( STUDENT_ID="$3" "${SCRIPT_PATH}/setup.sh" "deploy-student-workbench" )
     if [ "${rocketchat_announcement}" == "1" ]; then
       rc_curl -fsSL "${rc_url}/api/v1/chat.postMessage" \
-        -d '{ "roomId": "'"${rc_workbenches_room_id}"'", "text": "Hi @'"${2}"' !\nLab content:\n-> `https://ocp101-labs-ocp101a-workbench.pathfinder.gov.bc.ca/student/'"${3}"'`\nYour remote workbench:\n->`oc -n '"${NS_WORKBENCH}"' rsh workbench-'"${3}"'-0`" }'
+        -d '{ "roomId": "'"${rc_workbenches_room_id}"'", "text": "Hi @'"${2}"' !\nLab content:\n-> `https://ocp101-labs-'"${NS_WORKBENCH}"'.pathfinder.gov.bc.ca/student/'"${3}"'`\n1) Visit https://console.pathfinder.gov.bc.ca:8443/console/command-line and copy your `oc login` command line with token.\n2) Open a terminal (e.g.: bash or windows command prompt) and paste the login command.\n3)Access your workbench by using:\n -> `oc -n '"${NS_WORKBENCH}"' rsh workbench-'"${3}"'-0`" }' &>/dev/null
     fi
 }
 
+
+curl -fsSL "${GOOGLE_DOCS_CSV_URL}" > students.csv
+
+if [ "$(tail -c 1 students.csv | od -A n -t x1 | tr -d '[:space:]')" != "0a" ]; then
+  echo "WARN: File 'students.csv' did not end with LF. One is being appended!"
+  printf "\n" >> students.csv
+fi
+
 # Empty the file!
 : > github-users-valid.txt
-while IFS=, read githubUserId rocketChatUserId aliasId __other; do
+while IFS=, read studentNum githubUserId rocketChatUserId aliasId __other; do
   #remove whitespaces/line breaks
   githubUserId="$(tr -d '[:space:]' <<< "${githubUserId}")"
   rocketChatUserId="$(tr -d '[:space:]' <<< "${rocketChatUserId}")"
+  #BUG: make alias all lower case
   aliasId="$(tr -d '[:space:]' <<< "${aliasId}")"
+  aliasId="$(tr '[:upper:]' '[:lower:]' <<< "${aliasId}")"
   #echo "Processing githubUserId='${githubUserId}' rocketChatUserId='${rocketChatUserId}', alias='${aliasId}'"
   #continue
   echo "Verifying github:${githubUserId}"
@@ -72,7 +82,7 @@ while IFS=, read githubUserId rocketChatUserId aliasId __other; do
     #Process and apply templates in parallel/background
     deploy_student "${validGithubUserId}" "${validRocketChatUsername}" "${aliasId}" &
   fi
-done < <(curl -fsSL "${GOOGLE_DOCS_CSV_URL}" | tail -n +2 | head -n 2)
+done < <(tail -n +2 < students.csv)
 
 # wait for all backgorund jobs to finish
 wait

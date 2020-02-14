@@ -26,6 +26,8 @@ RUN chmod -R u+x ${APP_ROOT}/bin && \
 # Install gitbook plugins
 RUN cd ${APP_ROOT}/docs && \
     ../support/toc.sh ./openshift101 > SUMMARY.md && \
+    echo '' >> SUMMARY.md && \
+    echo '* [Download PDF](openshift101/openshift101.pdf)' >> SUMMARY.md && \
     chgrp -R 0 ${APP_ROOT}/docs && \
     chmod -R g=u ${APP_ROOT}/docs && \
     gitbook install && \
@@ -33,7 +35,7 @@ RUN cd ${APP_ROOT}/docs && \
     mv ${APP_ROOT}/docs/_book ${APP_ROOT}/book && \
     chgrp -R 0 ${APP_ROOT}/book && \
     chmod -R g+w ${APP_ROOT}/book && \
-#    gitbook pdf ./ ./download.pdf && \
+    gitbook pdf ./ ${APP_ROOT}/book/openshift101/openshift101.pdf && \
     chgrp -R 0 ${APP_ROOT}/docs && \
     chmod -R g=u ${APP_ROOT}/docs
 

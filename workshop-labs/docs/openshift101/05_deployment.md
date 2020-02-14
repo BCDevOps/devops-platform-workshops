@@ -6,24 +6,25 @@ image into our dev project.
 The dev project is what will hold the actual deployed applications. In this case, we will deploy RocketChat and MongoDB to the dev namespace.
 
 ### Create an ImageStreamTag
+
 In preparation for deployment to our dev environment, we will tag the latest version of our image with the tag `dev`. 
 
 - From the CLI
 
-```
+```oc:cli
 oc -n [-tools] tag rocketchat-[username]:latest rocketchat-[username]:dev
 ```
 
 - Verify that the `dev` tag has been created
-
-```
-oc -n [-tools] get ImageStream
-# OR
+```oc:cli
 oc -n [-tools] get ImageStreamTag/rocketchat-[username]:dev
 ```
 
 ## Create an Image-Based Deployment
-Navigate to the configured `[-dev]` project and deploy an image. 
+
+__Objective__: Deploy RocketChat from the image previously built.
+
+- Navigate to the configured `[-dev]` project. 
 
 - From the Overview tab, select `Deploy Image`, or from the top right corner from the drop down `Add to Project`
 
@@ -32,11 +33,13 @@ Navigate to the configured `[-dev]` project and deploy an image.
 - Select the tools project, the your specific rocketchat image, and the appropriate tag
 
 ![](../assets/03_deploy_image_02.png)
+> The orange alert about the `default` service account needing pull privileges can be ignored for now, it will be fixed in the next section.
+
 ![](../assets/03_deploy_image_03.png)
 
 - Or do this from the CLI
 
-```
+```oc:cli
 oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[username]
 ```
 
@@ -68,8 +71,19 @@ oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[usern
 ```
 - 
 
+## Speed-up application startup
+__Objective__: Get RocketChat to startup faster. This will be investigate in details on the `Resource Requests and Limits` lab.
+
+Increasing the resources (specially CPU) right now will help with faster pod startup.
+
+- From the terminal, run the follow oc command:
+```oc:cli
+oc -n [-dev] set resources dc/rocketchat-[username] --requests=cpu=500m,memory=512Mi --limits=cpu=1000m,memory=1024Mi
+```
 
 ## Troubleshoot Image Pull Access
+__Objective__: Identify CrashLoopBackOff problem
+
 As the Web UI indicated, the `dev` project service accounts do not have the appropriate access to pull the image from the `tools`
 project. 
 
@@ -82,7 +96,9 @@ project.
 ![](../assets/03_deploy_image_05.png)
 
 ## Create Proper Access Rights Across Projects
-Any team member with admin rights on the `tools` project can create the appropriate permissions for each other project. 
+
+__Objective__: Fix CrashLoopBackOff problem
+
 
 - From the Web Console
 
@@ -90,7 +106,7 @@ Any team member with admin rights on the `tools` project can create the appropri
 
 - From the CLI: 
 
-```
+```oc:cli
 oc -n [-tools] policy add-role-to-user system:image-puller system:serviceaccount:[-dev]:default
 ```
 
@@ -101,7 +117,7 @@ With the appropriate access in place, redeploy the application.
 
 - OR from the CLI
 
-```
+```oc:cli
 oc -n [-dev] rollout latest rocketchat-[username]
 ```
 - Validate that the image is able to be pulled
@@ -115,12 +131,9 @@ Navigate to the pod and review the logs to determine why the container will not 
 
 - Or from the CLI
 
-```
-# Find your pod's name
-oc -n [-dev] get pods  | grep rocketchat-[username]
-
+```oc:cli
 # Show your pod's log
-oc -n [-dev] logs rocketchat-[username]-[randomid]
+oc -n [-dev] logs --tail=5 -f "$(oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=rocketchat-[username] -o name --no-headers | head -1)"
 ```
 *note* you can follow the logs with `-f` argument
 
@@ -134,7 +147,7 @@ for your application.
 ### From CLI
   - Find out what 'mongodb-ephemeral' is
 
-```
+```oc:cli
 oc -n [-dev] new-app --search mongodb-ephemeral
 ```
 
@@ -152,13 +165,13 @@ WARNING: Any data stored will be lost upon pod destruction. Only use this templa
 
   - List available parameters of the template
 
-```
+```oc:cli
 oc -n [-dev] process openshift//mongodb-ephemeral --parameters=true
 ```
 
   - Create MongoDB based on a template in the catalog
 
-```
+```oc:cli
   oc -n [-dev] new-app --template=mongodb-ephemeral -p MONGODB_VERSION=2.6 -p DATABASE_SERVICE_NAME=mongodb-[username] -p MONGODB_USER=dbuser -p MONGODB_PASSWORD=dbpass -p MONGODB_DATABASE=rocketchat --name=rocketchat-[username]
 ```
 
@@ -175,6 +188,20 @@ oc -n [-dev] process openshift//mongodb-ephemeral --parameters=true
 ![](../assets/03_deploy_mongo_03.png)
 ![](../assets/03_deploy_mongo_04.png)
 ![](../assets/03_deploy_mongo_05.png)
+  - Find the mongodb deployment by going back to the overview page or form the left menu `Applications > Deployment`
+  - Wait until MongoDB has been successfully deployed
+  MongoDB will generate a lot of logs. Since MongoDB comes with a readiness probe check for pod/container readiness, to know when it is up and ready.
+  ```oc:cli
+  # using oc rollout latest; or
+  oc -n [-dev] rollout latest mongodb-[username]
+
+  # using watch
+  watch -n 1 -x oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=mongodb-[username] -o 'jsonpath={range .items[*].status.containerStatuses[*]}{.name}{"\t"}{.ready}{"\n"}{end}'
+  ```
+  You can safely ignore repeated messages as such:
+  ```
+  2020-02-06T06:23:41.391+0000 [conn11041]  authenticate db: rocketchat { authenticate: 1, nonce: "xxx", user: "dbuser", key: "xxx" }
+  ```
 
 ### Deployment Configuration Options
 As a result of using a generic `new-app` style deployment, as opposed to openshift specific templates, a lot of defaults are leveraged. 
@@ -192,14 +219,23 @@ a database has not been deployed, the app does not know how or where to connect 
   ```
   you can also use the CLI to apply the environment variable
   ```
-  oc -n [-dev] set env dc/rocketchat-[username] "MONGO_URL=mongodb://dbuser:dbpass@mongodb-[username]]:27017/rocketchat"
+  oc -n [-dev] set env dc/rocketchat-[username] "MONGO_URL=mongodb://dbuser:dbpass@mongodb-[username]:27017/rocketchat"
   ```
   *HINT*: You may use OpenShift [Downward API](https://docs.openshift.com/container-platform/3.11/dev_guide/downward_api.html#dapi-environment-variable-references) to refer to the secret created by MongoDB.
-  ```
+  ```oc:cli
+  oc -n [-dev] rollout pause dc/rocketchat-[username] 
   oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_USER", "valueFrom":{"secretKeyRef":{"key":"database-user", "name":"mongodb-[username]"}}}]}]}}}}'
-  oc -n [-dev] set env dc/rocketchat-[username] 'MONGO_URL=mongodb://$(MONGO_USER):dbpass@mongodb-[username]:27017/rocketchat'
+
+  oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_PASS", "valueFrom":{"secretKeyRef":{"key":"database-password", "name":"mongodb-[username]"}}}]}]}}}}'
+
+  oc -n [-dev] set env dc/rocketchat-[username] 'MONGO_URL=mongodb://$(MONGO_USER):$(MONGO_PASS)@mongodb-[username]:27017/rocketchat'
+
+  oc -n [-dev] rollout resume dc/rocketchat-[username] 
+
+  # Check environment variables configuration
+  oc -n [-dev] get dc/rocketchat-[username] -o json | jq '.spec.template.spec.containers[].env'
   ```
-  *bonus*: Try to figure out how to use Downward API for the password, and database name as well.
+  *bonus*: Try to figure out how to use Downward API for the database/collection name as well.
 
 - Click save and take note of what happens next
     - Navigate to `Applications -> Pods` and `Applications -> Deployments` to notice the changes
@@ -218,8 +254,8 @@ There are 2 ways of creating routes using CLI.
 oc -n [-dev] expose svc/rocketchat-[username]
 ```
   - Using `oc create route` for secure (https) route
-```
-oc -n [-dev create route edge rocketchat-[username] --service=rocketchat-[username] --insecure-policy=Redirect
+```oc:cli
+oc -n [-dev] create route edge rocketchat-[username] --service=rocketchat-[username] --insecure-policy=Redirect
 ```
 
 ### Web Console
@@ -245,6 +281,15 @@ With the new deployment running, monitor the readiness of the pod.
 A container that is marked `ready` when it is not is an indication of a lack of (or misconfigured) healthcheck. 
 Let's add a healthcheck. 
 
+### Using cli
+```oc:cli
+oc -n [-dev] set probe dc/rocketchat-[username] --readiness --get-url=http://:3000/ --initial-delay-seconds=15
+
+# Watch your RocketChat deployment from the WebConsole, and simoutenaously
+# Watch RocketChat respone (press CTRL+c to exit watch)
+watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].pathfinder.gov.bc.ca/api/info
+```
+### Using Web Console
   - Navigate to `Applications -> Deployments`
   - Select the appropriate deployment
   - Select `Actions` and then `Edit Health Checks`
@@ -286,10 +331,12 @@ While reviewing the different deployment versions, take note of the `Trigger` co
 ![](../assets/03_deploy_build_trigger_01.png)
 
   - Edit the buildconfig to change the output image to the `dev` tag
-
+```oc:cli
+oc -n [-tools] patch bc/rocketchat-[username] -p '{"spec":{"output":{"to":{"name":"rocketchat-[username]:dev"}}}}'
+```
 ![](../assets/03_deploy_build_trigger_02.png)
 
-  - Start a new build and monitor your the `dev` deployment when the build completes
+  - A new built should have been automatically triggered. Monitor your RocketChat deployment in the `[-dev]` namespace immediatelly after the build completes
 
 ![](../assets/03_deploy_build_trigger_03.png)
 
@@ -300,5 +347,11 @@ cutting over traffic and terminating the previous container.
 ![](../assets/03_deployment_strategy_01.png)
 
   - Change the strategy to a `Recreate` and redeploy a couple of times
+```oc:cli
+oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"recreateParams":{"timeoutSeconds":600},"resources":{},"type":"Recreate"}}}'
+```
   - Refresh the browser URL right after a new deployment and observe the behavior
   - Change the strategy back to `Rolling`
+```oc:cli
+oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"resources":{},"rollingParams":{"intervalSeconds":1,"maxSurge":"25%","maxUnavailable":"25%","timeoutSeconds":600,"updatePeriodSeconds":1},"type":"Rolling"}}}'
+```

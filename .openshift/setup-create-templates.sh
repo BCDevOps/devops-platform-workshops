@@ -14,6 +14,11 @@ function create_workbench_build_template {
 
   convert_list_to_template "${TEMPLATE_PATH}" "workbench"
 
+  # Ading Fedora ImageStream
+  _jq 'del(.objects[] | select(.kind == "ImageStream" and .name == "fedora-minimal"))' "${TEMPLATE_PATH}"
+  _jq '.objects += [{"apiVersion":"image.openshift.io/v1","kind":"ImageStream","metadata":{"annotations":null,"creationTimestamp":null,"generation":1,"labels":{"app":"workbench","template":"workbench"},"name":"fedora-minimal"},"spec":{"lookupPolicy":{"local":false},"tags":[{"annotations":{"openshift.io/imported-from":"registry.fedoraproject.org/fedora-minimal:30"},"from":{"kind":"DockerImage","name":"registry.fedoraproject.org/fedora-minimal:30"},"generation":1,"importPolicy":{},"name":"30","referencePolicy":{"type":"Local"}}]},"status":{"dockerImageRepository":""}}]' "${TEMPLATE_PATH}"
+
+
   #echo "Squash Layers"
   _jq '(.objects[] | select(.kind == "BuildConfig" and .spec.strategy.dockerStrategy !=null)).spec.strategy.dockerStrategy.imageOptimizationPolicy |= "SkipLayers"' "${TEMPLATE_PATH}"
 
@@ -31,7 +36,9 @@ function create_workbench_deployment_template {
 
   pushd "${GIT_TOP_DIR}" > /dev/null
   mkdir -p "$(dirname "${TEMPLATE_PATH}")"
-  oc -n "${NS_WORKBENCH}" new-app --image-stream="${NS_WORKBENCH}/workbench:latest" "--name=ocp101-workbench" --dry-run -o json  > "${TEMPLATE_PATH}"
+  set -x
+  oc -n "${NS_WORKBENCH}" new-app --allow-missing-images=true --allow-missing-imagestream-tags=true --image-stream="${NS_WORKBENCH}/workbench:latest" "--name=ocp101-workbench" --dry-run -o json  > "${TEMPLATE_PATH}"
+  set +x
   popd > /dev/null
 
   convert_list_to_template "${TEMPLATE_PATH}" "workbench"
@@ -135,8 +142,18 @@ function create_labs_student_deployment_template {
   _jq '(.objects[] | select(.kind == "DeploymentConfig")).spec.template.spec.containers[0].env += [{"name":"HOME", "value":"/home/nobody"},{"name":"STUDENT", "value":"${STUDENT_ID}"},{"name":"NAMESPACE_TOOLS", "value":"${NAMESPACE_TOOLS}"},{"name":"NAMESPACE_DEV", "value":"${NAMESPACE_DEV}"}] ' "${TEMPLATE_PATH}"
 }
 
+function create_student_role_template {
+  TEMPLATE_PATH="${TEMPLATES_DIR}/role-student.json"
+  echo "Creating $(basename "${TEMPLATE_PATH}")"
+  
+  echo '{"kind": "Template","apiVersion": "v1", "metadata": {"name": "student-role"},"objects":[{"kind":"Role","apiVersion":"rbac.authorization.k8s.io/v1","metadata":{"name":"student","creationTimestamp":null},"rules":[]}]}' > "${TEMPLATE_PATH}"
+  _jq '(.objects[] | select(.kind == "Role" and .metadata.name == "student")).rules += [{"verbs":["get"],"apiGroups":[""],"resources":["pods"]}]' "${TEMPLATE_PATH}"
+  _jq '(.objects[] | select(.kind == "Role" and .metadata.name == "student")).rules += [{"verbs":["create"],"apiGroups":[""],"resources":["pods/exec"]}]' "${TEMPLATE_PATH}"
+}
+
 create_workbench_build_template
 create_workbench_deployment_template
 create_labs_build_template
 create_labs_main_deployment_template
 create_labs_student_deployment_template
+create_student_role_template

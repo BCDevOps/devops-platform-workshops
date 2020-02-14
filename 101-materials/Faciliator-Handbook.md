@@ -9,21 +9,21 @@
 ### Projects
 #### Platform Services
   ```
-  echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm new-project 'ocp101a-{}' "--display-name=OpenShift 101 ({})" "--description=OpenShift 101 ({})"
+  echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm new-project 'ocp101b-{}' "--display-name=OpenShift 101 ({})" "--description=OpenShift 101 ({})"
 
-  echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm label --overwrite 'namespace/ocp101a-{}' 'name=ocp101a' 'environment={}' 'product=OCP101' 'category=workshop'
+  echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm label --overwrite 'namespace/ocp101b-{}' 'name=ocp101a' 'environment={}' 'product=OCP101' 'team=BCDEVOPS' 'category=workshop'
 
   
   #Instructor Access
-  echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm -n 'ocp101a-{}' policy add-role-to-user admin cvarjao
+  echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm -n 'ocp101b-{}' policy add-role-to-user admin cvarjao ShellyXueHan
   ```
 #### Instructor
   ```
-  oc -n ocp101a-workbench create role student --verb=get,create --resource=pods,pods/exec
+  oc -n ocp101b-workbench process -f templates/role-student.json | oc -n ocp101b-workbench create -f -
 
-  oc -n ocp101a-workbench create serviceaccount student
+  oc -n ocp101b-workbench create serviceaccount student
 
-  echo -e "tools\ndev" | xargs -t -I {} oc -n 'ocp101a-{}' policy add-role-to-user admin 'system:serviceaccount:ocp101a-workbench:student'
+  echo -e "tools\ndev" | xargs -t -I {} oc -n 'ocp101b-{}' policy add-role-to-user admin 'system:serviceaccount:ocp101b-workbench:student'
   ```
 
 ### Instructor

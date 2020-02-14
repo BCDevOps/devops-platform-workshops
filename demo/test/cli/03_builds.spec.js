@@ -17,6 +17,7 @@ function run(cmd, options){
   delete _options.stdio
 
   return new Promise((resolve, reject)=>{
+    //console.log(`Running ${cmd.join(' ')}`)
     const proc = spawn(cmd[0], cmd.slice(1), _options);
     if (stdio && stdio[1]){
       proc.stdout.pipe(stdio[1])
@@ -35,12 +36,15 @@ function run(cmd, options){
 
 function showRunAndWait(cmd){
   return new Promise((resolve, reject)=>{
+    //console.log(`Watching ${cmdExitValue}`)
     let watcher=fs.watch(cmdExitValue, {persistent:true}, () => {
       watcher.close()
-      fs.readFile(cmdExitValue, {encoding:'utf8'}, (err, data)=>{
-        if (err) reject(err);
-        resolve(parseInt(data));
-      })
+      setTimeout(()=>{
+        fs.readFile(cmdExitValue, {encoding:'utf8'}, (err, data)=>{
+          if (err) reject(err);
+          resolve(parseInt(data));
+        })
+      }, 1000)
     })
     run([path.resolve(__dirname, '../../c/ttyecho'), '-n', ttyDevice].concat(cmd))
     .catch((err)=>{
@@ -53,14 +57,13 @@ async function openTerminal(){
   return new Promise((resolve, reject)=>{
     const cwd = path.resolve(__dirname, '../../');
     const ret  = {}
-    let watcher=fs.watch(ttyFile, {persistent:false}, () => {
+    let watcher=fs.watch(ttyFile, {persistent:true}, () => {
       ret.tty = fs.readFileSync(path.resolve(__dirname, '.tty'), {encoding:'utf8'}).trim();
       ttyDevice = ret.tty;
       console.log(`tty:${ret.tty}`)
       watcher.close()
       resolve(ret);
     })
-    fs.writeFileSync(rcFile, `tty > '${ttyFile}'\nPROMPT_COMMAND='printf "$?" > "${cmdExitValue}"'\nHISTFILE=\nHISTSIZE=0\nclear\necho 'Hello World'`)
 
     proc = spawn('osascript', [
       '-e', 'tell application "Terminal" to activate',
@@ -79,9 +82,31 @@ describe('Build', function() {
     let stdout= new WritableStream()
     await run(['whoami'], {stdio:[null, stdout, null]})
     expect(stdout.toString().trim()).to.equal("root")
+    await openTerminal();
+
     ttyDevice = fs.readFileSync(path.resolve(__dirname, '.tty'), {encoding:'utf8'}).trim();
     await run(['test', '-w', ttyDevice]).then((code)=>{
       expect(code).to.equal(0)
+    })
+    await run(['touch', ttyFile]).then((code)=>{
+      expect(code).to.equal(0)
+    })
+    await run(['chmod', 'a+rw', ttyFile]).then((code)=>{
+      expect(code).to.equal(0)
+    })
+    await run(['touch', cmdExitValue]).then((code)=>{
+      expect(code).to.equal(0)
+    })
+    await run(['chmod', 'a+rw', cmdExitValue]).then((code)=>{
+      expect(code).to.equal(0)
+    })
+    
+    fs.writeFileSync(rcFile, `tty > '${ttyFile}'\nPROMPT_COMMAND='printf "$?" > "${cmdExitValue}"'\nHISTFILE=\nHISTSIZE=0\nPS1='$ '\nprintf "0" > "${cmdExitValue}"\nclear\necho 'Starting demo'`)
+    await showRunAndWait([
+      'source', rcFile
+    ])
+    .then((exitCode)=>{
+      expect(exitCode).to.equal(0);
     })
   })
 
@@ -94,7 +119,13 @@ describe('Build', function() {
   })
   it("oc delete", async function() {
     await showRunAndWait([
-      'oc', '-n', config.namespace.tools, 'delete', 'all', '-l', `build=rocketchat-${config.name}`, '-l', `build=mongodb-${config.name}`, '--ignore-not-found=true'
+      'oc', '-n', config.namespace.tools, 'delete', 'all', '-l', `build=rocketchat-${config.name}`, '--ignore-not-found=true'
+    ])
+    .then((exitCode)=>{
+      expect(exitCode).to.equal(0);
+    })
+    await showRunAndWait([
+      'oc', '-n', config.namespace.tools, 'delete', 'all', '-l', `build=mongodb-${config.name}`, '--ignore-not-found=true'
     ])
     .then((exitCode)=>{
       expect(exitCode).to.equal(0);
@@ -109,14 +140,20 @@ describe('Build', function() {
     })
 
     await showRunAndWait([
-      'oc', '-n', config.namespace.tools, 'delete', 'all', '-l', `app=rocketchat-${config.name}`, '--ignore-not-found=true'
+      'oc', '-n', config.namespace.dev, 'delete', 'all,secret', '-l', `app=rocketchat-${config.name}`, '--ignore-not-found=true'
     ])
     .then((exitCode)=>{
       expect(exitCode).to.equal(0);
     })
 
     await showRunAndWait([
-      'oc', '-n', config.namespace.tools, 'delete', 'all', '-l', `app=mongodb-${config.name}`, '--ignore-not-found=true'
+      'oc', '-n', config.namespace.dev, 'delete', 'all,secret', '-l', `app=mongodb-${config.name}`, '--ignore-not-found=true'
+    ])
+    .then((exitCode)=>{
+      expect(exitCode).to.equal(0);
+    })
+    await showRunAndWait([
+      'oc', '-n', config.namespace.dev, 'delete', `is/rocketchat-${config.name}`, '--ignore-not-found=true'
     ])
     .then((exitCode)=>{
       expect(exitCode).to.equal(0);
@@ -142,7 +179,7 @@ describe('Build', function() {
       expect(exitCode).to.equal(0);
     })
   })
-  it ("oc tag", async function (){
+  it("oc tag", async function (){
     await showRunAndWait([
       'oc', '-n', config.namespace.tools, 'tag', `${config.rocketchat.imageStream}:latest`, `${config.rocketchat.imageStream}:dev`
     ]).then((exitCode)=>{
@@ -156,7 +193,7 @@ describe('Build', function() {
       expect(exitCode).to.equal(0);
     })
   })
-  it.only("oc new-app", async function() {
+  it("oc new-app", async function() {
     await showRunAndWait([
       `oc -n "${config.namespace.dev}" new-app '--template=mongodb-ephemeral' -p "DATABASE_SERVICE_NAME=mongodb-${config.name}" -p "MONGODB_DATABASE=rocketchat" -p "MONGODB_USER=dbuser" -p "MONGODB_PASSWORD=dbpass" -p "MONGODB_VERSION=2.6" --name=mongodb-${config.name}`
     ]).then((exitCode)=>{
