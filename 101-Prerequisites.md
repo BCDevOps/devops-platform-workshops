@@ -7,7 +7,8 @@
 4. [ ] - Students can access the cluster
 5. [ ] - Students have access to rocketchat, if not invite them with reggie.
 6. [ ] - RocketChat channel created for the class.
-7. [x] - Project set (tools and dev) created for the class with session a/b.
+7. [ ] - Project set (tools and dev) created for the class with session a/b.
+8. [ ] - Create Rocket.Chat webhook to the channenl that was created earlier and share with class
 
 > Links to distribute, save in a pinned message when creating rocketchat channel:
 - [Resources](https://developer.gov.bc.ca)
