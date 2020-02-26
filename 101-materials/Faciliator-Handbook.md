@@ -40,6 +40,11 @@
 - copy `.openshift/.env.template` to `.openshift/.env` and edit it to make your own
 - copy `.openshift/.rc.env.template` to `.openshift/.rc.env` and edit it to make your own
 
+- Create the templates
+  ```
+    (cd .openshift && ./setup.sh create-templates)
+  ```
+
 - Build the lab material (docs)
   ```
     (cd .openshift && ./setup.sh build-docs)
