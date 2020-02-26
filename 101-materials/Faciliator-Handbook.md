@@ -7,6 +7,9 @@
   Create Rocketchat webhook
 
 ### Projects
+
+- Clone using HTTPS. do NOT use SSH
+
 #### Platform Services
 
   `/usr/local/bin/ocadm`
@@ -24,15 +27,6 @@
   echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm -n 'ocp101b-{}' policy add-role-to-user admin cvarjao ShellyXueHan
   ```
 #### Instructor
-  ```
-  oc -n ocp101b-workbench process -f templates/role-student.json | oc -n ocp101b-workbench create -f -
-
-  oc -n ocp101b-workbench create serviceaccount student
-
-  echo -e "tools\ndev" | xargs -t -I {} oc -n 'ocp101b-{}' policy add-role-to-user admin 'system:serviceaccount:ocp101b-workbench:student'
-  ```
-
-### Instructor
 - create a google spreadsheet with 4 columns:
   ```
   ID	Github Account	RocketChat Account	Alias
@@ -44,15 +38,29 @@
   ```
     (cd .openshift && ./setup.sh create-templates)
   ```
+- Setup namespaces
+  ```
+  oc -n ocp101b-workbench process -f templates/role-student.json | oc -n ocp101b-workbench create -f -
+
+  oc -n ocp101b-workbench create serviceaccount student
+
+  echo -e "tools\ndev" | xargs -t -I {} oc -n 'ocp101b-{}' policy add-role-to-user admin 'system:serviceaccount:ocp101b-workbench:student'
+  ```
+
+### Instructor
 
 - Build the lab material (docs)
   ```
     (cd .openshift && ./setup.sh build-docs)
   ```
-
+  Note: you may need to run twice as it may complain about missing ImageStreamTag
 - Deploy the lab material (docs)
   ```
-    (cd .openshift && ./setup.sh deploy-docs)
+    (cd .openshift && ./setup.sh deploy-main-docs)
+  ```
+- Build the workbench
+  ```
+    (cd .openshift && ./setup.sh build-workbench)
   ```
 
 ### Students
