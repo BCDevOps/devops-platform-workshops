@@ -6,10 +6,9 @@ set -o pipefail
 function create_workbench_build_template {
   TEMPLATE_PATH="${WORKBENCH_BUILD_TEMPLATE_PATH}"
   echo "Creating $(basename "${TEMPLATE_PATH}")"
-
   pushd "${GIT_TOP_DIR}" > /dev/null
   mkdir -p "$(dirname "${TEMPLATE_PATH}")"
-  oc -n "${NS_WORKBENCH}" new-build . --context-dir=.openshift/images/workbench --strategy=docker -o json '--name=workbench' > "${TEMPLATE_PATH}"
+  oc -n "${NS_WORKBENCH}" new-build . --context-dir=.openshift/images/workbench --allow-missing-images --strategy=docker --dry-run -o json '--name=workbench' > "${TEMPLATE_PATH}"
   popd > /dev/null
 
   convert_list_to_template "${TEMPLATE_PATH}" "workbench"
@@ -37,6 +36,8 @@ function create_workbench_deployment_template {
   pushd "${GIT_TOP_DIR}" > /dev/null
   mkdir -p "$(dirname "${TEMPLATE_PATH}")"
   set -x
+  oc -n "${NS_WORKBENCH}" create is workbench || true
+
   oc -n "${NS_WORKBENCH}" new-app --allow-missing-images=true --allow-missing-imagestream-tags=true --image-stream="${NS_WORKBENCH}/workbench:latest" "--name=ocp101-workbench" --dry-run -o json  > "${TEMPLATE_PATH}"
   set +x
   popd > /dev/null
@@ -99,7 +100,10 @@ function create_labs_main_deployment_template {
 
   pushd "${GIT_TOP_DIR}" > /dev/null
   mkdir -p "$(dirname "${TEMPLATE_PATH}")"
-  oc -n "${NS_WORKBENCH}" new-app --image-stream="${NS_WORKBENCH}/ocp101-labs:latest" "--name=ocp101-labs" --dry-run -o json  > "${TEMPLATE_PATH}"
+
+  oc -n "${NS_WORKBENCH}" create is ocp101-labs || true
+
+  oc -n "${NS_WORKBENCH}" new-app --image-stream="${NS_WORKBENCH}/ocp101-labs:latest" "--name=ocp101-labs" --allow-missing-imagestream-tags=true --dry-run -o json  > "${TEMPLATE_PATH}"
   popd > /dev/null
 
   convert_list_to_template "${TEMPLATE_PATH}" "ocp101-labs"
