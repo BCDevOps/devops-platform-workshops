@@ -8,6 +8,12 @@
 
 ### Projects
 #### Platform Services
+
+  `/usr/local/bin/ocadm`
+  ```
+  exec oc --as=system:serviceaccount:openshift:bcdevops-admin "$@"
+  ```
+
   ```
   echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm new-project 'ocp101b-{}' "--display-name=OpenShift 101 ({})" "--description=OpenShift 101 ({})"
 
@@ -27,21 +33,21 @@
   ```
 
 ### Instructor
-- Edit `.openshift/.env`.
-  Example:
+- create a google spreadsheet with 4 columns:
   ```
-  NS_TOOLS='ocp101-tools'
-  NS_DEPLOY='ocp101-dev'
+  ID	Github Account	RocketChat Account	Alias
   ```
+- copy `.openshift/.env.template` to `.openshift/.env` and edit it to make your own
+- copy `.openshift/.rc.env.template` to `.openshift/.rc.env` and edit it to make your own
 
 - Build the lab material (docs)
   ```
-    (cd .openshift && ./setup build-docs)
+    (cd .openshift && ./setup.sh build-docs)
   ```
 
 - Deploy the lab material (docs)
   ```
-    (cd .openshift && ./setup deploy-docs)
+    (cd .openshift && ./setup.sh deploy-docs)
   ```
 
 ### Students
