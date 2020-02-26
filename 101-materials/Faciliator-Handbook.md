@@ -47,8 +47,12 @@
   echo -e "tools\ndev" | xargs -t -I {} oc -n 'ocp101b-{}' policy add-role-to-user admin 'system:serviceaccount:ocp101b-workbench:student'
   ```
 
-### Instructor
+- Apply Network Security Policies to the Workbench namespace
+  ```
+  oc -n ocp101b-workbench process -p NAMESPACE=ocp101b-workbench -f https://raw.githubusercontent.com/BCDevOps/platform-services/00091a2ea5e442260cd46b13dac1f6c7727b25e5/security/aporeto/docs/sample/quickstart-nsp.yaml
+  ```
 
+### Instructor
 - Build the lab material (docs)
   ```
     (cd .openshift && ./setup.sh build-docs)
