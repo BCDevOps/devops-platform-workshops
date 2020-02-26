@@ -9,6 +9,7 @@
 ### Projects
 
 - Clone using HTTPS. do NOT use SSH
+- Install `gnu-tar` (`brew install gnu-tar`)
 
 #### Platform Services
 
