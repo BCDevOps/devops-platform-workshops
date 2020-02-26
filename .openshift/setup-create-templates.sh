@@ -15,6 +15,7 @@ function create_workbench_build_template {
 
   # Ading Fedora ImageStream
   _jq 'del(.objects[] | select(.kind == "ImageStream" and .name == "fedora-minimal"))' "${TEMPLATE_PATH}"
+  _jq 'del(.objects[] | select(.kind == "ImageStreamTag"))' "${TEMPLATE_PATH}"
   _jq '.objects += [{"apiVersion":"image.openshift.io/v1","kind":"ImageStream","metadata":{"annotations":null,"creationTimestamp":null,"generation":1,"labels":{"app":"workbench","template":"workbench"},"name":"fedora-minimal"},"spec":{"lookupPolicy":{"local":false},"tags":[{"annotations":{"openshift.io/imported-from":"registry.fedoraproject.org/fedora-minimal:30"},"from":{"kind":"DockerImage","name":"registry.fedoraproject.org/fedora-minimal:30"},"generation":1,"importPolicy":{},"name":"30","referencePolicy":{"type":"Local"}}]},"status":{"dockerImageRepository":""}}]' "${TEMPLATE_PATH}"
 
 
