@@ -28,7 +28,7 @@ function deploy_student {
     ( STUDENT_ID="$3" "${SCRIPT_PATH}/setup.sh" "deploy-student-workbench" )
     if [ "${rocketchat_announcement}" == "1" ]; then
       rc_curl -fsSL "${rc_url}/api/v1/chat.postMessage" \
-        -d '{ "roomId": "'"${rc_workbenches_room_id}"'", "text": "Hi @'"${2}"' !\nLab content:\n-> `https://ocp101-labs-'"${NS_WORKBENCH}"'.pathfinder.gov.bc.ca/student/'"${3}"'`\n1) Visit https://console.pathfinder.gov.bc.ca:8443/console/command-line and copy your `oc login` command line with token.\n2) Open a terminal (e.g.: bash or windows command prompt) and paste the login command.\n3)Access your workbench by using:\n -> `oc -n '"${NS_WORKBENCH}"' rsh workbench-'"${3}"'-0`" }' &>/dev/null
+        -d '{ "roomId": "'"${rc_workbenches_room_id}"'", "text": "Hi @'"${2}"' !\nLab content:\n-> `https://ocp101-labs-'"${NS_WORKBENCH}"'.pathfinder.gov.bc.ca/student/'"${3}"'`\n1) Visit https://console.pathfinder.gov.bc.ca:8443/console/command-line and copy your `oc login` command line with token.\n2) Open a terminal (e.g.: bash or windows command prompt) and paste the login command.\n3)Access your workbench by using:\n -> `oc -n '"${NS_WORKBENCH}"' rsh workbench-'"${3}"'-0 bash`" }' &>/dev/null
     fi
 }
 
