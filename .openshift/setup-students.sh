@@ -24,6 +24,9 @@ function rc_curl {
 # $3 alias
 function deploy_student {
     oc -n "${NS_WORKBENCH}" policy add-role-to-user "--role-namespace=${NS_WORKBENCH}" student "${1}" || true
+    # Invite user to BCDevOps GitHub organization:
+    printf "Invite GitHub user $1 to BCDevOps GitHub org\n"
+    curl -fsSL -X PUT -H "Authorization: token ${GITHUB_TOKEN}" "https://api.github.com/orgs/BCDevOps/memberships/${1}" > /dev/null
     ( STUDENT_ID="$3" "${SCRIPT_PATH}/setup.sh" "deploy-student-docs")
     ( STUDENT_ID="$3" "${SCRIPT_PATH}/setup.sh" "deploy-student-workbench" )
     if [ "${rocketchat_announcement}" == "1" ]; then
