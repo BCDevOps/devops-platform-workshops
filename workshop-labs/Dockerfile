@@ -21,7 +21,8 @@ RUN chmod -R u+x ${APP_ROOT}/bin && \
     echo 'echo "root:x:0:0:root:/root:/sbin/nologin" > /etc/passwd' >> /usr/local/sbin/uid_entrypoint && \
     echo 'echo "nobody:x:$(id -u):0:nobody user:/home/nobody:/sbin/nologin" >> /etc/passwd' >> /usr/local/sbin/uid_entrypoint && \
     echo 'exec "$@"' >> /usr/local/sbin/uid_entrypoint \
-    chmod 764 /usr/local/sbin/uid_entrypoint
+    
+RUN chmod 764 /usr/local/sbin/uid_entrypoint
 
 # Install gitbook plugins
 RUN cd ${APP_ROOT}/docs && \
