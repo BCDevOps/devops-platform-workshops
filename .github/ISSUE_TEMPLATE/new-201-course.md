@@ -6,7 +6,7 @@ This issue template serves as a starting point for students to being their 201 c
 All values that need to be substituted will be in [ brackets ]
 Things to do post creating this issue:
 - post a comment to provide all students instructions on accessing their project sets and guidance
-on how to stand up the labs
+on how to stand up the labs (template found at provisioning_tools/201/templates/namespaceCreated.handlebar.md)
 - enter a note in your calendar to delete these namespaces two weeks from this issue creation
 
 -->
@@ -39,7 +39,21 @@ __Touch points__ are not fixed dates and will depend on student availability.
 - @jas29
  -->
 
+## Instructors
+
+<!-- @ mention all instructors here in a list. Eg:
+- @patricksimonian
+- @jas29
+ -->
+
+## Important Links
+- [rocketchat working channel]
+
 ## Startup
 <!-- reference for workshop delivery 201_materials/Handbook.md  -->
 The startup of the course _should_ typically be in person. The instructor will demonstrate standing up
 your project sets and speak on the format of this new workshop. 
+
+### Setting up Labs
+
+Once your namespaces are created. You will need to provision the lab materials. Please follow [install instructions](201_materials/lab-install.md)
