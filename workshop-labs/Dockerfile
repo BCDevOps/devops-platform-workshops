@@ -43,4 +43,4 @@ WORKDIR ${APP_ROOT}
 EXPOSE 4000
 
 # Do the thing
-CMD ["${APP_ROOT}/bin/run.sh"]
+CMD ["$APP_ROOT/bin/run.sh"]
