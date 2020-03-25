@@ -1,5 +1,6 @@
 ---
-name: New 201 Course
+title: 201 Workshop [date]
+name: New 201 Workshop
 about: Creating this Issue serves as a starting point for a new 201 course
 assignees:
   - patricksimonian
