@@ -1,3 +1,9 @@
+---
+title: New 201 Course
+about: Creating this Issue serves as a starting point for a new 201 course
+assignees:
+  - patricksimonian
+---
 <!-- NOTES for instructor (these are not visible in the issue) 
 This is the MVP for a more 'automated' and self-serve way to deliver the 201 course. 
 
