@@ -10,4 +10,13 @@ students through online labs/notes/slides in a structured way.
 - the state of the lab should be kept track of in github. This should be the single source of truth for knowing where students are in the lab. 
 - No strategy  has been made on how to facilitate courses in parallel but in theory it should be  _fairly easy_ to administer multiple instances of the openshift 201 in parallel. 
 
-## 
+## Who is this Course for?
+
+Teams that are already on the platform and have had at least 3 months experience with Openshift. 
+
+## What can the expect from this course?
+
+- Openshift Templates
+- Jenkins
+- Monitoring Tools (Prometheus, Grafana)
+- HA Databases (with Patroni)
