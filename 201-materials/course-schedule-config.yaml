@@ -1,0 +1,8 @@
+# any time measurements are based on a standard work week (monday to friday 9AM to 4PM)
+# time measurements are based on 'moment.js' time object arguments
+courseLength: [10, "days"]
+seats: 12,
+followUps: [
+ [3, "days"],
+ [7, "days"]
+]
