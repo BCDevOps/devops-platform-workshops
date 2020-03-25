@@ -1,5 +1,5 @@
 ---
-title: New 201 Course
+name: New 201 Course
 about: Creating this Issue serves as a starting point for a new 201 course
 assignees:
   - patricksimonian
