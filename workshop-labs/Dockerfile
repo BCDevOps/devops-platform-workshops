@@ -21,17 +21,36 @@ RUN chmod -R u+x ${APP_ROOT}/bin && \
     echo 'echo "root:x:0:0:root:/root:/sbin/nologin" > /etc/passwd' >> /usr/local/sbin/uid_entrypoint && \
     echo 'echo "nobody:x:$(id -u):0:nobody user:/home/nobody:/sbin/nologin" >> /etc/passwd' >> /usr/local/sbin/uid_entrypoint && \
     echo 'exec "$@"' >> /usr/local/sbin/uid_entrypoint
+    
+RUN chmod 764 /usr/local/sbin/uid_entrypoint
 
-# Install gitbook plugins
+ENV BOOK_NAME_101=book-openshift101
+ENV BOOK_NAME_201=book-openshift201
+
+# Install gitbook plugins for 101:
 RUN cd ${APP_ROOT}/docs && \
     ../support/toc.sh ./openshift101 > SUMMARY.md && \
     chgrp -R 0 ${APP_ROOT}/docs && \
     chmod -R g=u ${APP_ROOT}/docs && \
     gitbook install && \
     gitbook build && \
-    mv ${APP_ROOT}/docs/_book ${APP_ROOT}/book && \
-    chgrp -R 0 ${APP_ROOT}/book && \
-    chmod -R g+w ${APP_ROOT}/book && \
+    mv ${APP_ROOT}/docs/_book ${APP_ROOT}/${BOOK_NAME_101} && \
+    chgrp -R 0 ${APP_ROOT}/${BOOK_NAME_101} && \
+    chmod -R g+w ${APP_ROOT}/${BOOK_NAME_101} && \
+#    gitbook pdf ./ ./download.pdf && \
+    chgrp -R 0 ${APP_ROOT}/docs && \
+    chmod -R g=u ${APP_ROOT}/docs
+
+# Install gitbook plugins for 201:
+RUN cd ${APP_ROOT}/docs && \
+    ../support/toc.sh ./openshift201 > SUMMARY.md && \
+    chgrp -R 0 ${APP_ROOT}/docs && \
+    chmod -R g=u ${APP_ROOT}/docs && \
+    rm -rf ${APP_ROOT}/docs/_book && \
+    gitbook build && \
+    mv ${APP_ROOT}/docs/_book ${APP_ROOT}/${BOOK_NAME_201} && \
+    chgrp -R 0 ${APP_ROOT}/${BOOK_NAME_201} && \
+    chmod -R g+w ${APP_ROOT}/${BOOK_NAME_201} && \
 #    gitbook pdf ./ ./download.pdf && \
     chgrp -R 0 ${APP_ROOT}/docs && \
     chmod -R g=u ${APP_ROOT}/docs
@@ -41,4 +60,4 @@ WORKDIR ${APP_ROOT}
 EXPOSE 4000
 
 # Do the thing
-CMD ["/usr/local/sbin/uid_entrypoint", "${APP_ROOT}/bin/run.sh"]
+CMD ["sh", "-c", "$APP_ROOT/bin/run.sh"]
