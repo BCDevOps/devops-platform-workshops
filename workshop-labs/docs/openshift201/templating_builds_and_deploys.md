@@ -85,11 +85,11 @@ Adding requests/limits to a build config will allow you to effectively manage yo
 ```yaml
 resources:
   requests:
-    cpu: 100m
-    memory: 20Mb
+    cpu: 200m
+    memory: 120Mb
   limits:
-    cpu: 150m
-    memory: 30Mb
+    cpu: 350m
+    memory: 230Mb
 ```
 
 2. Delete all objects related to the build and try the build again
@@ -110,6 +110,7 @@ resources:
   c. Check to see if you can correctly query objects by that label. `oc get all -l app=joke-api`
 
 4. Change the output image tag to __NOT BE LATEST__. Instead change the __BuildConfig__ output field to
+
 ```yaml
 output:
   to:

@@ -1,0 +1,9 @@
+
+{
+  "output": {
+    "to": {
+      "kind": "ImageStreamTag",
+      "name": "joke-api:dev"
+    }
+  }
+}
