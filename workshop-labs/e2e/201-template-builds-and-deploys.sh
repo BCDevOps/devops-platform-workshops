@@ -5,12 +5,22 @@ temp_dc_file="${DIR}/dc.e2e.json"
 
 touch ${temp_bc_file}
 touch ${temp_dc_file}
+
 function exitNicely {
   printf "\n\n Exiting :) \n\n"
   rm ${temp_bc_file}
   rm ${temp_dc_file}
   exit 1
 }
+
+function waitForObjectsToDelete {
+  resources=""
+  until [ "$resources" = "0" ]; do
+    resources=$(oc get all -l build=$APP_NAME -n $TOOLS_NAMESPACE -o json | jq '.items | length')
+    sleep 1
+  done
+}
+
 REF=""
 APP_NAME="joke-api-e2e"
 APP_NAME_IMAGE_SUFFIX="e2e"
@@ -20,7 +30,7 @@ printf "========================================\n"
 printf "==  Testing Build and Deploy Lab E2E  ==\n"
 printf "========================================\n\n\n"
 
-sleep 2
+sleep 1
 
 printf "*reminder* You need to be logged in to run this e2e test\n"
 
@@ -101,7 +111,9 @@ fi
 
 printf "Cleaning up previous tests with oc delete all -l build=${APP_NAME}\n\n"
 
-oc delete all,imagestream -l build=${APP_NAME}
+oc delete all,imagestream -l build=${APP_NAME} -n $TOOLS_NAMESPACE
+
+waitForObjectsToDelete
 
 printf "===Creating A New Build and Extracting the Infrastructure Code===\n\n"
 
@@ -151,13 +163,15 @@ sleep 1
 
 printf "a. Deleting resources with oc delete all -l build=$APP_NAME  -n $TOOLS_NAMESPACE \n\n"
 oc delete all -l build=$APP_NAME -n $TOOLS_NAMESPACE
-sleep 5
+
+waitForObjectsToDelete
+
 printf "b. Applying resources with oc apply -f $temp_bc_file -n $TOOLS_NAMESPACE \n\n"
 oc apply -f $temp_bc_file
-sleep 5
-printf "c. Restarting build with oc start-build bc/$APP_NAME -n $TOOLS_NAMESPACE \n\n"
 
-printf "${BLUE}Note ${BLUE}for ${BLUE}testing ${BLUE}the ${BLUE}--wait ${BLUE}flag is being used \n"
+# printf "c. Restarting build with oc start-build bc/$APP_NAME -n $TOOLS_NAMESPACE \n\n"
+
+# printf "${BLUE}Note ${BLUE}for ${BLUE}testing ${BLUE}the ${BLUE}--wait ${BLUE}flag is being used \n"
 # oc start-build bc/$APP_NAME --wait
 
 
@@ -179,7 +193,7 @@ ITEMS_LENGTH=$(oc get all -l app=$APP_NAME -o json | jq '.items | length')
 
 printf "Asserting oc get all -l app=$APP_NAME .length should equal 2"
 
-if [ ITEMS_LENGTH = "2"];
+if [ ITEMS_LENGTH = "2" ];
 then
   echo "length didn't equal 2. Exiting"
   exitNicely
@@ -187,7 +201,8 @@ else
   printf "length equaled 2. Huzzah! \n\n"
 fi
 
-sleep 2
+## just so std out can be read
+sleep 1
 
 printf "4.  Change the output image tag to __NOT BE LATEST__\n\n"
 
@@ -206,7 +221,8 @@ printf "Image Output Configurations applied. Checking with jq '.items[1].spec.ou
 
 jq '.items[1].spec.output' $temp_bc_file
 
-sleep 2
+## so std out cnan be read
+sleep 1
 
 printf "Test completed. \n deleted temp files \n\n"
 
