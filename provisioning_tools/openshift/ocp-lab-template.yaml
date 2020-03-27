@@ -115,7 +115,7 @@ objects:
             value: ${GIT_BRANCH}
           - name: GIT_URL
             value: ${GIT_URL}
-          image: ${IMAGE_REGISTRY}/${IMAGE_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
+          image: ${APP}-${COMPONENT}${SUFFIX}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: ${APP}-${COMPONENT}${SUFFIX}
           ports:
@@ -155,6 +155,14 @@ objects:
     test: false
     triggers:
     - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - ${APP}-${COMPONENT}${SUFFIX}
+        from:
+          kind: ImageStreamTag
+          name: ${APP}-${COMPONENT}${SUFFIX}:${IMAGE_TAG}
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
@@ -175,6 +183,55 @@ objects:
       name: ${APP}-${COMPONENT}${SUFFIX}
       weight: 100
     wildcardPolicy: None
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: '${APP}-${COMPONENT}${SUFFIX}:${IMAGE_TAG}'
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      contextDir: workshop-labs
+      git:
+        ref: master
+        uri: 'https://github.com/BCDevOps/devops-platform-workshops.git'
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: 'gitbook-base:3.2.3'
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+      - type: ConfigChange
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewBuild
+    labels:
+      app: ${APP}
+      build: workshop-labs
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  spec:
+    lookupPolicy:
+      local: false
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewBuild
+    generation: 4
+    labels:
+      app: ${APP}
+      build: workshop-labs
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}
 parameters:
 - description: The name of the application for labeling all artifacts.
   displayName: Application Name
@@ -211,10 +268,6 @@ parameters:
   displayName: Image registry
   name: IMAGE_REGISTRY
   value: docker-registry.default.svc:5000
-- description: Image Source Namespace
-  displayName: Image Namespace
-  name: IMAGE_NAMESPACE
-  value: wpvqx7-tools
 - description: Image Name
   displayName: Image Name
   name: IMAGE_NAME
