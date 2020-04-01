@@ -1,9 +1,9 @@
 # Lab Setup
-Prior to working on labs, the Platform Services team will have created 4
+Prior to working on labs, the Platform Services team will have created 3
 projects for each attendee:
-- tooling
+- tools
 - dev
-- production
+- prod
 
 Each attendee is provided their own dedicated project as a platform "tenant". In this way, attendees are not required to add customized names to their apps, as was the case in OpenShift101.
 
