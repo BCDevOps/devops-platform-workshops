@@ -22,11 +22,15 @@ interested in the delivery of this course.
 
 ### Provisioning a Course
 
+Create a new Github Issue using the `new-201-course` issue template.
 
 ### Tearing Down a Course
 
+This process will be manual. There are __ansible__ [scripts that can tear down namespaces](provisioning_tools/201-labs/README.md)
+
 ### Incase Things Go Wrong
 
+You will have to troubleshoot at this stage since no part of the course is fully automated.
 
 ## Delivery Expectations and Scope of Work
 > what can be expected from the course as well as the mentor (time/work involved). 
