@@ -264,10 +264,6 @@ parameters:
   displayName: Workshop Branch
   name: GIT_BRANCH
   value: master
-- description: Image registry
-  displayName: Image registry
-  name: IMAGE_REGISTRY
-  value: docker-registry.default.svc:5000
 - description: Image Name
   displayName: Image Name
   name: IMAGE_NAME

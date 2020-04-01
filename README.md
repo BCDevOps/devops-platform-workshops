@@ -1,6 +1,7 @@
 # OpenShift Project Folder
 
-The workshop training material is currently hosted out of the pathfinder cluster inside of the `wpvqx7-prod` (devops-workshops (prod)) project.
+The workshop training material is currently hosted out of the pathfinder cluster inside of the `wpvqx7-prod` (devops-workshops (prod)) project. In addition the labs can be built and deployed in
+any namespace. 
 
 ## Workshop Contents and Labs
 
@@ -12,7 +13,10 @@ This folder has the content to create an OpenShift compatible `GitBook` based ap
 
 Example URL: <https://ocp101-labs.pathfinder.gov.bc.ca/>
 
-Create your parameter file and run the following to deploy (assuming the base image is available)
+Create your parameter file and run the following to build and deploy the labs. 
+> Please note deploying the different workshops labs relies on two things:
+1. The `WORKSHOP_NAME` parameter to be set accordingly. [more info](provisioning_tools/openshift/sample-lab.env)
+2. The Lab `Dockerfile` to include a gitbooks installation for the workshop
 
 ``` bash
 oc process -f ./provisioning_tools/openshift/ocp-lab-template.yaml \
@@ -22,8 +26,8 @@ oc process -f ./provisioning_tools/openshift/ocp-lab-template.yaml \
 When workshop is finished and not needed anymore, make sure to delete the instance
 
 ``` bash
-oc get all,configmap -l course-session=<lab session lable>
-oc delete all,configmap -l course-session=<lab session lable>
+oc get all,configmap -l course-session=<lab session label>
+oc delete all,configmap -l course-session=<lab session label>
 ```
 
 ### workshop-material
@@ -44,14 +48,19 @@ buildConfigs are located in the -tools namespace and are created as per the foll
 ``` bash
 oc new-build --name workshop-content https://github.com/BCDevOps/devops-platform-workshops.git \
  --context-dir workshop-material
-oc new-build --name workshop-labs https://github.com/BCDevOps/devops-platform-workshops.git \
- --context-dir workshop-labs
 ```
 
 The default image tag used by the deployments is "v2-stable", and will need to be added after the build.
 
 ``` bash
 oc tag workshop-content:latest workshop-content:v2-stable
-oc tag workshop-labs:latest workshop-labs:v2-stable
 ```
 
+## Adding New Labs
+
+Adding new 'workshop labs' requires a few steps.
+
+1. Create a new directory under `workshop-labs/docs/<lab name>`
+2. Add your content following the lab [creation style guide](workshop-labs/Lab-Content-Style-Guide.md)
+3. Add a master/summary table of contents for the labs in `workshop-labs/summaries`
+4. Update the `Dockerfile` to install gitbooks for the labs (this is not ideal and i'd love for a PR to improve this process)
