@@ -9,6 +9,33 @@ objects:
     labels:
       app: ${APP}
       course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}-caddy
+  data:
+    Caddyfle: |
+      file_server
+      log stdout
+      errors stdout
+      root /opt/app-root/book-${WORKSHOP_NAME}
+      
+      gzip {
+        ext .js .html .css
+      }
+      
+      templates {
+        ext   .md
+        between <> </>
+      }
+      
+      header / {
+        # prevent any static html from being cached
+        Cache-Control "public, max-age=0, must-revalidate"
+      }
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    labels:
+      app: ${APP}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
     name: ${APP}-${COMPONENT}${SUFFIX}-${VOLUMN_NAME}
   data:
     SUMMARY-openshift101.md: |
@@ -143,10 +170,15 @@ objects:
           volumeMounts:
           - name: ${VOLUMN_NAME}
             mountPath: ${WORKSHOP_SUMMARY_FOLDER}
+          - name: caddyfile
+            mountPath: /opt/app-root/config
         volumes:
         - name: ${VOLUMN_NAME}
           configMap:
             name: ${APP}-${COMPONENT}${SUFFIX}-${VOLUMN_NAME}
+        - name: caddyfile
+          configMap:
+            name: ${APP}-${COMPONENT}${SUFFIX}-caddy
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
@@ -276,3 +308,6 @@ parameters:
   displayName: Volumn name
   name: VOLUMN_NAME
   value: summary
+- description: Your Github Username
+  displayName: Github Username
+  name: GITHUB_USERNAME

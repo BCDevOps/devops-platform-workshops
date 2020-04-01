@@ -6,15 +6,14 @@ ENV APP_ROOT=/opt/app-root
 ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
 COPY bin/ ${APP_ROOT}/bin/
 COPY support/ ${APP_ROOT}/support/
-
+# where caddyfile is mounted
+RUN mkdir ${APP_ROOT}/config
 RUN rm -rf  ${APP_ROOT}/docs/*
 COPY docs/ ${APP_ROOT}/docs/
 RUN chmod -R u+x ${APP_ROOT}/bin && \
     chgrp -R 0 ${APP_ROOT} && \
     chmod -R g=u ${APP_ROOT} /etc/passwd && \
-#    curl -fsSL https://github.com/caddyserver/caddy/releases/download/v1.0.4/caddy_v1.0.4_linux_amd64.tar.gz | \
-#    tar -xvz --file=- --directory=/usr/local/bin --no-selinux caddy && \
-    curl -sSL -o /usr/local/bin/caddy2 -f https://github.com/caddyserver/caddy/releases/download/v2.0.0-beta.13/caddy2_beta13_linux_amd64 && \
+    curl -sSL -o /usr/local/bin/caddy2 -f https://github.com/caddyserver/caddy/releases/download/v2.0.0-beta.20/caddy2_beta20_linux_amd64 && \
     chmod +x /usr/local/bin/caddy2 && \
     mkdir /home/nobody && chmod g+w /home/nobody && \
     echo '#!/bin/sh' > /usr/local/sbin/uid_entrypoint && \
