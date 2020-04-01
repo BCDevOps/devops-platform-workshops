@@ -127,7 +127,7 @@ objects:
               path: /
               port: 4000
               scheme: HTTP
-            initialDelaySeconds: 180
+            initialDelaySeconds: 20
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
