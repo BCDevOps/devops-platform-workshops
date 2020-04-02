@@ -11,24 +11,42 @@ objects:
       course-session: ${APP}-${COMPONENT}${SUFFIX}
     name: ${APP}-${COMPONENT}${SUFFIX}-caddy
   data:
-    Caddyfle: |
-      file_server
+    Caddyfile: |
+      :4000
+      root * /opt/app-root/book-${WORKSHOP_NAME}
+      file_server 
+      encode gzip
+      
       log stdout
-      errors stdout
-      root /opt/app-root/book-${WORKSHOP_NAME}
-      
-      gzip {
-        ext .js .html .css
-      }
-      
-      templates {
-        ext   .md
-        between <> </>
-      }
+      log stderr
       
       header / {
         # prevent any static html from being cached
         Cache-Control "public, max-age=0, must-revalidate"
+      }
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    labels:
+      app: ${APP}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}-gitbook-config
+  data:
+    book.json: |
+      {
+        "variables": {
+          "GITHUB_USERNAME": "${GITHUB_USERNAME}"
+        },
+        "title": "OpenShift Workshop Labs",
+        "plugins": ["fancybox"],
+        "links": {
+            "sidebar": {
+                "Download PDF": "/download.pdf"
+            }
+        },
+        "pluginsConfig": {
+            "fancybox": {}
+        }
       }
 - apiVersion: v1
   kind: ConfigMap
@@ -132,6 +150,8 @@ objects:
       spec:
         containers:
         - env:
+          - name: GITHUB_USERNAME
+            value: ${GITHUB_USERNAME}
           - name: WORKSHOP_NAME
             value: ${WORKSHOP_NAME}
           - name: WORKSHOP_FOLDER
@@ -228,9 +248,13 @@ objects:
     resources: {}
     runPolicy: Serial
     source:
+      configMaps:
+      - configMap:
+          name: ${APP}-${COMPONENT}${SUFFIX}-gitbook-config
+        destinationDir: ./docs
       contextDir: workshop-labs
       git:
-        ref: master
+        ref: ${GIT_BRANCH}
         uri: 'https://github.com/BCDevOps/devops-platform-workshops.git'
       type: Git
     strategy:

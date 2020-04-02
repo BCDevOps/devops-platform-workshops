@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec caddy2 run  --listen ':4000' --config ../config/Caddyfile
+exec caddy2 run  --config ./config/Caddyfile
