@@ -258,10 +258,6 @@ objects:
         uri: 'https://github.com/BCDevOps/devops-platform-workshops.git'
       type: Git
     strategy:
-      dockerStrategy:
-        from:
-          kind: ImageStreamTag
-          name: 'gitbook-base:3.2.3'
       type: Docker
     successfulBuildsHistoryLimit: 5
     triggers:

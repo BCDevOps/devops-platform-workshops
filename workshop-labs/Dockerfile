@@ -1,6 +1,5 @@
-FROM node:12
-MAINTAINER stewartshea <shea.stewart@arctiq.ca>
-RUN mkdir /opt/app-root
+FROM arctiqteam/gitbook-base:3.2.3
+
 # Set paths, permissions, and add content
 ENV APP_ROOT=/opt/app-root
 ENV PATH=${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
@@ -11,8 +10,7 @@ RUN mkdir ${APP_ROOT}/config
 RUN rm -rf  ${APP_ROOT}/docs/*
 
 COPY docs/ ${APP_ROOT}/docs/
-
-RUN cat ${APP_ROOT}/docs/book.json
+RUN cat ${APP_ROOT}/docs/build.json
 
 RUN chmod -R u+x ${APP_ROOT}/bin && \
     chgrp -R 0 ${APP_ROOT} && \
@@ -35,8 +33,8 @@ RUN cd ${APP_ROOT}/docs && \
     ../support/toc.sh ./openshift101 > SUMMARY.md && \
     chgrp -R 0 ${APP_ROOT}/docs && \
     chmod -R g=u ${APP_ROOT}/docs && \
-    npx gitbook-cli install && \
-    npx gitbook-cli build && \
+    gitbook install && \
+    gitbook build && \
     mv ${APP_ROOT}/docs/_book ${APP_ROOT}/${BOOK_NAME_101} && \
     chgrp -R 0 ${APP_ROOT}/${BOOK_NAME_101} && \
     chmod -R g+w ${APP_ROOT}/${BOOK_NAME_101} && \
@@ -50,7 +48,7 @@ RUN cd ${APP_ROOT}/docs && \
     chgrp -R 0 ${APP_ROOT}/docs && \
     chmod -R g=u ${APP_ROOT}/docs && \
     rm -rf ${APP_ROOT}/docs/_book && \
-    npx gitbook-cli build && \
+    gitbook build && \
     mv ${APP_ROOT}/docs/_book ${APP_ROOT}/${BOOK_NAME_201} && \
     chgrp -R 0 ${APP_ROOT}/${BOOK_NAME_201} && \
     chmod -R g+w ${APP_ROOT}/${BOOK_NAME_201} && \
