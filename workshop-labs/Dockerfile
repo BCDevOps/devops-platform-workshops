@@ -10,7 +10,6 @@ RUN mkdir ${APP_ROOT}/config
 RUN rm -rf  ${APP_ROOT}/docs/*
 
 COPY docs/ ${APP_ROOT}/docs/
-RUN cat ${APP_ROOT}/docs/build.json
 
 RUN chmod -R u+x ${APP_ROOT}/bin && \
     chgrp -R 0 ${APP_ROOT} && \
