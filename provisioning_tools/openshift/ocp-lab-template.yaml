@@ -34,9 +34,6 @@ objects:
   data:
     book.json: |
       {
-        "variables": {
-          "GITHUB_USERNAME": "${GITHUB_USERNAME}"
-        },
         "title": "OpenShift Workshop Labs",
         "plugins": ["fancybox"],
         "links": {
