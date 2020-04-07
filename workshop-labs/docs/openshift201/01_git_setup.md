@@ -10,28 +10,28 @@ Navigate to the <https://github.com/bcdevops/devops-platform-workshops-labs> rep
 Clone the repository and create your branch locally
 
 ``` bash
-git clone {URL to Repository}
+git clone https://github.com/[username]/devops-platform-workshops-labs.git
 cd devops-platform-workshops-labs
-git branch {{ book.variables.GITHUB_USERNAME }}-201
-git checkout {{ book.variables.GITHUB_USERNAME }}-201
+git branch [username]-201
+git checkout [username]-201
 ```
 
 Push your local branch to the upstream project
 
 ``` bash
-git push --set-upstream origin {{ book.variables.GITHUB_USERNAME }}-201
+git push --set-upstream origin [username]-201
 ```
 
 ![cli output](../assets/openshift201/01_git_cli_branch.png)
 
 ### Create your branch with the GUI
 
-Navigate to the public repository (<https://github.com/{admin}/devops-platform-workshops-labs)>
+Navigate to the public repository (<https://github.com/[username]/devops-platform-workshops-labs)>
 
-- Click "Branch:" and add you {{ book.variables.GITHUB_USERNAME }}-201 as the branch name.
-- Click "Create branch {{ book.variables.GITHUB_USERNAME }}-201"
+- Click "Branch:" and add you [username]-201 as the branch name.
+- Click "Create branch [username]-201"
 
-Follow the above instructions to "Create your branch with the CLI" but exclude the `git branch` and `git push` commands to clone a local copy and switch to the already create {{ book.variables.GITHUB_USERNAME }}-201 branch
+Follow the above instructions to "Create your branch with the CLI" but exclude the `git branch` and `git push` commands to clone a local copy and switch to the already create [username]-201 branch
 
 ### Create a draft pull request
 You won't be able to create a pull request until you have committed changes in your branch, so start off by creating a notes.md file and committing it to your branch:
