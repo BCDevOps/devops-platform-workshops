@@ -328,3 +328,4 @@ parameters:
 - description: Your Github Username
   displayName: Github Username
   name: GITHUB_USERNAME
+  required: true
