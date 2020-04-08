@@ -1,5 +1,11 @@
 :4000
+
+# for openshift 101
+# root * /opt/app-root/book-openshift101
+
+# for openshift 201
 root * /opt/app-root/book-openshift201
+
 file_server 
 encode gzip
 

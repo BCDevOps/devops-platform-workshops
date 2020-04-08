@@ -11,6 +11,7 @@ RUN rm -rf  ${APP_ROOT}/docs/*
 
 COPY docs/ ${APP_ROOT}/docs/
 
+RUN echo "Installing Caddy V2 (Beta), this is based of a github release and should be checked periodically to ensure the latest version is being used"
 RUN chmod -R u+x ${APP_ROOT}/bin && \
     chgrp -R 0 ${APP_ROOT} && \
     chmod -R g=u ${APP_ROOT} /etc/passwd && \

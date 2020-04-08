@@ -31,7 +31,7 @@ Navigate to the public repository (<https://github.com/[username]/devops-platfor
 - Click "Branch:" and add you [username]-201 as the branch name.
 - Click "Create branch [username]-201"
 
-Follow the above instructions to "Create your branch with the CLI" but exclude the `git branch` and `git push` commands to clone a local copy and switch to the already create [username]-201 branch
+Follow the above instructions to "Create your branch with the CLI" but exclude the `git branch` and `git push` commands to clone a local copy and switch to the already created [username]-201 branch
 
 ### Create a draft pull request
 You won't be able to create a pull request until you have committed changes in your branch, so start off by creating a notes.md file and committing it to your branch:
