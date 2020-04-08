@@ -3,6 +3,15 @@
 The workshop training material is currently hosted out of the pathfinder cluster inside of the `wpvqx7-prod` (devops-workshops (prod)) project. In addition the labs can be built and deployed in
 any namespace. 
 
+## To Build/Deloy the Labs on Openshift
+
+There is a guide on accomplishing this for Openshift 201 [here](201_materials/lab-install.md).
+
+For people that are interested on building and deploying Openshift 101, the process is exactly the same and just requires a few paramater changes in the deploy template. 
+
+> Openshift 101 is typically not something that is setup by students, we have a set of 'work bench' scripts that will stand the labs up instead. This is a work in progress and instructions can be found in the [101-Handbook](101_materials/Faciliator-Handbook.md).
+
+
 ## Workshop Contents and Labs
 
 2 application images can be deployed from this repo, each with their own directory: 
