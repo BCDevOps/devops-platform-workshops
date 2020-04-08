@@ -40,37 +40,7 @@ printf "Logged in as $WHO_ARE_YOU \n\n"
 
 printf "==Checking Dependencies==\n\n"
 
-printf "Checking tput \n\n"
-BLUE=""
-if [ -z $(which tput) ];
-then
-  printf "tput cannot be found. it is used for color formatting."
-  BLUE=$(tput setaf 4)
-fi
-printf "Checking oc \n\n"
-
-if [ -z $(which oc) ];
-then
-  printf "oc cannot be found"
-  exitNicely
-fi
-
-printf "Checking jq \n\n"
-
-if [ -z $(which jq) ];
-then
-  printf "jq cannot be found"
-  exitNicely
-fi
-
-
-printf "Checking sponge \n\n"
-
-if [ -z $(which sponge) ];
-then
-  printf "sponge cannot be found"
-  exitNicely
-fi
+./tools_check.sh
 
 if [ -z ${BRANCH+x} ]; then REF="master"; else REF=$BRANCH; fi
 
