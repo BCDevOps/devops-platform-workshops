@@ -1,4 +1,4 @@
-## Templating Custom Applications
+# Templating Custom Applications
 
 Earlier Helm was used to retrieve templates for products like Prometheus and Grafana. On the cluster though,
 you will also be building your applications. How do we convert the infrastructure needed to run your application
@@ -39,6 +39,7 @@ Wait for the build to complete before continuing to step 5.
 > Applying the `--name=` flag with `oc new-build` automatically created a label `build=joke-api`. This label,
 plus other labels that you will want to apply will make it easy to query and modify your infrastructure objects later. 
 
+
   b. Run `oc get all -l build=joke-api --export=true -o yaml > openshift/demo-express-server/build-infra.yaml` to extract a __stdout__ version  of your infrastructure code and write it to a file. 
 
 > As a bcgov best practice we recommend storing your infrastructure code as `YAML` format. It is easy to read, and allows you to add comments to the code.
@@ -61,7 +62,7 @@ Delete the __Build__ object from the `build-infra.yaml` file.
 
 
 In addition to grabbing Objects that __are not needed as apart of infra code__. There are annotations that
-__k8s__ applies to objects that are not needed as code. Things like `metadata.selfLink`, `metadata.creationTimestamp`, `metadata.uid`, `metadata.resourceVersion` are not needed. Delete those from the __ImageStream__ and __BuildConfig__ objects.
+__k8s__ applies to objects that are not needed as code. Things like `metadata.selfLink`, `metadata.creationTimestamp`, `metadata.uid` are not needed. Delete those from the __ImageStream__ and __BuildConfig__ objects.
 
 You can also delete `ImageStream.status` as well. 
 
@@ -85,11 +86,11 @@ Adding requests/limits to a build config will allow you to effectively manage yo
 ```yaml
 resources:
   requests:
-    cpu: 100m
-    memory: 20Mb
+    cpu: 200m
+    memory: 120Mb
   limits:
-    cpu: 150m
-    memory: 30Mb
+    cpu: 350m
+    memory: 230Mb
 ```
 
 2. Delete all objects related to the build and try the build again
@@ -109,7 +110,9 @@ resources:
   b. `oc delete all -l build=joke-api` and `oc apply -f openshift/demo-express-server/build-infra.yaml` to push these changes to your namespace
   c. Check to see if you can correctly query objects by that label. `oc get all -l app=joke-api`
 
+
 4. Change the output image tag to __NOT BE LATEST__. Instead change the __BuildConfig__ output field to
+
 ```yaml
 output:
   to:

@@ -9,6 +9,48 @@ objects:
     labels:
       app: ${APP}
       course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}-caddy
+  data:
+    Caddyfile: |
+      :4000
+      root * /opt/app-root/book-${WORKSHOP_NAME}
+      file_server 
+      encode gzip
+      
+      log stdout
+      log stderr
+      
+      header / {
+        # prevent any static html from being cached
+        Cache-Control "public, max-age=0, must-revalidate"
+      }
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    labels:
+      app: ${APP}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}-gitbook-config
+  data:
+    book.json: |
+      {
+        "title": "OpenShift Workshop Labs",
+        "plugins": ["fancybox"],
+        "links": {
+            "sidebar": {
+                "Download PDF": "/download.pdf"
+            }
+        },
+        "pluginsConfig": {
+            "fancybox": {}
+        }
+      }
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    labels:
+      app: ${APP}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
     name: ${APP}-${COMPONENT}${SUFFIX}-${VOLUMN_NAME}
   data:
     SUMMARY-openshift101.md: |
@@ -105,6 +147,8 @@ objects:
       spec:
         containers:
         - env:
+          - name: GITHUB_USERNAME
+            value: ${GITHUB_USERNAME}
           - name: WORKSHOP_NAME
             value: ${WORKSHOP_NAME}
           - name: WORKSHOP_FOLDER
@@ -115,7 +159,7 @@ objects:
             value: ${GIT_BRANCH}
           - name: GIT_URL
             value: ${GIT_URL}
-          image: ${IMAGE_REGISTRY}/${IMAGE_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
+          image: ${APP}-${COMPONENT}${SUFFIX}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: ${APP}-${COMPONENT}${SUFFIX}
           ports:
@@ -127,7 +171,7 @@ objects:
               path: /
               port: 4000
               scheme: HTTP
-            initialDelaySeconds: 180
+            initialDelaySeconds: 20
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
@@ -143,10 +187,15 @@ objects:
           volumeMounts:
           - name: ${VOLUMN_NAME}
             mountPath: ${WORKSHOP_SUMMARY_FOLDER}
+          - name: caddyfile
+            mountPath: /opt/app-root/config
         volumes:
         - name: ${VOLUMN_NAME}
           configMap:
             name: ${APP}-${COMPONENT}${SUFFIX}-${VOLUMN_NAME}
+        - name: caddyfile
+          configMap:
+            name: ${APP}-${COMPONENT}${SUFFIX}-caddy
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
@@ -155,6 +204,14 @@ objects:
     test: false
     triggers:
     - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - ${APP}-${COMPONENT}${SUFFIX}
+        from:
+          kind: ImageStreamTag
+          name: ${APP}-${COMPONENT}${SUFFIX}:${IMAGE_TAG}
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
@@ -175,6 +232,55 @@ objects:
       name: ${APP}-${COMPONENT}${SUFFIX}
       weight: 100
     wildcardPolicy: None
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: '${APP}-${COMPONENT}${SUFFIX}:${IMAGE_TAG}'
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      configMaps:
+      - configMap:
+          name: ${APP}-${COMPONENT}${SUFFIX}-gitbook-config
+        destinationDir: ./docs
+      contextDir: workshop-labs
+      git:
+        ref: ${GIT_BRANCH}
+        uri: 'https://github.com/BCDevOps/devops-platform-workshops.git'
+      type: Git
+    strategy:
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+      - type: ConfigChange
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewBuild
+    labels:
+      app: ${APP}
+      build: workshop-labs
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  spec:
+    lookupPolicy:
+      local: false
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewBuild
+    generation: 4
+    labels:
+      app: ${APP}
+      build: workshop-labs
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}
 parameters:
 - description: The name of the application for labeling all artifacts.
   displayName: Application Name
@@ -207,14 +313,6 @@ parameters:
   displayName: Workshop Branch
   name: GIT_BRANCH
   value: master
-- description: Image registry
-  displayName: Image registry
-  name: IMAGE_REGISTRY
-  value: docker-registry.default.svc:5000
-- description: Image Source Namespace
-  displayName: Image Namespace
-  name: IMAGE_NAMESPACE
-  value: wpvqx7-tools
 - description: Image Name
   displayName: Image Name
   name: IMAGE_NAME
@@ -227,3 +325,7 @@ parameters:
   displayName: Volumn name
   name: VOLUMN_NAME
   value: summary
+- description: Your Github Username
+  displayName: Github Username
+  name: GITHUB_USERNAME
+  required: true
