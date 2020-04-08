@@ -55,7 +55,6 @@ __Touch points__ are not fixed dates and will depend on student availability.
 
 ## Important Links
 - [rocketchat working channel]
-
 ## Startup
 <!-- reference for workshop delivery 201_materials/Handbook.md  -->
 The startup of the course _should_ typically be in person. The instructor will demonstrate standing up

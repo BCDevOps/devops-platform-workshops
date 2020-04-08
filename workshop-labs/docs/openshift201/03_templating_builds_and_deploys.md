@@ -1,4 +1,4 @@
-## Templating Custom Applications
+# Templating Custom Applications
 
 Earlier Helm was used to retrieve templates for products like Prometheus and Grafana. On the cluster though,
 you will also be building your applications. How do we convert the infrastructure needed to run your application

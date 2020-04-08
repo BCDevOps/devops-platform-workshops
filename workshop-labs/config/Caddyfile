@@ -1,0 +1,18 @@
+:4000
+
+# for openshift 101
+# root * /opt/app-root/book-openshift101
+
+# for openshift 201
+root * /opt/app-root/book-openshift201
+
+file_server 
+encode gzip
+
+log stdout
+log stderr
+
+header / {
+  # prevent any static html from being cached
+  Cache-Control "public, max-age=0, must-revalidate"
+}
