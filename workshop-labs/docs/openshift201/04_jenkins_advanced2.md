@@ -1,4 +1,4 @@
-## SonarQube 
+# SonarQube 
 In this section, deploy SonarQube into the Tools namespace and integrate it with the Blackbox build pipeline
 
 - Deploy SonarQube into the `tools` namespace

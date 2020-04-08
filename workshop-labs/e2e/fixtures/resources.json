@@ -1,0 +1,10 @@
+{
+  "requests":{
+    "cpu": "850m",
+    "memory": "150Mi"
+  },
+  "limits": {
+    "cpu": "1350m",
+    "memory": "230Mi"
+  }
+}

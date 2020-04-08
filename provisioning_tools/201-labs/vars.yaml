@@ -1,10 +1,8 @@
 action: "notta"
 student_list: 
-  - stewartshea
-  - filiy
+  - patricksimonian
 instructor_list: 
-  - stewartshea
-  - filiy
+  - patricksimonian
 environments: 
   - tools
   - dev
