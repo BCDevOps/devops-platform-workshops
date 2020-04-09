@@ -10,6 +10,7 @@ The OpenShift cluster is not running Tiller, but Helm can still be used to help 
     helm init --client-only
 
 ## Deploy Prometheus into Dev Namespace
+- Switch to your Dev Namespace
 - Review the list of chart repositories and validate `https://kubernetes-charts.storage.googleapis.com` is available
     
 ```
@@ -27,7 +28,7 @@ helm fetch stable/prometheus
 ls -lha  | grep prometheus
 ```
 
-- Navitage to GitHub and review the available vales for this chart
+- Navigate to GitHub and review the available values for this chart
     - [https://github.com/helm/charts/tree/master/stable/prometheus#configuration](https://github.com/helm/charts/tree/master/stable/prometheus)
     - The prometheus chart has a lot of components enabled; this lab only requires the server component
 - Use the helm client to generate the OpenShift artifacts in a file, only installing the `server` component
@@ -99,6 +100,14 @@ oc apply -f [username]-prometheus.yaml
 ```
 oc apply -f [username]-prometheus.yaml
 ```
+- Explore the pod logs and notice that Prometheus is encountering issues
+```
+...
+Failed to list *v1.Pod: pods is forbidden: User \"system:serviceaccount:va3azs-[username]-ocp201-tst-dev:default\" cannot list pods in the namespace \"[namespace]-dev\": no RBAC policy matched"
+``` 
+This is because it is looking for a default service account that does notoc  exist. 
+
+Create a default service account with `oc policy add-role-to-user view -z default`
 
 - Add a route to your prometheus service
 
@@ -119,7 +128,8 @@ caller=main.go:609 msg="Server is ready to receive web requests."
 caller=klog.go:86 component=k8s_client_runtime func=Warningf msg="/app/discovery/kubernetes/kubernetes.go:283: watch of *v1.Pod ended with: too old resource version: 793031384 (793038695)"
 caller=klog.go:86 component=k8s_client_runtime func=Warningf msg="/app/discovery/kubernetes/kubernetes.go:283: watch of *v1.Pod ended with: too old resource version: 793044753 (793047516)"
 ```
-- Validate that the prometheus target itself is available
+- Validate that the prometheus target itself is available by navigating to the service discovery page `/service-discovery` in the app
+
 ![](../assets/openshift201/02_prometheus_service.png)
 ![](../assets/openshift201/02_prometheus_targets.png)
 
@@ -131,7 +141,7 @@ In this deployment, only deploy loki and no other components.
 ```
 helm repo add loki https://grafana.github.io/loki/charts
 helm fetch loki/loki
-helm template ./loki-0.8.3.tgz --name=[username]-loki \
+helm template ./loki-0.26.1 --name=[username]-loki \
   --set rbac.create=false,rbac.pspEnabled=false,serviceAccount.create=false \
   > loki_template.yaml
 oc apply -f loki_template.yaml
