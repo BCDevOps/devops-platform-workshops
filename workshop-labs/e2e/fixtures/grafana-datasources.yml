@@ -1,0 +1,19 @@
+# config file version
+apiVersion: 1
+
+datasources:
+- name: Prometheus
+  type: prometheus
+  access: proxy
+  orgId: 1
+  url: http://$PROMETHEUS SERVICE NAME:80  
+  isDefault: true
+  version: 1
+  editable: true
+- name: Loki
+  type: loki
+  orgId: 1
+  access: proxy
+  url: http://$LOKI SERVICE NAME:3100  
+  jsonData:
+      maxLines: 1000
