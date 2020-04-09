@@ -20,7 +20,7 @@ oc project [-tools]
 
 - With the `oc` cli, create the build
 
-```
+```oc:cli
 oc -n [-tools] new-build https://github.com/BCDevOps/devops-platform-workshops-labs/ --context-dir=apps/rocketchat --name=rocketchat-[username]
 ```
 
@@ -28,7 +28,7 @@ oc -n [-tools] new-build https://github.com/BCDevOps/devops-platform-workshops-l
 
 ```
 
---> Found Docker image c71b6c4 (4 weeks old) from registry.access.redhat.com for "registry.access.redhat.com/rhscl/nodejs-8-rhel7"
+--> Found image 8431f8b (21 hours old) in image stream "ocp101a-tools/rocketchat" under tag "latest" for "rocketchat"
 
     Node.js 8 
     --------- 
@@ -36,13 +36,11 @@ oc -n [-tools] new-build https://github.com/BCDevOps/devops-platform-workshops-l
 
     Tags: builder, nodejs, nodejs8
 
-    * An image stream will be created as "nodejs-8-rhel7:latest" that will track the source image
     * A Docker build using source code from https://github.com/BCDevOps/devops-platform-workshops-labs/ will be created
       * The resulting image will be pushed to image stream "rocketchat-[username]:latest"
-      * Every time "nodejs-8-rhel7:latest" changes a new build will be triggered
+      * Use 'start-build' to trigger a new build
 
 --> Creating resources with label build=rocketchat-[username] ...
-    imagestream "nodejs-8-rhel7" created
     imagestream "rocketchat-[username]" created
     buildconfig "rocketchat-[username]" created
 --> Success
@@ -50,6 +48,11 @@ oc -n [-tools] new-build https://github.com/BCDevOps/devops-platform-workshops-l
     Run 'oc logs -f bc/rocketchat-[username]' to stream the build progress.
 ```
 
+- The build will take between a couple of minutes to about 15 minutes
+```oc:cli
+#Watch and wait for build
+oc -n [-tools] logs -f bc/rocketchat-[username]
+```
 - You can now explore the Web Console to watch the build status from `Builds -> Builds`
 *note* you will see multiple builds from each team member
 

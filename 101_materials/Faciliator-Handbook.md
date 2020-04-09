@@ -1,7 +1,78 @@
 
-## How to use
+# How to use
 
-TO DO
+
+## Setting up the environment
+
+### RocketChat
+  Create Rocketchat webhook
+
+### Projects
+
+- Clone using HTTPS. do NOT use SSH
+- Install `gnu-tar` (`brew install gnu-tar`)
+
+#### Platform Services
+
+  `/usr/local/bin/ocadm`
+  ```
+  exec oc --as=system:serviceaccount:openshift:bcdevops-admin "$@"
+  ```
+
+  ```
+  echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm new-project 'ocp101b-{}' "--display-name=OpenShift 101 ({})" "--description=OpenShift 101 ({})"
+
+  echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm label --overwrite 'namespace/ocp101b-{}' 'name=ocp101a' 'environment={}' 'product=OCP101' 'team=BCDEVOPS' 'category=workshop'
+
+  
+  #Instructor Access
+  echo -e "workbench\ntools\ndev" | xargs -t -I {} ocadm -n 'ocp101b-{}' policy add-role-to-user admin cvarjao ShellyXueHan
+  ```
+#### Instructor
+- create a google spreadsheet with 4 columns:
+  ```
+  ID	Github Account	RocketChat Account	Alias
+  ```
+- copy `.openshift/.env.template` to `.openshift/.env` and edit it to make your own
+- copy `.openshift/.rc.env.template` to `.openshift/.rc.env` and edit it to make your own
+
+- Create the templates
+  ```
+    (cd .openshift && ./setup.sh create-templates)
+  ```
+- Setup namespaces
+  ```
+  oc -n ocp101b-workbench process -f templates/role-student.json | oc -n ocp101b-workbench create -f -
+
+  oc -n ocp101b-workbench create serviceaccount student
+
+  echo -e "tools\ndev" | xargs -t -I {} oc -n 'ocp101b-{}' policy add-role-to-user admin 'system:serviceaccount:ocp101b-workbench:student'
+  ```
+
+- Apply Network Security Policies to the Workbench namespace
+  ```
+  oc -n ocp101b-workbench process -p NAMESPACE=ocp101b-workbench -f https://raw.githubusercontent.com/BCDevOps/platform-services/00091a2ea5e442260cd46b13dac1f6c7727b25e5/security/aporeto/docs/sample/quickstart-nsp.yaml
+  ```
+
+### Instructor
+- Build the lab material (docs)
+  ```
+    (cd .openshift && ./setup.sh build-docs)
+  ```
+  Note: you may need to run twice as it may complain about missing ImageStreamTag
+- Deploy the lab material (docs)
+  ```
+    (cd .openshift && ./setup.sh deploy-main-docs)
+  ```
+- Build the workbench
+  ```
+    (cd .openshift && ./setup.sh build-workbench)
+  ```
+
+### Students
+  ```
+    (cd .openshift && ./setup.sh students)
+  ```
 
 # Day 1
 

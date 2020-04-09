@@ -17,16 +17,30 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 
 ![](../assets/11_resources_03.png)
 
-- Reduce the CPU request and limit to `50 millicores` and `100 Megabytes` and monitor the startup time of the pod
-
+- Reduce the CPU (request and limit) to `50 millicores` and Memory (request and limits) to `100 Megabytes` and monitor the startup time of the pod
+  ```oc:cli
+  oc -n [-dev] set resources dc/rocketchat-[username] --requests=cpu=50m,memory=100Mi --limits=cpu=50m,memory=100Mi
+  ```
 - Monitor the startup events of your pod and measure the time it takes to start
+  ```oc:cli
+  # Start new deployment; and
+  oc -n [-dev] rollout latest dc/rocketchat-[username]
 
+  # Wait for deployment to finish
+  time oc -n [-dev] rollout latest dc/rocketchat-[username]
+  ```
 - Remove the limits previously imposed, and set your pod to `1 core` (or `1000 millicores`) for the request and limit
-
+  ```oc:cli
+  oc -n [-dev] set resources dc/rocketchat-[username] --requests=cpu=1000m,memory=512Mi --limits=cpu=1000m,memory=1024Mi
+  ```
 ![](../assets/11_resources_04.png)
 
 - Monitor the status and speed of the new deployment
+  ```oc:cli
+  # Start new deployment; and
+  oc -n [-dev] rollout latest dc/rocketchat-[username]
 
+  # Wait for deployment to finish
+  time oc -n [-dev] rollout latest dc/rocketchat-[username]
+  ```
 - Work with the rest of the class to determine why some pods may have succeeded, and others are failing. 
-
-- Remove the requests/limits previously set

@@ -21,9 +21,8 @@ RUN chmod -R u+x ${APP_ROOT}/bin && \
     echo '#!/bin/sh' > /usr/local/sbin/uid_entrypoint && \
     echo 'echo "root:x:0:0:root:/root:/sbin/nologin" > /etc/passwd' >> /usr/local/sbin/uid_entrypoint && \
     echo 'echo "nobody:x:$(id -u):0:nobody user:/home/nobody:/sbin/nologin" >> /etc/passwd' >> /usr/local/sbin/uid_entrypoint && \
-    echo 'exec "$@"' >> /usr/local/sbin/uid_entrypoint
-    
-RUN chmod 764 /usr/local/sbin/uid_entrypoint
+    echo 'exec "$@"' >> /usr/local/sbin/uid_entrypoint && \
+    chmod g+x /usr/local/sbin/uid_entrypoint
 
 ENV BOOK_NAME_101=book-openshift101
 ENV BOOK_NAME_201=book-openshift201
@@ -31,6 +30,8 @@ ENV BOOK_NAME_201=book-openshift201
 # Install gitbook plugins for 101:
 RUN cd ${APP_ROOT}/docs && \
     ../support/toc.sh ./openshift101 > SUMMARY.md && \
+    echo '' >> SUMMARY.md && \
+    echo '* [Download PDF](openshift101/openshift101.pdf)' >> SUMMARY.md && \
     chgrp -R 0 ${APP_ROOT}/docs && \
     chmod -R g=u ${APP_ROOT}/docs && \
     gitbook install && \
@@ -56,6 +57,7 @@ RUN cd ${APP_ROOT}/docs && \
     chgrp -R 0 ${APP_ROOT}/docs && \
     chmod -R g=u ${APP_ROOT}/docs
 
+ENV HOME=/home/nobody
 WORKDIR ${APP_ROOT}
 
 EXPOSE 4000

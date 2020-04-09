@@ -5,4 +5,12 @@
 **/.env
 **/.chrome
 .DS_Store
+*.tar.gz
+demo/test/cli/.cmd.last.code
+demo/test/cli/.rc.sh
+demo/test/cli/.tty
+.openshift/github-users.txt
+.openshift/github-users-valid.txt
+.openshift/rocketchat-headers.txt
+101-materials/github-users-valid.txt
 provisioning_tools/201-labs/unique_id

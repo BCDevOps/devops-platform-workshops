@@ -3,7 +3,7 @@
     "plugins": ["fancybox"],
     "links": {
         "sidebar": {
-            "Download PDF": "/download.pdf"
+            "Download PDF": "./openshift101/openshift101.pdf"
         }
     },
     "pluginsConfig": {
