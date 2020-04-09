@@ -1,10 +1,12 @@
 #!/bin/bash
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. ./utils.sh
+. ./constants.sh
+
 TEMP_HELM_DIR=${DIR}/.helm_temp
-USERNAME="e2e-tester"
 PROMETHEUS_NAME="$USERNAME-prometheus"
 
-. ./utils.sh
+prompt "loaded constants"
+cat ./constants.sh
 
 function waitForObjectsToDelete {
   resources=""
@@ -19,11 +21,7 @@ title "  Templates Helm E2E  "
 
 sleep 1
 
-prompt "*reminder* You need to be logged in to run this e2e test\n"
-
-WHO_ARE_YOU=$(oc whoami)
-
-prompt "Logged in as $WHO_ARE_YOU \n\n"
+checkWhoAmI
 
 prompt "==Checking Dependencies==\n\n"
 
@@ -44,7 +42,7 @@ oc delete all,configmap,secret,pvc -l app=loki -n ${DEV_NAMESPACE}
 
 waitForObjectsToDelete
 
-prompt "===1. Obtain Helm===\n\n"
+describe 1. "Obtain Helm"
 
 prompt "Init helm in client only mode \n\n"
 
@@ -54,7 +52,7 @@ prompt "switching into dev"
 
 oc project $DEV_NAMESPACE
 
-prompt "===2. Deploy Prometheus into Dev Namespace===\n\n"
+describe 2 "Deploy Prometheus into Dev Namespace"
 
 prompt "a. review list of charts with helm repo list\n\n"
 
@@ -197,7 +195,8 @@ oc get service -n $DEV_NAMESPACE
 
 oc expose service $PROMETHEUS_NAME-test --name prometheus -l app=prometheus -l component=test -n $DEV_NAMESPACE
 
-prompt "===3. Deploy Another App with Helm===\n\n\n"
+describe 3 "Deploy Another App with Helm"
+
 LOKI_NAME=$USERNAME-loki
 LOKI_TEMPLATE_YAML=$TEMP_HELM_DIR/loki_template.yaml
 LOKI_TEMPLATE_JSON=$TEMP_HELM_DIR/loki_template.json

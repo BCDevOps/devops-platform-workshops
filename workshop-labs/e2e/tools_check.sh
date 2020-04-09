@@ -2,8 +2,6 @@ printf "===========Running Tools Check===========\n\n\n"
 
 function exitNicely {
   printf "\n\n Exiting :) \n\n"
-  rm ${temp_bc_file}
-  rm ${temp_dc_file}
   exit 1
 }
 

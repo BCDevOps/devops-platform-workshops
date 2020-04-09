@@ -1,6 +1,6 @@
 function title() {
   title=$1
-  printf "================================================ \n\n"
+  printf "\n================================================ \n\n"
   printf "=================$title==================== \n\n"
   printf "================================================ \n\n"
 }
@@ -10,10 +10,27 @@ function prompt() {
   printf "\n --> $msg \n"
 }
 
+# similar to mocha/chai style TDD
+# this function is meant to describe a set of tests
+# usage: describe {Int} {String}
+# eg. describe 1 "Test Section" => "---> Describe: 1. Test Section"
+function describe() {
+  unitNumber=$1
+  msg=$2
+  prompt "Describe: $1. $2"
+}
+
+# similar to mocha/chai style TDD
+# this function is meant to describe a assertion
+# usage: describe {String}
+# eg. assert "The Test Passed" => "---> Assert: The Test Passed"
+function assert() {
+  assertion=$1
+  prompt "Assert: $1"
+}
+
 function exitNicely {
   printf "\n\n Exiting :) \n\n"
-  rm ${temp_bc_file}
-  rm ${temp_dc_file}
   exit 1
 }
 
@@ -58,4 +75,12 @@ function checkNamespaceValidity {
   else prompt "TOOLS_NAMESPACE exists \n\n" 
   fi
 
+}
+
+function checkWhoAmI {
+  prompt "*reminder* You need to be logged in to run this e2e test\n"
+
+  WHO_ARE_YOU=$(oc whoami)
+
+  prompt "Logged in as $WHO_ARE_YOU \n\n"
 }

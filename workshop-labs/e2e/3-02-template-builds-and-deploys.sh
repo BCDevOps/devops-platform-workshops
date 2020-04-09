@@ -24,11 +24,7 @@ title " Testing Build and Deploy Lab E2E  "
 
 sleep 1
 
-prompt "*reminder* You need to be logged in to run this e2e test\n"
-
-WHO_ARE_YOU=$(oc whoami)
-
-prompt "Logged in as $WHO_ARE_YOU \n\n"
+checkWhoAmI
 
 prompt "==Checking Dependencies==\n\n"
 
