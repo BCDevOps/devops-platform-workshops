@@ -45,5 +45,5 @@ eg: 'Latest changes applied succesfully' __NOT__ 'Latest changes were applied'
 - Within __describe__ blocks any smaller steps are prompted with a __character__ starting with lowercase
 __'a'__.
 
-- Assertions should be made with the __assert__ function and should exit with process 1 if the assertion fails.
+- Assertions should be made with the __assert__ function and should exit with code 1 if the assertion fails.
 
