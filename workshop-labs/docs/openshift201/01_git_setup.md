@@ -5,8 +5,11 @@ In this lab, you will create your own fork of the https://github.com/bcdevops/de
 Navigate to the <https://github.com/bcdevops/devops-platform-workshops-labs> repository and click the "fork" button in the upper right corner.  Choose your personal account as the location to fork the repository to.
 
 ![fork the repo](../assets/openshift201/01_git_fork.png)
+## Create the working branch
 
-### Create your branch with the CLI
+Create the working branch for this workshop using the __CLI__ or the Github __GUI__
+
+### With the CLI
 Clone the repository and create your branch locally
 
 ``` bash
@@ -24,7 +27,7 @@ git push --set-upstream origin [username]-201
 
 ![cli output](../assets/openshift201/01_git_cli_branch.png)
 
-### Create your branch with the GUI
+### With the GUI
 
 Navigate to the public repository (<https://github.com/[username]/devops-platform-workshops-labs)>
 
