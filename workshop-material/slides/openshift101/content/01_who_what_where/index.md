@@ -10,7 +10,7 @@ We will focus on the three groups that support the Pathfinder Platform
 - Ministry development teams (ie. You!) / platform users
 - Platform support teams
     - DevOps Platform Services (OCIO DevOps/BCDevExchange Branch prime, Arctiq support)
-        - Clecio Varjao - DevOps Specialist, Todd Wilson - Director
+        - Clecio Varjao - DevOps Specialist, Olena Mitovska - Director
         - Onboarding/project provisioning
         - Assistance and education of platform users
         - Improvements in platform usability
