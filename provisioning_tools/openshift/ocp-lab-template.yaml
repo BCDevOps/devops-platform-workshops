@@ -222,7 +222,6 @@ objects:
       course-session: ${APP}-${COMPONENT}${SUFFIX}
     name: ${APP}-${COMPONENT}${SUFFIX}
   spec:
-    host: ${APP}-${COMPONENT}${SUFFIX}.pathfinder.gov.bc.ca
     tls:
       termination: edge
     port:
