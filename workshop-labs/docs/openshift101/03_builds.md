@@ -12,7 +12,7 @@ OpenShift build components.
 Ensure that all team members have edit rights into the project. Once complete, 
 each member can create their own Rocket.Chat docker build. 
 
-- To start, switch to your new project. *Ensure that you are in the tools project in this lab*
+- To start, switch to the __Tools Project__
 
 ```
 oc project [-tools]
@@ -53,10 +53,10 @@ oc -n [-tools] new-build https://github.com/BCDevOps/devops-platform-workshops-l
 #Watch and wait for build
 oc -n [-tools] logs -f bc/rocketchat-[username]
 ```
-- You can now explore the Web Console to watch the build status from `Builds -> Builds`
+- You can now explore the Web Console to watch the build status from `Builds`
 *note* you will see multiple builds from each team member
 
-![](../assets/01_builds.png)
+![](../assets/openshift101_ss/01_builds.png)
 
 - Or this can be done on the CLI
 
@@ -65,7 +65,8 @@ oc -n [-tools] get bc
 oc -n [-tools] status
 ```
 
-- The build status can be monitored from the Web Console by selecting  the `View Logs` link
+- The build status can be monitored from the Web Console by selecting  the `Logs` link
 
-![](../assets/01_build_logs.png)
-![](../assets/01_build_logs_02.png)
+![](../assets/openshift101_ss/01_build_logs.png)
+![](../assets/openshift101_ss/01_build_logs_02.png)
+![](../assets/openshift101_ss/01_build_logs_03.png)
