@@ -44,3 +44,8 @@ __If you do not have `oc` installed__ or your version is incorrect follow these 
 ## Other Requirements
 
 In addition, developers require GIT locally installed and must have a 2FA device to support access to GitHub.
+
+
+## Command Line Interfaces
+
+You will find many examples `commands` and _tricks_ that highly depend on your OS. These commands were developed on __unix__ based systems. Window's __Command Prompt__ will not work with these examples. You will need to either use __WSL__, __Powershell__, __Gitbash__, or similar.
