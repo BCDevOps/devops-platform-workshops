@@ -253,8 +253,8 @@ If you are feeling at odds with things like __dbpass__ being out in the open as 
 
 
 ## Create a Route for your Rocket.Chat App
+Your rocketchat application should already have a route created for it. If you were using `oc new-app` however, a route would not have been created by default. 
 
-While you are waiting for the application to redeploy, expose the route to the public internet.
 ### CLI
 
 There are 2 ways of creating routes using CLI.
@@ -264,104 +264,80 @@ There are 2 ways of creating routes using CLI.
 oc -n [-dev] expose svc/rocketchat-[username]
 ```
   - Using `oc create route` for secure (https) route
+  
 ```oc:cli
 oc -n [-dev] create route edge rocketchat-[username] --service=rocketchat-[username] --insecure-policy=Redirect
 ```
-
+<!-- 
+not sure how to navigate to routes from web console in ocp4
 ### Web Console
-  - From the Web Console, navigate to `Applications -> Routes`
+  
   - Select `Create Route`
     - Customize the name of the route, such as `rocketchat-[username]`
     - Ensure the service it points to is your particular service
-![](../assets/openshift101_ss/03_deploy_route.png)
+![](../assets/openshift101_ss/03_deploy_route.png) -->
 
 ## Exploring Health Checks
 With the new deployment running, monitor the readiness of the pod. 
-  - Navigate to `Applications -> Pods`
-  - Notice that `1/1` containers are ready
+  - Navigate to `Search` from the left menu panel
+  > you can also view pods from a deployment config
+
+  - Notice that pod 'readiness' is ready
+
+
+- If you redeploy the rocket chat application there is an interval where the pod is considered ready but it is still not available to be accessed.
+- You can check this by redeploying the pod, waiting for the pod to be `ready` and then visit your
+Rocket Chat url.
+
 
 ![](../assets/openshift101_ss/03_deploy_health_01.png)
-
-- Visit the application route, however, and notice that the application is not ready
-
-![](../assets/openshift101_ss/03_deploy_health_02.png)
 
 
 ### Adding a Healthcheck
 A container that is marked `ready` when it is not is an indication of a lack of (or misconfigured) healthcheck. 
-Let's add a healthcheck. 
+
+You will now add a healthcheck for `readiness` and `liveness`. 
 
 ### Using cli
 ```oc:cli
 oc -n [-dev] set probe dc/rocketchat-[username] --readiness --get-url=http://:3000/ --initial-delay-seconds=15
 
-# Watch your RocketChat deployment from the WebConsole, and simoutenaously
-# Watch RocketChat respone (press CTRL+c to exit watch)
-watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].pathfinder.gov.bc.ca/api/info
+# Watch your RocketChat deployment from the Web Console. At the same time
+# watch Rocket Chat response (press CTRL+c to exit watch)
+watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[namespace].apps.training-us.clearwater.devops.gov.bc.ca/api/info
 ```
 ### Using Web Console
-  - Navigate to `Applications -> Deployments`
-  - Select the appropriate deployment
-  - Select `Actions` and then `Edit Health Checks`
 
+- From the Web Console, navigate to your Rocket Chat Deployment Config and select the `YAML` tab
+
+![](../assets/openshift101_ss/03_deploy_health_02.png)
 ![](../assets/openshift101_ss/03_deploy_health_03.png)
 
-  - Select `Add Readiness Probe` and leverage the HTTP GET defaults for this application, setting an initial delay of 15 seconds
-
+- Insert this snippet of code into the `spec.template.spec.containers`
+  ```yaml
+  readinessProbe: 
+    httpGet:
+      path: /
+      port: 3000
+    initialDelaySeconds: 15  
+    timeoutSeconds: 1  
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 3000
+      scheme: HTTP
+      httpHeaders:
+        - name: X-Custom-Header
+          value: Awesome
+    initialDelaySeconds: 15
+    timeoutSeconds: 1
+    periodSeconds: 10
+    successThreshold: 1
+    failureThreshold: 3
+  ```
 ![](../assets/openshift101_ss/03_deploy_health_04.png)
+![](../assets/openshift101_ss/03_deploy_health_05.png)
 
-  - While the new deployment rolls out, continue to refresh the public route and validate that it stays up
-  - At the same time, monitor the pod `Containers Ready` column from `Applications -> Pods` and notice what happens when it becomes ready
+- make sure to save!
 
-### Exploring Deployment Configuration Options
-Additional actions are avalable to edit your deployment configuration. Review and explore; 
-  - Resource Limits
-  - Healthcheck liveness probes
-  - YAML 
-
-## Versioning a Deployment Configuration
-At this point in time, your deployment configuration has undergone many changes, such as adding environment variables and adding health checks. 
-Review the deployment configuration `History` tab: 
-  - Select Deployment #1, right-click, and open in a new tab
-  - Select your latest deployment version, right-click, and open in a new tab
-  - Compare the differences - this can be done through the UI or by comparing the YAML
-
-## Changing Deployment Configuration Triggers
-While reviewing the different deployment versions, take note of the `Trigger` column. 
-
-![](../assets/openshift101_ss/03_deploy_versions.png)
-
-  - Navigate to the `Configuration` tab of the deployment and review the currently configured Triggers
-
-![](../assets/openshift101_ss/03_deploy_triggers.png)
-
-  Explore how an Image can also trigger a deployment
-  - Navigate to your original build and investigate the available triggers
-
-![](../assets/openshift101_ss/03_deploy_build_trigger_01.png)
-
-  - Edit the buildconfig to change the output image to the `dev` tag
-```oc:cli
-oc -n [-tools] patch bc/rocketchat-[username] -p '{"spec":{"output":{"to":{"name":"rocketchat-[username]:dev"}}}}'
-```
-![](../assets/openshift101_ss/03_deploy_build_trigger_02.png)
-
-  - A new built should have been automatically triggered. Monitor your RocketChat deployment in the `[-dev]` namespace immediatelly after the build completes
-
-![](../assets/openshift101_ss/03_deploy_build_trigger_03.png)
-
-## Changing the Deployment Strategy Option
-The default deployment configuration provides a `Rolling Update` style deployment, which waits for the container to be ready prior to 
-cutting over traffic and terminating the previous container. 
-
-![](../assets/openshift101_ss/03_deployment_strategy_01.png)
-
-  - Change the strategy to a `Recreate` and redeploy a couple of times
-```oc:cli
-oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"recreateParams":{"timeoutSeconds":600},"resources":{},"type":"Recreate"}}}'
-```
-  - Refresh the browser URL right after a new deployment and observe the behavior
-  - Change the strategy back to `Rolling`
-```oc:cli
-oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"resources":{},"rollingParams":{"intervalSeconds":1,"maxSurge":"25%","maxUnavailable":"25%","timeoutSeconds":600,"updatePeriodSeconds":1},"type":"Rolling"}}}'
-```
+- While the new deployment rolls out, continue to refresh the public route and validate that it stays up

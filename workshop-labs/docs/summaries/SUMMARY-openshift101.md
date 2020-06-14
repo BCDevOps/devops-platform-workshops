@@ -10,6 +10,7 @@ OpenShift 101 - Developer Operations
 * [Builds](openshift101/01_builds.md)
 * [Registry Console](openshift101/02_registry_console.md)
 * [Deployments](openshift101/03_deployment.md)
+* [Configuring Deployments](openshift101/04_configuring_deployments.md)
 * [Application Availability](openshift101/04_application_availability.md)
 * [Autoscaling](openshift101/05_autoscaling.md)
 * [Persistent Storage](openshift101/06_persistent_storage.md)
