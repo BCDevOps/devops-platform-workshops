@@ -319,7 +319,7 @@ watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[namespace].apps.training
     httpGet:
       path: /
       port: 3000
-    initialDelaySeconds: 15  
+    initialDelaySeconds: 60  
     timeoutSeconds: 1  
   livenessProbe:
     httpGet:
@@ -329,7 +329,7 @@ watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[namespace].apps.training
       httpHeaders:
         - name: X-Custom-Header
           value: Awesome
-    initialDelaySeconds: 15
+    initialDelaySeconds: 60
     timeoutSeconds: 1
     periodSeconds: 10
     successThreshold: 1
