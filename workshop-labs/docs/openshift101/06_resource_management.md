@@ -21,9 +21,9 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 ![](../assets/openshift101_ss/11_resources_02.png)
 ![](../assets/openshift101_ss/11_resources_03.png)
 
-- Reduce the CPU (request and limit) to `50 millicores` and Memory (request and limits) to `100 Megabytes` and monitor the startup time of the pod
+- Reduce the CPU (request and limit) to `65 millicores` and Memory (request and limits) to `100 Megabytes` and monitor the startup time of the pod
   ```oc:cli
-  oc -n [-dev] set resources dc/rocketchat-[username] --requests=cpu=50m,memory=100Mi --limits=cpu=50m,memory=100Mi
+  oc -n [-dev] set resources dc/rocketchat-[username] --requests=cpu=65m,memory=100Mi --limits=cpu=65m,memory=100Mi
   ```
 - Monitor the startup events of your pod and measure the time it takes to start
   ```oc:cli
@@ -50,3 +50,13 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 ## Sharing Resources
 
 If there are many team members (and therefor workloads) working together in the same namespace there is a chance that requesting 1 core of cpu and 1 core of memory will not work. Why could that be?
+
+- Reset resources utilization to something more appropriate
+
+```oc:cli
+oc -n [-dev] set resources dc/rocketchat-[username] --requests=cpu=150m,memory=256Mi --limits=cpu=200m,memory=400Mi
+```
+
+## Troubleshooting OOM
+
+The dreaded `OOM` or Out of Memory is when your pods are utilizing less memory than is required for the containers inside of the pod to work. Often there are __no logs__ visible during these issues. Often the symptoms of OOM are `CrashLoop Back off` failure events as well as `rollout` failures. These can be investigated in the `Events` panel. To resolve this you can first increase memory utilization. After that you should investigate if the memory utilization fix is a band-aid or not. In other words, is the application consuming more memory than it should.

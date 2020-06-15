@@ -6,35 +6,63 @@ In cases where configurations need to change frequently or common configurations
 #### Creating a Config Map and Adding it to a Deployment
 Create a configMap with arbitrary data and mount it inside of your `rocketchat-[username]` pod: 
 
-- In the Web Console, create a `configMap` by navigating to `Resources -> Config Maps`
-*Note* this can be performed directly from the deployment, or independently as these steps illustrate
+![](../assets/openshift101_ss/07_persistent_config_01.png)
+![](../assets/openshift101_ss/07_persistent_config_02.png)
 
-![](../assets/07_persistent_config_01.png)
+- In the Web Console, go to `+Add` and select `YAML`
+- Paste in the following ConfigMap Code and save 
+```yaml
+apiVersion: v1
+data:
+  myfile.txt: Hello world
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: rocketchat-[username]-configmap
+```
 
-- Name your configmap `rocketchat-[username]-configmap`, add an arbitrary key (ie. file name) and content; add as many files as you like
+- Attach the `configMap` to your `rocketchat-[username]` deployment by navigating to the `YAML` tab in your Rocket Chat DeploymentConfig and pasting in the following code
+  1. You will first need to create a `volume`. This is located under `.spec.template.spec.volumes`
+  ```yaml
+  - configMap:
+      name: rocketchat-[username]-configmap
+    name: rocketchat-[username]-volume
+  ```
 
-![](../assets/07_persistent_config_02.png)
+  2. Then create a `volumeMount` under `.spec.template.spec.containers.volumeMounts`
+  ```yaml
+  - name: rocketchat-[username]-volume
+    mountPath: /opt/configs
+  ```
+> pro tip: if you are not sure what fields are available you can always use oc explain! `oc explain dc.spec.template.spec.containers.volumeMounts`
 
-- Attach the `configMap` to your `rocketchat-[username]` deployment by nativating to the `Configuration` tab and selecting `Add Configuration Files`
+![](../assets/openshift101_ss/07_persistent_config_04.png)
+![](../assets/openshift101_ss/07_persistent_config_03.png)
 
-![](../assets/07_persistent_config_03.png)
-![](../assets/07_persistent_config_04.png)
+> it should like similar to this
+![](../assets/openshift101_ss/07_persistent_config_05.png)
 
-- This change will trigger a new deployment of your `rocketchat-[username]` pod
+
+- Save the changes which will trigger a new deployment of your `rocketchat-[username]` pod
+
 - Using the pod terminal in the Web Console or `oc rsh`, explore the path of the mounted configMap
 
-![](../assets/07_persistent_config_05.png)
+![](../assets/openshift101_ss/07_persistent_config_06.png)
 
 #### Changing Config Map Content
 The content in your `configMap` can be changed and is dynamically updated in the pod. With that said, if the application does not support live reload of its configuration, a new deployment will be required for the changes to be picked up. 
 
-- Edit your `configMap` to change the content of the file or add a new file
+- Edit your `configMap` to add a new key-value pair that represents another file
 
-![](../assets/07_persistent_config_06.png)
+Navigate to `https://console-openshift-console.apps.training-us.clearwater.devops.gov.bc.ca/k8s/ns/[dev namespace]/configmaps` from your browser and select your configmap from the list
+
+
+![](../assets/openshift101_ss/07_persistent_config_06.png)
+![](../assets/openshift101_ss/07_persistent_config_07.png)
 
 - Using the pod terminal in the Web Console or `oc rsh`, explore the path of the mounted configMap
 
-![](../assets/07_persistent_config_07.png)
+![](../assets/openshift101_ss/07_persistent_config_08.png)
 
 
 
@@ -51,27 +79,27 @@ Secrets, from the Web Console, are focused on supporting:
 - In the Web Console, create a `secret` by navigating to `Resources -> Secrets -> Create Secret`
 *Note* this can be performed directly from the deployment, or independently as these steps illustrate
 
-![](../assets/07_persistent_config_08.png)
+![](../assets/openshift101_ss/07_persistent_config_08.png)
 
 
 - Name your secret `rocketchat-[username]-secret`, add an arbitrary username/data or SSH key
 
-![](../assets/07_persistent_config_09.png)
+![](../assets/openshift101_ss/07_persistent_config_09.png)
 
 - Explore the other mongo secrets to see different variaions of secret data
 
-![](../assets/07_persistent_config_10.png)
+![](../assets/openshift101_ss/07_persistent_config_10.png)
 
 - Attach the `secret` to your `rocketchat-[username]` deployment by nativating to the `Configuration` tab and selecting `Add Configuration Files`
 
 - Select the `secret` and set the mount directory; split up the keys into separate files if you like
 
-![](../assets/07_persistent_config_11.png)
+![](../assets/openshift101_ss/07_persistent_config_11.png)
 
 - This change will trigger a new deployment of your `rocketchat-[username]` pod
 - Using the pod terminal in the Web Console or `oc rsh`, explore the path of the mounted `secret`
 
-![](../assets/07_persistent_config_12.png)
+![](../assets/openshift101_ss/07_persistent_config_12.png)
 
 - From the cli, review the secret with `oc describe secret rocketchat-[username]-secret`
 
@@ -114,8 +142,8 @@ echo "c2hlYXN0ZXdhcnQ=" | base64 -d
 
 - To edit an existing secret, use `Edit Yaml` from the Web Console or `oc edit secret rocketchat-[username]-secret` from the cli
 
-![](../assets/07_persistent_config_13.png)
-![](../assets/07_persistent_config_14.png)
+![](../assets/openshift101_ss/07_persistent_config_13.png)
+![](../assets/openshift101_ss/07_persistent_config_14.png)
 
 
 - The updated content must be base64 encoded manually if updating in-place
@@ -129,4 +157,4 @@ Or visit https://www.base64encode.org/ for encoding & decoding base64
  
 - Similar to `configMaps`, the updated secret is automatically applied to the pod; no additional deployment is required
 
-![](../assets/07_persistent_config_15.png)
+![](../assets/openshift101_ss/07_persistent_config_15.png)

@@ -1,9 +1,9 @@
 # Persistent Storage
 Up to this point you have leveraged a single mongodb pod with ephemeral storage. In order to maintain the 
-appliation data, persistent storage is required.  
+application data, persistent storage is required.  
 
 - Let's first take a look at our application prior to this lab
-![](../assets/06_persistent_storage_01.png)
+![](../assets/openshift101_ss/06_persistent_storage_01.png)
 
 ### Deleting Pods with Ephemeral Storage
 __Objective__: Observe that by using ephemeral storage causes RocketChat to lose any previous data or configuration after a redeployment.
@@ -17,32 +17,32 @@ To understand what will happen when a pod with ehemeral storage is removed,
   ```oc:cli
   oc -n [-dev] scale dc/rocketchat-[username] dc/mongodb-[username] --replicas=1
   ```
-![](../assets/06_persistent_storage_02.png)
+![](../assets/openshift101_ss/06_persistent_storage_02.png)
 
 ### Adding Storage to Existing Deployment Configurations
 __Objective__: Add persistent storage to MongoDB so that it won't lose data created by RocketChat.
 
-Now that we notice all messages and configuaration is gone, let's add persistent storage to the mongodb pod. 
+Now that we notice all messages and configuration is gone, let's add persistent storage to the mongodb pod. 
 - Scale down both the rocketchat and mongo applications to 0 pods
   ```oc:cli
   oc -n [-dev] scale dc/rocketchat-[username] dc/mongodb-[username] --replicas=0
   ```
-- Edit the `mongodb-[username]` configuration 
+- Edit the `mongodb-[username]` DeploymentConfig
     - Remove the `emptyDir` volume
     - Add a new volume by selecting `Add Storage` and name it `mongodb-[username]-block`
 
-![](../assets/06_persistent_storage_03.png)
+![](../assets/openshift101_ss/06_persistent_storage_03.png)
 
-![](../assets/06_persistent_storage_04.png)
+![](../assets/openshift101_ss/06_persistent_storage_04.png)
 
 - Select the `netapp-block-standard` storage class, set the type to RWO (which is block storage), and the size to 1GB, with a name of `mongodb-[username]-block`
 
 > PLEASE NOTE: Do NOT select any `gluster` storage class. Provisioning for __gluster__ type storage has been disabled in favor of our new storage solution called __netapp__
 
-![](../assets/06_persistent_storage_05.png)
+![](../assets/openshift101_ss/06_persistent_storage_05.png)
 - The mount path is `/var/lib/mongodb/data`
 - The volume name can be anything. You can use `data` for brevity.
-![](../assets/06_persistent_storage_06.png)
+![](../assets/openshift101_ss/06_persistent_storage_06.png)
 ```oc:cli
 # Remove all volumes
 oc -n [-dev] get dc/mongodb-[username] -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n [-dev] set volumes dc/mongodb-[username] --remove '--name={}'
@@ -75,7 +75,7 @@ RWO storage (which was selected above) can only be attached to a single pod at a
 
 - Ensure your `mongodb-[username]` deployment strategy is set to rolling.
 
-![](../assets/06_persistent_storage_07.png)
+![](../assets/openshift101_ss/06_persistent_storage_07.png)
 
 - Redeploy with Rolling Deployment
   ```oc:cli
@@ -84,7 +84,7 @@ RWO storage (which was selected above) can only be attached to a single pod at a
   ```
 - Notice and investigate the issue
 > rolling deployments will start up a new version of your application pod before killing the previous one. There is a brief moment where two pods for the mongo application exist at the same time. Because the storage type is __RWO__ it is unable to mount to two pods at the same time. This will cause the rolling deployment to hang and eventually time out. 
-![](../assets/06_persistent_storage_08.png)
+![](../assets/openshift101_ss/06_persistent_storage_08.png)
 
 - Switch to recreate
   ```oc:cli
@@ -100,11 +100,11 @@ RWX storage allows muliple pods to access the same PV at the same time.
   ```oc:cli
   oc -n [-dev] scale dc/mongodb-[username] --replicas=0
   ```
-![](../assets/06_persistent_storage_09.png)
+![](../assets/openshift101_ss/06_persistent_storage_09.png)
 
 - Remove the previous storage volume and recreate as `netapp-file-standard` (mounting at `/var/lib/mongodb/data`) with type RWX, and naming it `mongodb-[username]-file`
 
-  ![](../assets/06_persistent_storage_10.png)
+  ![](../assets/openshift101_ss/06_persistent_storage_10.png)
   ```oc:cli
   oc -n [-dev] rollout pause dc/mongodb-[username] 
   # Remove all volumes
