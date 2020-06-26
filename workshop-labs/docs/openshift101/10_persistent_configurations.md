@@ -53,7 +53,7 @@ The content in your `configMap` can be changed and is dynamically updated in the
 
 - Edit your `configMap` to add a new key-value pair that represents another file
 
-Navigate to `https://console-openshift-console.apps.training-us.clearwater.devops.gov.bc.ca/k8s/ns/[dev namespace]/configmaps` from your browser and select your configmap from the list
+Navigate to `Administrator View -> Workloads -> Configmaps` from the console and select your ConfigMap from the list
 
 
 ![](../assets/openshift101_ss/07_persistent_config_06.png)
@@ -90,7 +90,7 @@ metadata:
 
 ![](../assets/openshift101_ss/07_persistent_config_09.png)
 
-- Explore the other mongo secrets to see different variations of secret data by navigating to https://console-openshift-console.apps.training-us.clearwater.devops.gov.bc.ca/k8s/ns/[namespace]/secrets/
+- Explore the other mongo secrets to see different variations of secret data by navigating to `Administrator View -> Workloads -> Secrets`
 
 ![](../assets/openshift101_ss/07_persistent_config_10.png)
 ![](../assets/openshift101_ss/07_persistent_config_11.png)
