@@ -152,7 +152,6 @@ oc -n [-dev] new-app --search mongodb-ephemeral
   - The output will tell us that `mongodb-ephemeral` is a template in the `openshift` project:
 
 ```
-Templates (oc new-app --template=<template>)
 -----
 mongodb-ephemeral
   Project: openshift
@@ -164,14 +163,25 @@ WARNING: Any data stored will be lost upon pod destruction. Only use this templa
   - List available parameters of the template
 
 ```oc:cli
-oc -n [-dev] process openshift//mongodb-ephemeral --parameters=true
+oc get -n openshift template/mongodb-ephemeral -o json | oc process -f - --parameters=true
 ```
 
   - Create MongoDB based on a template in the catalog
 
 ```oc:cli
-  oc -n [-dev] new-app --template=mongodb-ephemeral -p MONGODB_VERSION=2.6 -p DATABASE_SERVICE_NAME=mongodb-[username] -p MONGODB_USER=dbuser -p MONGODB_PASSWORD=dbpass -p MONGODB_DATABASE=rocketchat --name=rocketchat-[username]
+  oc -n [-dev] new-app --template=openshift/mongodb-ephemeral -p MONGODB_VERSION=3.6 -p DATABASE_SERVICE_NAME=mongodb-[username] -p MONGODB_USER=dbuser -p MONGODB_PASSWORD=dbpass -p MONGODB_DATABASE=rocketchat --name=rocketchat-[username]
 ```
+> If you ran the cli command you would get an output like this 
+  ```
+  Creating resources ...
+      secret "mongodb-patricksimonian" created
+      service "mongodb-patricksimonian" created
+      deploymentconfig.apps.openshift.io "mongodb-patricksimonian" created
+  --> Success
+      Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+      'oc expose svc/mongodb-patricksimonian' 
+      Run 'oc status' to view your app.
+  ```
 
 ### From the Web Console
 
