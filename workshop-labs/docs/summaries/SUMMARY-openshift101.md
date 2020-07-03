@@ -19,4 +19,5 @@ OpenShift 101 - Developer Operations
 * [Debugging Containers](openshift101/09_debugging_containers.md)
 * [Logging and Visualizations](openshift101/10_logging_and_visualizations.md)
 * [Resource Requests and Limits](openshift101/11_resource_management.md)
-* [Pod Lifecycle](openshift101/12_pod_lifecycle.md)
+<!-- there appears to be a bug with rc, unable to make the webhooks -->
+<!-- * [Pod Lifecycle](openshift101/12_pod_lifecycle.md) -->
