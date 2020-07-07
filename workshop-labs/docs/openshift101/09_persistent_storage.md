@@ -27,28 +27,22 @@ Now that we notice all messages and configuration is gone, let's add persistent 
   ```oc:cli
   oc -n [-dev] scale dc/rocketchat-[username] dc/mongodb-[username] --replicas=0
   ```
-- Edit the `mongodb-[username]` DeploymentConfig
-    - Remove the `emptyDir` volume
-    - Add a new volume by selecting `Add Storage` and name it `mongodb-[username]-block`
+- Navigate to the `mongodb-[username]` DeploymentConfig and select `Actions -> Add Storage`
+  - Remove the emptyDir Storage
 
 ![](../assets/openshift101_ss/06_persistent_storage_03.png)
 
+  - Add a new volume by selecting `Create New Claim` and name it `mongodb-[username]-file`
+
+  - Select the `azure-file` storage class, set the type to RWO (which is block storage), and the size to 1GB, with a name of `mongodb-[username]-file`
+
+  - The mount path is `/var/lib/mongodb/data`
 ![](../assets/openshift101_ss/06_persistent_storage_04.png)
 
-- Select the `netapp-block-standard` storage class, set the type to RWO (which is block storage), and the size to 1GB, with a name of `mongodb-[username]-block`
 
-> PLEASE NOTE: Do NOT select any `gluster` storage class. Provisioning for __gluster__ type storage has been disabled in favor of our new storage solution called __netapp__
+> PLEASE NOTE: The storage classes you are interacting with are specific to this Azure-based Openshift Cluster. The production Openshift Cluster utilizes different storage classes. From an application perspective that are slight differences in performance typically but the implementation remains the same. 
 
-![](../assets/openshift101_ss/06_persistent_storage_05.png)
-- The mount path is `/var/lib/mongodb/data`
-- The volume name can be anything. You can use `data` for brevity.
-![](../assets/openshift101_ss/06_persistent_storage_06.png)
-```oc:cli
-# Remove all volumes
-oc -n [-dev] get dc/mongodb-[username] -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n [-dev] set volumes dc/mongodb-[username] --remove '--name={}'
-# Add a new volume by creating a PVC. If the PVC already exists, omit '--claim-class', '--claim-mode', and '--claim-size' arguments
-oc -n [-dev] set volume dc/mongodb-[username] --add --name=mongodb-[username]-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-[username]-block --claim-class=netapp-block-standard --claim-mode=ReadWriteOnce --claim-size=1G
-```
+
 - Scale up `mongodb-[username]` instance to 1 pod
   ```oc:cli
   oc -n [-dev] scale dc/mongodb-[username] --replicas=1
@@ -66,31 +60,25 @@ oc -n [-dev] set volume dc/mongodb-[username] --add --name=mongodb-[username]-da
   # Scale up RocketChat to 1 replica
   oc -n [-dev] scale dc/rocketchat-[username] --replicas=1
   ```
-- Verify that data was persisted by accessing RocketCHat URL and observing that it doesn't show the Setup Wizard.
+- Verify that data was persisted by accessing RocketChat URL and observing that it doesn't show the Setup Wizard.
 
 #### RWO Storage
 __Objective__: Cause deployment error by using the wrong deployment strategy for the storage class.
 
-RWO storage (which was selected above) can only be attached to a single pod at a time, which causes issues in certain deployment stategies. 
+RWO storage (which was selected above) can only be attached to a single pod at a time, which causes issues in certain deployment strategies. 
 
-- Ensure your `mongodb-[username]` deployment strategy is set to rolling.
+- Ensure your `mongodb-[username]` deployment strategy is set to `Rolling and then trigger a redeployment.
 
 ![](../assets/openshift101_ss/06_persistent_storage_07.png)
 
-- Redeploy with Rolling Deployment
-  ```oc:cli
-  oc -n [-dev] patch dc/mongodb-[username] -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"resources":{},"rollingParams":{"intervalSeconds":1,"maxSurge":"25%","maxUnavailable":"25%","timeoutSeconds":600,"updatePeriodSeconds":1},"type":"Rolling"}}}'
-  oc -n [-dev] rollout latest dc/mongodb-[username]
-  ```
 - Notice and investigate the issue
+
 > rolling deployments will start up a new version of your application pod before killing the previous one. There is a brief moment where two pods for the mongo application exist at the same time. Because the storage type is __RWO__ it is unable to mount to two pods at the same time. This will cause the rolling deployment to hang and eventually time out. 
+
 ![](../assets/openshift101_ss/06_persistent_storage_08.png)
 
 - Switch to recreate
-  ```oc:cli
-  oc -n [-dev] patch dc/mongodb-[username] -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"recreateParams":{"timeoutSeconds":600},"resources":{},"type":"Recreate"}}}'
-  oc -n [-dev] rollout latest dc/mongodb-[username]
-  ```
+
 ### RWX Storage
 __Objective__: Cause MongoDB to corrupt its data file by using the wrong storage class for MongoDB.
 
@@ -129,7 +117,7 @@ __Objective__: Fix corrupted MongoDB storage by using the correct storage class 
 
 After using the `netapp-file-standard` storage class with rolling deployment, you got to a point where your mongodb is now corrupted. That happens because MongoDB does NOT support multiple processes/pods reading/writing to the same location/mount (`/var/lib/mongodb/data`) of single/shared pvc.
 
-To fix that we will need to replace `netapp-file-standard` with `netapp-block-standard` and change the deployment strategy from `Rolling` to `Recreate` as follow:
+To fix that we will need to replace `netapp-file-standard` with `azure-file` and change the deployment strategy from `Rolling` to `Recreate` as follow:
   - Scale down `rocketchat-[username]` to 0 pods
     ```oc:cli
     oc -n [-dev] scale dc/rocketchat-[username] --replicas=0
@@ -147,9 +135,9 @@ To fix that we will need to replace `netapp-file-standard` with `netapp-block-st
     # Remove all volumes
     oc -n [-dev] get dc/mongodb-[username] -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n [-dev] set volumes dc/mongodb-[username] --remove '--name={}'
     ```
-  - Attach a new volume using the existing `mongodb-[username]-block` PVC
+  - Attach a new volume using the existing `mongodb-[username]-file` PVC
     ```oc:cli
-    oc -n [-dev] set volume dc/mongodb-[username] --add --name=mongodb-[username]-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-[username]-block
+    oc -n [-dev] set volume dc/mongodb-[username] --add --name=mongodb-[username]-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-[username]-file
     ```
   - Change the deployment strategy to use `Recreate` deployment strategy
     ```oc:cli
