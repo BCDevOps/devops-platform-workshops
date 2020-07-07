@@ -32,12 +32,16 @@ Now that we notice all messages and configuration is gone, let's add persistent 
 
 ![](../assets/openshift101_ss/06_persistent_storage_03.png)
 
-  - Add a new volume by selecting `Create New Claim` and name it `mongodb-[username]-file`
+  - Add a new volume by navigating to `Administrator -> Storage -> Persitant Volume Claims -> Create Persistant Volume Claims` and name it `mongodb-[username]-file`
 
-  - Select the `azure-file` storage class, set the type to RWO (which is block storage), and the size to 1GB, with a name of `mongodb-[username]-file`
+![](../assets/openshift101_ss/06_persistent_storage_04a.png)
+
+  - Select the `azure-file` storage class. Set the type to RWO, the size to 1GB, and name it `mongodb-[username]-file`
+
+  - Navigate back to your Mongo DeploymentConfig and select `Add Storage` from the `Actions` Tab
 
   - The mount path is `/var/lib/mongodb/data`
-![](../assets/openshift101_ss/06_persistent_storage_04.png)
+![](../assets/openshift101_ss/06_persistent_storage_04b.png)
 
 
 > PLEASE NOTE: The storage classes you are interacting with are specific to this Azure-based Openshift Cluster. The production Openshift Cluster utilizes different storage classes. From an application perspective that are slight differences in performance typically but the implementation remains the same. 
@@ -63,6 +67,9 @@ Now that we notice all messages and configuration is gone, let's add persistent 
 - Verify that data was persisted by accessing RocketChat URL and observing that it doesn't show the Setup Wizard.
 
 #### RWO Storage
+
+RWO Storage is analagous to attaching a physical disk to a pod. For this reason, RWO storage __cannot be mounted to more than 1 pod at the same time__.
+
 __Objective__: Cause deployment error by using the wrong deployment strategy for the storage class.
 
 RWO storage (which was selected above) can only be attached to a single pod at a time, which causes issues in certain deployment strategies. 
@@ -90,7 +97,7 @@ RWX storage allows muliple pods to access the same PV at the same time.
   ```
 ![](../assets/openshift101_ss/06_persistent_storage_09.png)
 
-- Remove the previous storage volume and recreate as `netapp-file-standard` (mounting at `/var/lib/mongodb/data`) with type RWX, and naming it `mongodb-[username]-file`
+- Remove the previous storage volume and recreate as `azure-file` (mounting at `/var/lib/mongodb/data`) with type RWX, and naming it `mongodb-[username]-file-rwx`
 
   ![](../assets/openshift101_ss/06_persistent_storage_10.png)
   ```oc:cli
@@ -115,9 +122,9 @@ RWX storage allows muliple pods to access the same PV at the same time.
 ### Fixing it
 __Objective__: Fix corrupted MongoDB storage by using the correct storage class for MongoDB.
 
-After using the `netapp-file-standard` storage class with rolling deployment, you got to a point where your mongodb is now corrupted. That happens because MongoDB does NOT support multiple processes/pods reading/writing to the same location/mount (`/var/lib/mongodb/data`) of single/shared pvc.
+After using the `azure-file` storage class (RWX) with rolling deployment, you got to a point where your mongodb is now corrupted. That happens because MongoDB does NOT support multiple processes/pods reading/writing to the same location/mount (`/var/lib/mongodb/data`) of single/shared pvc.
 
-To fix that we will need to replace `netapp-file-standard` with `azure-file` and change the deployment strategy from `Rolling` to `Recreate` as follow:
+To fix that we will need to replace the `RWX` PVC with a `RWO` PVC and change the deployment strategy from `Rolling` to `Recreate` as follow:
   - Scale down `rocketchat-[username]` to 0 pods
     ```oc:cli
     oc -n [-dev] scale dc/rocketchat-[username] --replicas=0
@@ -159,7 +166,7 @@ To fix that we will need to replace `netapp-file-standard` with `azure-file` and
     ```oc:cli
     oc -n [-dev] scale dc/rocketchat-[username] --replicas=1
     ```
-  - Check deployment and make sure `mongodb-[username]-file` PVCs are not being used, and delete those PVCs.
+  - Check deployment and make sure `mongodb-[username]-file-rwx` PVCs are not being used, and delete those PVCs.
     ```oc:cli
-    oc -n [-dev] delete pvc/mongodb-[username]-file
+    oc -n [-dev] delete pvc/mongodb-[username]-file-rwx
     ```
