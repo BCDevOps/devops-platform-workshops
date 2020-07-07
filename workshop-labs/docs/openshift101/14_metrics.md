@@ -1,4 +1,14 @@
-# Pod Lifecycle
+# Openshift 4 Metrics
+> this feature is in tech preview. This means that it is operational but is not supported under any commercial Service Level Agreement 
+
+Openshift 4 provides a more indepth way to surface metrics for your workloads. These metrics are queries using `PromQL`. 
+
+## Running a Sample Metric Query
+
+- Navigate to your __dev namespace__ and select `Advanced -> Metrics`
+- Select `Insert Example Query` and observe the cpu utilization of your pods
+
+
 A Pod can be extended beyond the normal operation of the container by allowing developers to: 
 - add `init` containers
 - add `pre` and `post` lifecycle hooks
@@ -61,18 +71,12 @@ Lifecycle hooks can be configured to start and stop a container properly. The li
 ## Overriding the Entrypoint 
 It may be necessary, from time to time, to override the intitial command/entrypoint of a container image. Generally this is used for troubleshooting purposes, or to override a vendor provided image. 
 
+## Why Metrics are Important
 
-- From the Web Console, navigate to `Applications -> Deployments` and select your `rocketchat-[username]` deploymentconfig
-    - If you wish to perform this from the cli with the `oc` tool, type `oc edit dc/rocketchat-[username]`
-- Select `Actions -> Edit YAML`
-- Add the following section of code under `spec: -> template: -> spec: -> containers`
+Metrics provide some great insights into how your pods are behaving. Are they being worked too hard (is the cpu utilization high for the amount they are requesting?). Are pods consistently failing at certain times (can they handle spikes in traffic?). 
 
-```
-          command:  ["/bin/sh", "-c", "c=$(curl -X POST -H 'Content-Type: application/json' --data '{\"text\": \"'\"$HOSTNAME\"' is AN OVERRIDING COMMAND! \"}' https://chat.pathfinder.gov.bc.ca/hooks/xxx/xxx)"]
-```
-- Take note of the pattern that will happen in the rocketchat notification screen
-- Remove the previous command to enable the rocketchat instance to start properly again
+It is recommended to keep an eye on your metrics. This is a great way to refine your cpu and memory utilization requests within your deployment configs. Over time you will get an accurate picture of how much resources are actually consumed and can [adjust the resource usage](https://developer.gov.bc.ca/Resource-Tuning-Recommendations) accordingly within the `DeploymentConfig` or `StatefulSet` of an application. 
 
 ## References
-- https://blog.openshift.com/kubernetes-pods-life/
+https://docs.openshift.com/container-platform/4.3/monitoring/cluster_monitoring/examining-cluster-metrics.html#examining-cluster-metrics
 

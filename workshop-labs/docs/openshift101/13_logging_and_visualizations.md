@@ -1,5 +1,7 @@
 # Logging and Visualizations
 
+> Logging in the Openshift Azure Training Cluster does not leverage Kibana for log surfacing and aggregation. For reference these exercices are available so that you can reference it incase you are using Kibana in the 3.11 production cluster. 
+
 ### EFK for Aggregated Logs
 The OpenShift platform provides an aggregated logging stack that is automatically configured to centralize and store logs from application pods. These logs are only retained for a short period of time, currently about 14 days, but can be used to help identify issues with appliation pods. 
 
@@ -10,26 +12,26 @@ The shortcut towards accessing the Kibana is from the `Logs` tab of a running po
 
 - Select the runing `rocketchat-[username]` pod and select the Logs tab
 
-![](../assets/10_logging_01.png)
+![](../assets/openshift101_ss/10_logging_01.png)
 
 - Select the view archive link to be taken to Kibana
 
 - Review the logging interface and the query that has been automatically populated
 
-![](../assets/10_logging_02.png)
+![](../assets/openshift101_ss/10_logging_02.png)
 
 
 - Modify the query and time picker to select the entire namespace within the last few hours
 
-![](../assets/10_logging_03.png)
+![](../assets/openshift101_ss/10_logging_03.png)
 
 - Review how Kibana surfaces key information about the log sources in the left panel
 
-![](../assets/10_logging_04.png)
+![](../assets/openshift101_ss/10_logging_04.png)
 
 - Create a simple visualization of the information surfaced by Kibana
 
-![](../assets/10_logging_viz_01.png)
+![](../assets/openshift101_ss/10_logging_viz_01.png)
 
 
 #### Access the kibana interface directly 
