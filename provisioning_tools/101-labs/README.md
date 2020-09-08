@@ -17,6 +17,7 @@ Edit `vars.yaml` to modify:
 - The workshop name
 - The project suffix (uniq ID for each running course - eg: a|b|c)
 - The service account
+- Settings for RocketChat
 
 Run the playbook with a desired action (create/delete)
 
