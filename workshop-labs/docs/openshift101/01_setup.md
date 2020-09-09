@@ -1,8 +1,8 @@
 # Lab Setup
 Prior to working on labs, the Platform Services team will have created 2
 projects:
-- ocp101-tools: This namespace will have all of the builds related objects
-- ocp101-dev: This namespace will have all the deployment related objects
+- ocp101-tools: This namespace/project will have all of the builds related objects
+- ocp101-dev: This namespace/project will have all the deployment related objects
 
 One member from your group has been given administrative rights to the projects
 and is responsible for adding all other members to each project.
@@ -19,7 +19,7 @@ would create an app named `app1-stewartshea`.
 
 ## Lab Requirements
 These labs will require access to the lab ocp environment:
-- [ARO Web Console](https://console-openshift-console.apps.training-us.clearwater.devops.gov.bc.ca/)
+- [ARO Web Console](https://console-openshift-console.apps.platform-services.aro.devops.gov.bc.ca/)
 
 
 ## Installing OC
