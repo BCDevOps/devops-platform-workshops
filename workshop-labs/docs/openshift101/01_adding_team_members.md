@@ -17,13 +17,13 @@ the default roles.
 
 ![](../assets/openshift101_ss/01_projects.png)
 
-- Once in the project, navigate to `Advanced -> Project Access`
+- Once in the project, switch to `Developer view` and then navigate to `More -> Project Access`
 
 - Select `Add Access`
 
 ![](../assets/openshift101_ss/01_add_access.png)
 
-- Add each user based on their GitHub id
+- Add each user based on their GitHub id. Please note that we are using SSO with GitHub login at the moment, don't forget the suffix `@github`!
 
 ![](../assets/openshift101_ss/01_edit.png)
 
