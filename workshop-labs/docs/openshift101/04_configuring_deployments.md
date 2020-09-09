@@ -40,8 +40,7 @@ Explore how an Image can also trigger a deployment
 ```oc:cli
 oc -n [-tools] patch bc/rocketchat-[username] -p '{"spec":{"output":{"to":{"name":"rocketchat-[username]:dev"}}}}'
 ```
-
-  - A new built should have been automatically triggered. Monitor your RocketChat deployment in the `[-dev]` namespace immediately after the build completes
+  - Trigger a new build with `oc -n [-tools] start-build rocketchat-[username]`. Monitor your RocketChat deployment in the `[-dev]` namespace immediately after the build completes
 
 
 ## Changing the Deployment Strategy Option
