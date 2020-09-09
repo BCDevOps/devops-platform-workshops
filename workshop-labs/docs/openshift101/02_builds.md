@@ -50,7 +50,7 @@ oc -n [-tools] new-build https://github.com/BCDevOps/devops-platform-workshops-l
 
 - The build will take between a couple of minutes to about 15 minutes
 ```oc:cli
-#Watch and wait for build
+# Watch and wait for build
 oc -n [-tools] logs -f bc/rocketchat-[username]
 ```
 - You can now explore the Web Console to watch the build status from `Builds`
