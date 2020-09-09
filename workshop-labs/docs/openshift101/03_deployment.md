@@ -36,6 +36,7 @@ __Objective__: Deploy RocketChat from the image previously built.
 > deselect Grant Service account default authority.  This will open up a troubleshooting step later.
 
 ![](../assets/openshift101_ss/03_deploy_image_03.png)
+> select to generate deployment config so that manifests would be turned into templates later on.
 
 - Or do this from the CLI
 
@@ -129,7 +130,7 @@ From the console click the deployment config and click __view logs__ beside the 
 
 ```oc:cli
 # Show your pod's log
-oc -n [-dev] logs --tail=5 -f "$(oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=rocketchat-[username] -o name --no-headers | head -1)"
+oc -n [-dev] logs -f "$(oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=rocketchat-[username] -o name --no-headers | head -1)"
 ```
 *note* you can follow the logs with `-f` argument
 
@@ -195,7 +196,8 @@ oc get -n openshift template/mongodb-ephemeral -o json | oc process -f - --param
 ![](../assets/openshift101_ss/03_deploy_mongo_02.png)
 ![](../assets/openshift101_ss/03_deploy_mongo_03.png)
 
-  - Find the mongodb deployment by going back `Topology`
+### Verify MongoDB is up
+  - Find the mongodb deployment by going back to `Topology`
   - Wait until MongoDB has been successfully deployed
   MongoDB will generate a lot of logs. Since MongoDB comes with a readiness probe check for pod/container readiness, to know when it is up and ready.
   ```oc:cli
@@ -203,7 +205,7 @@ oc get -n openshift template/mongodb-ephemeral -o json | oc process -f - --param
   oc -n [-dev] rollout latest mongodb-[username]
 
   # using watch
-  watch -n 1 -x oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=mongodb-[username] -o 'jsonpath={range .items[*].status.containerStatuses[*]}{.name}{"\t"}{.ready}{"\n"}{end}'
+  oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=mongodb-[username] -o 'jsonpath={range .items[*].status.containerStatuses[*]}{.name}{"\t"}{.ready}{"\n"}{end}'
   ```
   You can safely ignore repeated messages as such:
   ```
@@ -215,7 +217,7 @@ As a result of using a generic `new-app` style deployment, as opposed to openshi
 
 ### Environment Variables
 By default your rocketchat deployment have no environment variables defined. So, while RocketChat is trying to start, and 
-a database has not been deployed, the app does not know how or where to connect to MongoDB. We will beed to add an environment variable to the deployment configuration. 
+a database has not been deployed, the app does not know how or where to connect to MongoDB. We will need to add an environment variable to the deployment configuration.
 
 - In the Web Console, navigate to `Topology` and select your rocketchat deploymentConfig
 - Select the `Actions` tab on the top right
@@ -288,8 +290,8 @@ not sure how to navigate to routes from web console in ocp4
 ![](../assets/openshift101_ss/03_deploy_route.png) -->
 
 ## Exploring Health Checks
-With the new deployment running, monitor the readiness of the pod. 
-  - Navigate to `Search` from the left menu panel
+With the new deployment running, monitor the readiness of the pod.
+  - Navigate to `Search` from the left menu panel and filter by name
   > you can also view pods from a deployment config
 
   - Notice that pod 'readiness' is ready
