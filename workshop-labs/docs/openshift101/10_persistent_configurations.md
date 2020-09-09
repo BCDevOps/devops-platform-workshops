@@ -49,7 +49,7 @@ metadata:
 ![](../assets/openshift101_ss/07_persistent_config_06.png)
 
 #### Changing Config Map Content
-The content in your `configMap` can be changed and is dynamically updated in the pod. With that said, if the application does not support live reload of its configuration, a new deployment will be required for the changes to be picked up. 
+The content in your `configMap` can be changed and in most cases it's NOT dynamically updated in the pod. With that said, a new deployment will be required for the changes to be picked up.
 
 - Edit your `configMap` to add a new key-value pair that represents another file
 
