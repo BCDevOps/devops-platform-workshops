@@ -156,4 +156,4 @@ With `oc edit`
 > take note that you were adding a new value `id_rsa` under a field called `stringData`. Openshift will automatically, encode that as base64 and place it in the `data` field upon saving. You can confirm this with `oc get secret rocketchat-[username]-secret -o yaml` after saving. 
 
  
-- Similar to `configMaps`, the updated secret is automatically applied to the pod; no additional deployment is required
+- Redeploy the application after secret changes

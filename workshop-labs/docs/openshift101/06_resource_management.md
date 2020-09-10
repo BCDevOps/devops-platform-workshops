@@ -3,8 +3,7 @@ Tuning the resources assigned to a pod will have a direct effect on the performa
 
 Many templates include reasonable CPU and Memory resource configurations, however, new apps simply are deployed with the platform default. 
 
-> Platform Resource Request defaults are maintained by platform services
-it is a measurement based on the average cpu/memory utilization and serves as a great starting point for your pods horsepower
+> Platform Resource Request defaults are maintained by platform services. It is a measurement based on the average cpu/memory utilization and serves as a great starting point for your pods horsepower
 
 ## Explore Default Resource Configurations
 Since the Rocket Chat application was built from scratch and not deployed from a template, explore the current resources allocated to the pods: 
