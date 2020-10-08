@@ -8,3 +8,5 @@
     - "{{ environments }}"
   loop_control: 
     loop_var: env
+- name: Create RocketChat Channel
+  include_tasks: rc_setup.yaml

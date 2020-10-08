@@ -1,5 +1,5 @@
 # Application Availability
-Prior to beginning this lab, nagivate to the public route you created and finish the initial setup of your application. 
+Prior to beginning this lab, navigate to the public route you created and finish the initial setup of your application. 
 Ensure to select `Keep standlone` on the last page of the initial Rocket.Chat application setup. 
 
 ### Single Pod Applications
@@ -9,13 +9,13 @@ scheduled platform maintenance. In order to simulate the effect on an applicatio
 - Navigate to the pod, select `Actions` and `Delete`
     - Select `Delete pod immediately`
 
-![](../assets/04_app_availability_01.png)
+![](../assets/openshift101_ss/04_app_availability_01.png)
 
-![](../assets/04_app_availability_02.png)
+![](../assets/openshift101_ss/04_app_availability_02.png)
 
 - Refresh URL of application
 
-![](../assets/04_app_availability_03.png)
+![](../assets/openshift101_ss/04_app_availability_03.png)
 
 
 ### Scaling Pods
@@ -27,11 +27,11 @@ do not require custom clustering configurations.
 would be the mongodb database. For this reason, this lab focuses on the rocketchat application which will function 
 with multiple pods. Please refer to specific application documentaion for details on scalability support. 
 
-- Navigate to `Overview` or `Deployments` in the Web Console and increase the pod count to 2
+- Navigate to `Topology` and scale your DeploymentConfig by selecting it and pressing `Actions > Edit Count` and increasing the count to 2
 
-![](../assets/04_app_availability_04.png)
+![](../assets/openshift101_ss/04_app_availability_04.png)
 
-![](../assets/04_app_availability_05.png)
+![](../assets/openshift101_ss/04_app_availability_05.png)
 
 - Or from the CLI
 
@@ -39,8 +39,7 @@ with multiple pods. Please refer to specific application documentaion for detail
 oc -n [-dev] scale dc/rocketchat-[username] --replicas=2
 ```
 - Notice the balancing across nodes by exploring the details of each pod
-![](../assets/04_app_availability_06.png)
-![](../assets/04_app_availability_07.png)
+![](../assets/openshift101_ss/04_app_availability_06.png)
 
   - Or from the CLI notice the hosts the pod runs on (in the last field)
 
@@ -53,15 +52,15 @@ oc -n [-dev] scale dc/rocketchat-[username] --replicas=2
   ```
   - The output should look similar to this:
   ```
-  rocketchat-[username]-7-k6kcc    1/1       Running   0          16m       172.51.68.135   ociopf-p-186.dmz
-  rocketchat-[username]-7-k82w2    0/1       Running   0          1m        172.51.76.32    ociopf-p-187.dmz
+  rocketchat-[username]-7-k6kcc    1/1       Running   0          16m       172.51.68.135   training-aro-us-vmdqq-worker-westus22-kvjdt
+  rocketchat-[username]-7-k82w2    0/1       Running   0          1m        172.51.76.32    training-aro-us-vmdqq-worker-westus23-kvjdt
   ```
 
 - Delete single pod, refresh the URL of application and notice that the application is served by the surviving pods
   ```oc:cli
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=rocketchat-[username] -o name | head -1 | xargs -I {} oc -n [-dev] delete {}
 
-  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].pathfinder.gov.bc.ca/api/info
+  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].[namespace].apps.training-us.clearwater.devops.gov.bc.ca/api/info
 
   # Notice that eventually your RocketChat will be back to having 2 pods
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=rocketchat-[username]
@@ -75,5 +74,5 @@ oc -n [-dev] scale dc/rocketchat-[username] --replicas=2
   watch -dg -n 1 -x oc -n [-dev] get pods -l deploymentconfig=rocketchat-[username]
 
   # From another terminal, monitor RocketChat response
-  watch -dg -n 1 -x curl -fsSL http://rocketchat-[username]-[-dev].pathfinder.gov.bc.ca/api/info
+  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].[namespace].apps.training-us.clearwater.devops.gov.bc.ca/api/info
   ```

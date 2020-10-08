@@ -5,61 +5,53 @@ Logs of a running pod can be accessed from the Web Console or from the `oc` cli:
 
 - The `Logs` tab of any running pod can be used to view active logs for the current pod
 
-![](../assets/09_debugging_00.png)
+![](../assets/openshift101_ss/09_debugging_00.png)
 
 - The `oc` command can be used to view or tail the logs: 
 
 ```
-oc logs -f <pod name>
+oc -n [-dev] logs -f <pod name>
 ```
 If there is more than one container in a given pod, the `-c <container-name>` switch is used to specify the desired container logs. 
 
 ### Using a Debug Container
 
-#### From the Web Console
-In this lab, edit yaml of the `mongodb-[username]` deployment config. 
-- Under `spec` and `containers`, locate the line:  
+__Objective__: Create some error on app pod to start debugging:
+In this lab, we will scale down the database deployment so that application pods will experience errors and crash.
+- Scale down database:  
     ```
-              name: mongodb
+    oc -n [-dev] scale dc/mongodb-[username] --replicas=0
     ```
-- Insert the following line at the same indent level:
+- Redeploy rocketchat:
     ```
-              command: ["touch test"]
+    oc -n [-dev] rollout latest dc/rocketchat-[username]
     ```
-- Once the deployment change takes effect, notice the CrashLoopBackoff
+- Once the new pod starts, notice the CrashLoopBackOff
 
-![](../assets/09_debugging_01.png)
+![](../assets/openshift101_ss/09_debugging_01.png)
 
-- Click on `Debug in Terminal`
-- Explore your capabilities within this container
-- Once done, remove the previously added command, and notice how its placement and structure changed. 
-
-#### From the CLI
-Using the `oc` command, start a debug container. 
+#### Using the `oc` command to start a debug container
 
 - Find the name of a pod you would like to debug 
-
-```
-oc get pods 
-```
-
+    ```
+    oc -n [-dev] pods
+    ```
 - Run the `oc debug` command to start a debug pod (your output will vary)
+    ```
+    $ oc -n [-dev] debug <rocketchat-pod-name>
+    Defaulting container name to rocketchat-shelly.
+    Use 'oc describe pod/rocketchat-shelly-6-bm827-debug -n ocp101-june-dev' to see all of the containers in this pod.
 
-```
-$ oc debug mongodb-1-s74g8
-Defaulting container name to mongodb.
-Use 'oc describe pod/mongodb-1-s74g8-debug -n crash-test' to see all of the containers in this pod.
-Debugging with pod/mongodb-1-s74g8-debug, original command: container-entrypoint run-mongod
-Waiting for pod to start ...
-Pod IP: 10.131.22.12
-If you don't see a command prompt, try pressing enter.
-sh-4.2$ 
-sh-4.2$ 
-sh-4.2$ exit
-exit
+    Debugging with pod/rocketchat-shelly-6-bm827-debug, original command: container-entrypoint node main.js
+    Waiting for pod to start ...
+    If you don't see a command prompt, try pressing enter.
+    sh-4.2$ 
+    sh-4.2$ 
+    sh-4.2$ exit
+    exit
 
-Removing debug pod ...
-```
+    Removing debug pod ...
+    ```
 
 
 ### RSH and RSYNC
@@ -83,8 +75,8 @@ into a local development machine.
 - Find your pod and use the port forward command
 
 ```
-oc get pods  | grep rocketchat-[username]
-oc port-forward [pod name from above] 8000:3000
+oc -n [-dev] get pods  | grep rocketchat-[username]
+oc -n [-dev] port-forward [pod name from above] 8000:3000
 ```
 
 - Navigate to http://127.0.0.1:8000

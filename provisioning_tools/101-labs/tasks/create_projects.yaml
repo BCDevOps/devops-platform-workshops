@@ -28,7 +28,7 @@
   loop_control: 
     loop_var: instructor_username
   ignore_errors: true
-
-- name: Config network security policy
-  shell: >
-    oc --as="{{ service_account }}" process -f tasks/nsp-template.yml -p "NAMESPACE={{ project_name }}-{{ env }}" | oc --as="{{ service_account }}" -n "{{ project_name }}-{{ env }}" apply -f -
+# aporeto is not available in ARO 4.3 cluster
+# - name: Config network security policy
+#   shell: >
+#     oc --as="{{ service_account }}" process -f tasks/nsp-template.yml -p "NAMESPACE={{ project_name }}-{{ env }}" | oc --as="{{ service_account }}" -n "{{ project_name }}-{{ env }}" apply -f -

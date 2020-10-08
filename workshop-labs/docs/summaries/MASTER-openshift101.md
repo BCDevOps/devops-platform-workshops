@@ -1,15 +1,16 @@
 # Summary
 
-* [Setup](openshift101/setup.md)
+* [Setup](openshift101/01_setup.md)
+* [Adding User Access](openshift101/01_adding_team_members.md)
 
 OpenShift 101 - Developer Operations
 ---
 
 * [Overview](openshift101/readme.md)
-* [Network Security Policy](openshift101/00_networksecuritypolicy.md)
 * [Builds](openshift101/01_builds.md)
 * [Registry Console](openshift101/02_registry_console.md)
 * [Deployments](openshift101/03_deployment.md)
+* [Configuring Deployments](openshift101/04_configuring_deployments.md)
 * [Application Availability](openshift101/04_application_availability.md)
 * [Autoscaling](openshift101/05_autoscaling.md)
 * [Persistent Storage](openshift101/06_persistent_storage.md)

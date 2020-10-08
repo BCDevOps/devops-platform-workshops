@@ -1,0 +1,61 @@
+---
+# Setup a channel with maintenance message, via RC APIs:
+- name: Obtain login token for admin user
+  uri:
+    url: "https://{{ ROCKETCHAT_HOSTNAME_HTTPS }}/api/v1/login"
+    method: POST
+    body_format: form-urlencoded
+    body:
+      user: "{{ ROCKETCHAT_ADMIN_USER }}"
+      password: "{{ ROCKETCHAT_ADMIN_PASSWORD }}"
+    status_code: 200
+  register: login
+
+- set_fact:
+    user_id: "{{ login.json.data.userId }}"
+    token: "{{ login.json.data.authToken }}"
+
+- name: Delete channel if exist
+  uri:
+    url: "https://{{ ROCKETCHAT_HOSTNAME_HTTPS }}/api/v1/channels.delete"
+    method: POST
+    headers:
+      Content-type: "application/json"
+      X-User-Id: "{{ user_id }}"
+      X-Auth-Token: "{{ token }}"
+    body:
+      roomName: "{{ CHANNLE_NAME }}"
+    body_format: json
+    status_code: 200
+  ignore_errors: True
+
+- name: Create channel
+  uri:
+    url: "https://{{ ROCKETCHAT_HOSTNAME_HTTPS }}/api/v1/channels.create"
+    method: POST
+    headers:
+      Content-type: "application/json"
+      X-User-Id: "{{ user_id }}"
+      X-Auth-Token: "{{ token }}"
+    body:
+      name: "{{ CHANNLE_NAME }}"
+    body_format: json
+    status_code: 200
+  register: channel_info
+
+- set_fact:
+    room_id: "{{ channel_info.json.channel._id }}"
+
+- name: Post notification message
+  uri:
+    url: "https://{{ ROCKETCHAT_HOSTNAME_HTTPS }}/api/v1/chat.postMessage"
+    method: POST
+    headers:
+      Content-type: "application/json"
+      X-User-Id: "{{ user_id }}"
+      X-Auth-Token: "{{ token }}"
+    body:
+      roomId: "{{ room_id }}"
+      text: "{{ MESSAGE }}"
+    body_format: json
+    status_code: 200

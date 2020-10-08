@@ -11,18 +11,15 @@ Currently CPU and memory metrics are supported, with additional arbitrary metric
 This lab will provide a simple demonstration of autoscaling based on CPU, as this is configurable in the 
 Web Console. 
 
-- Navigate to your rocketchat deployment and select the `Actions` dropdown
-- Select `Add Autoscaler`
-- Configure an upper and lower limit of pods
-- Configure a very low CPU Request Target (such as 1 or 2%) so that you can test it easily by browsing the web application
-    - In a production environment you would taget something like 70-80%
-  ```oc:cli
-  oc -n [-dev] autoscale dc/rocketchat-[username] --min 1 --max 10 --cpu-percent=10
-  ```
-![](../assets/05_autoscaling.png)
+- First take some time to discover the configurable fields that belong to a HorizontalPodAutoscaler `oc explain HorizontalPodAutoscaler` 
+- from the cli run 
+> You are configuring a very low CPU request target (such as 10%) so that you can test it easily by browsing the web application. In production the target would be closer to 70-80%
+```oc:cli
+oc -n [-dev] autoscale dc/rocketchat-[username] --min 1 --max 10 --cpu-percent=10
+```
 
 - Browse to the application to generate some load and monitor the behavior of the pods
-    - Generate some activity such as creating messages, channels, etc. 
+- Generate some activity such as creating messages, channels, etc. 
   ```oc:cli
   # update the URL below and grab a new integration URL
   # Open RocketChat, go to Adminstration > Integrations >  New Integration > Incoming WebHook
@@ -33,13 +30,13 @@ Web Console.
   #    Copy "Webhook URL" (see "COPY TO CLIPBOARD" button/link)
   #    Replace "https://rocketchat-[username]-[-dev].pathfinder.gov.bc.ca/hooks/<integration>/<token>" with the real roken.
   #    Make sure the domain matches the exposed route (no "localhost:3000")!!!
-  printf '{"text":"Example message","attachments":[{"title":"Rocket.Chat","title_link":"https://rocket.chat","text":"Rocket.Chat, the best open source chat","image_url":"https://rocket.chat/images/mockup.png","color":"#764FA5"}]}' > /tmp/rocketchat-post-msg.json && ab -p /tmp/rocketchat-post-msg.json -n 10000 -c 10 -T "application/json" https://rocketchat-[username]-[-dev].pathfinder.gov.bc.ca/hooks/<integration>/<token>
+  printf '{"text":"Example message","attachments":[{"title":"Rocket.Chat","title_link":"https://rocket.chat","text":"Rocket.Chat, the best open source chat","image_url":"https://rocket.chat/images/mockup.png","color":"#764FA5"}]}' > /tmp/rocketchat-post-msg.json && ab -p /tmp/rocketchat-post-msg.json -n 10000 -c 10 -T "application/json" [http://rocketchat-patricksimonian-ocp101-june-dev.apps.training-us.clearwater.devops.gov.bc.ca]/hooks/<integration>/<token>
   ```
-![](../assets/05_autoscaling-02.png)
 
-- Review the deployment configuraiton and try to add or remove replicas
 
-![](../assets/05_autoscaling-03.png)
+- Review the deployment config and try to add or remove replicas
+
+![](../assets/openshift101_ss/05_autoscaling_02.png)
 
 - Remove the autoscaler
   ```oc:cli
