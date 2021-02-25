@@ -12,7 +12,7 @@ The training is being delivered in a production Openshift Environment.
 
 This course has been designed to be run _at your own pace_. The lab materials have been designed so that you generally follow the happy bath for a simple two-tier deployment. There will be many intentional bugs along the way that will have you encounter real-life troubleshooting techniques!
 
-The course length can vary (based on scheduled) but was designed to be run over approx. 2 weeks. During that time __touch points__ will be scheduled with the cohort to talk about special topics and to assist in troubleshooting. 
+The course length can vary (based on scheduled). It was designed to be run over a period of a few days rather than just a day or two to have time for isolated touchpoints as well as to provide time for discussion.  During that time __touch points__ will be scheduled with the cohort to talk about special topics and to assist in troubleshooting. 
 
 ### This course is new!
 
