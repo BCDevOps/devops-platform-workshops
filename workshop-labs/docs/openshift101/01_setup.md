@@ -29,15 +29,15 @@ You may already have `oc` installed on your machine. Your `oc` version should ma
 __If you have `oc`__ installed run `oc version`. It should look like this
 ```shell
 Client Version: 4.4.4
-Server Version: 4.3.18
-Kubernetes Version: v1.16.2
+Server Version: 4.5.31
+Kubernetes Version: v1.18.3
 ```
 
 __If you do not have `oc` installed__ or your version is incorrect follow these instructions.
 
-1. Navigate to the [Openshift CLI Mirror](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.25/) and download the version of `oc` that matches your operating system. 
+1. Navigate to the [Openshift CLI Mirror](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/) and download the version of `oc` that matches your operating system. 
 
-> For Linux/Mac users that may be working with multiple versions of `oc`, it is helpful to have both versions of `oc` (3.11/4.3) on your machine. You can create an `alias` to `oc 4.3` instead of adding it to your path. This way you can utilize `oc 3.11` for the current production cluster and `oc 4.3` for the purpose of this lab.
+> For Linux/Mac users that may be working with multiple versions of `oc`, it is helpful to have both versions of `oc` (3.xx/4.xx) on your machine. You can create an `alias` to `oc 3.xx` instead of adding it to your path. This way you can utilize the different versions for different OpenShift environment.
 
 2. Unpack `oc` into a place that is easily reference-able from a command line interface or add it to your `PATH`
 
