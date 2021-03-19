@@ -1,12 +1,12 @@
 # Overview
 Welcome!
 
-In these labs you will explore builds and deployments within the context of the Azure Redhat OpenShift Training Cluster.
+In these labs you will explore builds, deployments, as well as some common issues with storage provisioning.
 These labs will focus on a single 2-tier application based on the popular open source chat utility, Rocket.Chat.
 
 ## Special Notes
 
-This training is being deliver in Openshift 4.3. The production Openshift cluster is currently in 3.11. 
+This training is being deliver in Openshift 4.x..
 
 ## Course Format
 
