@@ -17,9 +17,9 @@ the default roles.
 
 ![](../assets/openshift101_ss/01_projects.png)
 
-- Once in the project, switch to `Developer view` and then navigate to `More -> Project Access`
+- Once in the project, switch to `Developer view` and then navigate to `Project -> Project Access`
 
-- Select `Add Access`
+- Select `Add Access` at the bottom
 
 ![](../assets/openshift101_ss/01_add_access.png)
 
