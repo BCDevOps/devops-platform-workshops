@@ -31,7 +31,7 @@ See the `bin/run.sh` file for more details on the clone process.
 
 ## Local Building
 
-1. [View Caddyfile](workshop-labs/config/Caddyfile) and ensure the root directive is pointing to the
+1. [View Caddyfile](config/Caddyfile) and ensure the root directive is pointing to the
 correct place
 
 2. Build the Docker Container from `workshop-labs` run `docker build -t labs:{workshop-name} .`
