@@ -8,11 +8,11 @@ environments:
 unique_id: "{{ lookup('password', 'unique_id chars=ascii_lowercase,digits length=6') }}"
 # Step 1 - Update suffix course name:
 workshop_name: "ocp101"
-project_suffix: "-xxx"
+project_suffix: "-labs-pilot"
 service_account: "system:serviceaccount:openshift:bcdevops-admin"
 # Step 2 - RocketChat setup: (find out admin username and password from the RC namespace secrets)
 ROCKETCHAT_HOSTNAME_HTTPS: chat.pathfinder.gov.bc.ca
 ROCKETCHAT_ADMIN_USER: admin
-ROCKETCHAT_ADMIN_PASSWORD: xxx
+ROCKETCHAT_ADMIN_PASSWORD: 
 CHANNLE_NAME: "{{ workshop_name }}{{ project_suffix }}"
 MESSAGE: Welcome to OCP101 lab channel!

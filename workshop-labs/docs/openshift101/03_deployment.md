@@ -32,11 +32,15 @@ __Objective__: Deploy RocketChat from the image previously built.
 
 - Select the tools project, the your specific rocketchat image, and the appropriate tag
 
+Deselect Grant Service account default authority.  This will open up a troubleshooting step later.
 ![](../assets/openshift101_ss/03_deploy_image_02.png)
-> deselect Grant Service account default authority.  This will open up a troubleshooting step later.
 
+
+When there are multiple deployments for an image you must select create new application in order to create a unique application group.
+![](../assets/openshift101_ss/03_deploy_image_03a.png)
+Select to generate deployment config so that manifests would be turned into templates later on.
 ![](../assets/openshift101_ss/03_deploy_image_03.png)
-> select to generate deployment config so that manifests would be turned into templates later on.
+![](../assets/openshift101_ss/03_deploy_image_04.png)
 
 - Or do this from the CLI
 

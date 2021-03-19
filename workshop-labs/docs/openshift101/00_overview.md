@@ -1,12 +1,16 @@
 # Overview
 Welcome!
 
-In these labs you will explore builds and deployments within the context of an Openshift 4.5 Cluster.
+
+In these labs you will explore builds, deployments, as well as some common issues with storage provisioning.
+
 These labs will focus on a single 2-tier application based on the popular open source chat utility, Rocket.Chat.
 
 ## Special Notes
 
+
 The training is being delivered in a production Openshift Environment.
+
 
 ## Course Format
 

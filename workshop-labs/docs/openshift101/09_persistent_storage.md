@@ -8,7 +8,7 @@ application data, persistent storage is required.
 ### Deleting Pods with Ephemeral Storage
 __Objective__: Observe that by using ephemeral storage causes RocketChat to lose any previous data or configuration after a redeployment.
 
-To understand what will happen when a pod with ehemeral storage is removed, 
+To understand what will happen when a pod with ephemeral storage is removed,
 - Scale down both the rocketchat and mongo applications to 0 pods
   ```oc:cli
   oc -n [-dev] scale dc/rocketchat-[username] dc/mongodb-[username] --replicas=0
@@ -22,17 +22,15 @@ To understand what will happen when a pod with ehemeral storage is removed,
 ### Adding Storage to Existing Deployment Configurations
 __Objective__: Add persistent storage to MongoDB so that it won't lose data created by RocketChat.
 
-Now that we notice all messages and configuration is gone, let's add persistent storage to the mongodb pod. 
+Now that we notice all messages and configuration is gone whenever pods cycle, let's add persistent storage to the mongodb pod. 
 - Scale down both the rocketchat and mongo applications to 0 pods
   ```oc:cli
   oc -n [-dev] scale dc/rocketchat-[username] dc/mongodb-[username] --replicas=0
   ```
-- Navigate to the `mongodb-[username]` DeploymentConfig and select `Actions -> Add Storage`
-  - Remove the emptyDir Storage
-
+- Remove the emptyDir Storage by navigating to the mongodb deploymentconfig
 ![](../assets/openshift101_ss/06_persistent_storage_03.png)
 
-  - Add a new volume by navigating to `Administrator -> Storage -> Persitant Volume Claims -> Create Persistant Volume Claims` and name it `mongodb-[username]-file`
+- Add a new volume by navigating to `Administrator -> Storage -> Persitant Volume Claims -> Create Persistant Volume Claims` and name it `mongodb-[username]-file`
 
 ![](../assets/openshift101_ss/06_persistent_storage_04a.png)
 
