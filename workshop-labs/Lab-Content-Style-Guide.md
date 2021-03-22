@@ -8,16 +8,6 @@ All documents should be made up with `<order number>_snake_cased_title.md`.
 This will allow the documents to be sorted accordingly and also visually queue developers of content what
 order the content should be in. 
 
-## Dynamic Variable Replacement
-> this is not working at the moment. Unfortunately gitbook variable replacement is not functional and 
-> gitbook escapes html sequences such as double quotes which prevent caddy from reading the template correctly
-
-The lab content is served by __Caddy2__ which means we can do in-place variable replacement. 
-
-Variable replacement is done against `%{ env "FOO" }%` templates found within the markdown file.
-
-__DO NOT INCLUDE TEMPLATES IF YOU DO NOT INTEND TO USE THEM__. Caddy will throw 500 errors for unresolved templates. 
-
 ## Content
 
 - Ideally we want the content to be as grammatically correct as possible. 
