@@ -100,7 +100,7 @@ objects:
               path: /
               port: 2015
               scheme: HTTP
-            initialDelaySeconds: 20
+            initialDelaySeconds: 10
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
@@ -149,7 +149,7 @@ objects:
     tls:
       termination: edge
     port:
-      targetPort: 4000-tcp
+      targetPort: 2015-tcp
     to:
       kind: Service
       name: ${APP}-${COMPONENT}${SUFFIX}
