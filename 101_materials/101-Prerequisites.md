@@ -11,12 +11,6 @@
 8. [ ] - Create Rocket.Chat webhook to the channenl that was created earlier and share with class
 
 > Links to distribute, save in a pinned message when creating rocketchat channel:
-- [Resources](https://developer.gov.bc.ca)
-
-- [Course Content](https://ocp101-content.pathfinder.gov.bc.ca/)
-
-- [Workshop Content](https://ocp101-labs.pathfinder.gov.bc.ca/)
-
-- [BCDK: developer kit to quickly setup pipeline](https://github.com/BCDevOps/bcdk)
+- [Devhub](https://developer.gov.bc.ca)
 
 - [Backup and restore](https://github.com/BCDevOps/backup-container)

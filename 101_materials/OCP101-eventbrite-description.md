@@ -1,3 +1,4 @@
+> eventbrite descriptions have been moved to ms teams ocp 101 training team
 **Description**
 
 A two-day Exchange Lab course on OpenShift, introductory concepts of building &amp; deploying apps to the platform, and Exchange Lab specific patterns.

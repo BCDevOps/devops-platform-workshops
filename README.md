@@ -1,75 +1,194 @@
-# OpenShift Project Folder
+<p align="center">
+	<a href="https://caddyserver.com"><img src="https://user-images.githubusercontent.com/1128849/36338535-05fb646a-136f-11e8-987b-e6901e717d5a.png" alt="Caddy" width="450"></a>
+	<br>
+	<h3 align="center">a <a href="https://zerossl.com"><img src="https://caddyserver.com/resources/images/zerossl-logo.svg" height="28" valign="middle"></a> project</h3>
+</p>
+<hr>
+<h3 align="center">Every site on HTTPS</h3>
+<p align="center">Caddy is an extensible server platform that uses TLS by default.</p>
+<p align="center">
+	<a href="https://github.com/caddyserver/caddy/actions?query=workflow%3ACross-Platform"><img src="https://github.com/caddyserver/caddy/workflows/Cross-Platform/badge.svg"></a>
+	<a href="https://pkg.go.dev/github.com/caddyserver/caddy/v2"><img src="https://img.shields.io/badge/godoc-reference-%23007d9c.svg"></a>
+	<br>
+	<a href="https://twitter.com/caddyserver" title="@caddyserver on Twitter"><img src="https://img.shields.io/badge/twitter-@caddyserver-55acee.svg" alt="@caddyserver on Twitter"></a>
+	<a href="https://caddy.community" title="Caddy Forum"><img src="https://img.shields.io/badge/community-forum-ff69b4.svg" alt="Caddy Forum"></a>
+	<br>
+	<a href="https://sourcegraph.com/github.com/caddyserver/caddy?badge" title="Caddy on Sourcegraph"><img src="https://sourcegraph.com/github.com/caddyserver/caddy/-/badge.svg" alt="Caddy on Sourcegraph"></a>
+	<a href="https://cloudsmith.io/~caddy/repos/"><img src="https://img.shields.io/badge/OSS%20hosting%20by-cloudsmith-blue?logo=cloudsmith" alt="Cloudsmith"></a>
+</p>
+<p align="center">
+	<a href="https://github.com/caddyserver/caddy/releases">Releases</a> ·
+	<a href="https://caddyserver.com/docs/">Documentation</a> ·
+	<a href="https://caddy.community">Get Help</a>
+</p>
 
-The workshop training material is currently hosted out of the pathfinder cluster inside of the `wpvqx7-prod` (devops-workshops (prod)) project. In addition the labs can be built and deployed in
-any namespace. 
-
-## To Build/Deloy the Labs on Openshift
-
-There is a guide on accomplishing this for Openshift 201 [here](201_materials/lab-install.md).
-
-For people that are interested on building and deploying Openshift 101, the process is exactly the same and just requires a few paramater changes in the deploy template. 
-
-> Openshift 101 is typically not something that is setup by students, we have a set of 'work bench' scripts that will stand the labs up instead. This is a work in progress and instructions can be found in the [101-Handbook](101_materials/Faciliator-Handbook.md).
 
 
-## Workshop Contents and Labs
+### Menu
 
-2 application images can be deployed from this repo, each with their own directory: 
+- [Features](#features)
+- [Install](#install)
+- [Build from source](#build-from-source)
+	- [For development](#for-development)
+	- [With version information and/or plugins](#with-version-information-andor-plugins)
+- [Quick start](#quick-start)
+- [Overview](#overview)
+- [Full documentation](#full-documentation)
+- [Getting help](#getting-help)
+- [About](#about)
 
-### workshop-labs
+<p align="center">
+	<b>Powered by</b>
+	<br>
+	<a href="https://github.com/caddyserver/certmagic"><img src="https://user-images.githubusercontent.com/1128849/49704830-49d37200-fbd5-11e8-8385-767e0cd033c3.png" alt="CertMagic" width="250"></a>
+</p>
 
-This folder has the content to create an OpenShift compatible `GitBook` based application (docker image) that hosts the desired lab content for students to use during a workshop.  This image does NOT need to be re-built to incorporate content changes, rather, a re-deploy will pull the latest content based on the environment variable configuration. A Configmap with GitBook summary files is required to enable dynamic lab contents, refer to [Slow Release](workshop-labs/README.md) for details. To support running multiple courses overlapping, ensure that a branch is created for your course, and then add a "-a|b|c" to the deployment SUFFIX.
 
-Example URL: <https://ocp101-labs.pathfinder.gov.bc.ca/>
+## [Features](https://caddyserver.com/v2)
 
-Create your parameter file and run the following to build and deploy the labs. 
-> Please note deploying the different workshops labs relies on two things:
-1. The `WORKSHOP_NAME` parameter to be set accordingly. [more info](provisioning_tools/openshift/sample-lab.env)
-2. The Lab `Dockerfile` to include a gitbooks installation for the workshop
+- **Easy configuration** with the [Caddyfile](https://caddyserver.com/docs/caddyfile)
+- **Powerful configuration** with its [native JSON config](https://caddyserver.com/docs/json/)
+- **Dynamic configuration** with the [JSON API](https://caddyserver.com/docs/api)
+- [**Config adapters**](https://caddyserver.com/docs/config-adapters) if you don't like JSON
+- **Automatic HTTPS** by default
+	- [ZeroSSL](https://zerossl.com) and [Let's Encrypt](https://letsencrypt.org) for public names
+	- Fully-managed local CA for internal names & IPs
+	- Can coordinate with other Caddy instances in a cluster
+	- Multi-issuer fallback
+- **Stays up when other servers go down** due to TLS/OCSP/certificate-related issues
+- **Production-ready** after serving trillions of requests and managing millions of TLS certificates
+- **Scales to tens of thousands of sites** ... and probably more
+- **HTTP/1.1, HTTP/2, and experimental HTTP/3** support
+- **Highly extensible** [modular architecture](https://caddyserver.com/docs/architecture) lets Caddy do anything without bloat
+- **Runs anywhere** with **no external dependencies** (not even libc)
+- Written in Go, a language with higher **memory safety guarantees** than other servers
+- Actually **fun to use**
+- So, so much more to [discover](https://caddyserver.com/v2)
 
-``` bash
-oc process -f ./provisioning_tools/openshift/ocp-lab-template.yaml \
- --param-file=./provisioning_tools/openshift/sample-lab.env | oc apply -f -
+## Install
+
+The simplest, cross-platform way is to download from [GitHub Releases](https://github.com/caddyserver/caddy/releases) and place the executable file in your PATH.
+
+For other install options, see https://caddyserver.com/docs/download.
+
+## Build from source
+
+Requirements:
+
+- [Go 1.14 or newer](https://golang.org/dl/)
+
+### For development
+ 
+_**Note:** These steps [will not embed proper version information](https://github.com/golang/go/issues/29228). For that, please follow the instructions in the next section._
+
+```bash
+$ git clone "https://github.com/caddyserver/caddy.git"
+$ cd caddy/cmd/caddy/
+$ go build
 ```
 
-When workshop is finished and not needed anymore, make sure to delete the instance
+When you run Caddy, it may try to bind to low ports unless otherwise specified in your config. If your OS requires elevated privileges for this, you will need to give your new binary permission to do so. On Linux, this can be done easily with: `sudo setcap cap_net_bind_service=+ep ./caddy`
 
-``` bash
-oc get all,configmap -l course-session=<lab session label>
-oc delete all,configmap -l course-session=<lab session label>
+If you prefer to use `go run` which creates temporary binaries, you can still do this. Make an executable file called `setcap.sh` (or whatever you want) with these contents:
+
+```bash
+#!/bin/sh
+sudo setcap cap_net_bind_service=+ep "$1"
+"$@"
 ```
 
-### workshop-material
+then you can use `go run` like so:
 
-This folder has the content to create an OpenShift compatible `RevealJS` based application that hosts the desired material for instructors to deliver during a workshop.  Each course will require it's own deployment with the specific course detail configured in the deployment environment variables.
-
-Example URL: <http://ocp101-content.pathfinder.gov.bc.ca/>
-
-``` bash
-oc process -f ./provisioning_tools/openshift/ocp-content-template.yaml \
- --param-file=./provisioning_tools/openshift/sample-content.env | oc apply -f -
+```bash
+$ go run -exec ./setcap.sh main.go
 ```
 
-## Building Images
+If you don't want to type your password for `setcap`, use `sudo visudo` to edit your sudoers file and allow your user account to run that command without a password, for example:
 
-buildConfigs are located in the -tools namespace and are created as per the following:
-
-``` bash
-oc new-build --name workshop-content https://github.com/BCDevOps/devops-platform-workshops.git \
- --context-dir workshop-material
+```
+username ALL=(ALL:ALL) NOPASSWD: /usr/sbin/setcap
 ```
 
-The default image tag used by the deployments is "v2-stable", and will need to be added after the build.
+replacing `username` with your actual username. Please be careful and only do this if you know what you are doing! We are only qualified to document how to use Caddy, not Go tooling or your computer, and we are providing these instructions for convenience only; please learn how to use your own computer at your own risk and make any needful adjustments.
 
-``` bash
-oc tag workshop-content:latest workshop-content:v2-stable
+### With version information and/or plugins
+
+Using [our builder tool, `xcaddy`](https://github.com/caddyserver/xcaddy)...
+
+```
+$ xcaddy build
 ```
 
-## Adding New Labs
+...the following steps are automated:
 
-Adding new 'workshop labs' requires a few steps.
+1. Create a new folder: `mkdir caddy`
+2. Change into it: `cd caddy`
+3. Copy [Caddy's main.go](https://github.com/caddyserver/caddy/blob/master/cmd/caddy/main.go) into the empty folder. Add imports for any custom plugins you want to add.
+4. Initialize a Go module: `go mod init caddy`
+5. (Optional) Pin Caddy version: `go get github.com/caddyserver/caddy/v2@version` replacing `version` with a git tag, commit, or branch name.
+6. (Optional) Add plugins by adding their import: `_ "import/path/here"`
+7. Compile: `go build`
 
-1. Create a new directory under `workshop-labs/docs/<lab name>`
-2. Add your content following the lab [creation style guide](workshop-labs/Lab-Content-Style-Guide.md)
-3. Add a master/summary table of contents for the labs in `workshop-labs/summaries`
-4. Update the `Dockerfile` to install gitbooks for the labs (this is not ideal and i'd love for a PR to improve this process)
+
+
+
+## Quick start
+
+The [Caddy website](https://caddyserver.com/docs/) has documentation that includes tutorials, quick-start guides, reference, and more.
+
+**We recommend that all users -- regardless of experience level -- do our [Getting Started](https://caddyserver.com/docs/getting-started) guide to become familiar with using Caddy.**
+
+If you've only got a minute, [the website has several quick-start tutorials](https://caddyserver.com/docs/quick-starts) to choose from! However, after finishing a quick-start tutorial, please read more documentation to understand how the software works. 🙂
+
+
+
+
+## Overview
+
+Caddy is most often used as an HTTPS server, but it is suitable for any long-running Go program. First and foremost, it is a platform to run Go applications. Caddy "apps" are just Go programs that are implemented as Caddy modules. Two apps -- `tls` and `http` -- ship standard with Caddy.
+
+Caddy apps instantly benefit from [automated documentation](https://caddyserver.com/docs/json/), graceful on-line [config changes via API](https://caddyserver.com/docs/api), and unification with other Caddy apps.
+
+Although [JSON](https://caddyserver.com/docs/json/) is Caddy's native config language, Caddy can accept input from [config adapters](https://caddyserver.com/docs/config-adapters) which can essentially convert any config format of your choice into JSON: Caddyfile, JSON 5, YAML, TOML, NGINX config, and more.
+
+The primary way to configure Caddy is through [its API](https://caddyserver.com/docs/api), but if you prefer config files, the [command-line interface](https://caddyserver.com/docs/command-line) supports those too.
+
+Caddy exposes an unprecedented level of control compared to any web server in existence. In Caddy, you are usually setting the actual values of the initialized types in memory that power everything from your HTTP handlers and TLS handshakes to your storage medium. Caddy is also ridiculously extensible, with a powerful plugin system that makes vast improvements over other web servers.
+
+To wield the power of this design, you need to know how the config document is structured. Please see [our documentation site](https://caddyserver.com/docs/) for details about [Caddy's config structure](https://caddyserver.com/docs/json/).
+
+Nearly all of Caddy's configuration is contained in a single config document, rather than being scattered across CLI flags and env variables and a configuration file as with other web servers. This makes managing your server config more straightforward and reduces hidden variables/factors.
+
+
+## Full documentation
+
+Our website has complete documentation:
+
+**https://caddyserver.com/docs/**
+
+The docs are also open source. You can contribute to them here: https://github.com/caddyserver/website
+
+
+
+## Getting help
+
+- We **strongly recommend** that all professionals or companies using Caddy get a support contract through [Ardan Labs](https://www.ardanlabs.com/my/contact-us?dd=caddy) before help is needed.
+
+- A [sponsorship](https://github.com/sponsors/mholt) goes a long way! If Caddy is benefitting your company, please consider a sponsorship! This not only helps fund full-time work to ensure the longevity of the project, it's also a great look for your company to your customers and potential customers!
+
+- Individuals can exchange help for free on our community forum at https://caddy.community. Remember that people give help out of their spare time and good will. The best way to get help is to give it first!
+
+Please use our [issue tracker](https://github.com/caddyserver/caddy/issues) only for bug reports and feature requests, i.e. actionable development items (support questions will usually be referred to the forums).
+
+
+
+## About
+
+**The name "Caddy" is trademarked.** The name of the software is "Caddy", not "Caddy Server" or "CaddyServer". Please call it "Caddy" or, if you wish to clarify, "the Caddy web server". Caddy is a registered trademark of Stack Holdings GmbH.
+
+- _Project on Twitter: [@caddyserver](https://twitter.com/caddyserver)_
+- _Author on Twitter: [@mholt6](https://twitter.com/mholt6)_
+
+Caddy is a project of [ZeroSSL](https://zerossl.com), a Stack Holdings company.
+
+Debian package repository hosting is graciously provided by [Cloudsmith](https://cloudsmith.com). Cloudsmith is the only fully hosted, cloud-native, universal package management solution, that enables your organization to create, store and share packages in any format, to any place, with total confidence.
