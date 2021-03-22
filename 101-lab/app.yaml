@@ -92,13 +92,13 @@ objects:
           imagePullPolicy: Always
           name: ${APP}-${COMPONENT}${SUFFIX}
           ports:
-          - containerPort: 4000
+          - containerPort: 2015
             protocol: TCP
           readinessProbe:
             failureThreshold: 3
             httpGet:
               path: /
-              port: 4000
+              port: 2015
               scheme: HTTP
             initialDelaySeconds: 20
             periodSeconds: 10
