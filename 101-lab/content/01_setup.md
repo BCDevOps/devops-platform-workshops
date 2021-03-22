@@ -26,16 +26,19 @@ These labs will require access to the lab ocp environment:
 
 You may already have `oc` installed on your machine. Your `oc` version should match the version of the cluster. 
 
-__If you have `oc`__ installed run `oc version`. It should look like this
+__If you have `oc`__ installed run `oc version`. It should look something like this
 ```shell
-Client Version: 4.4.4
-Server Version: 4.5.31
-Kubernetes Version: v1.18.3
+Client Version: openshift-clients-4.6.0-202006250705.p0-176-g5797eaeca
 ```
 
 __If you do not have `oc` installed__ or your version is incorrect follow these instructions.
 
-1. Navigate to the [Openshift CLI Mirror](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/) and download the version of `oc` that matches your operating system. 
+1. Option 1:
+If you have access to the Openshift cluster you can simply download directly from the console
+![cluster download link](./images/01_setup_cli_tools.png)
+
+2. Option 2:
+Alternativly, navigate to the [Openshift CLI Mirror](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/) and download the version of `oc` that matches your operating system. 
 
 > For Linux/Mac users that may be working with multiple versions of `oc`, it is helpful to have both versions of `oc` (3.xx/4.xx) on your machine. You can create an `alias` to `oc 3.xx` instead of adding it to your path. This way you can utilize the different versions for different OpenShift environment.
 
