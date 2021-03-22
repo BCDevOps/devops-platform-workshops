@@ -1,0 +1,230 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ocp-lab-template
+objects:
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    labels:
+      app: ${APP}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}-caddy
+  data:
+    Caddyfile: |
+      :2015
+      # Turn on the Web/file server
+      file_server
+      # The site root
+      root * /opt/app-root
+      # Because we should
+      encode zstd gzip
+
+      header / {
+        # prevent any static html from being cached
+        Cache-Control "public, max-age=0, must-revalidate"
+      }
+
+        # slurp up the logs for human consumption.
+      log {
+        #errors stdout
+        output stdout 
+        format single_field common_log
+        level info
+      }
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APP}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}
+  spec:
+    ports:
+    - name: 2015-tcp
+      port: 2015
+      protocol: TCP
+      targetPort: 2015
+    selector:
+      app: ${APP}
+      deploymentconfig: ${APP}-${COMPONENT}${SUFFIX}
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${APP}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 5
+    selector:
+      app: ${APP}
+      deploymentconfig: ${APP}-${COMPONENT}${SUFFIX}
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: ${APP}
+          deploymentconfig: ${APP}-${COMPONENT}${SUFFIX}
+      spec:
+        containers:
+        - env:
+          - name: WORKSHOP_BRANCH
+            value: ${GIT_BRANCH}
+          - name: GIT_URL
+            value: ${GIT_URL}
+          image: ${APP}-${COMPONENT}${SUFFIX}:${IMAGE_TAG}
+          imagePullPolicy: Always
+          name: ${APP}-${COMPONENT}${SUFFIX}
+          ports:
+          - containerPort: 4000
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 4000
+              scheme: HTTP
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: "110m"
+              memory: 50Mb
+            requests:
+              cpu: "20m"
+              memory: 10Mb
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - name: caddyfile
+            mountPath: /opt/app-root/config
+        volumes:
+        - name: caddyfile
+          configMap:
+            name: ${APP}-${COMPONENT}${SUFFIX}-caddy
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - ${APP}-${COMPONENT}${SUFFIX}
+        from:
+          kind: ImageStreamTag
+          name: ${APP}-${COMPONENT}${SUFFIX}:${IMAGE_TAG}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/host.generated: "true"
+    labels:
+      app: ${APP}
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}
+  spec:
+    tls:
+      termination: edge
+    port:
+      targetPort: 4000-tcp
+    to:
+      kind: Service
+      name: ${APP}-${COMPONENT}${SUFFIX}
+      weight: 100
+    wildcardPolicy: None
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: '${APP}-${COMPONENT}${SUFFIX}:${IMAGE_TAG}'
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      contextDir: 101-lab
+      git:
+        ref: ${GIT_BRANCH}
+        uri: 'https://github.com/BCDevOps/devops-platform-workshops.git'
+      type: Git
+    strategy:
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+      - type: ConfigChange
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewBuild
+    labels:
+      app: ${APP}
+      build: 101-workshop-labs
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  spec:
+    lookupPolicy:
+      local: false
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewBuild
+    generation: 4
+    labels:
+      app: ${APP}
+      build: 101-workshop-labs
+      course-session: ${APP}-${COMPONENT}${SUFFIX}
+    name: ${APP}-${COMPONENT}${SUFFIX}
+parameters:
+- description: The name of the application for labeling all artifacts.
+  displayName: Application Name
+  name: APP
+  value: ocp101
+- description: The name of the application component for labeling all artifacts.
+  displayName: Application Component
+  name: COMPONENT
+  value: labs
+- description: URL Suffix to add to name
+  displayName: URL Suffix
+  name: SUFFIX
+- description: Git URL
+  displayName: Git URL
+  name: GIT_URL
+  value: https://github.com/BCDevOps/devops-platform-workshops.git
+- description: Git workshop branch
+  displayName: Workshop Branch
+  name: GIT_BRANCH
+  value: master
+- description: Image Name
+  displayName: Image Name
+  name: IMAGE_NAME
+  value: 101-workshop-labs
+- description: Image Tag
+  displayName: Image Tag
+  name: IMAGE_TAG
+  value: '1.0.0'
