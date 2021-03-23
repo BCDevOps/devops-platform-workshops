@@ -1,23 +1,28 @@
 # Deployment
-Since the build and deploy stages are separate, and we have a built image, we can now deploy this 
-image into our dev project. 
+Since the build and deploy stages are seperate, and we have a built image from the previous exercise, we can now deploy this 
+image into the dev project. 
 
 ## The Dev Project
-The dev project is what will hold the actual deployed applications. In this case, we will deploy RocketChat and MongoDB to the dev namespace.
+The dev project is where applications are deployed. In this case, we will deploy RocketChat and MongoDB to the dev namespace.
 
 ### Create an ImageStreamTag
 
-In preparation for deployment to our dev environment, you will tag the latest version of our image with the tag `dev`. 
+In preparation for deployment to our dev environment, you will first create a new imagestream as apart of your dev project and then retag the built image from the tools namespace into the dev namespace. This will effectively 'clone' the image to the dev namespace (a best practice) as well as give the image a more meaningful name. 
+
+> Although we use the tag name `dev` there are better naming conventions! We strongly suggest associating image tags with a version that is meaninful for your project!
 
 - From the CLI
 
 ```oc:cli
-oc -n [-tools] tag rocketchat-[username]:latest rocketchat-[username]:dev
+# creating the image stream
+oc -n [-dev] create imagestream rocketchat-[username]
+# retagging to dev
+oc -n [-tools] tag rocketchat-[username]:latest [dev-namespace]/rocketchat-[username]:dev
 ```
 
 - Verify that the `dev` tag has been created
 ```oc:cli
-oc -n [-tools] get ImageStreamTag/rocketchat-[username]:dev
+oc -n [-dev] get imagestreamtag/rocketchat-[username]:dev
 ```
 
 ## Create an Image-Based Deployment
@@ -45,7 +50,7 @@ Select to generate deployment config so that manifests would be turned into temp
 - Or do this from the CLI
 
 ```oc:cli
-oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[username]
+oc -n [-dev] new-app rocketchat-[username]:dev --name=rocketchat-[username]
 ```
 
 - If performed with the CLI, the output should be as follows
