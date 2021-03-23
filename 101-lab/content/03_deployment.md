@@ -29,31 +29,13 @@ oc -n [-dev] get imagestreamtag/rocketchat-[username]:dev
 
 __Objective__: Deploy RocketChat from the image previously built.
 
-- Navigate to the configured `[-dev]` project. 
-
-- From the Side Menu, select `Add` and then select __Container Image__
-
-![](./images/03_deploy_image_01.png)
-
-- Select the tools project, the your specific rocketchat image, and the appropriate tag
-
-Deselect Grant Service account default authority.  This will open up a troubleshooting step later.
-![](./images/03_deploy_image_02.png)
-
-
-When there are multiple deployments for an image you must select create new application in order to create a unique application group.
-![](./images/03_deploy_image_03a.png)
-Select to generate deployment config so that manifests would be turned into templates later on.
-![](./images/03_deploy_image_03.png)
-![](./images/03_deploy_image_04.png)
-
-- Or do this from the CLI
+- from the CLI
 
 ```oc:cli
 oc -n [-dev] new-app rocketchat-[username]:dev --name=rocketchat-[username]
 ```
 
-- If performed with the CLI, the output should be as follows
+- The output should be as follows
 
 ```
 --> Found image b949f08 (2 hours old) in image stream "[devops-training-namespace]-tools/rocketchat-[username]" under tag "dev" for "[devops-training-namespace]-tools/rocketchat-[username]:dev"
@@ -72,7 +54,7 @@ oc -n [-dev] new-app rocketchat-[username]:dev --name=rocketchat-[username]
 
 --> Creating resources ...
     imagestreamtag "rocketchat-[username]:dev" created
-    deploymentconfig "rocketchat-[username]" created
+    deployment "rocketchat-[username]" created
     service "rocketchat-[username]" created
 --> Success
     Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
@@ -81,20 +63,22 @@ oc -n [-dev] new-app rocketchat-[username]:dev --name=rocketchat-[username]
 ```
 
 ## Speed-up application startup
-__Objective__: Get RocketChat to startup faster. This will be investigate in details on the `Resource Requests and Limits` lab.
+__Objective__: Get RocketChat to startup faster by tweaking `Resource Requests and Limits`.
 
-Increasing the resources (specially CPU) right now will help with faster pod startup.
+> Resource adjustment is also something that will be covered in a later exercise
+
+Increasing the resources (especially CPU) right now will help with faster pod startup.
 
 - From the terminal, run the follow oc command:
 ```oc:cli
-oc -n [-dev] set resources dc/rocketchat-[username] --requests=cpu=500m,memory=512Mi --limits=cpu=1000m,memory=1024Mi
+oc -n [-dev] set resources deployment/rocketchat-[username] --requests='cpu=500m,memory=512Mi' --limits='cpu=1000m,memory=1024Mi'
 ```
 
 ## __Objective 1__: Identify ImagePull Problem
 As the Web UI indicated, the `dev` project service accounts do not have the appropriate access to pull the image from the `tools`
 project. 
 
-- Navigate to `Topology` and click on the DeploymentConfig to investigate further
+- Navigate to `Topology` and click on the deployment to investigate further
 
 ![](./images/03_deploy_image_04.png)
 
@@ -139,7 +123,7 @@ From the console click the deployment config and click __view logs__ beside the 
 
 ```oc:cli
 # Show your pod's log
-oc -n [-dev] logs -f "$(oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=rocketchat-[username] -o name --no-headers | head -1)"
+oc -n [-dev] logs -f "$(oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username] -o name --no-headers | head -1)"
 ```
 *note* you can follow the logs with `-f` argument
 
@@ -186,7 +170,7 @@ oc get -n openshift template/mongodb-ephemeral -o json | oc process -f - --param
   Creating resources ...
       secret "mongodb-patricksimonian" created
       service "mongodb-patricksimonian" created
-      deploymentconfig.apps.openshift.io "mongodb-patricksimonian" created
+      deployment.apps.openshift.io "mongodb-patricksimonian" created
   --> Success
       Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
       'oc expose svc/mongodb-patricksimonian' 
@@ -214,7 +198,7 @@ oc get -n openshift template/mongodb-ephemeral -o json | oc process -f - --param
   oc -n [-dev] rollout latest mongodb-[username]
 
   # using watch
-  oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=mongodb-[username] -o 'jsonpath={range .items[*].status.containerStatuses[*]}{.name}{"\t"}{.ready}{"\n"}{end}'
+  oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=mongodb-[username] -o 'jsonpath={range .items[*].status.containerStatuses[*]}{.name}{"\t"}{.ready}{"\n"}{end}'
   ```
   You can safely ignore repeated messages as such:
   ```
@@ -228,7 +212,7 @@ As a result of using a generic `new-app` style deployment, as opposed to openshi
 By default your rocketchat deployment have no environment variables defined. So, while RocketChat is trying to start, and 
 a database has not been deployed, the app does not know how or where to connect to MongoDB. We will need to add an environment variable to the deployment configuration.
 
-- In the Web Console, navigate to `Topology` and select your rocketchat deploymentConfig
+- In the Web Console, navigate to `Topology` and select your rocketchat deployment
 - Select the `Actions` tab on the top right
 ![](./images/03_deploy_env_01.png)
 
