@@ -7,7 +7,6 @@ The dev project is where applications are deployed. In this case, we will deploy
 
 ### Create an ImageStreamTag
 
-In preparation for deployment to our dev environment, you will first create a new imagestream as apart of your dev project and then retag the built image from the tools namespace into the dev namespace. This will effectively 'clone' the image to the dev namespace (a best practice) as well as give the image a more meaningful name. 
 
 > Although we use the tag name `dev` there are better naming conventions! We strongly suggest associating image tags with a version that is meaninful for your project!
 
@@ -17,12 +16,12 @@ In preparation for deployment to our dev environment, you will first create a ne
 # creating the image stream
 oc -n [-dev] create imagestream rocketchat-[username]
 # retagging to dev
-oc -n [-tools] tag rocketchat-[username]:latest [dev-namespace]/rocketchat-[username]:dev
+oc -n [-tools] tag rocketchat-[username]:latest rocketchat-[username]:dev
 ```
 
 - Verify that the `dev` tag has been created
 ```oc:cli
-oc -n [-dev] get imagestreamtag/rocketchat-[username]:dev
+oc -n [-dev] get [-tools]/imagestreamtag/rocketchat-[username]:dev
 ```
 
 ## Create an Image-Based Deployment
@@ -105,9 +104,26 @@ oc -n [-dev] rollout latest rocketchat-[username]
 
 - Validate that the image is able to be pulled
 
+## __Objective 4__: Importing Images to the deploy namespace
+
+Deploying images from another namespace can run you into some issues that are easily solvable if you import a copy of the image to your deploy namespace. This is a BC Gov best practice infact. 
+
+### Why Build in Tools Then?
+
+Your Tools namespace has quota that can be best utilized for your CI (Continuous Integration) and devops workloads. Since building an image is apart of the CI pipeline you can run your builds there without impacting the cpu or memory availablity for deployment workloads. 
 
 
-## __Objective 2__: Identify CrashLoopBackOff problem
+1. First create a new imagestream in your deploy project
+`oc -n [-dev] create imagestream rocketchat-[username]`
+
+2. Retag your tools image tag into this new imagestream
+
+`oc -n [-dev] tag [-tools]/rocketchat-[username]:dev rocketchat-[username]:dev`
+
+3. Modify your Rocket Chat deployment to point to the new image stream.
+`oc -n [-dev] set image deployment/rocketchat-[username] rocketchat-[username]=rocketchat-[patricksimonian]:dev`
+
+## __Objective 3__: Identify CrashLoopBackOff problem
 
 Notice that the deployment is still failing. 
 
