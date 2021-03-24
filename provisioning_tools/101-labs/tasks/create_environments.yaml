@@ -8,3 +8,9 @@
     - "{{ environments }}"
   loop_control: 
     loop_var: env
+- name: Create "{{ item }}" project quots
+  include_tasks: create_quotas.yaml
+  with_items: 
+    - "{{ environments }}"
+  loop_control: 
+    loop_var: env
