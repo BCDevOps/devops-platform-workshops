@@ -110,7 +110,7 @@ Deploying images from another namespace can run you into some issues that are ea
 
 ### Why Build in Tools Then?
 
-Your Tools namespace has quota that can be best utilized for your CI (Continuous Integration) and devops workloads. Since building an image is apart of the CI pipeline you can run your builds there without impacting the cpu or memory availablity for deployment workloads. 
+Your Tools namespace has quota that can be best utilized for your CI (Continuous Integration) and devops workloads. Since building an image is apart of the CI pipeline you can run your builds there without impacting the cpu or memory availability for deployment workloads. 
 
 
 1. First create a new imagestream in your deploy project
@@ -226,7 +226,7 @@ As a result of using a generic `new-app` style deployment, as opposed to openshi
 
 ### Environment Variables
 By default your rocketchat deployment have no environment variables defined. So, while RocketChat is trying to start, and 
-a database has not been deployed, the app does not know how or where to connect to MongoDB. We will need to add an environment variable to the deployment configuration.
+a database has been deployed, the app does not know how or where to connect to MongoDB. We will need to add an environment variable to the deployment configuration.
 
 - In the Web Console, navigate to `Topology` and select your rocketchat deployment
 - Select the `Actions` tab on the top right
@@ -258,17 +258,17 @@ oc -n [-dev] set env dc/rocketchat-[username] "MONGO_URL=mongodb://dbuser:dbpass
 
 If you are feeling at odds with things like __dbpass__ being out in the open as an environment variable. That is a good thing! For demonstration purposes you are creating a `Single Value Env`. Sensitive information like passwords should be stored in a `Secret` and referenced as `envFrom`. In addition, you can also use the [Downward API](https://docs.openshift.com/container-platform/4.4/nodes/containers/nodes-containers-downward-api.html#nodes-containers-downward-api-container-secrets_nodes-containers-downward-api) to refer to the secret created by MongoDB.
   ```oc:cli
-  oc -n [-dev] rollout pause dc/rocketchat-[username] 
-  oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_USER", "valueFrom":{"secretKeyRef":{"key":"database-user", "name":"mongodb-[username]"}}}]}]}}}}'
+  oc -n [-dev] rollout pause deployment/rocketchat-[username] 
+  oc -n [-dev] patch deployment/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_USER", "valueFrom":{"secretKeyRef":{"key":"database-user", "name":"mongodb-[username]"}}}]}]}}}}'
 
-  oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_PASS", "valueFrom":{"secretKeyRef":{"key":"database-password", "name":"mongodb-[username]"}}}]}]}}}}'
+  oc -n [-dev] patch deployment/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_PASS", "valueFrom":{"secretKeyRef":{"key":"database-password", "name":"mongodb-[username]"}}}]}]}}}}'
 
-  oc -n [-dev] set env dc/rocketchat-[username] 'MONGO_URL=mongodb://$(MONGO_USER):$(MONGO_PASS)@mongodb-[username]:27017/rocketchat'
+  oc -n [-dev] set env deployment/rocketchat-[username] 'MONGO_URL=mongodb://$(MONGO_USER):$(MONGO_PASS)@mongodb-[username]:27017/rocketchat'
 
-  oc -n [-dev] rollout resume dc/rocketchat-[username] 
+  oc -n [-dev] rollout resume deployment/rocketchat-[username] 
 
   # Check environment variables configuration
-  oc -n [-dev] get dc/rocketchat-[username] -o json | jq '.spec.template.spec.containers[].env'
+  oc -n [-dev] get deployment/rocketchat-[username] -o json | jq '.spec.template.spec.containers[].env'
   ```
   *bonus*: Try to leverage the Downward API and `envFrom` so that sensitive values such as the mongo db password are not exposed
 
