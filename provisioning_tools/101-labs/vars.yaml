@@ -1,0 +1,10 @@
+action: "notta"
+instructor_list: 
+  - patricksimonian@github
+environments: 
+  - tools
+  - dev
+unique_id: "{{ lookup('password', 'unique_id chars=ascii_lowercase,digits length=6') }}"
+workshop_name: "ocp101"
+project_suffix: "-june"
+service_account: "system:serviceaccount:openshift:bcdevops-admin"

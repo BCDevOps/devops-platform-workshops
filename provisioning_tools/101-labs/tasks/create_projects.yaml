@@ -1,0 +1,34 @@
+---
+- name: Create {{ item }} project set
+  command: >
+    oc --as="{{ service_account }}" new-project "{{ project_name }}-{{ env }}" --display-name="OpenShift 101 ({{ env }})"
+#  ignore_errors: true
+- name: Label projects
+  command: > 
+    oc --as="{{ service_account }}" label namespace "{{ project_name }}-{{ env }}" workshop="{{ unique_id }}-{{ workshop_name }}"
+  ignore_errors: true
+
+- name: Add pathfinder labels
+  command: >
+    oc --as="{{ service_account }}" label namespace "{{ project_name }}-{{ env }}" "{{ item.label_name }}"="{{ item.label_value }}"
+  ignore_errors: true
+  with_items:
+    - { label_name: category, label_value: "pathfinder" }
+    - { label_name: environment, label_value: "{{ env }}" }
+    - { label_name: name, label_value: "{{ project_name }}" }
+    - { label_name: team, label_value: "BCDEVOPS" }
+    - { label_name: status, label_value: "active" }
+    - { label_name: product, label_value: "{{ project_name }}-labs" }
+
+- name: Add instructors to each project
+  command: > 
+    oc --as="{{ service_account }}" policy add-role-to-user admin "{{ instructor_username }}" -n "{{ project_name }}-{{ env }}"
+  with_items: 
+    - "{{ instructor_list }}"
+  loop_control: 
+    loop_var: instructor_username
+  ignore_errors: true
+# aporeto is not available in ARO 4.3 cluster
+# - name: Config network security policy
+#   shell: >
+#     oc --as="{{ service_account }}" process -f tasks/nsp-template.yml -p "NAMESPACE={{ project_name }}-{{ env }}" | oc --as="{{ service_account }}" -n "{{ project_name }}-{{ env }}" apply -f -
