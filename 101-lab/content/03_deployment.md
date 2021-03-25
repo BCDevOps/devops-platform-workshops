@@ -1,54 +1,40 @@
 # Deployment
-Since the build and deploy stages are separate, and we have a built image, we can now deploy this 
-image into our dev project. 
+Since the build and deploy stages are seperate, and we have a built image from the previous exercise, we can now deploy this 
+image into the dev project. 
 
 ## The Dev Project
-The dev project is what will hold the actual deployed applications. In this case, we will deploy RocketChat and MongoDB to the dev namespace.
+The dev project is where applications are deployed. In this case, we will deploy RocketChat and MongoDB to the dev namespace.
 
 ### Create an ImageStreamTag
 
-In preparation for deployment to our dev environment, you will tag the latest version of our image with the tag `dev`. 
+
+> Although we use the tag name `dev` there are better naming conventions! We strongly suggest associating image tags with a version that is meaninful for your project!
 
 - From the CLI
 
 ```oc:cli
+# creating the image stream
+oc -n [-dev] create imagestream rocketchat-[username]
+# retagging to dev
 oc -n [-tools] tag rocketchat-[username]:latest rocketchat-[username]:dev
 ```
 
 - Verify that the `dev` tag has been created
 ```oc:cli
-oc -n [-tools] get ImageStreamTag/rocketchat-[username]:dev
+oc -n [-dev] get [-tools]/imagestreamtag/rocketchat-[username]:dev
 ```
 
 ## Create an Image-Based Deployment
 
 __Objective__: Deploy RocketChat from the image previously built.
 
-- Navigate to the configured `[-dev]` project. 
-
-- From the Side Menu, select `Add` and then select __Container Image__
-
-![](./images/03_deploy_image_01.png)
-
-- Select the tools project, the your specific rocketchat image, and the appropriate tag
-
-Deselect Grant Service account default authority.  This will open up a troubleshooting step later.
-![](./images/03_deploy_image_02.png)
-
-
-When there are multiple deployments for an image you must select create new application in order to create a unique application group.
-![](./images/03_deploy_image_03a.png)
-Select to generate deployment config so that manifests would be turned into templates later on.
-![](./images/03_deploy_image_03.png)
-![](./images/03_deploy_image_04.png)
-
-- Or do this from the CLI
+- from the CLI
 
 ```oc:cli
-oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[username]
+oc -n [-dev] new-app rocketchat-[username]:dev --name=rocketchat-[username]
 ```
 
-- If performed with the CLI, the output should be as follows
+- The output should be as follows
 
 ```
 --> Found image b949f08 (2 hours old) in image stream "[devops-training-namespace]-tools/rocketchat-[username]" under tag "dev" for "[devops-training-namespace]-tools/rocketchat-[username]:dev"
@@ -67,7 +53,7 @@ oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[usern
 
 --> Creating resources ...
     imagestreamtag "rocketchat-[username]:dev" created
-    deploymentconfig "rocketchat-[username]" created
+    deployment "rocketchat-[username]" created
     service "rocketchat-[username]" created
 --> Success
     Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
@@ -76,20 +62,22 @@ oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[usern
 ```
 
 ## Speed-up application startup
-__Objective__: Get RocketChat to startup faster. This will be investigate in details on the `Resource Requests and Limits` lab.
+__Objective__: Get RocketChat to startup faster by tweaking `Resource Requests and Limits`.
 
-Increasing the resources (specially CPU) right now will help with faster pod startup.
+> Resource adjustment is also something that will be covered in a later exercise
+
+Increasing the resources (especially CPU) right now will help with faster pod startup.
 
 - From the terminal, run the follow oc command:
 ```oc:cli
-oc -n [-dev] set resources dc/rocketchat-[username] --requests=cpu=500m,memory=512Mi --limits=cpu=1000m,memory=1024Mi
+oc -n [-dev] set resources deployment/rocketchat-[username] --requests='cpu=500m,memory=512Mi' --limits='cpu=1000m,memory=1024Mi'
 ```
 
 ## __Objective 1__: Identify ImagePull Problem
 As the Web UI indicated, the `dev` project service accounts do not have the appropriate access to pull the image from the `tools`
 project. 
 
-- Navigate to `Topology` and click on the DeploymentConfig to investigate further
+- Navigate to `Topology` and click on the deployment to investigate further
 
 ![](./images/03_deploy_image_04.png)
 
@@ -116,9 +104,26 @@ oc -n [-dev] rollout latest rocketchat-[username]
 
 - Validate that the image is able to be pulled
 
+## __Objective 4__: Importing Images to the deploy namespace
+
+Deploying images from another namespace can run you into some issues that are easily solvable if you import a copy of the image to your deploy namespace. This is a BC Gov best practice infact. 
+
+### Why Build in Tools Then?
+
+Your Tools namespace has quota that can be best utilized for your CI (Continuous Integration) and devops workloads. Since building an image is apart of the CI pipeline you can run your builds there without impacting the cpu or memory availability for deployment workloads. 
 
 
-## __Objective 2__: Identify CrashLoopBackOff problem
+1. First create a new imagestream in your deploy project
+`oc -n [-dev] create imagestream rocketchat-[username]`
+
+2. Retag your tools image tag into this new imagestream
+
+`oc -n [-dev] tag [-tools]/rocketchat-[username]:dev rocketchat-[username]:dev`
+
+3. Modify your Rocket Chat deployment to point to the new image stream.
+`oc -n [-dev] set image deployment/rocketchat-[username] rocketchat-[username]=rocketchat-[patricksimonian]:dev`
+
+## __Objective 3__: Identify CrashLoopBackOff problem
 
 Notice that the deployment is still failing. 
 
@@ -134,7 +139,7 @@ From the console click the deployment config and click __view logs__ beside the 
 
 ```oc:cli
 # Show your pod's log
-oc -n [-dev] logs -f "$(oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=rocketchat-[username] -o name --no-headers | head -1)"
+oc -n [-dev] logs -f "$(oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username] -o name --no-headers | head -1)"
 ```
 *note* you can follow the logs with `-f` argument
 
@@ -181,7 +186,7 @@ oc get -n openshift template/mongodb-ephemeral -o json | oc process -f - --param
   Creating resources ...
       secret "mongodb-patricksimonian" created
       service "mongodb-patricksimonian" created
-      deploymentconfig.apps.openshift.io "mongodb-patricksimonian" created
+      deployment.apps.openshift.io "mongodb-patricksimonian" created
   --> Success
       Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
       'oc expose svc/mongodb-patricksimonian' 
@@ -209,7 +214,7 @@ oc get -n openshift template/mongodb-ephemeral -o json | oc process -f - --param
   oc -n [-dev] rollout latest mongodb-[username]
 
   # using watch
-  oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=mongodb-[username] -o 'jsonpath={range .items[*].status.containerStatuses[*]}{.name}{"\t"}{.ready}{"\n"}{end}'
+  oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=mongodb-[username] -o 'jsonpath={range .items[*].status.containerStatuses[*]}{.name}{"\t"}{.ready}{"\n"}{end}'
   ```
   You can safely ignore repeated messages as such:
   ```
@@ -221,9 +226,9 @@ As a result of using a generic `new-app` style deployment, as opposed to openshi
 
 ### Environment Variables
 By default your rocketchat deployment have no environment variables defined. So, while RocketChat is trying to start, and 
-a database has not been deployed, the app does not know how or where to connect to MongoDB. We will need to add an environment variable to the deployment configuration.
+a database has been deployed, the app does not know how or where to connect to MongoDB. We will need to add an environment variable to the deployment configuration.
 
-- In the Web Console, navigate to `Topology` and select your rocketchat deploymentConfig
+- In the Web Console, navigate to `Topology` and select your rocketchat deployment
 - Select the `Actions` tab on the top right
 ![](./images/03_deploy_env_01.png)
 
@@ -253,17 +258,17 @@ oc -n [-dev] set env dc/rocketchat-[username] "MONGO_URL=mongodb://dbuser:dbpass
 
 If you are feeling at odds with things like __dbpass__ being out in the open as an environment variable. That is a good thing! For demonstration purposes you are creating a `Single Value Env`. Sensitive information like passwords should be stored in a `Secret` and referenced as `envFrom`. In addition, you can also use the [Downward API](https://docs.openshift.com/container-platform/4.4/nodes/containers/nodes-containers-downward-api.html#nodes-containers-downward-api-container-secrets_nodes-containers-downward-api) to refer to the secret created by MongoDB.
   ```oc:cli
-  oc -n [-dev] rollout pause dc/rocketchat-[username] 
-  oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_USER", "valueFrom":{"secretKeyRef":{"key":"database-user", "name":"mongodb-[username]"}}}]}]}}}}'
+  oc -n [-dev] rollout pause deployment/rocketchat-[username] 
+  oc -n [-dev] patch deployment/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_USER", "valueFrom":{"secretKeyRef":{"key":"database-user", "name":"mongodb-[username]"}}}]}]}}}}'
 
-  oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_PASS", "valueFrom":{"secretKeyRef":{"key":"database-password", "name":"mongodb-[username]"}}}]}]}}}}'
+  oc -n [-dev] patch deployment/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_PASS", "valueFrom":{"secretKeyRef":{"key":"database-password", "name":"mongodb-[username]"}}}]}]}}}}'
 
-  oc -n [-dev] set env dc/rocketchat-[username] 'MONGO_URL=mongodb://$(MONGO_USER):$(MONGO_PASS)@mongodb-[username]:27017/rocketchat'
+  oc -n [-dev] set env deployment/rocketchat-[username] 'MONGO_URL=mongodb://$(MONGO_USER):$(MONGO_PASS)@mongodb-[username]:27017/rocketchat'
 
-  oc -n [-dev] rollout resume dc/rocketchat-[username] 
+  oc -n [-dev] rollout resume deployment/rocketchat-[username] 
 
   # Check environment variables configuration
-  oc -n [-dev] get dc/rocketchat-[username] -o json | jq '.spec.template.spec.containers[].env'
+  oc -n [-dev] get deployment/rocketchat-[username] -o json | jq '.spec.template.spec.containers[].env'
   ```
   *bonus*: Try to leverage the Downward API and `envFrom` so that sensitive values such as the mongo db password are not exposed
 

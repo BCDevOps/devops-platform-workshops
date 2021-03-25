@@ -1,0 +1,22 @@
+---
+- name: Create temporary dir
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: temp
+  register: tempdir
+- name: Process quota template
+  vars:
+    NAMESPACE: "{{ project_name }}-{{ env }}"
+    LICENCE_PLATE: "{{ project_name }}"
+    ENVIRONMENT: "{{ env }}"
+  template:
+    src: ../templates/quotas.yaml.j2
+    dest: "{{ tempdir.path }}/quotas.yaml"
+- name: Create Quota
+  shell: oc --as="{{ service_account }}" create -f  "{{ tempdir.path }}/quotas.yaml" -n "{{ project_name }}-{{ env }}"
+  when: tempdir.path is defined
+- name: Delete temp dir
+  ansible.builtin.file:
+    path: "{{ tempdir.path }}"
+    state: absent
+  when: tempdir.path is defined
