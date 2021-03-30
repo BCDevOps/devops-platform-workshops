@@ -21,7 +21,7 @@ oc -n [-tools] tag rocketchat-[username]:latest rocketchat-[username]:dev
 
 - Verify that the `dev` tag has been created
 ```oc:cli
-oc -n [-dev] get [-tools]/imagestreamtag/rocketchat-[username]:dev
+oc -n [-dev] get [-tools]/rocketchat-[username]:dev
 ```
 
 ## Create an Image-Based Deployment
