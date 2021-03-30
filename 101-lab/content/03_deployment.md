@@ -75,7 +75,7 @@ oc -n [-dev] set resources deployment/rocketchat-[username] --requests='cpu=500m
 
 ## __Objective 1__: Identify ImagePull Problem
 As the Web UI indicated, the `dev` project service accounts do not have the appropriate access to pull the image from the `tools`
-project. 
+project. Admin users manage service accounts and will need to grant rolebindings in order to provide image pull access from two respective namespaces.
 
 - Navigate to `Topology` and click on the deployment to investigate further
 
