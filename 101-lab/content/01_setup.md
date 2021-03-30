@@ -19,7 +19,7 @@ would create an app named `app1-stewartshea`.
 
 ## Lab Requirements
 These labs will require access to the lab ocp environment:
-- [ARO Web Console](https://console-openshift-console.apps.platform-services.aro.devops.gov.bc.ca/)
+- [ARO Web Console](https://console-openshift-console.apps.pathfinder.aro.devops.gov.bc.ca/)
 
 
 ## Installing OC
