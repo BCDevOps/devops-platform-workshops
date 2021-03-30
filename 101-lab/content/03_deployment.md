@@ -91,16 +91,8 @@ project. Admin users manage service accounts and will need to grant rolebindings
 oc -n [-tools] policy add-role-to-user system:image-puller system:serviceaccount:[-dev]:default
 ```
 
-With the appropriate access in place, redeploy the application. 
-- From the Web Console you can right click on the deployment config and click Start Rollout
-
-![](./images/03_deploy_image_07.png)
-
-- OR from the CLI
-
-```oc:cli
-oc -n [-dev] rollout latest rocketchat-[username]
-```
+With the appropriate access in place, you can try bringing up a new pod to see if the issue has been resolved. With Deployments this can be done by
+`oc scale deployment/rocketchat-[username] --replicas=0` waiting for the pods to scale down to 0 and then to scale back up with `oc scale deployment/rocketchat-[username] --replicas=1`
 
 - Validate that the image is able to be pulled
 
