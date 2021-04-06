@@ -21,7 +21,7 @@ oc -n [-tools] tag rocketchat-[username]:latest rocketchat-[username]:dev
 
 - Verify that the `dev` tag has been created
 ```oc:cli
-oc -n [-dev] get [-tools]/rocketchat-[username]:dev
+oc -n [-tools] get imagestreamtag/rocketchat-[username]:dev
 ```
 
 ## Create an Image-Based Deployment
@@ -165,7 +165,7 @@ WARNING: Any data stored will be lost upon pod destruction. Only use this templa
   - List available parameters of the template
 
 ```oc:cli
-oc get -n openshift template/mongodb-ephemeral -o json | oc process -f - --parameters=true
+oc -n openshift get template/mongodb-ephemeral -o json | oc process -f - --parameters=true
 ```
 
   - Create MongoDB based on a template in the catalog
