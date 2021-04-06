@@ -15,13 +15,15 @@ The dev project is where applications are deployed. In this case, we will deploy
 ```oc:cli
 # creating the image stream
 oc -n [-dev] create imagestream rocketchat-[username]
-# retagging to dev
+# retagging the image stream from latest to dev
 oc -n [-tools] tag rocketchat-[username]:latest rocketchat-[username]:dev
+# import it from tools namespace to dev namespace
+oc tag [-tools]/rocketchat-[username]:dev [-dev]/rocketchat-[username]:dev
 ```
 
 - Verify that the `dev` tag has been created
 ```oc:cli
-oc -n [-tools] get imagestreamtag/rocketchat-[username]:dev
+oc -n [-dev] get imagestreamtag/rocketchat-[username]:dev
 ```
 
 ## Create an Image-Based Deployment
@@ -37,7 +39,7 @@ oc -n [-dev] new-app rocketchat-[username]:dev --name=rocketchat-[username]
 - The output should be as follows
 
 ```
---> Found image b949f08 (2 hours old) in image stream "[devops-training-namespace]-tools/rocketchat-[username]" under tag "dev" for "[devops-training-namespace]-tools/rocketchat-[username]:dev"
+--> Found image b949f08 (2 hours old) in image stream "[devops-training-namespace]-dev/rocketchat-[username]" under tag "dev" for "[devops-training-namespace]-dev/rocketchat-[username]:dev"
 
     Node.js 8 
     --------- 
