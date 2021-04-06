@@ -34,7 +34,7 @@ Now that we notice all messages and configuration is gone whenever pods cycle, l
 
 ![](./images/06_persistent_storage_04a.png)
 
-  - Select the `azure-file` storage class. Set the type to RWO, the size to 1GB, and name it `mongodb-[username]-file`
+  - Select the `managed-premium` storage class. Set the type to RWO, the size to 1GB, and name it `mongodb-[username]-file`
 
   - Navigate back to your Mongo DeploymentConfig and select `Add Storage` from the `Actions` Tab
 
@@ -87,7 +87,7 @@ RWO storage (which was selected above) can only be attached to a single pod at a
 ### RWX Storage
 __Objective__: Cause MongoDB to corrupt its data file by using the wrong storage class for MongoDB.
 
-RWX storage allows muliple pods to access the same PV at the same time. 
+RWX storage allows multiple pods to access the same PV at the same time. 
 
 - Scale down `mongodb-[username]` to 0 pods
   ```oc:cli
@@ -95,7 +95,7 @@ RWX storage allows muliple pods to access the same PV at the same time.
   ```
 ![](./images/06_persistent_storage_09.png)
 
-- Remove the previous storage volume and recreate as `azure-file` (mounting at `/var/lib/mongodb/data`) with type RWX, and naming it `mongodb-[username]-file-rwx`
+- Remove the previous storage volume and recreate as `managed-premium` (mounting at `/var/lib/mongodb/data`) with type RWX, and naming it `mongodb-[username]-file-rwx`
 
   ![](./images/06_persistent_storage_10.png)
   ```oc:cli
@@ -104,7 +104,7 @@ RWX storage allows muliple pods to access the same PV at the same time.
   oc -n [-dev] get dc/mongodb-[username] -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n [-dev] set volumes dc/mongodb-[username] --remove '--name={}'
 
   # Add a new volume by creating a PVC. If the PVC already exists, omit '--claim-class', '--claim-mode', and '--claim-size' arguments
-  oc -n [-dev] set volume dc/mongodb-[username] --add --name=mongodb-[username]-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-[username]-file --claim-class=netapp-file-standard --claim-mode=ReadWriteMany --claim-size=1G
+  oc -n [-dev] set volume dc/mongodb-[username] --add --name=mongodb-[username]-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-[username]-file --claim-class=managed-premium --claim-mode=ReadWriteMany --claim-size=1G
   ```
 - Scale up `mongodb-[username]` to 1 pods
   ```oc:cli
