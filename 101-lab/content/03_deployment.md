@@ -13,17 +13,11 @@ The dev project is where applications are deployed. In this case, we will deploy
 - From the CLI
 
 ```oc:cli
-# creating the image stream
-oc -n [-dev] create imagestream rocketchat-[username]
 # retagging the image stream from latest to dev
 oc -n [-tools] tag rocketchat-[username]:latest rocketchat-[username]:dev
-# import it from tools namespace to dev namespace
-oc tag [-tools]/rocketchat-[username]:dev [-dev]/rocketchat-[username]:dev
-```
 
-- Verify that the `dev` tag has been created
-```oc:cli
-oc -n [-dev] get imagestreamtag/rocketchat-[username]:dev
+# Verify that the `dev` tag has been created
+oc -n [-tools] get imagestreamtag/rocketchat-[username]:dev
 ```
 
 ## Create an Image-Based Deployment
@@ -33,13 +27,13 @@ __Objective__: Deploy RocketChat from the image previously built.
 - from the CLI
 
 ```oc:cli
-oc -n [-dev] new-app rocketchat-[username]:dev --name=rocketchat-[username]
+oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[username]
 ```
 
 - The output should be as follows
 
 ```
---> Found image b949f08 (2 hours old) in image stream "[devops-training-namespace]-dev/rocketchat-[username]" under tag "dev" for "[devops-training-namespace]-dev/rocketchat-[username]:dev"
+--> Found image b949f08 (2 hours old) in image stream "[devops-training-namespace]-tools/rocketchat-[username]" under tag "dev" for "[devops-training-namespace]-tools/rocketchat-[username]:dev"
 
     Node.js 8 
     --------- 
@@ -98,7 +92,7 @@ With the appropriate access in place, you can try bringing up a new pod to see i
 
 - Validate that the image is able to be pulled
 
-## __Objective 4__: Importing Images to the deploy namespace
+## __Objective 2__: Importing Images to the deploy namespace
 
 Deploying images from another namespace can run you into some issues that are easily solvable if you import a copy of the image to your deploy namespace. This is a BC Gov best practice infact. 
 
