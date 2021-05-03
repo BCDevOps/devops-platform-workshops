@@ -53,22 +53,21 @@ items:
       pods: "10"
     scopes:
     - BestEffort
-
-  - apiVersion: v1
-    kind: LimitRange
-    metadata:
-      name: default-limits
-      namespace: "{{ NAMESPACE }}"
-      labels:
-        environment: "{{ ENVIRONMENT }}"
-        name: "{{ LICENCE_PLATE }}"
-        provisioned-by: 101-provisioner-playbook
-    spec:
-      limits:
-      - default:
-          cpu: 250m
-          memory: 1Gi
-        defaultRequest:
-          cpu: 50m
-          memory: 256Mi
-        type: Container
+- apiVersion: v1
+  kind: LimitRange
+  metadata:
+    name: default-limits
+    namespace: "{{ NAMESPACE }}"
+    labels:
+      environment: "{{ ENVIRONMENT }}"
+      name: "{{ LICENCE_PLATE }}"
+      provisioned-by: 101-provisioner-playbook
+  spec:
+    limits:
+    - default:
+        cpu: 250m
+        memory: 1Gi
+      defaultRequest:
+        cpu: 50m
+        memory: 256Mi
+      type: Container
