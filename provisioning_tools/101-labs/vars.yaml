@@ -1,7 +1,7 @@
 action: null
 instructor_list: 
   - patricksimonian@github
-  - shellyhan@github
+  - shellyxuehan@github
 environments: 
   - tools
   - dev
