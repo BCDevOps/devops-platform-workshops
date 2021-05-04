@@ -201,8 +201,8 @@ oc -n openshift get template/mongodb-ephemeral -o json | oc process -f - --param
   # using oc rollout latest; or
   oc -n [-dev] rollout latest mongodb-[username]
 
-  # using watch
-  oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=mongodb-[username] -o 'jsonpath={range .items[*].status.containerStatuses[*]}{.name}{"\t"}{.ready}{"\n"}{end}'
+  # using watch (please note that MongoDB is deployed as a deployment type object)
+  oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=mongodb-[username] -o 'jsonpath={range .items[*].status.containerStatuses[*]}{.name}{"\t"}{.ready}{"\n"}{end}'
   ```
   You can safely ignore repeated messages as such:
   ```
