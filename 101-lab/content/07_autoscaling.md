@@ -15,7 +15,7 @@ Web Console.
 - from the cli run 
 > You are configuring a very low CPU request target (such as 10%) so that you can test it easily by browsing the web application. In production the target would be closer to 70-80%
 ```oc:cli
-oc -n [-dev] autoscale dc/rocketchat-[username] --min 1 --max 10 --cpu-percent=10
+oc -n [-dev] autoscale deployment/rocketchat-[username] --min 1 --max 10 --cpu-percent=10
 ```
 
 - Browse to the application to generate some load and monitor the behavior of the pods

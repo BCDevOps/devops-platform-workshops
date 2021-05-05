@@ -11,11 +11,11 @@ __Objective__: Observe that by using ephemeral storage causes RocketChat to lose
 To understand what will happen when a pod with ephemeral storage is removed,
 - Scale down both the rocketchat and mongo applications to 0 pods
   ```oc:cli
-  oc -n [-dev] scale dc/rocketchat-[username] dc/mongodb-[username] --replicas=0
+  oc -n [-dev] scale deployment/rocketchat-[username] dc/mongodb-[username] --replicas=0
   ```
 - Scale back up each application pod to 1 replica
   ```oc:cli
-  oc -n [-dev] scale dc/rocketchat-[username] dc/mongodb-[username] --replicas=1
+  oc -n [-dev] scale deployment/rocketchat-[username] dc/mongodb-[username] --replicas=1
   ```
 ![](./images/06_persistent_storage_02.png)
 
@@ -25,7 +25,7 @@ __Objective__: Add persistent storage to MongoDB so that it won't lose data crea
 Now that we notice all messages and configuration is gone whenever pods cycle, let's add persistent storage to the mongodb pod. 
 - Scale down both the rocketchat and mongo applications to 0 pods
   ```oc:cli
-  oc -n [-dev] scale dc/rocketchat-[username] dc/mongodb-[username] --replicas=0
+  oc -n [-dev] scale deployment/rocketchat-[username] dc/mongodb-[username] --replicas=0
   ```
 - Remove the emptyDir Storage by navigating to the mongodb deploymentconfig
 ![](./images/06_persistent_storage_03.png)
@@ -51,16 +51,16 @@ Now that we notice all messages and configuration is gone whenever pods cycle, l
   ```
 - When mongo is running, scale `rocketchat-[username]` to 1 pod
   ```oc:cli
-  oc -n [-dev] scale dc/rocketchat-[username] --replicas=1
+  oc -n [-dev] scale deployment/rocketchat-[username] --replicas=1
   ```
 - Access the RocketChat URL and complete the Setup Wizard again
 - Scale down and scale back up both the database and the rocketchat app
   ```oc:cli
-  oc -n [-dev] scale dc/rocketchat-[username] dc/mongodb-[username] --replicas=0
+  oc -n [-dev] scale deployment/rocketchat-[username] dc/mongodb-[username] --replicas=0
   # Scale up MongoDB to 1 replica; and
   oc -n [-dev] scale dc/mongodb-[username] --replicas=1
   # Scale up RocketChat to 1 replica
-  oc -n [-dev] scale dc/rocketchat-[username] --replicas=1
+  oc -n [-dev] scale deployment/rocketchat-[username] --replicas=1
   ```
 - Verify that data was persisted by accessing RocketChat URL and observing that it doesn't show the Setup Wizard.
 
@@ -125,7 +125,7 @@ After using the `azure-file` storage class (RWX) with rolling deployment, you go
 To fix that we will need to replace the `RWX` PVC with a `RWO` PVC and change the deployment strategy from `Rolling` to `Recreate` as follow:
   - Scale down `rocketchat-[username]` to 0 pods
     ```oc:cli
-    oc -n [-dev] scale dc/rocketchat-[username] --replicas=0
+    oc -n [-dev] scale deployment/rocketchat-[username] --replicas=0
     ```
   - Scale down `mongodb-[username]` to 0 pods
     ```oc:cli
@@ -162,7 +162,7 @@ To fix that we will need to replace the `RWX` PVC with a `RWO` PVC and change th
     ```
   - Scale up `rocketchat-[username]` to 1 pod, and wait for the pod to become ready
     ```oc:cli
-    oc -n [-dev] scale dc/rocketchat-[username] --replicas=1
+    oc -n [-dev] scale deployment/rocketchat-[username] --replicas=1
     ```
   - Check deployment and make sure `mongodb-[username]-file-rwx` PVCs are not being used, and delete those PVCs.
     ```oc:cli

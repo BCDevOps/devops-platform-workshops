@@ -24,7 +24,7 @@ In this lab, we will scale down the database deployment so that application pods
     ```
 - Redeploy rocketchat:
     ```
-    oc -n [-dev] rollout latest dc/rocketchat-[username]
+    oc -n [-dev] rollout latest deployment/rocketchat-[username]
     ```
 - Once the new pod starts, notice the CrashLoopBackOff
 
