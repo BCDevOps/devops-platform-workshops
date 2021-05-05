@@ -1,5 +1,5 @@
 # Deployment
-Since the build and deploy stages are seperate, and we have a built image from the previous exercise, we can now deploy this 
+Since the build and deploy stages are separate, and we have a built image from the previous exercise, we can now deploy this 
 image into the dev project. 
 
 ## The Dev Project
@@ -45,7 +45,7 @@ oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[usern
     * Ports 3000/tcp, 8080/tcp will be load balanced by service "rocketchat-[username]"
       * Other containers can access this service through the hostname "rocketchat-[username]"
     * This image declares volumes and will default to use non-persistent, host-local storage.
-      You can add persistent volumes later by running 'volume dc/rocketchat-[username] --add ...'
+      You can add persistent volumes later by running 'volume deployment/rocketchat-[username] --add ...'
 
 --> Creating resources ...
     imagestreamtag "rocketchat-[username]:dev" created
@@ -94,7 +94,7 @@ With the appropriate access in place, you can try bringing up a new pod to see i
 
 ## __Objective 2__: Importing Images to the deploy namespace
 
-Deploying images from another namespace can run you into some issues that are easily solvable if you import a copy of the image to your deploy namespace. This is a BC Gov best practice infact. 
+Deploying images from another namespace can run you into some issues that are easily solvable if you import a copy of the image to your deploy namespace. This is a BC Gov best practice in fact. 
 
 ### Why Build in Tools Then?
 
@@ -104,7 +104,7 @@ Your Tools namespace has quota that can be best utilized for your CI (Continuous
 1. First create a new imagestream in your deploy project
 `oc -n [-dev] create imagestream rocketchat-[username]`
 
-2. Retag your tools image tag into this new imagestream
+2. Re-tag your tools image tag into this new imagestream
 
 `oc -n [-dev] tag [-tools]/rocketchat-[username]:dev rocketchat-[username]:dev`
 
@@ -233,7 +233,7 @@ MONGO_URL=mongodb://dbuser:dbpass@mongodb-[username]:27017/rocketchat
  
 You can also use the CLI to apply the environment variable.
 ```
-oc -n [-dev] set env dc/rocketchat-[username] "MONGO_URL=mongodb://dbuser:dbpass@mongodb-[username]:27017/rocketchat"
+oc -n [-dev] set env deployment/rocketchat-[username] "MONGO_URL=mongodb://dbuser:dbpass@mongodb-[username]:27017/rocketchat"
 ```
 
 - Click Save 
@@ -309,7 +309,7 @@ You will now add a healthcheck for `readiness` and `liveness`.
 
 ### Using cli
 ```oc:cli
-oc -n [-dev] set probe dc/rocketchat-[username] --readiness --get-url=http://:3000/ --initial-delay-seconds=15
+oc -n [-dev] set probe deployment/rocketchat-[username] --readiness --get-url=http://:3000/ --initial-delay-seconds=15
 
 # Watch your RocketChat deployment from the Web Console. At the same time
 # watch Rocket Chat response (press CTRL+c to exit watch)

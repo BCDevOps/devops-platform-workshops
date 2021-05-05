@@ -51,10 +51,10 @@ cutting over traffic and terminating the previous container.
 
   - Change the strategy to a `Recreate` and redeploy a couple of times
 ```oc:cli
-oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"recreateParams":{"timeoutSeconds":600},"resources":{},"type":"Recreate"}}}'
+oc -n [-dev] patch deployment/rocketchat-[username] -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"recreateParams":{"timeoutSeconds":600},"resources":{},"type":"Recreate"}}}'
 ```
   - Refresh the browser URL right after a new deployment and observe the behavior
   - Change the strategy back to `Rolling`
 ```oc:cli
-oc -n [-dev] patch dc/rocketchat-[username] -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"resources":{},"rollingParams":{"intervalSeconds":1,"maxSurge":"25%","maxUnavailable":"25%","timeoutSeconds":600,"updatePeriodSeconds":1},"type":"Rolling"}}}'
+oc -n [-dev] patch deployment/rocketchat-[username] -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"resources":{},"rollingParams":{"intervalSeconds":1,"maxSurge":"25%","maxUnavailable":"25%","timeoutSeconds":600,"updatePeriodSeconds":1},"type":"Rolling"}}}'
 ```

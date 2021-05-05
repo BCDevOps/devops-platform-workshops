@@ -36,7 +36,7 @@ with multiple pods. Please refer to specific application documentaion for detail
 - Or from the CLI
 
 ```oc:cli
-oc -n [-dev] scale dc/rocketchat-[username] --replicas=2
+oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
 ```
 - Notice the balancing across nodes by exploring the details of each pod
 ![](./images/04_app_availability_06.png)
@@ -68,7 +68,7 @@ oc -n [-dev] scale dc/rocketchat-[username] --replicas=2
   
 - Perform deployment, refresh the URL of application and notice that the application is served by the surviving pods
   ```oc:cli
-  oc -n [-dev] rollout latest dc/rocketchat-[username]
+  oc -n [-dev] rollout latest deployment/rocketchat-[username]
   
   # Monitor pods being created and deleted; and
   watch -dg -n 1 -x oc -n [-dev] get pods -l deploymentconfig=rocketchat-[username]
