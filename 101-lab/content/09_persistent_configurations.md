@@ -33,7 +33,7 @@ metadata:
     - name: rocketchat-[username]-volume
       mountPath: /opt/configs
   ```
-> pro tip: if you are not sure what fields are available you can always use oc explain! `oc explain dc.spec.template.spec.containers.volumeMounts`
+> pro tip: if you are not sure what fields are available you can always use oc explain! `oc explain deployment.spec.template.spec.containers.volumeMounts`
 
 ![](./images/07_persistent_config_04.png)
 ![](./images/07_persistent_config_03.png)
