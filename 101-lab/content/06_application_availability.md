@@ -27,9 +27,9 @@ do not require custom clustering configurations.
 would be the mongodb database. For this reason, this lab focuses on the rocketchat application which will function 
 with multiple pods. Please refer to specific application documentaion for details on scalability support. 
 
-- Navigate to `Topology` and scale your DeploymentConfig by selecting it and pressing `Actions > Edit Count` and increasing the count to 2
+- Navigate to `Topology` and scale your Deployment by selecting it and pressing `Actions > Edit Count` and increasing the count to 2
 
-![](./images/04_app_availability_04.png)
+
 
 ![](./images/04_app_availability_05.png)
 
@@ -44,7 +44,7 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
   - Or from the CLI notice the hosts the pod runs on (in the last field)
 
   ```oc:cli
-  oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=rocketchat-[username] -o wide
+  oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username] -o wide
   ```
   you can also simply combine with grep:
   ```
@@ -58,12 +58,12 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
 
 - Delete single pod, refresh the URL of application and notice that the application is served by the surviving pods
   ```oc:cli
-  oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=rocketchat-[username] -o name | head -1 | xargs -I {} oc -n [-dev] delete {}
+  oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username] -o name | head -1 | xargs -I {} oc -n [-dev] delete {}
 
-  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].[namespace].apps.training-us.clearwater.devops.gov.bc.ca/api/info
+  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].[namespace].apps.pathfinder.aro.devops.gov.bc.ca/api/info
 
   # Notice that eventually your RocketChat will be back to having 2 pods
-  oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=rocketchat-[username]
+  oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username]
   ```
   
 - Perform deployment, refresh the URL of application and notice that the application is served by the surviving pods
@@ -71,8 +71,9 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
   oc -n [-dev] rollout latest deployment/rocketchat-[username]
   
   # Monitor pods being created and deleted; and
-  watch -dg -n 1 -x oc -n [-dev] get pods -l deploymentconfig=rocketchat-[username]
+  watch -dg -n 1 -x oc -n [-dev] get pods -l deployment=rocketchat-[username]
 
   # From another terminal, monitor RocketChat response
-  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].[namespace].apps.training-us.clearwater.devops.gov.bc.ca/api/info
+  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].[namespace].apps.pathfinder.aro.devops.gov.bc.ca/api/info
+
   ```
