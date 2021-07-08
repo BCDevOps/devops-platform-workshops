@@ -22,9 +22,9 @@ In this lab, we will scale down the database deployment so that application pods
     ```
     oc -n [-dev] scale dc/mongodb-[username] --replicas=0
     ```
-- Redeploy rocketchat:
+- Restart rocketchat:
     ```
-    oc -n [-dev] rollout latest deployment/rocketchat-[username]
+    oc -n [-dev] rollout restart deployment/rocketchat-[username]
     ```
 - Once the new pod starts, notice the CrashLoopBackOff
 

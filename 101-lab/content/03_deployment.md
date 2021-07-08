@@ -100,16 +100,14 @@ Deploying images from another namespace can run you into some issues that are ea
 
 Your Tools namespace has quota that can be best utilized for your CI (Continuous Integration) and devops workloads. Since building an image is apart of the CI pipeline you can run your builds there without impacting the cpu or memory availability for deployment workloads. 
 
+When you ran `oc new-app` a new imagestream was created in your `dev` namespace with an image that points to your `tools` namespace. To import the image from one namespace to another you can:
 
-1. First create a new imagestream in your deploy project
-`oc -n [-dev] create imagestream rocketchat-[username]`
-
-2. Re-tag your tools image tag into this new imagestream
+1. Re-tag your tools image tag into this new imagestream
 
 `oc -n [-dev] tag [-tools]/rocketchat-[username]:dev rocketchat-[username]:dev`
 
-3. Modify your Rocket Chat deployment to point to the new image stream.
-`oc -n [-dev] set image deployment/rocketchat-[username] rocketchat-[username]=rocketchat-[patricksimonian]:dev`
+2. Modify your Rocket Chat deployment to point to the new image stream.
+`oc -n [-dev] set image deployment/rocketchat-[username] rocketchat-[username]=rocketchat-[username]:dev`
 
 ## __Objective 3__: Identify CrashLoopBackOff problem
 
@@ -197,13 +195,7 @@ oc -n openshift get template/mongodb-ephemeral -o json | oc process -f - --param
   - Find the mongodb deployment by going back to `Topology`
   - Wait until MongoDB has been successfully deployed
   MongoDB will generate a lot of logs. Since MongoDB comes with a readiness probe check for pod/container readiness, to know when it is up and ready.
-  ```oc:cli
-  # using oc rollout latest; or
-  oc -n [-dev] rollout latest mongodb-[username]
-
-  # using watch (please note that MongoDB is deployed as a deployment type object)
-  oc -n [-dev] get pods --field-selector=status.phase=Running -l deploymentconfig=mongodb-[username] -o 'jsonpath={range .items[*].status.containerStatuses[*]}{.name}{"\t"}{.ready}{"\n"}{end}'
-  ```
+  
   You can safely ignore repeated messages as such:
   ```
   2020-02-06T06:23:41.391+0000 [conn11041]  authenticate db: rocketchat { authenticate: 1, nonce: "xxx", user: "dbuser", key: "xxx" }
@@ -213,14 +205,14 @@ oc -n openshift get template/mongodb-ephemeral -o json | oc process -f - --param
 As a result of using a generic `new-app` style deployment, as opposed to openshift specific templates, a lot of defaults are leveraged. 
 
 ### Environment Variables
-By default your rocketchat deployment have no environment variables defined. So, while RocketChat is trying to start, and 
-a database has been deployed, the app does not know how or where to connect to MongoDB. We will need to add an environment variable to the deployment configuration.
+By default your rocketchat deployment has no environment variables defined. So while RocketChat is trying to start and 
+a database has been deployed, the app does not know how or where to connect to MongoDB. We will need to add environment variables to the deployment configuration.
 
 - In the Web Console, navigate to `Topology` and select your rocketchat deployment
 - Select the `Actions` tab on the top right
 ![](./images/03_deploy_env_01.png)
 
-- Select `Edit Deployment Config`
+- Select `Edit Deployment`
 - Select the `Environment` tab
 ![](./images/03_deploy_env_02.png)
 
@@ -238,7 +230,6 @@ oc -n [-dev] set env deployment/rocketchat-[username] "MONGO_URL=mongodb://dbuse
 
 - Click Save 
 - Navigate to `Topology` and investigate your RocketChat Deployment Config. It should be redeploying (successfully this time)
-![](./images/03_deploy_config_02.png)
 
 
 #### STRETCH: Sensitive Configurations
@@ -247,6 +238,7 @@ oc -n [-dev] set env deployment/rocketchat-[username] "MONGO_URL=mongodb://dbuse
 If you are feeling at odds with things like __dbpass__ being out in the open as an environment variable. That is a good thing! For demonstration purposes you are creating a `Single Value Env`. Sensitive information like passwords should be stored in a `Secret` and referenced as `envFrom`. In addition, you can also use the [Downward API](https://docs.openshift.com/container-platform/4.4/nodes/containers/nodes-containers-downward-api.html#nodes-containers-downward-api-container-secrets_nodes-containers-downward-api) to refer to the secret created by MongoDB.
   ```oc:cli
   oc -n [-dev] rollout pause deployment/rocketchat-[username] 
+
   oc -n [-dev] patch deployment/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_USER", "valueFrom":{"secretKeyRef":{"key":"database-user", "name":"mongodb-[username]"}}}]}]}}}}'
 
   oc -n [-dev] patch deployment/rocketchat-[username] -p '{"spec":{"template":{"spec":{"containers":[{"name":"rocketchat-[username]", "env":[{"name":"MONGO_PASS", "valueFrom":{"secretKeyRef":{"key":"database-password", "name":"mongodb-[username]"}}}]}]}}}}'
@@ -258,8 +250,6 @@ If you are feeling at odds with things like __dbpass__ being out in the open as 
   # Check environment variables configuration
   oc -n [-dev] get deployment/rocketchat-[username] -o json | jq '.spec.template.spec.containers[].env'
   ```
-  *bonus*: Try to leverage the Downward API and `envFrom` so that sensitive values such as the mongo db password are not exposed
-
 
 ## Create a Route for your Rocket.Chat App
 Your rocketchat application should already have a route created for it. If you were using `oc new-app` however, a route would not have been created by default. 
@@ -277,6 +267,10 @@ oc -n [-dev] expose svc/rocketchat-[username]
 ```oc:cli
 oc -n [-dev] create route edge rocketchat-[username] --service=rocketchat-[username] --insecure-policy=Redirect
 ```
+
+After creating the route you may access your application! 
+![rocketchat](./images/03_deploy_route.png)
+
 <!-- 
 not sure how to navigate to routes from web console in ocp4
 ### Web Console
@@ -287,66 +281,33 @@ not sure how to navigate to routes from web console in ocp4
 ![](./images/03_deploy_route.png) -->
 
 ## Exploring Health Checks
-With the new deployment running, monitor the readiness of the pod.
-  - Navigate to `Search` from the left menu panel and filter by name
-  > you can also view pods from a deployment config
-
-  - Notice that pod 'readiness' is ready
-
 
 - If you redeploy the rocket chat application there is an interval where the pod is considered ready but it is still not available to be accessed.
-- You can check this by redeploying the pod, waiting for the pod to be `ready` and then visit your
-Rocket Chat url.
+- You can check this by killing the pod, waiting for the pod to redeploy and be `ready` and then visit your
+Rocket Chat url. 
 
 
-![](./images/03_deploy_health_01.png)
+
+
+![](./images/03_deploy_pod_delete_01.png)
+![](./images/03_deploy_pod_delete_02.png)
+
 
 
 ### Adding a Healthcheck
 A container that is marked `ready` when it is not is an indication of a lack of (or misconfigured) healthcheck. 
 
-You will now add a healthcheck for `readiness` and `liveness`. 
+You can add a healthcheck for `readiness` and `liveness`. 
 
 ### Using cli
 ```oc:cli
 oc -n [-dev] set probe deployment/rocketchat-[username] --readiness --get-url=http://:3000/ --initial-delay-seconds=15
 
-# Watch your RocketChat deployment from the Web Console. At the same time
-# watch Rocket Chat response (press CTRL+c to exit watch)
-watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[namespace].apps.training-us.clearwater.devops.gov.bc.ca/api/info
 ```
-### Using Web Console
 
-- From the Web Console, navigate to your Rocket Chat Deployment Config and select the `YAML` tab
 
-![](./images/03_deploy_health_02.png)
-![](./images/03_deploy_health_03.png)
+### Summary
 
-- Insert this snippet of code into the `spec.template.spec.containers`
-  ```yaml
-  readinessProbe: 
-    httpGet:
-      path: /
-      port: 3000
-    initialDelaySeconds: 60  
-    timeoutSeconds: 1  
-  livenessProbe:
-    httpGet:
-      path: /
-      port: 3000
-      scheme: HTTP
-      httpHeaders:
-        - name: X-Custom-Header
-          value: Awesome
-    initialDelaySeconds: 60
-    timeoutSeconds: 1
-    periodSeconds: 10
-    successThreshold: 1
-    failureThreshold: 3
-  ```
-![](./images/03_deploy_health_04.png)
-![](./images/03_deploy_health_05.png)
+You added a __readiness__ check to the `rocketchat-[username]` deployment so that you no longer have a false positive of when the pod should be considered available. By default pods are considered to be 'ready' when the container starts up and the entrypoint script is running. This however is not useful for things like webservers or databases! Not only do you need the entrypoint script to run but you need to wait for the server to listen on a port. 
 
-- make sure to save!
 
-- While the new deployment rolls out, continue to refresh the public route and validate that it stays up
