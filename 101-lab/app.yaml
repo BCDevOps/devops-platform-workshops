@@ -3,14 +3,14 @@ kind: Template
 metadata:
   name: ocp-lab-template
 objects:
-  - kind: NetworkPolicy
-    apiVersion: networking.k8s.io/v1
-    metadata:
-        name: deny-by-default
-    spec:
-        # The default posture for a security first namespace is to deny all traffic.
-      podSelector: {}
-      ingress: []
+- kind: NetworkPolicy
+  apiVersion: networking.k8s.io/v1
+  metadata:
+      name: deny-by-default
+  spec:
+      # The default posture for a security first namespace is to deny all traffic.
+    podSelector: {}
+    ingress: []
 - apiVersion: networking.k8s.io/v1
   kind: NetworkPolicy
   metadata:
