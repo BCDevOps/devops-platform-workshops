@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: ocp-lab-template
 objects:
- - kind: NetworkPolicy
+  - kind: NetworkPolicy
     apiVersion: networking.k8s.io/v1
     metadata:
         name: deny-by-default
