@@ -1,9 +1,7 @@
 # Logging and Visualizations
 
-> Logging in the Openshift Azure Training Cluster does not leverage Kibana for log surfacing and aggregation. For reference these exercises are available so that you can reference it incase you are using Kibana in the 4.x production cluster. 
-
 ### EFK for Aggregated Logs
-The OpenShift platform provides an aggregated logging stack that is automatically configured to centralize and store logs from application pods. These logs are only retained for a short period of time, currently about 14 days, but can be used to help identify issues with appliation pods. 
+The OpenShift platform provides an aggregated logging stack that is automatically configured to centralize and store logs from application pods. These logs are only retained for a short period of time, currently about 14 days, but can be used to help identify issues with application pods. 
 
 Kibana is the primary interface for viewing and querying logs. 
 

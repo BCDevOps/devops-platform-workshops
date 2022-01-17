@@ -34,15 +34,12 @@ Now that we notice all messages and configuration is gone whenever pods cycle, l
 
 ![](./images/06_persistent_storage_04a.png)
 
-  - Select the `managed-premium` storage class. Set the type to RWO, the size to 1GB, and name it `mongodb-[username]-file`
+  - Select the `netapp-file-standard` storage class. Set the type to RWO, the size to 1GB, select `Filesystem` mode, and name it `mongodb-[username]-file`
 
   - Navigate back to your Mongo DeploymentConfig and select `Add Storage` from the `Actions` Tab
 
   - The mount path is `/var/lib/mongodb/data`
 ![](./images/06_persistent_storage_04b.png)
-
-
-> PLEASE NOTE: The storage classes you are interacting with are specific to this Azure-based Openshift Cluster. The production Openshift Cluster utilizes different storage classes. From an application perspective that are slight differences in performance typically but the implementation remains the same. 
 
 
 - Scale up `mongodb-[username]` instance to 1 pod
@@ -93,9 +90,10 @@ RWX storage allows multiple pods to access the same PV at the same time.
   ```oc:cli
   oc -n [-dev] scale dc/mongodb-[username] --replicas=0
   ```
+
 ![](./images/06_persistent_storage_09.png)
 
-- Remove the previous storage volume and recreate as `managed-premium` (mounting at `/var/lib/mongodb/data`) with type RWX, and naming it `mongodb-[username]-file-rwx`
+- Remove the previous storage volume and recreate as `netapp-file-standard` (mounting at `/var/lib/mongodb/data`) with type RWX, and naming it `mongodb-[username]-file-rwx`
 
   ![](./images/06_persistent_storage_10.png)
   ```oc:cli
@@ -104,7 +102,7 @@ RWX storage allows multiple pods to access the same PV at the same time.
   oc -n [-dev] get dc/mongodb-[username] -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n [-dev] set volumes dc/mongodb-[username] --remove '--name={}'
 
   # Add a new volume by creating a PVC. If the PVC already exists, omit '--claim-class', '--claim-mode', and '--claim-size' arguments
-  oc -n [-dev] set volume dc/mongodb-[username] --add --name=mongodb-[username]-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-[username]-file --claim-class=managed-premium --claim-mode=ReadWriteMany --claim-size=1G
+  oc -n [-dev] set volume dc/mongodb-[username] --add --name=mongodb-[username]-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-[username]-file --claim-class=netapp-file-standard --claim-mode=ReadWriteMany --claim-size=1G
   ```
 - Scale up `mongodb-[username]` to 1 pods
   ```oc:cli
@@ -120,7 +118,7 @@ RWX storage allows multiple pods to access the same PV at the same time.
 ### Fixing it
 __Objective__: Fix corrupted MongoDB storage by using the correct storage class for MongoDB.
 
-After using the `azure-file` storage class (RWX) with rolling deployment, you got to a point where your mongodb is now corrupted. That happens because MongoDB does NOT support multiple processes/pods reading/writing to the same location/mount (`/var/lib/mongodb/data`) of single/shared pvc.
+After using the `RWX` PVC with rolling deployment, you got to a point where your mongodb is now corrupted. That happens because MongoDB does NOT support multiple processes/pods reading/writing to the same location/mount (`/var/lib/mongodb/data`) of single/shared pvc.
 
 To fix that we will need to replace the `RWX` PVC with a `RWO` PVC and change the deployment strategy from `Rolling` to `Recreate` as follow:
   - Scale down `rocketchat-[username]` to 0 pods
