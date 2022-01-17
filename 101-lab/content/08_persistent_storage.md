@@ -32,7 +32,6 @@ Now that we notice all messages and configuration is gone whenever pods cycle, l
 
 - Add a new volume by navigating to `Administrator -> Storage -> Persitant Volume Claims -> Create Persistant Volume Claims` and name it `mongodb-[username]-file`
 
-<!-- TODO: change this one! -->
 ![](./images/06_persistent_storage_04a.png)
 
   - Select the `netapp-file-standard` storage class. Set the type to RWO, the size to 1GB, select `Filesystem` mode, and name it `mongodb-[username]-file`
@@ -92,7 +91,6 @@ RWX storage allows multiple pods to access the same PV at the same time.
   oc -n [-dev] scale dc/mongodb-[username] --replicas=0
   ```
 
-<!-- TODO: change this one! -->
 ![](./images/06_persistent_storage_09.png)
 
 - Remove the previous storage volume and recreate as `netapp-file-standard` (mounting at `/var/lib/mongodb/data`) with type RWX, and naming it `mongodb-[username]-file-rwx`
