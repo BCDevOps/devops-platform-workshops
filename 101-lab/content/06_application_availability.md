@@ -52,15 +52,15 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
   ```
   - The output should look similar to this:
   ```
-  rocketchat-[username]-7-k6kcc    1/1       Running   0          16m       172.51.68.135   training-aro-us-vmdqq-worker-westus22-kvjdt
-  rocketchat-[username]-7-k82w2    0/1       Running   0          1m        172.51.76.32    training-aro-us-vmdqq-worker-westus23-kvjdt
+  rocketchat-[username]-7-k6kcc    1/1       Running   0          16m       10.97.40.235    mcs-silver-app-11.dmz
+  rocketchat-[username]-7-k82w2    0/1       Running   0          1m        10.97.40.235    mcs-silver-app-12.dmz
   ```
 
 - Delete single pod, refresh the URL of application and notice that the application is served by the surviving pods
   ```oc:cli
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username] -o name | head -1 | xargs -I {} oc -n [-dev] delete {}
 
-  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].[namespace].apps.pathfinder.aro.devops.gov.bc.ca/api/info
+  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].[namespace].apps.silver.devops.gov.bc.ca/api/info
 
   # Notice that eventually your RocketChat will be back to having 2 pods
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username]
@@ -74,6 +74,6 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
   watch -dg -n 1 -x oc -n [-dev] get pods -l deployment=rocketchat-[username]
 
   # From another terminal, monitor RocketChat response
-  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].[namespace].apps.pathfinder.aro.devops.gov.bc.ca/api/info
+  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].[namespace].apps.silver.devops.gov.bc.ca/api/info
 
   ```
