@@ -73,6 +73,8 @@ oc -n [-dev] set resources deployment/rocketchat-[username] --requests='cpu=500m
 As the Web UI indicated, the `dev` project service accounts do not have the appropriate access to pull the image from the `tools`
 project. Admin users manage service accounts and will need to grant rolebindings in order to provide image pull access from two respective namespaces.
 
+Note that since only admin users have access to manage rolebindings in a namespace, the following action will need to be done by DevOps in the team. Reach out to the team if you don't have access to do so!
+
 - Navigate to `Topology` and click on the deployment to investigate further
 
 ![](./images/03_deploy_image_04.png)
