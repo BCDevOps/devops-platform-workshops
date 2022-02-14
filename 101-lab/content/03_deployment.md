@@ -83,6 +83,11 @@ Note that since only admin users have access to manage rolebindings in a namespa
 
 ![](./images/03_deploy_image_05.png)
 
+
+Now that we have identified the issue, next step is to create the rolebinding to allow image pulling from tools namespace.
+
+> Note that only Admin users have access to manage rolebindings in a namespace, the following action will need to be done by DevOps in the team. Reach out to the team if you don't have access to do so!
+
 - From the CLI add a service account to tools granting image pull access to the from the dev project: 
 
 ```oc:cli
