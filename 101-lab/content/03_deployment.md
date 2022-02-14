@@ -73,8 +73,6 @@ oc -n [-dev] set resources deployment/rocketchat-[username] --requests='cpu=500m
 As the Web UI indicated, the `dev` project service accounts do not have the appropriate access to pull the image from the `tools`
 project. Admin users manage service accounts and will need to grant rolebindings in order to provide image pull access from two respective namespaces.
 
-Note that since only admin users have access to manage rolebindings in a namespace, the following action will need to be done by DevOps in the team. Reach out to the team if you don't have access to do so!
-
 - Navigate to `Topology` and click on the deployment to investigate further
 
 ![](./images/03_deploy_image_04.png)
@@ -82,6 +80,11 @@ Note that since only admin users have access to manage rolebindings in a namespa
 - Click on the pod within the deployment config and navigate to the pods `Events` tab for more detail
 
 ![](./images/03_deploy_image_05.png)
+
+
+Now that we have identified the issue, next step is to create the rolebinding to allow image pulling from tools namespace.
+
+> Note that only Admin users have access to manage rolebindings in a namespace, the following action will need to be done by DevOps in the team. Reach out to the team if you don't have access to do so!
 
 - From the CLI add a service account to tools granting image pull access to the from the dev project: 
 
