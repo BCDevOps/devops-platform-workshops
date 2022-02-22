@@ -34,7 +34,7 @@ In this lab, we will scale down the database deployment so that application pods
 
 - Find the name of a pod you would like to debug 
     ```
-    oc -n [-dev] pods
+    oc -n [-dev] get pods
     ```
 - Run the `oc debug` command to start a debug pod (your output will vary)
     ```
