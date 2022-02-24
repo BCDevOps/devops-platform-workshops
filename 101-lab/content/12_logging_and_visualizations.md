@@ -6,18 +6,29 @@ The OpenShift platform provides an aggregated logging stack that is automaticall
 Kibana is the primary interface for viewing and querying logs. 
 
 #### Access the archive link from a pod
-The shortcut towards accessing the Kibana is from the `Logs` tab of a running pod. 
+The shortcut towards accessing the Kibana is from the `Logs` tab of a running pod. Kibana can also be accessed directly at its [url](https://kibana-openshift-logging.apps.silver.devops.gov.bc.ca/).
 
-- Select the runing `rocketchat-[username]` pod and select the Logs tab
+
+- Select the running `rocketchat-[username]` pod and select the Logs tab
 
 ![](./images/10_logging_01.png)
 
-- Select the view archive link to be taken to Kibana
+- Click on the "Show in Kibana" link to go to Kibana
+  - Kibana login is setup with SSO, you will see the same login page as of OpenShift console
+  - Kibana inherits the same RBAC as OpenShift, you will only have access to the same namespace/project set as from OpenShift cluster
 
-- Review the logging interface and the query that has been automatically populated
+- Once you have logged in, for the first time you be asked to setup a search index. Follow the 2 steps from Kibana with the following value:
+  - Index pattern: `app*`
+  - Timestamp field name: `@timestamp`
+
+![](./images/10_logging_setup_01.png)
+
+![](./images/10_logging_setup_02.png)
+
+
+- Review the logging interface and the query that has been automatically populated (there are more examples to explore at the end of this section)
 
 ![](./images/10_logging_02.png)
-
 
 - Modify the query and time picker to select the entire namespace within the last few hours
 
@@ -32,8 +43,16 @@ The shortcut towards accessing the Kibana is from the `Logs` tab of a running po
 ![](./images/10_logging_viz_01.png)
 
 
-#### Access the kibana interface directly 
-Kibana can also be accessed directly at the url: 
-- [https://kibana.pathfinder.gov.bc.ca](https://kibana.pathfinder.gov.bc.ca)
-
-The namespaces you have access to view will be directly related to your project permissions. 
+#### Some useful queries you can try on:
+- Get logs for the whole namespace: 
+  ```sql
+    kubernetes.namespace_name:"<namespace_name>"
+  ```
+- Use application labels to query logs from the same deployment:
+  ```sql
+    kubernetes.namespace_name:"<namespace_name>" AND kubernetes.flat_labels:"deploymentconfig=<dc_name>"
+  ```
+- Get error logs only:
+  ```sql
+    kubernetes.namespace_name:"<namespace_name>" AND level:error
+  ```
