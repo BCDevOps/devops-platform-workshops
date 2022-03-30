@@ -20,8 +20,28 @@ A pod definition can include both resource requests and resource limits:
 
 Resource request and resource limits should be defined for each container in either a deployment or a deployment configuration resource. If requests and limits have not been defined, then you will find a resources: {} line for each container.
 
+Lets create a deployment to test! Create this deployment in your project.
+
 ```
-...output omitted...
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: hello-world-nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+      labels:
+        deployment: hello-world-nginx
     spec:
       containers:
       - image: quay.io/redhattraining/hello-world-nginx:v1.0
@@ -33,45 +53,114 @@ Resource request and resource limits should be defined for each container in eit
           limits:
             cpu: "80m"
             memory: 100Mi
-status: {}
+        ports:
+        - containerPort: 8080
+          protocol: TCP
 ```
 
-If you use the oc edit command to modify a deployment or a deployment configuration, then ensure you use the correct indentation. Indentation mistakes can result in the editor refusing to save changes. To avoid indentation issues, you can use the oc set resources command to specify resource requests and limits. The following command sets the same requests and limits as the preceding example:
+You can use the oc edit command to modify a deployment or a deployment configuration, to ensure you use the correct indentation. Indentation mistakes can result in the editor refusing to save changes. To avoid indentation issues, you can use the oc set resources command to specify resource requests and limits. 
+
+Lets modify our deployment using the following command:
 
 ```
-[user@host ~]$ oc set resources deployment hello-world-nginx \
->    --requests cpu=10m,memory=20Mi --limits cpu=80m,memory=100Mi
+[user@host ~]$ oc set resources deployment hello-world-nginx --requests cpu=15m,memory=25Mi --limits cpu=100m,memory=150Mi
 ```
+
+This will cause the pod to re-deploy with updated resources.
 
 If a resource quota applies to a resource request, then the pod should define a resource request. If a resource quota applies to a resource limit, then the pod 
 should also define a resource limit. We recommend defining resource requests and limits, even if quotas are not used.
 
-## Managing application memory strategy
+## Generate traffic and observe 
 
-The steps for sizing application memory on OpenShift Container Platform are as follows:
+Let's expose our deployment from above with a service and a route.
 
-1. Determine expected container memory usage
+* Expose the deployment with a service, the easiest way would be: `oc expose deployment/hello-world-nginx`
+* Create an secure route with edge TLS termination from this service. This can be done from the web console or CLI.
 
-Determine expected mean and peak container memory usage, empirically if necessary (for example, by separate load testing). Remember to consider all the processes that may potentially run in parallel in the container: for example, does the main application spawn any ancillary scripts?
+Now that our Nginx web server has a route we can access, we can generate some traffic to it and see how our requests and limits settings work.
+
+Create a new deployment. This will deploy an httpd container and use the ab (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment that will trigger a pod redeployment to run the test again. Update the deployment below with the url to your Nginx web server under the SERVICE_HOST variable.
+
+```
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: load-test
+  namespace: lab2
+  labels:
+    app: load-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: load-test
+  template:
+    metadata:
+      annotations:
+      labels:
+        app: load-test
+    spec:
+      containers:
+        - name: load-test
+          image: registry.access.redhat.com/rhscl/httpd-24-rhel7
+          env:
+          - name: SERVICE_HOST
+            value: "hello-world-lab1.apps.ocp4.example.com"
+          - name: SERVICE_PORT
+            value: "443"
+          - name: REQUESTS
+            value: "5000000"
+          - name: CONCURRENCY
+            value: "20"
+          command: ["/opt/rh/httpd24/root/usr/bin/ab"]
+          args: ["-dSrk", "-c $(CONCURRENCY)", "-n $(REQUESTS)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
+  
+```
+
+From the web console if you change to developer view and navigate to the observe tab select the pod dashboard and your nginx pod. You should see the load-test pod traffic increasing metrics for our pod.
+
+![cpu load](images/resource-mgmt/pod-load-cpu.png)
+
+We can see the traffic we are sending our pod is affecting the cpu quite a bit. In this example we can see the actual cpu usage is over 700% the request we set and  over 100% of the limit we set.
+
+![cpu quota](images/resource-mgmt/pod-load-cpu-quota.png)
+
+Because the actual cpu usage is higher than our cpu limit openshift/kubernetes will throttle the available cpu to our pod. This would affecting the performance of our web server and cause response times of our application.
+
+![cpu throttle](images/resource-mgmt/pod-load-cpu-throttle.png)
+
+We can see this load test isn't affecting the memory much on this pod and our values are probably set correct for this type of load and application running in the pod.
+
+![mem load](images/resource-mgmt/pod-load-mem.png)
+
+## Managing application cpu/memory strategy
+
+The steps for sizing application cpu/memory on OpenShift Container Platform are as follows:
+
+1. Determine expected container cpu/memory usage
+
+Determine expected mean and peak container cpu/memory usage, empirically if necessary (for example, by separate load testing). Remember to consider all the processes that may potentially run in parallel in the container: for example, does the main application spawn any ancillary scripts?
 
 2. Determine risk appetite
 
-Determine risk appetite for eviction. If the risk appetite is low, the container should request memory according to the expected peak usage plus a percentage safety margin. If the risk appetite is higher, it may be more appropriate to request memory according to the expected mean usage.
+Determine risk appetite for eviction. If the risk appetite is low, the container should request cpu/memory according to the expected peak usage plus a percentage safety margin. If the risk appetite is higher, it may be more appropriate to request cpu/memory according to the expected mean usage.
 
-3. Set container memory request
+3. Set container cpu/memory request
 
-Set container memory request based on the above. The more accurately the request represents the application memory usage, the better. If the request is too high, cluster and quota usage will be inefficient. If the request is too low, the chances of application eviction increase.
+Set container cpu/memory request based on the above. The more accurately the request represents the application cpu/memory usage, the better. If the request is too high, cluster and quota usage will be inefficient. If the request is too low, the chances of application eviction increase.
 
-4. Set container memory limit.
+4. Set container cpu/memory limit.
 
-Setting a limit has the effect of immediately killing a container process if the combined memory usage of all processes in the container exceeds the limit, and is therefore a mixed blessing. On the one hand, it may make unanticipated excess memory usage obvious early ("fail fast"); on the other hand it also terminates processes abruptly.
+Setting a limit has the effect of immediately killing a container process if the combined cpu/memory usage of all processes in the container exceeds the limit, and is therefore a mixed blessing. On the one hand, it may make unanticipated excess cpu/memory usage obvious early ("fail fast"); on the other hand it also terminates processes abruptly.
 
-Limits should not be set to less than the expected peak container memory usage plus a percentage safety margin.
+Limits should not be set to less than the expected peak container cpu/memory usage plus a percentage safety margin.
 
 5. Ensure application is tuned
 
 Ensure application is tuned with respect to configured request and limit values, if appropriate. This step is particularly relevant to applications which pool memory, such as the JVM. 
 
+Try adjusting the limits and requests on our web server pod and running the load test again. Observe the results in the openshift dashboards and confirm the pod is not getting throttled. You can consult the ab program details as well - https://httpd.apache.org/docs/2.4/programs/ab.html and set the values to something your app/web server would be expecting at peak usage.
 
 ## Viewing Requests, Limits, and Actual Usage
 
@@ -111,7 +200,7 @@ node1.us-west-1.compute.internal   519m         14%    3126Mi          20%
 node2.us-west-1.compute.internal   167m         4%     1178Mi          7%
 ```
 
-## Understanding overcomitment and quality of service classes
+## Understanding overcommitment and quality of service classes
 
 A node is overcommitted when it has a pod scheduled that makes no request, or when the sum of limits across all pods on that node exceeds available machine capacity.
 
