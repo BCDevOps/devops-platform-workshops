@@ -134,6 +134,53 @@ We can see this load test isn't affecting the memory much on this pod and our va
 
 ![mem load](images/resource-mgmt/pod-load-mem.png)
 
+
+## Understanding overcommitment and quality of service classes
+
+A node is overcommitted when it has a pod scheduled that makes no request, or when the sum of limits across all pods on that node exceeds available machine capacity.
+
+In an overcommitted environment, it is possible that the pods on the node will attempt to use more compute resource than is available at any given point in time. When this occurs, the node must give priority to one pod over another. The facility used to make this decision is referred to as a Quality of Service (QoS) Class.
+
+For each compute resource, a container is divided into one of three QoS classes with decreasing order of priority:
+
+
+|Priority |Class Name |Description|
+|---|---|---|
+|1 (highest) |*Guaranteed* |If limits and optionally requests are set (not equal to 0) for all resources and they are equal, then the container is classified as *Guaranteed*.|
+|2|*Burstable* |If requests and optionally limits are set (not equal to 0) for all resources, and they are not equal, then the container is classified as *Burstable*.|
+|3 (lowest)|*BestEffort*|If requests and limits are not set for any of the resources, then the container is classified as *BestEffort*.|
+
+
+Memory is an incompressible resource, so in low memory situations, containers that have the lowest priority are terminated first:
+
+* Guaranteed containers are considered top priority, and are guaranteed to only be terminated if they exceed their limits, or if the system is under memory pressure and there are no lower priority containers that can be evicted.
+
+* Burstable containers under system memory pressure are more likely to be terminated once they exceed their requests and no other BestEffort containers exist.
+
+* BestEffort containers are treated with the lowest priority. Processes in these containers are first to be terminated if the system runs out of memory.
+
+
+Do a `oc describe pod <podname>` and see what the value of `QoS Class:` is. Try setting the limits and requests to the same value for the hello world nginx deployment. Once the pod re-deploys check the QoS Class value again.
+
+## Understanding eviction process
+
+When a node in a OpenShift cluster is running out of memory or disk, it activates a flag signaling that it is under pressure. This blocks any new allocation in the node and starts the eviction process.
+
+At that moment, kubelet starts to reclaim resources, killing containers and declaring pods as failed until the resource usage is under the eviction threshold again.
+
+First, kubelet tries to free node resources, especially disk, by deleting dead pods and its containers, and then unused images. If this isn’t enough, kubelet starts to evict end-user pods in the following order:
+
+* Best Effort.
+* Burstable pods using more resources than its request of the starved resource.
+* Burstable pods using less resources than its request of the starved resource.
+
+You can see some messages like these if one of your pods is evicted by memory use:
+
+```
+NAME       READY   STATUS    RESTARTS   AGE
+frontend   0/2     Evicted   0          10s
+```
+
 ## Managing application cpu/memory strategy
 
 The steps for sizing application cpu/memory on OpenShift Container Platform are as follows:
@@ -144,7 +191,7 @@ Determine expected mean and peak container cpu/memory usage, empirically if nece
 
 2. Determine risk appetite
 
-Determine risk appetite for eviction. If the risk appetite is low, the container should request cpu/memory according to the expected peak usage plus a percentage safety margin. If the risk appetite is higher, it may be more appropriate to request cpu/memory according to the expected mean usage.
+Determine risk appetite for eviction or throttling. If the risk appetite is low, the container should request cpu/memory according to the expected peak usage plus a percentage safety margin. Protect your critical pods setting values so they are classified as Guaranteed. If the risk appetite is higher, it may be more appropriate to request cpu/memory according to the expected mean usage.
 
 3. Set container cpu/memory request
 
@@ -152,7 +199,7 @@ Set container cpu/memory request based on the above. The more accurately the req
 
 4. Set container cpu/memory limit.
 
-Setting a limit has the effect of immediately killing a container process if the combined cpu/memory usage of all processes in the container exceeds the limit, and is therefore a mixed blessing. On the one hand, it may make unanticipated excess cpu/memory usage obvious early ("fail fast"); on the other hand it also terminates processes abruptly.
+Setting a limit has the effect of immediately killing a container process or cpu throttling if the combined cpu/memory usage of all processes in the container exceeds the limit, and is therefore a mixed blessing. On the one hand, it may make unanticipated excess cpu/memory usage obvious early ("fail fast"); on the other hand it also terminates processes abruptly.
 
 Limits should not be set to less than the expected peak container cpu/memory usage plus a percentage safety margin.
 
@@ -199,30 +246,6 @@ NAME                               CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
 node1.us-west-1.compute.internal   519m         14%    3126Mi          20%
 node2.us-west-1.compute.internal   167m         4%     1178Mi          7%
 ```
-
-## Understanding overcommitment and quality of service classes
-
-A node is overcommitted when it has a pod scheduled that makes no request, or when the sum of limits across all pods on that node exceeds available machine capacity.
-
-In an overcommitted environment, it is possible that the pods on the node will attempt to use more compute resource than is available at any given point in time. When this occurs, the node must give priority to one pod over another. The facility used to make this decision is referred to as a Quality of Service (QoS) Class.
-
-For each compute resource, a container is divided into one of three QoS classes with decreasing order of priority:
-
-
-|Priority |Class Name |Description|
-|---|---|---|
-|1 (highest) |*Guaranteed* |If limits and optionally requests are set (not equal to 0) for all resources and they are equal, then the container is classified as *Guaranteed*.|
-|2|*Burstable* |If requests and optionally limits are set (not equal to 0) for all resources, and they are not equal, then the container is classified as *Burstable*.|
-|3 (lowest)|*BestEffort*|If requests and limits are not set for any of the resources, then the container is classified as *BestEffort*.|
-
-
-Memory is an incompressible resource, so in low memory situations, containers that have the lowest priority are terminated first:
-
-* Guaranteed containers are considered top priority, and are guaranteed to only be terminated if they exceed their limits, or if the system is under memory pressure and there are no lower priority containers that can be evicted.
-
-* Burstable containers under system memory pressure are more likely to be terminated once they exceed their requests and no other BestEffort containers exist.
-
-* BestEffort containers are treated with the lowest priority. Processes in these containers are first to be terminated if the system runs out of memory.
 
 
 ## Applying Limit Ranges
@@ -331,3 +354,10 @@ All resource update requests are also evaluated against each limit range resourc
 
 Important:
 Avoid setting LimitRange constraints that are too high, or ResourceQuota constraints that are too low. A violation of LimitRange constraints prevents pod creation, resulting in error messages. A violation of ResourceQuota constraints prevents a pod from being scheduled to any node. The pod might be created but remain in the pending state.
+
+## Futher Reading
+
+   * https://sysdig.com/blog/kubernetes-pod-evicted/
+   * https://sysdig.com/blog/troubleshoot-kubernetes-oom/
+   * https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/
+   * https://docs.openshift.com/container-platform/4.10/nodes/clusters/nodes-cluster-resource-configure.html
