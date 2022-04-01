@@ -211,7 +211,7 @@ Try adjusting the limits and requests on our web server pod and running the load
 
 ## Viewing Requests, Limits, and Actual Usage
 
-Using the OpenShift command-line interface, cluster administrators can view compute usage information on individual nodes. The oc describe node command displays detailed information about a node, including information about the pods running on the node. For each pod, it shows CPU requests and limits, as well as memory requests and limits. If a request or limit has not been specified, then the pod will show a 0 for that column. A summary of all resource requests and limits is also displayed.
+Using the OpenShift command-line interface, you can view compute usage information on individual nodes. The oc describe node command displays detailed information about a node, including information about the pods running on the node. For each pod, it shows CPU requests and limits, as well as memory requests and limits. If a request or limit has not been specified, then the pod will show a 0 for that column. A summary of all resource requests and limits is also displayed.
 
 ```
 [user@host ~]$ oc describe node node1.us-west-1.compute.internal
@@ -238,23 +238,19 @@ Non-terminated Pods:                      (20 in total)
 Note:
 The summary columns for Requests and Limits display the sum totals of defined requests and limits. In the preceding output, only 1 of the 20 pods running on the node defined a memory limit, and that limit was 512Mi.
 
-The oc describe node command displays requests and limits, and the oc adm top command shows actual usage. For example, if a pod requests 10m of CPU, then the scheduler will ensure that it places the pod on a node with available capacity. Although the pod requested 10m of CPU, it might use more or less than this value, unless it is also constrained by a CPU limit. Similarly, a pod that does not specify resource requests will still use some amount of resources. The oc adm top nodes command shows actual usage for one or more nodes in the cluster, and the oc adm top pods command shows actual usage for each pod in a project.
+The oc describe node command displays requests and limits, and the oc adm top pods command shows actual usage. For example, if a pod requests 10m of CPU, then the scheduler will ensure that it places the pod on a node with available capacity. Although the pod requested 10m of CPU, it might use more or less than this value, unless it is also constrained by a CPU limit. Similarly, a pod that does not specify resource requests will still use some amount of resources. The oc adm top nodes command shows actual usage for one or more nodes in the cluster, and the oc adm top pods command shows actual usage for each pod in a project.
 
 ```
-[user@host ~]$ oc adm top nodes -l node-role.kubernetes.io/worker
-NAME                               CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
-node1.us-west-1.compute.internal   519m         14%    3126Mi          20%
-node2.us-west-1.compute.internal   167m         4%     1178Mi          7%
+[user@host ~]$ oc adm top pods
+NAME                                 CPU(cores)   MEMORY(bytes)   
+hello-world-nginx-5d7dc57bdd-jngx5   98m          17Mi            
+stress-test-fb76cfbb-pf7ch           32m          25Mi        
 ```
 
+## Limit Ranges
 
-oc adm top pods though. Maybe focus on that instead?
-
-
-
-## Applying Limit Ranges
-
-he project registry creates a limit-range for all projects that users can’t delete.
+**to update**
+The project registry creates a limit-range for all projects that users can’t delete.
 
 spec:
   limits:
