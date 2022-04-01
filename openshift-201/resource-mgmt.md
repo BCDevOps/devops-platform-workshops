@@ -18,7 +18,7 @@ A pod definition can include both resource requests and resource limits:
 
 * If the memory allocated by all of the processes in a container exceeds the memory limit, the node Out of Memory (OOM) killer will immediately select and kill a process in the container.
 
-Resource request and resource limits should be defined for each container in either a deployment or a deployment configuration resource. If requests and limits have not been defined, then you will find a resources: {} line for each container.
+Resource request and resource limits should be defined for each container in either a Deployment, DeploymentConfiguration, StatefulSets, BuildConfigs, and CronJob. If requests and limits have not been defined, then you will find a resources: {} line for each container.
 
 Lets create a deployment to test! Create this deployment in your project.
 
@@ -69,7 +69,7 @@ Lets modify our deployment using the following command:
 This will cause the pod to re-deploy with updated resources.
 
 If a resource quota applies to a resource request, then the pod should define a resource request. If a resource quota applies to a resource limit, then the pod 
-should also define a resource limit. We recommend defining resource requests and limits, even if quotas are not used.
+should also define a resource limit. We recommend defining resource requests and limits always.
 
 ## Generate traffic and observe 
 
@@ -199,7 +199,7 @@ Set container cpu/memory request based on the above. The more accurately the req
 
 4. Set container cpu/memory limit.
 
-Setting a limit has the effect of immediately killing a container process or cpu throttling if the combined cpu/memory usage of all processes in the container exceeds the limit, and is therefore a mixed blessing. On the one hand, it may make unanticipated excess cpu/memory usage obvious early ("fail fast"); on the other hand it also terminates processes abruptly.
+Setting a limit has the effect of immediately killing a container process or cpu throttling if the combined cpu or memory usage of all processes in the container exceeds the limit, and is therefore a mixed blessing. On the one hand, it may make unanticipated excess cpu/memory usage obvious early ("fail fast"); on the other hand it also terminates processes abruptly.
 
 Limits should not be set to less than the expected peak container cpu/memory usage plus a percentage safety margin.
 
@@ -248,7 +248,25 @@ node2.us-west-1.compute.internal   167m         4%     1178Mi          7%
 ```
 
 
+oc adm top pods though. Maybe focus on that instead?
+
+
+
 ## Applying Limit Ranges
+
+he project registry creates a limit-range for all projects that users can’t delete.
+
+spec:
+  limits:
+  - default:
+      cpu: 250m
+      memory: 1Gi
+    defaultRequest:
+      cpu: 50m
+      memory: 256Mi
+    type: Container
+
+maybe we can focus on what that limit range does? Also maybe don’t tell teams they can delete it?
 
 A LimitRange resource, also called a limit, defines the default, minimum, and maximum values for compute resource requests, and the limits for a single pod or container defined inside the project. A resource request or limit for a pod is the sum of its containers.
 
