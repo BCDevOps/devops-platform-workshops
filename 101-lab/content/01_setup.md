@@ -44,6 +44,19 @@ Alternativly, navigate to the [Openshift CLI Mirror](https://mirror.openshift.co
 
 2. Unpack `oc` into a place that is easily reference-able from a command line interface or add it to your `PATH`
 
+## Login with OC command line
+
+1. Use a web browser to open the web console: - [Silver Web Console](https://console.apps.silver.devops.gov.bc.ca/)
+
+2. Click your username in the top right corner of the screen and choose 'copy login command' 
+
+![](./images/01_login.png)
+
+3. Log in again as prompted, then click 'display token'. 
+
+4. Copy the 'oc login' command including the token and servo information. Paste this command into your command-line interface (CLI) and run it to log in.
+
+
 ## Other Requirements
 
 In addition, developers require GIT locally installed and must have a 2FA device to support access to GitHub.
