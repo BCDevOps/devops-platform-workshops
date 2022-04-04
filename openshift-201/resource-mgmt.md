@@ -2,7 +2,7 @@
 
 ## Objectives:
 
-After completing this section, you should be able to limit the resources consumed by containers, pods, and projects. 
+After completing this section, you should be able to limit the resources consumed by containers, pods, and projects and have an understanding of LimitRanges and Quotas.
 
 ## Defining Resource Requests and Limits for Pods. 
 
@@ -245,17 +245,17 @@ The OpenShift web console also has numerous ways to view limits, requests and ac
 
 OpenShift can enforce quotas that track and limit the use of two kinds of resources:
 
-Object counts
-The number of Kubernetes resources, such as pods, services, and routes.
+Object counts:
+* The number of Kubernetes resources, such as pods, services, and routes.
 
-Compute resources
-The number of physical or virtual hardware resources, such as CPU, memory, and storage capacity.
+Compute resources:
+* The number of physical or virtual hardware resources, such as CPU, memory, and storage capacity.
 
 Imposing a quota on the number of Kubernetes resources improves the stability of the OpenShift control plane by avoiding unbounded growth of the Etcd database. Quotas on Kubernetes resources also avoids exhausting other limited software resources, such as IP addresses for services.
 
 In a similar way, imposing a quota on the amount of compute resources avoids exhausting the compute capacity of a single node in an OpenShift cluster. It also avoids having one application starve other applications in a shared cluster by using all the cluster capacity.
 
-OpenShift manages quotas for the number of resources and the use of compute resources in a cluster by using a ResourceQuota resource, or a quota. A quota specifies hard resource usage limits for a project. All attributes of a quota are optional, meaning that any resource that is not restricted by a quota can be consumed without bounds.
+OpenShift manages quotas for the number of resources and the use of compute resources in a cluster by using a ResourceQuota. A quota specifies hard resource usage limits for a project. All attributes of a quota are optional, meaning that any resource that is not restricted by a quota can be consumed without bounds.
 
 Note:
 
@@ -349,11 +349,12 @@ ResourceQuota constraints are applied for the project as a whole, but many OpenS
 
 
 If a modification to a project exceeds the quota for a resource count, then OpenShift denies the action and returns an appropriate error message to the user. However, if the modification exceeds the quota for a compute resource, then the operation does not fail immediately; OpenShift retries the operation several times, giving the administrator an opportunity to increase the quota or to perform another corrective action, such as bringing a new node online.
-Important
+
+Important: 
 
 If a quota that restricts usage of compute resources for a project is set, then OpenShift refuses to create pods that do not specify resource requests or resource limits for that compute resource. To use most templates and builders with a project restricted by quotas, the project must also contain a limit range resource that specifies default values for container resource requests.
 
-Quota scopes
+**Quota scopes**
 
 Each quota can have an associated set of scopes. A quota only measures usage for a resource if it matches the intersection of enumerated scopes.
 
