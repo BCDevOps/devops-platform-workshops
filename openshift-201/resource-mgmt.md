@@ -359,31 +359,14 @@ Each quota can have an associated set of scopes. A quota only measures usage for
 
 Adding a scope to a quota restricts the set of resources to which that quota can apply. Specifying a resource outside of the allowed set results in a validation error.
 
-Scope
-	
+| Scope | Description|
+|---|---|
+|Terminating | Match pods where spec.activeDeadlineSeconds >= 0.|
+| NotTerminating | Match pods where spec.activeDeadlineSeconds is nil.|
+| BestEffort | Match pods that have best effort quality of service for either cpu or memory.|
+| NotBestEffort| Match pods that do not have best effort quality of service for cpu and memory.|
 
-Description
-
-Terminating
-	
-
-Match pods where spec.activeDeadlineSeconds >= 0.
-
-NotTerminating
-	
-
-Match pods where spec.activeDeadlineSeconds is nil.
-
-BestEffort
-	
-
-Match pods that have best effort quality of service for either cpu or memory.
-
-NotBestEffort
-	
-
-Match pods that do not have best effort quality of service for cpu and memory.
-
+You'll notice there are a few quotas within the BC Gov OpenShift projects. Have a look at quota details and see how much has been consumed.
 ## Limit Ranges
 
 A LimitRange resource, also called a limit, defines the default, minimum, and maximum values for compute resource requests, and the limits for a single pod or container defined inside the project. 
@@ -511,3 +494,4 @@ spec:
    * https://sysdig.com/blog/troubleshoot-kubernetes-oom/
    * https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/
    * https://docs.openshift.com/container-platform/4.10/nodes/clusters/nodes-cluster-resource-configure.html
+   * https://docs.openshift.com/container-platform/4.10/applications/quotas/quotas-setting-per-project.html
