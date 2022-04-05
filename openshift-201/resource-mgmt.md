@@ -20,7 +20,7 @@ A pod definition can include both resource requests and resource limits:
 
 Resource request and resource limits should be defined for each container in either a Deployment, DeploymentConfiguration, StatefulSets, BuildConfigs, and CronJob. If requests and limits have not been defined, then you will find a resources: {} line for each container.
 
-Lets create a deployment to test! Create this deployment in your project.
+Let's create a deployment to test! Create this deployment in your project.
 
 ```
 apiVersion: apps/v1
