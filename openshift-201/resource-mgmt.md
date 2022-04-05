@@ -121,7 +121,7 @@ From the web console if you change to developer view and navigate to the Monitor
 
 ![cpu load](images/resource-mgmt/pod-load-cpu.png) 
 
-From the web console select your hello-world-nginx pod and navigate to the Metrics tab. We can see the traffic we are sending our pod is affecting the cpu quite a bit. In this example we can see the actual cpu usage is well over the request we set and  over 100% of the limit we set.
+From the web console select your hello-world-nginx pod and navigate to the Metrics tab. We can see the traffic we are sending our pod is affecting the cpu quite a bit. In this example we can see the actual cpu usage is well over the request we set and over 100% of the limit we set.
 
 ![cpu quota](images/resource-mgmt/pod-load-cpu-quota.png)
 
