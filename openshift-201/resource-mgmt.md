@@ -230,7 +230,7 @@ The oc describe pod command displays requests and limits.
       memory:  256Mi
 ```
 
-The oc adm top pods command shows actual usage. 
+The `oc adm top pods` command shows actual usage. 
 
 ```
 [user@host ~]$ oc adm top pods
