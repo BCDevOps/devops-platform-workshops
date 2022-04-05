@@ -131,7 +131,7 @@ Because the actual cpu usage is higher than our cpu limit openshift/kubernetes w
 
 You can create a custom PromQL query to view the CPU throttling by using this query and updating your pod name and namespace name:
 
-```
+```GraphQL
 sum(increase(container_cpu_cfs_throttled_periods_total{namespace="ad204f-dev", pod="hello-world-nginx-d598fbd96-45rqw", container!="", cluster=""}[5m])) by (container) /sum(increase(container_cpu_cfs_periods_total{namespace="ad204f-dev", pod="hello-world-nginx-d598fbd96-45rqw", container!="", cluster=""}[5m])) by (container)
 ```
 
