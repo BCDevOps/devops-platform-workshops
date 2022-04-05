@@ -327,7 +327,7 @@ requests.memory  276Mi   2Gi
 ```
 Also getting the yaml output of a quota will show the status of the quota.
 
-```
+```yaml
 status:
   hard:
     limits.cpu: 1500m
