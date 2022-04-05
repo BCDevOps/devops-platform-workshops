@@ -284,7 +284,7 @@ Quota attributes can track either resource requests or resource limits for all p
 
 The following listing show a ResourceQuota resource defined using YAML syntax. This example specifies quotas for both the number of resources and the use of compute resources:
 
-```
+```yaml
 apiVersion: v1
 kind: ResourceQuota
 metadata:
