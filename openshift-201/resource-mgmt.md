@@ -217,7 +217,7 @@ Try adjusting the limits and requests on our web server pod and running the load
 **Summary**
 
 If the limit is set too low = you will end up with your pod/containers being CPU throttled or processes killed too early in the pod/containers lifecycle.
-If the limit is set too high = you will end up being a bad neighbour to the rest of the users on the cluster. Reserving resources that your pod/containers will never use and stopping other teams from scheduling workloads onto the cluster as it's being held by your too high limits.
+If the limit is set too high = problems like memory leaks will take longer to become apparent. Also, you will end up being a bad neighbour to the rest of the users on the cluster. Reserving resources that your pod/containers will never use and stopping other teams from scheduling workloads onto the cluster as it's being held by your too high limits. #
 If the limit is set just right = your pod/containers will have some room to grow as load increases, your pod/containers will get scaled if they start going too high on resources to catch them before they get out of control, and there is space for other users to use resources on the cluster.
 
 ## Viewing Requests, Limits, and Actual Usage
