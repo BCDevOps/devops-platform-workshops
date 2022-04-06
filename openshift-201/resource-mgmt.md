@@ -2,7 +2,7 @@
 
 ## Objectives:
 
-After completing this section, you should be able to limit the resources consumed by containers, pods, and projects. 
+After completing this section, you should be able to limit the resources consumed by containers, pods, and projects and have an understanding of LimitRanges and Quotas.
 
 ## Defining Resource Requests and Limits for Pods. 
 
@@ -18,9 +18,9 @@ A pod definition can include both resource requests and resource limits:
 
 * If the memory allocated by all of the processes in a container exceeds the memory limit, the node Out of Memory (OOM) killer will immediately select and kill a process in the container.
 
-Resource request and resource limits should be defined for each container in either a deployment or a deployment configuration resource. If requests and limits have not been defined, then you will find a resources: {} line for each container.
+Resource request and resource limits should be defined for each container in either a Deployment, DeploymentConfiguration, StatefulSets, BuildConfigs, and CronJob. If requests and limits have not been defined, then you will find a resources: {} line for each container.
 
-Lets create a deployment to test! Create this deployment in your project.
+Let's create a deployment to test! Create this deployment in your project.
 
 ```
 apiVersion: apps/v1
@@ -69,7 +69,7 @@ Lets modify our deployment using the following command:
 This will cause the pod to re-deploy with updated resources.
 
 If a resource quota applies to a resource request, then the pod should define a resource request. If a resource quota applies to a resource limit, then the pod 
-should also define a resource limit. We recommend defining resource requests and limits, even if quotas are not used.
+should also define a resource limit. We recommend defining resource requests and limits always.
 
 ## Generate traffic and observe 
 
@@ -87,7 +87,6 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: load-test
-  namespace: lab2
   labels:
     app: load-test
 spec:
@@ -110,7 +109,7 @@ spec:
           - name: SERVICE_PORT
             value: "443"
           - name: REQUESTS
-            value: "5000000"
+            value: "500000"
           - name: CONCURRENCY
             value: "20"
           command: ["/opt/rh/httpd24/root/usr/bin/ab"]
@@ -118,17 +117,23 @@ spec:
   
 ```
 
-From the web console if you change to developer view and navigate to the observe tab select the pod dashboard and your nginx pod. You should see the load-test pod traffic increasing metrics for our pod.
+From the web console if you change to developer view and navigate to the Monitoring tab select your nginx deployment. You should see the load-test pod traffic increasing metrics for our pod.
 
-![cpu load](images/resource-mgmt/pod-load-cpu.png)
+![cpu load](images/resource-mgmt/pod-load-cpu.png) 
 
-We can see the traffic we are sending our pod is affecting the cpu quite a bit. In this example we can see the actual cpu usage is over 700% the request we set and  over 100% of the limit we set.
+From the web console select your hello-world-nginx pod and navigate to the Metrics tab. We can see the traffic we are sending our pod is affecting the cpu quite a bit. In this example we can see the actual cpu usage is well over the request we set and over 100% of the limit we set.
 
 ![cpu quota](images/resource-mgmt/pod-load-cpu-quota.png)
 
 Because the actual cpu usage is higher than our cpu limit openshift/kubernetes will throttle the available cpu to our pod. This would affecting the performance of our web server and cause response times of our application.
 
 ![cpu throttle](images/resource-mgmt/pod-load-cpu-throttle.png)
+
+You can create a custom PromQL query to view the CPU throttling by using this query and updating your pod name and namespace name:
+
+```GraphQL
+sum(increase(container_cpu_cfs_throttled_periods_total{namespace="ad204f-dev", pod="hello-world-nginx-d598fbd96-45rqw", container!="", cluster=""}[5m])) by (container) /sum(increase(container_cpu_cfs_periods_total{namespace="ad204f-dev", pod="hello-world-nginx-d598fbd96-45rqw", container!="", cluster=""}[5m])) by (container)
+```
 
 We can see this load test isn't affecting the memory much on this pod and our values are probably set correct for this type of load and application running in the pod.
 
@@ -199,7 +204,7 @@ Set container cpu/memory request based on the above. The more accurately the req
 
 4. Set container cpu/memory limit.
 
-Setting a limit has the effect of immediately killing a container process or cpu throttling if the combined cpu/memory usage of all processes in the container exceeds the limit, and is therefore a mixed blessing. On the one hand, it may make unanticipated excess cpu/memory usage obvious early ("fail fast"); on the other hand it also terminates processes abruptly.
+Setting a limit has the effect of immediately killing a container process or cpu throttling if the combined cpu or memory usage of all processes in the container exceeds the limit, and is therefore a mixed blessing. On the one hand, it may make unanticipated excess cpu/memory usage obvious early ("fail fast"); on the other hand it also terminates processes abruptly.
 
 Limits should not be set to less than the expected peak container cpu/memory usage plus a percentage safety margin.
 
@@ -209,52 +214,177 @@ Ensure application is tuned with respect to configured request and limit values,
 
 Try adjusting the limits and requests on our web server pod and running the load test again. Observe the results in the openshift dashboards and confirm the pod is not getting throttled. You can consult the ab program details as well - https://httpd.apache.org/docs/2.4/programs/ab.html and set the values to something your app/web server would be expecting at peak usage.
 
+**Summary**
+
+If the limit is set too low = you will end up with your pod/containers being CPU throttled or processes killed too early in the pod/containers lifecycle.
+If the limit is set too high = problems like memory leaks will take longer to become apparent. Also, you will end up being a bad neighbour to the rest of the users on the cluster. Reserving resources that your pod/containers will never use and stopping other teams from scheduling workloads onto the cluster as it's being held by your too high limits. #
+If the limit is set just right = your pod/containers will have some room to grow as load increases, your pod/containers will get scaled if they start going too high on resources to catch them before they get out of control, and there is space for other users to use resources on the cluster.
+
 ## Viewing Requests, Limits, and Actual Usage
 
-Using the OpenShift command-line interface, cluster administrators can view compute usage information on individual nodes. The oc describe node command displays detailed information about a node, including information about the pods running on the node. For each pod, it shows CPU requests and limits, as well as memory requests and limits. If a request or limit has not been specified, then the pod will show a 0 for that column. A summary of all resource requests and limits is also displayed.
+The oc describe pod command displays requests and limits.
 
 ```
-[user@host ~]$ oc describe node node1.us-west-1.compute.internal
-Name:               node1.us-west-1.compute.internal
-Roles:              worker
-Labels:             beta.kubernetes.io/arch=amd64
-                    beta.kubernetes.io/instance-type=m4.xlarge
-                    beta.kubernetes.io/os=linux
-...output omitted...
-Non-terminated Pods:                      (20 in total)
-...  Name                CPU Requests  ...  Memory Requests  Memory Limits  AGE
-...  ----                ------------  ...  ---------------  -------------  ---
-...  tuned-vdwt4         10m (0%)      ...  50Mi (0%)        0 (0%)         8d
-...  dns-default-2rpwf   110m (3%)     ...  70Mi (0%)        512Mi (3%)     8d
-...  node-ca-6xwmn       10m (0%)      ...  10Mi (0%)        0 (0%)         8d
-...output omitted...
-  Resource                    Requests     Limits
-  --------                    --------     ------
-  cpu                         600m (17%)   0 (0%)
-  memory                      1506Mi (9%)  512Mi (3%)
-...output omitted...
+[user@host ~]$ oc describe pods
+    Ready:          True
+    Restart Count:  8
+    Limits:
+      cpu:     250m
+      memory:  1Gi
+    Requests:
+      cpu:     50m
+      memory:  256Mi
 ```
+
+The `oc adm top pods` command shows actual usage. 
+
+```
+[user@host ~]$ oc adm top pods
+NAME                                CPU(cores)   MEMORY(bytes)   
+hello-world-nginx-d598fbd96-45rqw   69m          34Mi            
+load-test-6798678dc-8tgjc           46m          6Mi            
+```
+
+The OpenShift web console also has numerous ways to view limits, requests and actual usage through the Metrics and Monitoring pages.
+
+## Quotas 
+
+OpenShift can enforce quotas that track and limit the use of two kinds of resources:
+
+Object counts:
+* The number of Kubernetes resources, such as pods, services, and routes.
+
+Compute resources:
+* The number of physical or virtual hardware resources, such as CPU, memory, and storage capacity.
+
+Imposing a quota on the number of Kubernetes resources improves the stability of the OpenShift control plane by avoiding unbounded growth of the Etcd database. Quotas on Kubernetes resources also avoids exhausting other limited software resources, such as IP addresses for services.
+
+In a similar way, imposing a quota on the amount of compute resources avoids exhausting the compute capacity of a single node in an OpenShift cluster. It also avoids having one application starve other applications in a shared cluster by using all the cluster capacity.
+
+OpenShift manages quotas for the number of resources and the use of compute resources in a cluster by using a ResourceQuota. A quota specifies hard resource usage limits for a project. All attributes of a quota are optional, meaning that any resource that is not restricted by a quota can be consumed without bounds.
 
 Note:
-The summary columns for Requests and Limits display the sum totals of defined requests and limits. In the preceding output, only 1 of the 20 pods running on the node defined a memory limit, and that limit was 512Mi.
 
-The oc describe node command displays requests and limits, and the oc adm top command shows actual usage. For example, if a pod requests 10m of CPU, then the scheduler will ensure that it places the pod on a node with available capacity. Although the pod requested 10m of CPU, it might use more or less than this value, unless it is also constrained by a CPU limit. Similarly, a pod that does not specify resource requests will still use some amount of resources. The oc adm top nodes command shows actual usage for one or more nodes in the cluster, and the oc adm top pods command shows actual usage for each pod in a project.
+Although a single quota resource can define all of the quotas for a project, a project can also contain multiple quotas. For example, one quota resource might limit compute resources, such as total CPU allowed or total memory allowed. Another quota resource might limit object counts, such as the number of pods allowed or the number of services allowed. The effect of multiple quotas is cumulative, but it is expected that two different ResourceQuota resources for the same project do not limit the use of the same type of Kubernetes or compute resource. For example, two different quotas in a project should not both attempt to limit the maximum number of pods allowed.
+
+
+The following table describes some resources that a quota can restrict by their count or number:
+
+|Resource Name|	Quota Description|
+|----|-----|
+|pods |	Total number of pods|
+|replicationcontrollers |	Total number of replication controllers|
+|services |	Total number of services|
+|secrets |	Total number of secrets|
+|persistentvolumeclaims |	Total number of persistent volume claims|
+
+The following table describes some compute resources that can be restricted by a quota:
+
+|Compute Resource Name|	Quota Description|
+|---|----|
+|cpu (requests.cpu)	Total |CPU use across all containers|
+|memory (requests.memory)	|Total memory use across all containers|
+|storage (requests.storage)|	Total storage requests by containers across all persistent volume claims|
+
+Quota attributes can track either resource requests or resource limits for all pods in the project. By default, quota attributes track resource requests. Instead, to track resource limits, prefix the compute resource name with limits, for example, limits.cpu.
+
+The following listing show a ResourceQuota resource defined using YAML syntax. This example specifies quotas for both the number of resources and the use of compute resources:
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-long-running-quota
+spec:
+  hard:
+    limits.cpu: 1500m
+    limits.memory: 4Gi
+    pods: "100"
+    requests.cpu: 500m
+    requests.memory: 2Gi
+  scopes:
+  - NotTerminating
+  - NotBestEffort
+```
+Use the `oc get resourcequota` command to list available quotas, and use the oc describe resourcequota command to view usage statistics related to any hard limits defined in the quota, for example:
 
 ```
-[user@host ~]$ oc adm top nodes -l node-role.kubernetes.io/worker
-NAME                               CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
-node1.us-west-1.compute.internal   519m         14%    3126Mi          20%
-node2.us-west-1.compute.internal   167m         4%     1178Mi          7%
+NAME                         AGE     REQUEST                                                           LIMIT
+compute-best-effort-quota    2d23h   pods: 0/3                                                                                                                                               
+compute-long-running-quota   2d23h   pods: 2/100, requests.cpu: 60m/500m, requests.memory: 276Mi/2Gi   limits.cpu: 330m/1500m, limits.memory: 1124Mi/4Gi
+compute-time-bound-quota     2d23h   pods: 0/100, requests.cpu: 0/500m, requests.memory: 0/2Gi         limits.cpu: 0/1500m, limits.memory: 0/4Gi
 ```
 
+Without arguments, the `oc describe quota` command displays the cumulative limits set for all ResourceQuota resources in the project:
 
-## Applying Limit Ranges
+```
+Name:       compute-long-running-quota
+Namespace:  ad204f-dev
+Scopes:     NotBestEffort, NotTerminating
+ * Matches all pods that have at least one resource requirement set. These pods have a burstable or guaranteed quality of service.
+ * Matches all pods that do not have an active deadline. These pods usually include long running pods whose container command is not expected to terminate.
+Resource         Used    Hard
+--------         ----    ----
+limits.cpu       330m    1500m
+limits.memory    1124Mi  4Gi
+pods             2       100
+requests.cpu     60m     500m
+requests.memory  276Mi   2Gi
+```
+Also getting the yaml output of a quota will show the status of the quota.
 
-A LimitRange resource, also called a limit, defines the default, minimum, and maximum values for compute resource requests, and the limits for a single pod or container defined inside the project. A resource request or limit for a pod is the sum of its containers.
+```yaml
+status:
+  hard:
+    limits.cpu: 1500m
+    limits.memory: 4Gi
+    pods: "100"
+    requests.cpu: 500m
+    requests.memory: 2Gi
+  used:
+    limits.cpu: 330m
+    limits.memory: 1124Mi
+    pods: "2"
+    requests.cpu: 60m
+    requests.memory: 276Mi
+```
 
-To understand the difference between a limit range and a resource quota, consider that a limit range defines valid ranges and default values for a single pod, and a resource quota defines only top values for the sum of all pods in a project. A cluster administrator concerned about resource usage in an OpenShift cluster usually defines both limits and quotas for a project.
+Important:
 
-A limit range resource can also define default, minimum, and maximum values for the storage capacity requested by an image, image stream, or persistent volume claim. If a resource that is added to a project does not provide a compute resource request, then it takes the default value provided by the limit ranges for the project. If a new resource provides compute resource requests or limits that are smaller than the minimum specified by the project limit ranges, then the resource is not created. Similarly, if a new resource provides compute resource requests or limits that are higher than the maximum specified by the project limit ranges, then the resource is not created.
+ResourceQuota constraints are applied for the project as a whole, but many OpenShift processes, such as builds and deployments, create pods inside the project and might fail because starting them would exceed the project quota.
+
+
+If a modification to a project exceeds the quota for a resource count, then OpenShift denies the action and returns an appropriate error message to the user. However, if the modification exceeds the quota for a compute resource, then the operation does not fail immediately; OpenShift retries the operation several times, giving the administrator an opportunity to increase the quota or to perform another corrective action, such as bringing a new node online.
+
+Important: 
+
+If a quota that restricts usage of compute resources for a project is set, then OpenShift refuses to create pods that do not specify resource requests or resource limits for that compute resource. To use most templates and builders with a project restricted by quotas, the project must also contain a limit range resource that specifies default values for container resource requests.
+
+**Quota scopes**
+
+Each quota can have an associated set of scopes. A quota only measures usage for a resource if it matches the intersection of enumerated scopes.
+
+Adding a scope to a quota restricts the set of resources to which that quota can apply. Specifying a resource outside of the allowed set results in a validation error.
+
+| Scope | Description|
+|---|---|
+|Terminating | Match pods where spec.activeDeadlineSeconds >= 0.|
+| NotTerminating | Match pods where spec.activeDeadlineSeconds is nil.|
+| BestEffort | Match pods that have best effort quality of service for either cpu or memory.|
+| NotBestEffort| Match pods that do not have best effort quality of service for cpu and memory.|
+
+You'll notice there are a few quotas within the BC Gov OpenShift projects. Have a look at quota details and see how much has been consumed.
+## Limit Ranges
+
+A LimitRange resource, also called a limit, defines the default, minimum, and maximum values for compute resource requests, and the limits for a single pod or container defined inside the project. 
+
+To understand the difference between a limit range and a resource quota, consider that a limit range defines valid ranges and default values for a single container, and a resource quota defines only top values for the sum of all pods in a project. 
+
+A cluster administrator concerned about resource usage in an OpenShift cluster usually defines both limits and quotas for a project.
+
+A limit range resource can also define minimum, and maximum values for the storage capacity requested by an image, image stream, or persistent volume claim. 
+
+If a resource that is added to a project like a new pod does not provide a compute resource request, then it takes the default value provided by the limit ranges for the project. If a new resource provides compute resource requests or limits that are smaller than the minimum specified by the project limit ranges, then the resource is not created. Similarly, if a new resource provides compute resource requests or limits that are higher than the maximum specified by the project limit ranges, then the resource is not created.
 
 The following listing shows a limit range defined using YAML syntax:
 
@@ -343,11 +473,6 @@ openshift.io/ImageStream  openshift.io/images      -    20     -               .
 PersistentVolumeClaim     storage                  1Gi  50Gi   -               ...
 ```
 
-An active limit range can be deleted by name with the oc delete command:
-
-```
-[user@host ~]$ oc delete limitrange dev-limits
-```
 After a limit range is created in a project, all requests to create new resources are evaluated against each limit range resource in the project. If the new resource violates the minimum or maximum constraint enumerated by any limit range, then the resource is rejected. If the new resource does not set an explicit value, and the constraint supports a default value, then the default value is applied to the new resource as its usage value.
 
 All resource update requests are also evaluated against each limit range resource in the project. If the updated resource violates any constraint, the update is rejected.
@@ -355,9 +480,25 @@ All resource update requests are also evaluated against each limit range resourc
 Important:
 Avoid setting LimitRange constraints that are too high, or ResourceQuota constraints that are too low. A violation of LimitRange constraints prevents pod creation, resulting in error messages. A violation of ResourceQuota constraints prevents a pod from being scheduled to any node. The pod might be created but remain in the pending state.
 
+
+App project in the BC Gov clusters have a default-limits LimitRange that users can’t delete, these specify defaults for containers.
+
+```
+spec:
+  limits:
+  - default:
+      cpu: 250m
+      memory: 1Gi
+    defaultRequest:
+      cpu: 50m
+      memory: 256Mi
+    type: Container
+```
+
 ## Futher Reading
 
    * https://sysdig.com/blog/kubernetes-pod-evicted/
    * https://sysdig.com/blog/troubleshoot-kubernetes-oom/
    * https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/
    * https://docs.openshift.com/container-platform/4.10/nodes/clusters/nodes-cluster-resource-configure.html
+   * https://docs.openshift.com/container-platform/4.10/applications/quotas/quotas-setting-per-project.html
