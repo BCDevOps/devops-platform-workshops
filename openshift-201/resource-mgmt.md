@@ -382,7 +382,7 @@ To understand the difference between a limit range and a resource quota, conside
 
 A cluster administrator concerned about resource usage in an OpenShift cluster usually defines both limits and quotas for a project.
 
-A limit range resource can also define minimum, and maximum values for the storage capacity requested by an image, image stream, or persistent volume claim. 
+A limit range resource can also define minimum, and maximum values for the storage capacity requested by a persistent volume claim; the maximum size of an image; or the number of image streams and tags.
 
 If a resource that is added to a project like a new pod does not provide a compute resource request, then it takes the default value provided by the limit ranges for the project. If a new resource provides compute resource requests or limits that are smaller than the minimum specified by the project limit ranges, then the resource is not created. Similarly, if a new resource provides compute resource requests or limits that are higher than the maximum specified by the project limit ranges, then the resource is not created.
 
