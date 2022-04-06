@@ -10,7 +10,7 @@ The Web Console is the primary tool to visualize events sorted by time.
 
 ![](./images/08_event_stream_01.png)
 
-- For project wide events, navigate to the __Developer View__ and go to `Advanced -> Events`
+- For project wide events, navigate to the __Developer View__ and go to `Monitoring -> Events`
 
 ![](./images/08_event_stream_02.png)
 
