@@ -29,9 +29,9 @@ NAME                REFERENCE                      TARGETS    MINPODS   MAXPODS 
 hello-world-nginx   Deployment/hello-world-nginx   600%/80%   1         10        4        
 ```
 
-The horizontal pod autoscaler initially has a value of <unknown> in the TARGETS column. It might take up to five minutes before <unknown> changes to display a percentage for current usage.
+The horizontal pod autoscaler initially has a value of `<unknown>` in the TARGETS column. It might take up to five minutes before <unknown> changes to display a percentage for current usage.
 
-A persistent value of <unknown> in the TARGETS column might indicate that the deployment does not define resource requests for the metric. The horizontal pod autoscaler will not scale these pods.
+A persistent value of `<unknown>` in the TARGETS column might indicate that the deployment does not define resource requests for the metric. The horizontal pod autoscaler will not scale these pods.
 
 ### API Versions 
 
@@ -109,8 +109,6 @@ Specify averageUtilization and a target average memory utilization over all the 
 
 For memory-based autoscaling, memory usage must increase and decrease proportionally to the replica count. On average an increase in replica count must lead to an overall decrease in memory (working set) usage per-pod. A decrease in replica count must lead to an overall increase in per-pod memory usage.
 
-Use the OpenShift Container Platform web console to check the memory behavior of your application and ensure that your application meets these requirements before using memory-based autoscaling.
-
 Apply the `hello-world-nginx-mem-hpa` from above to your project. Trigger a re-deploy of the load-test deployment.
 
 Describe the HPA.
@@ -138,20 +136,17 @@ Events:
   Normal  SuccessfulRescale  65m (x12 over 70m)  horizontal-pod-autoscaler  New size: 2; reason: All metrics below target
 ```
 
-the ratio of the current metric utilization with the desired metric utilization, and scales up or down accordingly.
-
-
+**Note:**
 All pods must have resource requests configured
 
-The HPA makes a scaling decision based on the observed CPU or memory utilization values of pods in an OpenShift Container Platform cluster. Utilization values are calculated as a percentage of the resource requests of each pod. Missing resource request values can affect the optimal performance of the HPA.
+The HPA makes a scaling decision based on the observed CPU or memory utilization values of pods in an OpenShift Container Platform cluster. Utilization values are calculated as a percentage of the resource requests of each pod. Missing resource request values can affect the optimal performance of the HPA
 
-
+### Advanced Options
 
 There are a few more advanced options with the HPAs like scaleup and scaledown policies. Check the online documentation for these details.
 
-https://docs.openshift.com/container-platform/4.10/nodes/pods/nodes-pods-autoscaling.html
-
-https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+* https://docs.openshift.com/container-platform/4.10/nodes/pods/nodes-pods-autoscaling.html
+* https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 
 
 ## Vertical Pod Autoscaler
