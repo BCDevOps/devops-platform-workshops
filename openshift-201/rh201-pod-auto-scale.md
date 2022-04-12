@@ -1,5 +1,5 @@
 # Autoscaling Pods
-## Objectives:
+## Objectives
 
 After completing this section you should have a better understanding of Horizontal Pod Autoscalers (HPA), Vertical Pod Autoscalers (VPA), and Pod Disruption Budgets (PDB). And go through the steps to configure and observe these resources.
 
