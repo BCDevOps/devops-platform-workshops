@@ -80,7 +80,7 @@ The day after the training, the lab has a kick-off meeting, during which we set 
         - Common images: pre-built docker images we have created for teams to use!
             - Includes Postgres, MongoDB, AppAssessment
     - KeyCloak
-        - an SSO solution that lets your app use IDIR login, plus also GitHub IDs and BCeID
+        - an SSO (Single Sign-On) solution that lets your app use IDIR login, plus also GitHub IDs and BCeID
     - Sysdig
         - monitoring app so you can track your resource usage
         - notifies you of problems, like if your pod goes down or if your PVC is getting full
