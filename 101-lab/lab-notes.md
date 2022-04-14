@@ -35,7 +35,7 @@ The day after the training, the lab has a kick-off meeting, during which we set 
 - OpenShift Tour (while we set up everyone's RocketChat and GitHub Access)
     - Tour of the OpenShift console
     - How to download the CLI
-    - How to log in to the CLI
+    - How to log in to the CLI (if recording, make sure to pause on screenshare)
     - Show the lab namespaces
         - Talk about the namespace name (how the lab will sometimes use `ocp101-tools` or `[-tools]` and what to use instead)
         - Mention that the attendees don't have access yet, not to worry!
