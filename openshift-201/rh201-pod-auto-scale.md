@@ -151,6 +151,22 @@ There are a few more advanced options with the HPAs like scaleup and scaledown p
 
 ## Vertical Pod Autoscaler
 
+
+reviews the historic and current CPU and memory resources for containers in pods and can update the resource limits and requests based on the usage values it learns
+
+update all of the pods associated with a workload object, such as a Deployment, DeploymentConfig, StatefulSet, Job, DaemonSet, ReplicaSet, or ReplicationController, in a project.
+
+The Vertical Pod Autoscaler Operator (VPA) is implemented as an API resource and a custom resource (CR). The CR determines the actions the Vertical Pod Autoscaler Operator should take with the pods associated with a specific workload object, such as a daemon set, replication controller, and so forth, in a project.
+
+```
+oc api-resources | grep vpa
+```
+
+
+To use the VPA to automatically update pods, create a VPA CR for a specific workload object with updateMode set to Auto or Recreate.
+
+To use the VPA to only determine the recommended CPU and memory values, create a VPA CR for a specific workload object with updateMode set to off.
+
 **Work in Progess**
 
 ```
@@ -182,6 +198,16 @@ spec:
     updateMode: "Auto" 
 ```
 
+VPA won't work with HPA using the same CPU and memory metrics because it would cause a race condition
+
+
+VPA is not aware of Kubernetes cluster infrastructure variables such as node size in terms of memory and CPU. Therefore, it doesn't know whether a recommended pod size will fit your node. 
+
+Whenever VPA updates the pod resources the pod is recreated, which causes all running containers to be restarted. The pod may be recreated on a different node.
+
+
+* https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler
+* https://docs.openshift.com/container-platform/4.10/nodes/pods/nodes-pods-vertical-autoscaler.html
 ## Pod Disruption Budgets
 
 **Work in Progess**
