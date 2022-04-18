@@ -179,6 +179,26 @@ When the `EventListener` is created OpenShift will automatically create a `Servi
 
 ![eventlistener-pod](images/pipelines/eventlistener-pod.png)
 
+For the purposes of this lab we will edit the `EventListener` named `maven-build-event-listener` to remove the GitHub `secretRef`.  This is **NOT** something you would do in production but to reduce the complexity of the lab we will remove it.
+
+To remove the `secretRef` perform the following:
+```bash
+oc patch el maven-build-event-listener --type json -p '[{"op": "remove", "path":  "/spec/triggers/0/interceptors/0/params/0"}]'
+```
+
+The `interceptors` section of the `EventListener` should now look like the following:
+```yaml
+interceptors:
+  - params:
+      - name: eventTypes
+        value:
+          - pull_request
+          - push
+    ref:
+      kind: ClusterInterceptor
+      name: github
+```
+
 We will need to expose the `EventListener` to be used outside the cluster.  In the prerequisites step an `EventListener` was created named `maven-build-event-listener` as described above.
 
 To expose the `EventListener` service perform the following:
@@ -209,4 +229,4 @@ This should produce output similiar to the following:
 {"eventListener":"maven-build-event-listener","namespace":"ad204f-test","eventListenerUID":"cfad4b21-3fa0-44ad-98b6-5b37fbcac5d6","eventID":"523e43d4-6c92-4379-aac1-cbae2d43a5d0"}
 ```
 
-If you now look at the pipelines you should see a new `PipelineRun` created and started.
+If you now look at the pipelines you should see a new `PipelineRun` created and started just as if we manually started it from above.
