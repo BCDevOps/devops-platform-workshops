@@ -110,15 +110,19 @@ or via the OpenShift Console by performing the following:
 ![pipeline console 01](images/pipelines/pipeline-console-01.png)
 
 After you've selected the `p-mvn-build` then do the following:
+
 ![pipeline console 02](images/pipelines/pipeline-console-02.png)
 
 Then proceed to fill out the following form:
+
 ![pipeline start](images/pipelines/pipeline-start.png)
 
 Once complete press the start button and a new `PipelineRun` will start:
+
 ![pipeline run](images/pipelines/pipeline-run.png)
 
 After a few minutes the pipeline should succeed:
+
 ![pipeline success](images/pipelines/pipeline-success.png)
 
 
@@ -132,6 +136,7 @@ Trigger Bindings extract field from an event payload and stores them as paramete
 
 
 ![triggerbinding](images/pipelines/triggerbinding.png)
+
 1. `branchName` parameter will be pulled from the body of the event, with the assigned value of `ref`
 2. `contenttype` parameter will be pulled from the header of the event, with the assgined value of the `Content-Type` header.
 
@@ -161,6 +166,7 @@ The value of `branchName` would be `main` and the value of `contentype` would be
 Trigger Templates receive input from the `TriggerBinding`, and then performs a series of action that result in the initiation of a new pipeline run.
 
 ![triggertemplate](images/pipelines/triggertemplate.png)
+
 1. Parameters defined by this `TriggerTemplate`.  These usually include parameters needed to start a pipeline.  **Note:** in order to map values from the `TriggerBinding` these parameter names **must** match the parameter names in the `TriggerBinding`
 2. `pipelineRef` defines the pipeline that this trigger template will start.
 3. Parameters from TriggerTemplate can be referenced via `$(tt.params.<PARAM-NAME>)`.  Where `tt` stands for trigger template and `<PARAM-NAME>` is the name of the parameter you'd like to reference.
@@ -169,12 +175,14 @@ Trigger Templates receive input from the `TriggerBinding`, and then performs a s
 Provides an endpoint that listens for incoming HTTP-based event with JSON payload.  It will extract event parameters for each `TriggerBinding` and creates resources as specified by the `TriggerTemplate`
 
 ![eventlistener](images/pipelines/eventlistener.png)
+
 1. Specifies the `ServiceAccount` that will be used to instantiate resources
 2. Interceptors act as a filter and will process event payload data before passing it to the `TriggerBinding`.  In this case it will use a built in `github` interceptor and validate the webhook secret along with the `EventType` of the webhook.
 3. Defines the `TriggerBindings` to be used in this `EventListener`
 4. Defines the `TriggerTemplate` to be used in this `EventListener`
 
 When the `EventListener` is created OpenShift will automatically create a `Service` and `Pod` to handle events
+
 ![eventlistener-services](images/pipelines/eventlistener-service.png)
 
 ![eventlistener-pod](images/pipelines/eventlistener-pod.png)
@@ -212,6 +220,7 @@ oc get route el-maven-build-event-listener -o=jsonpath='{.spec.host}'
 ```
 
 Or by viewing the routes in the OpenShift Console:
+
 ![eventlistener-route](images/pipelines/eventlistener-route.png)
 
 
