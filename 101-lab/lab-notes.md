@@ -83,6 +83,7 @@ The day after the training, the lab has a kick-off meeting, during which we set 
         - an SSO (Single Sign-On) solution that lets your app use IDIR login, plus also GitHub IDs and BCeID
     - Sysdig
         - monitoring app so you can track your resource usage
+        - monitor app status via service golden signals
         - notifies you of problems, like if your pod goes down or if your PVC is getting full
     - Vault
         - encrypted secret storage!
