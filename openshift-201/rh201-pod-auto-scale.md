@@ -26,7 +26,7 @@ To get information about horizontal pod autoscaler resources in the current proj
 ```
 oc get hpa 
 NAME                REFERENCE                      TARGETS    MINPODS   MAXPODS   REPLICAS
-hello-world-nginx   Deployment/hello-world-nginx   600%/80%   1         10        4        
+hello-world-nginx   Deployment/hello-world-nginx   600%/80%   1         5          4        
 ```
 
 The horizontal pod autoscaler initially has a value of `<unknown>` in the TARGETS column. It might take up to five minutes before <unknown> changes to display a percentage for current usage.
