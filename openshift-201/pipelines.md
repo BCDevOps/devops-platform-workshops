@@ -158,7 +158,7 @@ User-Agent: Mozilla/5.0
 }
 ```
 
-The value of `branchName` would be `main` and the value of `contentype` would be `application/json`
+The value of `branchName` would be `main` and the value of `contenttype` would be `application/json`
 
 **NOTE:** Fields in your cooresponding `TriggerTemplate` **must** match fields defined in the `TriggerBinding` in order for the mapping to occur
 
