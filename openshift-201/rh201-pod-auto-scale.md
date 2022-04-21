@@ -19,6 +19,8 @@ oc autoscale deployment/hello-world-nginx --min 1 --max 5 --cpu-percent 80
 
 The maximum and minimum values for the horizontal pod autoscaler resource serve to accommodate bursts of load and avoid overloading the OpenShift cluster. If the load on the application changes too quickly, then it might be advisable to keep a number of spare pods to cope with sudden bursts of user requests. Conversely, too many pods can use up all cluster capacity and impact other applications sharing the same OpenShift cluster.
 
+You will need to determine what metric is best for your application to trigger scale up. Maybe your application takes a while to spin up and get marked as ready so you could set the cpu percent to 60%. Your application could scale up really quickly so you set 90% as the threshold to trigger scaling.
+
 Edit the load-test deployment requests environment variable which will re-trigger the deployment to start a load-test pod that will send traffic to the hello-world-nginx pod. You should see the number of pods increase as the CPU metrics grow.
 
 To get information about horizontal pod autoscaler resources in the current project, use the oc get command.
@@ -28,6 +30,8 @@ oc get hpa
 NAME                REFERENCE                      TARGETS    MINPODS   MAXPODS   REPLICAS
 hello-world-nginx   Deployment/hello-world-nginx   600%/80%   1         5          4        
 ```
+
+The TARGETS column is the metrics on pods as a percentage of cpu request at current/target.
 
 The horizontal pod autoscaler initially has a value of `<unknown>` in the TARGETS column. It might take up to five minutes before <unknown> changes to display a percentage for current usage.
 
