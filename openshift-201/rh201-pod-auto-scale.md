@@ -139,13 +139,15 @@ Events:
 **Note:**
 All pods must have resource requests configured
 
-The HPA makes a scaling decision based on the observed CPU or memory utilization values of pods in an OpenShift Container Platform cluster. Utilization values are calculated as a percentage of the resource requests of each pod. Missing resource request values can affect the optimal performance of the HPA
+The HPA makes a scaling decision based on the observed CPU or memory utilization values of pods in an OpenShift Container Platform cluster. Utilization values are calculated as a percentage of the resource requests of each pod. Missing resource request values can affect the optimal performance of the HPA.
+  
+Keep in mind your application will "work" with scaling up or down replicas. If adding more pods to your application won't reduce the load or if scaling down pods would cause issues an HPA might not be the best choice. If your application is reliant on some persistant storage per pod that may also be something to consider when using HPAs.
 
 ### Advanced Options
 
 There are a few more advanced options with the HPAs like scaleup and scaledown policies. Check the online documentation for these details.
 
-* https://docs.openshift.com/container-platform/4.10/nodes/pods/nodes-pods-autoscaling.html
+* https://docs.openshift.com/container-platform/4.8/nodes/pods/nodes-pods-autoscaling.html
 * https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 
 
@@ -207,7 +209,7 @@ Whenever VPA updates the pod resources the pod is recreated, which causes all ru
 
 
 * https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler
-* https://docs.openshift.com/container-platform/4.10/nodes/pods/nodes-pods-vertical-autoscaler.html
+* https://docs.openshift.com/container-platform/4.8/nodes/pods/nodes-pods-vertical-autoscaler.html
 ## Pod Disruption Budgets
 
 **Work in Progess**
