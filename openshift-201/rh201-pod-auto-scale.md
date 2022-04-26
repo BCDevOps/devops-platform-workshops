@@ -157,21 +157,113 @@ There are a few more advanced options with the HPAs like scaleup and scaledown p
 
 ## Vertical Pod Autoscaler
 
+VPA reduces resources for pods that are requesting more resources than they are using and increases resources for pods that are not requesting enough.
 
-reviews the historic and current CPU and memory resources for containers in pods and can update the resource limits and requests based on the usage values it learns
+The VPA reviews the historic and current CPU and memory resources for containers in pods and can update the resource limits and requests based on the usage values it learns. The VPA will update all of the pods associated with a workload object, such as a Deployment, DeploymentConfig, StatefulSet, Job, DaemonSet, ReplicaSet, or ReplicationController, in a project.
 
-update all of the pods associated with a workload object, such as a Deployment, DeploymentConfig, StatefulSet, Job, DaemonSet, ReplicaSet, or ReplicationController, in a project.
+VPA automatically deletes any pods that are out of alignment with its recommendations one at a time, so that your applications can continue to serve requests with no downtime. The workload objects then re-deploy the pods with the original resource limits and requests. By default, workload objects must specify a minimum of two replicas in order for the VPA to automatically delete their pods. Workload objects that specify fewer replicas than this minimum are not deleted. If you manually delete these pods, when the workload object redeploys the pods, the VPA does update the new pods with its recommendations.
 
-The Vertical Pod Autoscaler Operator (VPA) is implemented as an API resource and a custom resource (CR). The CR determines the actions the Vertical Pod Autoscaler Operator should take with the pods associated with a specific workload object, such as a daemon set, replication controller, and so forth, in a project.
+For developers, you can use the VPA to help ensure your pods stay up during periods of high demand by scheduling pods onto nodes that have appropriate resources for each pod. Administrators use the VPA to better utilize cluster resources, such as preventing pods from reserving more CPU resources than needed. The VPA monitors the resources that workloads are actually using and adjusts the resource requirements so capacity is available to other workloads. 
+
+The VPA CR must be in the same project as the pods you want to monitor. There are 4 updateModes available for the VPA:
+
+* Auto, the VPA assigns resource requests on pod creation and updates the existing pods by terminating them when the requested resources differ significantly from the new recommendation.
+* Recreate, the VPA assigns resource requests on pod creation and updates the existing pods by terminating them when the requested resources differ significantly from the new recommendation. This mode should be used rarely, only if you need to ensure that the pods are restarted whenever the resource request changes.
+* Initial, automatically applies VPA recommendations only at pod creation.
+* Off, only provides recommended resource limits and requests, allowing you to manually apply the recommendations. The off mode does not update pods.
+
+You can also use the CR to opt-out certain containers from VPA evaluation and updates.
+
+
+Lets confirm that the VPA operator is installed in our cluster, we should see 2 results.
 
 ```
 oc api-resources | grep vpa
 ```
 
+Lets now create a VPA with update mode turned to "Off" so we just get resource recommendations.
 
-To use the VPA to automatically update pods, create a VPA CR for a specific workload object with updateMode set to Auto or Recreate.
+Create a VPA using the below yaml:
 
-To use the VPA to only determine the recommended CPU and memory values, create a VPA CR for a specific workload object with updateMode set to off.
+```yaml
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-recommender
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind:       Deployment 
+    name:       hello-world-nginx
+  updatePolicy:
+    updateMode: "Off"
+```
+
+Re-trigger load-test deployment by updating the environment variable REQUESTS to a different number. Let the deployment fire up a new pod and send load to our hello-world-nginx pod.
+
+Give it a few minutes and check the vpa status sections for recommendations.
+
+
+```yaml
+oc get vpa vpa-recommender -o yaml
+
+ status:
+    conditions:
+    - lastTransitionTime: "2022-04-11T17:35:54Z"
+      status: "True"
+      type: RecommendationProvided
+    recommendation:
+      containerRecommendations:
+      - containerName: hello-world-nginx
+        lowerBound:
+          cpu: 25m
+          memory: 262144k
+        target:
+          cpu: 35m
+          memory: 262144k
+        uncappedTarget:
+          cpu: 35m
+          memory: 262144k
+        upperBound:
+          cpu: 66m
+          memory: 262144k
+```
+
+
+The output shows the recommended resources under target.
+The minimum recommended resources under lowerBound. 
+The highest recommended resources under upperBound.
+The most recent resource recommendations under uncappedTarget.
+
+
+With the recommendations, you can edit the workload object to add CPU and memory requests, then delete and redeploy the pods using the recommended resources.
+
+If the VPA updateMode uses something other than `off` then the lowerBound and upperBound values are used to determine if a pod needs to be updated. If a pod has resource requests below the lowerBound values or above the upperBound values, the VPA terminates and recreates the pod with the target values.
+
+
+Lets create an VPA in auto mode and send traffic to the hello-world-nginx pods and observe what happens.
+
+
+If HPA objects still exists from previous labs let delete them to focus on VPAs.
+
+Lets scale our hello-world-nginx deployment up to three also.
+
+
+```yaml
+cat <<EOF | oc apply -f -
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-auto
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind:       Deployment 
+    name:       hello-world-nginx
+  updatePolicy:
+    updateMode: "Auto"
+EOF
+```
 
 **Work in Progess**
 
