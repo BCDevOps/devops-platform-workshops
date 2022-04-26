@@ -25,7 +25,7 @@ Edit the load-test deployment requests environment variable which will re-trigge
 
 To get information about horizontal pod autoscaler resources in the current project, use the oc get command.
 
-```
+```yaml
 oc get hpa 
 NAME                REFERENCE                      TARGETS    MINPODS   MAXPODS   REPLICAS
 hello-world-nginx   Deployment/hello-world-nginx   600%/80%   1         5          4        
@@ -54,7 +54,7 @@ oc api-versions | grep autoscaling
 
 The `oc autoscale` command will create a v1 type autoscaler. You can view with the hpa details with an `oc get hpa` command.
 
-```
+```yaml
 oc get hpa -o yaml
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
@@ -72,7 +72,7 @@ spec:
 
 To create a v2beta2 autoscaler you need to define in a yaml.
 
-```
+```yaml
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -97,7 +97,7 @@ Under metrics you can set type to AverageValue and specify averageValue memory.
 
 You can also specify Utilization in the metrics section of the v2beta2 HPA.
 
-```
+```yaml
 metrics: 
   - type: Deployment
     resource:
@@ -117,7 +117,7 @@ Apply the `hello-world-nginx-mem-hpa` from above to your project. Trigger a re-d
 
 Describe the HPA.
 
-```
+```yaml
 oc describe hpa hello-world-nginx-mem-hpa
 Name:                       hello-world-nginx-mem-hpa
 Namespace:                  ad204f-dev
