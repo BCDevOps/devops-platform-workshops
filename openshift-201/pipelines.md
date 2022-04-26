@@ -129,7 +129,7 @@ After a few minutes the pipeline should succeed:
 ## Triggers
 As mentioned before triggers can be used to automatically start a pipeline.  An example of this is a git web hook (triggering the pipeline when a merge request happens).
 
-Triggers consist of the following main resources.
+Triggers consist of the following main resources: TriggerBinding, TriggerTemplate and EventListener. The following example source code can be found [here](https://github.com/bcgov/pipeline-templates/blob/main/tekton/base/triggers/trigger-maven-build.yaml).
 
 ### TriggerBinding
 Trigger Bindings extract field from an event payload and stores them as parameters.
