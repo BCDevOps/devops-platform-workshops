@@ -14,3 +14,4 @@ demo/test/cli/.tty
 .openshift/rocketchat-headers.txt
 101-materials/github-users-valid.txt
 provisioning_tools/201-labs/unique_id
+**/target
