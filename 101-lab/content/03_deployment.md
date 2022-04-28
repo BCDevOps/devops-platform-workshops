@@ -172,7 +172,10 @@ oc -n openshift get template/mongodb-ephemeral -o json | oc process -f - --param
   - Create MongoDB based on a template in the catalog
 
 ```oc:cli
-  oc -n [-dev] new-app --template=openshift/mongodb-ephemeral -p MONGODB_VERSION=3.6 -p DATABASE_SERVICE_NAME=mongodb-[username] -p MONGODB_USER=dbuser -p MONGODB_PASSWORD=dbpass -p MONGODB_DATABASE=rocketchat --name=rocketchat-[username]
+  oc -n [-dev] new-app --template=openshift/mongodb-ephemeral \
+  -p MONGODB_VERSION=3.6 -p DATABASE_SERVICE_NAME=mongodb-[username] \
+  -p MONGODB_USER=dbuser -p MONGODB_PASSWORD=dbpass -p MONGODB_DATABASE=rocketchat\
+  --name=rocketchat-[username]
 ```
 > If you ran the cli command you would get an output like this 
   ```
