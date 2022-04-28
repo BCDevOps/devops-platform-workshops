@@ -60,7 +60,7 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
   ```oc:cli
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username] -o name | head -1 | xargs -I {} oc -n [-dev] delete {}
 
-  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].[namespace].apps.silver.devops.gov.bc.ca/api/info
+  watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].[namespace].apps.silver.devops.gov.bc.ca/api/info
 
   # Notice that eventually your RocketChat will be back to having 2 pods
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username]
@@ -74,6 +74,6 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
   watch -dg -n 1 -x oc -n [-dev] get pods -l deployment=rocketchat-[username]
 
   # From another terminal, monitor RocketChat response
-  watch -dg -n 1 curl -fsSL http://rocketchat-[username]-[-dev].[namespace].apps.silver.devops.gov.bc.ca/api/info
+  watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].[namespace].apps.silver.devops.gov.bc.ca/api/info
 
   ```
