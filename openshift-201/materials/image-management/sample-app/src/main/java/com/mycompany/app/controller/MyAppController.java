@@ -10,14 +10,31 @@ public class MyAppController {
     public ResponseEntity<String> hello() {
         String name = System.getenv().getOrDefault("NAME", "unknown");
         String message = System.getenv().getOrDefault("APP_MSG", null);
-        String response = "";
+        String secret = System.getenv().getOrDefault("SECRET_APP_MSG", null);
+        StringBuilder response = new StringBuilder();
 
-      	if (message == null)
-      	  response = "Hello world from "+name+"\n";
-      	else
-      	  response = "Hello world from ["+name+"]. Message received = "+message+"\n";
+      	if (message == null) {
+      	  response.append("Hello world from ").append(name);
+          if (null != secret) {
+              response.append(" with secret message: ").append(secret);
+          }
 
-        return ResponseEntity.ok(response);
+          response.append("\n");
+        } else {
+      	  response.append("Hello world from [")
+                  .append(name)
+                  .append("]. Message received = ")
+                  .append(message);
+                  
+          if (null != secret) {
+              response.append(" with secret message: ")
+                      .append(secret);
+          }
+        
+          response.append("\n");
+        }
+
+        return ResponseEntity.ok(response.toString());
     }
     
 }
