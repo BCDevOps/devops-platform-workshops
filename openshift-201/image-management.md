@@ -5,7 +5,7 @@
 After completing this section, you should have an understanding of the best practices around image management.
 
 ## Building Images
-Source-to-image (S2I) is a framework that makes it easy to write images that take application source code as an input and proced a new image that runs the assembled application as output.
+Source-to-image (S2I) is a framework that makes it easy to write images that take application source code as an input and produced a new image that runs the assembled application as output.
 
 The main advantage of using S2I is the ease of use for developers.  OpenShift provides base images for the following:
 * .NET
@@ -52,7 +52,7 @@ As you can see there are a few resources create with the `new-app` command.  One
 
 
 ### Follow Build
-Use the `oc logs` command to chck the build logs from the `myapp` build:
+Use the `oc logs` command to check the build logs from the `myapp` build:
 ```bash
 oc logs -f bc/myapp
 ```
@@ -71,9 +71,9 @@ Once the build is complete let's inspect the `ImageStream`.  To do so click on t
 1. Name of ImageStream
 2. Docker repository path where new images can be pushed to add/update them in this image stream.
 3. The image stream tag.  In this case `latest`.
-4. The `items` are the associated images to the `latest` tag in this case.  `dockerImageReference` is the SHA identifier that this image stream tag currently references and the `image` is the SHA identifier that this image stream tag previously referenced.  In this case they are the same because we only have one image generation.
+4. The `items` are the associated images to the `latest` tag in this case.  `dockerImageReference` is the SHA identifier that this `ImageStreamTag` currently references and the `image` is the SHA identifier that this `ImageStreamTag` previously referenced.  In this case they are the same because we only have one image generation.
 
-### Aplication Status
+### Application Status
 Wait for the application to be ready and running:
 ```bash
 oc get pods
@@ -148,7 +148,7 @@ A `ConfigMap` is another way to inject configuration data into containers. Given
 To create the `ConfigMap` perform the following:
 ```bash
 oc create configmap myapp-config \
---from-literal APP_MSG='I love maple trees'
+--from-literal APP_MSG='Containers are fun'
 ```
 
 #### Update Deployment
@@ -174,7 +174,7 @@ We should now see our message when calling our `hello` endpoint
 ```bash
 curl http://$MY_HOST/hello
 
-Hello world from [YOUR_NAME_HERE]. Message received = I love maple trees
+Hello world from [YOUR_NAME_HERE]. Message received = Containers are fun
 ```
 
 ### Secret
@@ -209,7 +209,7 @@ We should now see our message when calling our `hello` endpoint
 ```bash
 curl http://$MY_HOST/hello
 
-Hello world from [YOUR_NAME_HERE]. Message received = I love maple trees with secret message: Shh... It is a secret
+Hello world from [YOUR_NAME_HERE]. Message received = Containers are fun with secret message: Shh... It is a secret
 ```
 
 ## Image Streams
@@ -402,8 +402,6 @@ oc tag image-registry.openshift-image-registry.svc:5000/ad204f-dev/hello-world@s
 ```bash
 oc tag image-registry.openshift-image-registry.svc:5000/ad204f-dev/hello-world@sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284 hello-world:v1.1
 ```
-
-__NOTE:__ We used the OpenShift internal registry as the source of the image.  This was just done as an example and shouldn't be something you do in regular development.  The first parameter to `oc tag` would be an external registry where the image is stored. 
 
 We should now see our new tags on our `ImageStream`.
 ```bash
