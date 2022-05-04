@@ -105,9 +105,10 @@ Hello world from unknown
 ```
 
 ## Application Configuration
-The `myapp` application has 2 environment variables that can be set to change the ouput of our `hello` endpoint.
+The `myapp` application has 3 environment variables that can be set to change the ouput of our `hello` endpoint.
 1. `NAME` is who is saying hello
 2. `APP_MSG` message to ouput
+3. `SECRET_APP_MSG` a secret message to output
 
 There are multiple ways to configure these environment variables in OpenShift
 
@@ -141,3 +142,295 @@ Hello world from YOUR_NAME_HERE
 ```
 
 ### ConfigMap
+A `ConfigMap` is another way to inject configuration data into containers. Given our example above we will use a `ConfigMap` to inject another environment variable `APP_MSG`
+
+#### Create the ConfigMap
+To create the `ConfigMap` perform the following:
+```bash
+oc create configmap myapp-config \
+--from-literal APP_MSG='I love maple trees'
+```
+
+#### Update Deployment
+To update our deployment to use the `ConfigMap` perform the following:
+```bash
+oc set env deployment/myapp \
+--from configmap/myapp-config
+```
+
+This should automatically redeploy the app.
+```bash
+oc get pods
+
+NAME                   READY   STATUS              RESTARTS   AGE
+myapp-c97b5b874-zsz2j   1/1     Running             0          4m27s
+myapp-5f598f7884-rjt5k  0/1     ContainerCreating   0          5s
+```
+
+Wait for the new pod to be in the `Running` status.
+
+#### Test Application
+We should now see our message when calling our `hello` endpoint
+```bash
+curl http://$MY_HOST/hello
+
+Hello world from [YOUR_NAME_HERE]. Message received = I love maple trees
+```
+
+### Secret
+A `Secret` is a way to inject sensitive data into containers. Given our example above we will use a `Secret` to inject another environment variable `SECRET_APP_MSG`
+
+#### Create the Secret
+```bash
+oc create secret generic myapp-secret \
+--from-literal SECRET_APP_MSG='Shh... It is a secret'
+```
+
+#### Update Deployment
+To update our deployment to use the `Secret` perform the following:
+```bash
+oc set env deployment/myapp \
+--from secret/myapp-secret
+```
+
+This should automatically redeploy the app.
+```bash
+oc get pods
+
+NAME                   READY   STATUS              RESTARTS   AGE
+myapp-5fd4dcf7c8-9tlkq  1/1     Running             0          4m27s
+myapp-5fd4dcf7c8-9tlkq  0/1     ContainerCreating   0          5s
+```
+
+Wait for the new pod to be in the `Running` status.
+
+#### Test Application
+We should now see our message when calling our `hello` endpoint
+```bash
+curl http://$MY_HOST/hello
+
+Hello world from [YOUR_NAME_HERE]. Message received = I love maple trees with secret message: Shh... It is a secret
+```
+
+## Image Streams
+An Image Stream doesn't contain the Docker image itself but is a pointer to images.  We will demonstrate the use of an `ImageStream` below.
+
+### Create Image Stream
+The following command will create an "empty" `ImageStream`.  We will add a pointer when we build our image.
+
+```bash
+oc create is hello-world
+```
+__NOTE:__ *`is`* is short for `imagestream`
+
+### Create a BuildConfig
+```bash
+cat <<EOF | oc apply -f -
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: docker-build
+  labels:
+    name: docker-build
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'hello-world:latest'
+  strategy:
+    type: Docker
+  source:
+    type: Dockerfile
+    dockerfile: |-
+      FROM registry.access.redhat.com/ubi8 
+      CMD echo 'Hello World!  Docker Build - v1.0' && exec sleep infinity
+EOF
+```
+
+#### Start the build
+```bash
+oc start-build docker-build
+```
+
+#### Follow Build
+Use the `oc logs` command to check the build logs of the `docker-build`:
+```bash
+oc logs -f bc/docker-build
+```
+<pre>
+...<em>output omitted</em>...
+Writing manifest to image destination
+Storing signatures
+...<em>output omitted</em>...
+Push successful
+</pre>
+
+### Create Deployment
+Run the following to create and start the `hello-world` application
+```bash
+oc new-app hello-world
+```
+You should see output similar to the follow:
+<pre>
+...<em>output omitted</em>...
+--> Creating resource ...
+    deployment.apps "hello-world" created
+--> Success
+...<em>output omitted</em>...
+</pre>
+
+Notice in the `Deployment` created the annotation for the `image.openshift.io/triggers`
+```bash
+oc get deployment hello-world -o yaml | grep -A2 annotations:
+```
+```
+annotations:
+  deployment.kubernetes.io/revision: "2"
+  image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"hello-world:latest","namespace":"ad204f-dev"},"fieldPath":"spec.template.spec.containers[?(@.name==\"hello-world\")].image"}]'
+```
+This annotation uses a JSON path expression to update the image reference inside the `Deployment`. 
+
+
+#### Application Status
+Wait for the application to be ready and running:
+```bash
+oc get pods
+
+NAME                          READY   STATUS      RESTARTS   AGE
+hello-world-1-build           0/1     Completed   0          10m
+hello-world-85c7dc4569-njqlb  1/1     Running     0          36s
+```
+
+Use the pod name shown above (the characters after `hello-world-` will be different for you) to display the output of the logs.
+```bash
+oc logs hello-world-85c7dc4569-njqlb
+
+Hello World!  Docker Build - v1.0
+```
+
+### Update the BuildConfig
+Let's now modify the `BuildConfig` to update our image and release a new version.
+```bash
+cat <<EOF | oc apply -f -
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: docker-build
+  labels:
+    name: docker-build
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'hello-world:latest'
+  strategy:
+    type: Docker
+  source:
+    type: Dockerfile
+    dockerfile: |-
+      FROM registry.access.redhat.com/ubi8 
+      CMD echo 'Hello World!  Docker Build - v1.1' && exec sleep infinity
+EOF
+```
+
+#### Start the build
+```bash
+oc start-build docker-build
+```
+
+#### Follow Build
+Use the `oc logs` command to check the build logs of the `docker-build`:
+```bash
+oc logs -f bc/docker-build
+```
+<pre>
+...<em>output omitted</em>...
+Writing manifest to image destination
+Storing signatures
+...<em>output omitted</em>...
+Push successful
+</pre>
+
+#### Application Status
+Notice our `hello-world` deployment is automatically deploying our new image.  This is because our `ImageStream` tag `latest` was updated with a new image from our `BuildConfig`
+
+```bash
+oc get pods
+
+NAME                          READY   STATUS              RESTARTS   AGE
+hello-world-1-build           0/1     Completed           0          10m
+hello-world-75c89d744f-nzxpk  0/1     ContainerCreating   0          9s
+hello-world-785c7dc456-njqlb  1/1     Running             0          36s
+```
+
+Use the new pod name shown above (the characters after `hello-world-` will be different for you) to display the output of the logs once the pod has the `Running` status.
+```bash
+oc logs hello-world-75c89d744f-nzxpk
+
+Hello World!  Docker Build - v1.1
+```
+
+### ImageStream Tags
+If we look at our `ImageStream` we should see 2 items for our `latest` image tag:
+```bash
+oc get is/hello-world -o yaml | grep -A10 tags
+```
+```yaml
+  tags:
+  - items:
+    - created: "2022-05-03T18:43:28Z"
+      dockerImageReference: image-registry.openshift-image-registry.svc:5000/ad204f-dev/hello-world@sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284
+      generation: 1
+      image: sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284
+    - created: "2022-05-03T18:10:14Z"
+      dockerImageReference: image-registry.openshift-image-registry.svc:5000/ad204f-dev/hello-world@sha256:9f388438ee6863477829e8d95cff895654030470aba5ca55a8f76a9f291c4ce2
+      generation: 1
+      image: sha256:9f388438ee6863477829e8d95cff895654030470aba5ca55a8f76a9f291c4ce2
+    tag: latest
+```
+
+Let's create a tag for both the `v1.0` and `v1.1` images.  The first image in the list is our latest build of the `hello-world` image which is `v1.1`.  The second item is the first build `v1.0`
+
+Perform the following commands (__NOTE:__ your numbers after the `sha256` will be different than above)
+
+<sub>Creates an ImageStreamTag for v1.0</sub>
+```bash
+oc tag image-registry.openshift-image-registry.svc:5000/ad204f-dev/hello-world@sha256:9f388438ee6863477829e8d95cff895654030470aba5ca55a8f76a9f291c4ce2 hello-world:v1.0
+```
+
+<sub>Creates an ImageStreamTag for v1.1</sub>
+```bash
+oc tag image-registry.openshift-image-registry.svc:5000/ad204f-dev/hello-world@sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284 hello-world:v1.1
+```
+
+__NOTE:__ We used the OpenShift internal registry as the source of the image.  This was just done as an example and shouldn't be something you do in regular development.  The first parameter to `oc tag` would be an external registry where the image is stored. 
+
+We should now see our new tags on our `ImageStream`.
+```bash
+oc get is/hello-world -o yaml | grep -A25 tags
+```
+```yaml
+  tags:
+  - items:
+    - created: "2022-05-04T14:15:10Z"
+      dockerImageReference: image-registry.openshift-image-registry.svc:5000/ad204f-dev/hello-world@sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284
+      generation: 1
+      image: sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284
+    - created: "2022-05-03T18:10:14Z"
+      dockerImageReference: image-registry.openshift-image-registry.svc:5000/ad204f-dev/hello-world@sha256:9f388438ee6863477829e8d95cff895654030470aba5ca55a8f76a9f291c4ce2
+      generation: 1
+      image: sha256:9f388438ee6863477829e8d95cff895654030470aba5ca55a8f76a9f291c4ce2
+    tag: latest
+  - items:
+    - created: "2022-05-04T14:34:43Z"
+      dockerImageReference: image-registry.openshift-image-registry.svc:5000/ad204f-dev/hello-world@sha256:9f388438ee6863477829e8d95cff895654030470aba5ca55a8f76a9f291c4ce2
+      generation: 6
+      image: sha256:9f388438ee6863477829e8d95cff895654030470aba5ca55a8f76a9f291c4ce2
+    tag: v1.0
+  - items:
+    - created: "2022-05-04T14:38:58Z"
+      dockerImageReference: image-registry.openshift-image-registry.svc:5000/ad204f-dev/hello-world@sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284
+      generation: 8
+      image: sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284
+    tag: v1.1
+```
