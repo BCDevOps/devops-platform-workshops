@@ -25,8 +25,8 @@ The following commands are used to create a new application.  The `myapp` applic
 ```bash
 oc new-app --name myapp \
 -i redhat-openjdk18-openshift:1.8 \
- https://github.com/BCDevOps/devops-platform-workshops \ 
- --context-dir=openshift-201/materials/image-management/sample-app
+ --context-dir=openshift-201/materials/image-management/sample-app \
+ https://github.com/BCDevOps/devops-platform-workshops
 ```
 
 You should see output similar to the follow:
