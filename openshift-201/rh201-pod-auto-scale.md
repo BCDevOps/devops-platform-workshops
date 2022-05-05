@@ -271,7 +271,7 @@ Scale the load-test deployment down to 0 once it's done.
 
 ### Summary 
 
-Have a think what would be good for app in a production environment. Maybe just getting recommendations to review might be good then you update manually. Having Auto mode on will terminate and restart pods and containers which is maybe something your application can't handle in a production environment.
+Have a think what would be good for app in a production environment. Maybe just getting recommendations to review might be good then you update manually. Having Auto mode on will terminate and restart pods and containers which maybe something your application can't handle in a production environment.
 
 VPAs are not aware of OpenShift cluster infrastructure variables such as node size in terms of memory and CPU. Therefore, it doesn't know whether a recommended pod size will fit your node. 
 
