@@ -40,7 +40,7 @@ imagestream.image.openshift.io "myapp" created
 ...<em>output omitted</em>...
 </pre>
 
-As you can see there are a few resources create with the `new-app` command.  One is the `BuildConfig`.  To see the `myapp` `BuildConfig` click on the `Builds -> BuildConfigs` item in the left menu then choose `myapp` and select `YAML` or run `oc get bc/myapp -o yaml`.  You should see something similiar to the following:
+As you can see there are a few resources create with the `new-app` command.  One is the `BuildConfig`.  To see the `myapp` `BuildConfig`, select Developer view in the console. Next, click on the `Builds -> BuildConfigs` item in the left menu then choose `myapp` and select `YAML` or run `oc get bc/myapp -o yaml`.  You should see something similiar to the following:
 
 ![buildconfig](images/image-management/buildconfig.png)
 
