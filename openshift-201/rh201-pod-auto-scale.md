@@ -160,7 +160,13 @@ There are a few more advanced options with the HPAs like scaleup and scaledown p
 VPA reduces resources for pods that are requesting more resources than they are using and increases resources for pods that are not requesting enough.
 
 The VPA reviews historic and current CPU and memory resources for containers in pods and can update the resource limits and requests based on the usage values it learns. The VPA will update all of the pods associated with a workload object, such as a Deployment, DeploymentConfig, StatefulSet, Job, DaemonSet, ReplicaSet, or ReplicationController, in a project.
+  
+The VPA will proportionally scale limits based on your default manifest, if you had the following requests to limits ratio:
+* CPU: 50m → 200m: 1:4 ratio
+* memory: 100Mi → 250Mi: 1:2.5 ratio
 
+You get a scaling recommendation that will respect and keep the same ratio you originally configured, and proportionally set the new values based on your original ratio.
+  
 VPA automatically deletes any pods that are out of alignment with its recommendations one at a time, so that your applications can continue to serve requests with no downtime. By default, workload objects must specify a minimum of two replicas in order for the VPA to automatically delete their pods. Workload objects that specify fewer replicas than this minimum are not deleted. If you manually delete these pods, when the workload object redeploys the pods, the VPA does update the new pods with its recommendations.
 
 For developers, you can use the VPA to help ensure your pods stay up during periods of high demand by scheduling pods onto nodes that have appropriate resources for each pod. Administrators use the VPA to better utilize cluster resources, such as preventing pods from reserving more CPU resources than needed. The VPA monitors the resources that workloads are actually using and adjusts the resource requirements so capacity is available to other workloads. 
@@ -232,7 +238,7 @@ oc get vpa vpa-recommender -o yaml
 - The output shows the recommended resources under target.
 - The minimum recommended resources under lowerBound. 
 - The highest recommended resources under upperBound.
-- The most recent resource recommendations under uncappedTarget.
+- The most recent resource recommendations under uncappedTarget. (A more advanced option in the VPA you can set spec.resourcePolicy.containerPolicies.minAllowed and maxAllowed if wanted. So uncappedTarget shoes estimation produced if there were no minAllowed and maxAllowed restrictions if you did have them set)
 
 With the recommendations, you can edit the workload object to add CPU and memory requests, then delete and redeploy the pods using the recommended resources.
 
@@ -271,9 +277,9 @@ Scale the load-test deployment down to 0 once it's done.
 
 ### Summary 
 
-Have a think what would be good for app in a production environment. Maybe just getting recommendations to review might be good then you update manually. Having Auto mode on will terminate and restart pods and containers which maybe something your application can't handle in a production environment.
+Have a think what would be good for an app in a production environment. Maybe just getting recommendations to review might be good then you update manually. Having Auto mode on will terminate and restart pods and containers which maybe something your application can't handle in a production environment.
 
-VPAs are not aware of OpenShift cluster infrastructure variables such as node size in terms of memory and CPU. Therefore, it doesn't know whether a recommended pod size will fit your node. 
+VPAs are not aware of OpenShift cluster infrastructure variables such as node size in terms of memory and CPU. Therefore, it doesn't know whether a recommended pod size will fit your node. Also VPAs are not aware of quoats so it may resize to something bigger than can fit in the current quota.
 
 Have a look at the online documentation if you are interested more in VPAs, there are some more advanced options like exempting containers in a pod by using resourcePolicy.
 
