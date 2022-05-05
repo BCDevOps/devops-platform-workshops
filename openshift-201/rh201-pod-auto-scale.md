@@ -99,7 +99,7 @@ You can also specify Utilization in the metrics section of the v2beta2 HPA.
 
 ```yaml
 metrics: 
-  - type: Deployment
+  - type: Resource
     resource:
       name: memory 
       target:
@@ -229,10 +229,10 @@ oc get vpa vpa-recommender -o yaml
 ```
 
 
-The output shows the recommended resources under target.
-The minimum recommended resources under lowerBound. 
-The highest recommended resources under upperBound.
-The most recent resource recommendations under uncappedTarget.
+- The output shows the recommended resources under target.
+- The minimum recommended resources under lowerBound. 
+- The highest recommended resources under upperBound.
+- The most recent resource recommendations under uncappedTarget.
 
 With the recommendations, you can edit the workload object to add CPU and memory requests, then delete and redeploy the pods using the recommended resources.
 
@@ -266,6 +266,8 @@ EOF
 Again update the load-test deployment environment variable REQUESTS to a different number to trigger a redeployment and the load-test pod to start sending traffic again.
 
 Give it a few minutes and observe the VPA and the hello-world-nginx pods. We should seem them re-deploy based on updated values from the VPA.
+
+Scale the load-test deployment down to 0 once it's done.
 
 ### Summary 
 
