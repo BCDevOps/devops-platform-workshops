@@ -20,18 +20,18 @@ A pod definition can include both resource requests and resource limits:
 
 Resource request and resource limits should be defined for each container in either a Deployment, DeploymentConfiguration, StatefulSets, BuildConfigs, and CronJob. If requests and limits have not been defined, then you will find a resources: {} line for each container.
 
-Let's create a deployment to test! Create this deployment in your project.
+Let's create a deployment to test! Replace [username] with your username to make your object unique. Create this deployment in your project.
 
 ```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-world-nginx
+  name: hello-world-nginx-[username]
 spec:
   replicas: 1
   selector:
     matchLabels:
-      deployment: hello-world-nginx
+      deployment: hello-world-nginx-[username]
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -41,11 +41,11 @@ spec:
     metadata:
       annotations:
       labels:
-        deployment: hello-world-nginx
+        deployment: hello-world-nginx-[username]
     spec:
       containers:
       - image: quay.io/redhattraining/hello-world-nginx:v1.0
-        name: hello-world-nginx
+        name: hello-world-nginx-[username]
         resources:
           requests:
             cpu: "10m"
@@ -63,7 +63,7 @@ You can use the oc edit command to modify a deployment or a deployment configura
 Lets modify our deployment using the following command:
 
 ```
-[user@host ~]$ oc set resources deployment hello-world-nginx --requests cpu=15m,memory=25Mi --limits cpu=100m,memory=150Mi
+[user@host ~]$ oc set resources deployment hello-world-nginx-[username] --requests cpu=15m,memory=25Mi --limits cpu=100m,memory=150Mi
 ```
 
 This will cause the pod to re-deploy with updated resources.
@@ -75,7 +75,7 @@ should also define a resource limit. We recommend defining resource requests and
 
 Let's expose our deployment from above with a service and a route.
 
-* Expose the deployment with a service, the easiest way would be: `oc expose deployment/hello-world-nginx`
+* Expose the deployment with a service, the easiest way would be: `oc expose deployment/hello-world-nginx-[username]`
 * Create an secure route with edge TLS termination from this service. This can be done from the web console or CLI.
 
 Now that our Nginx web server has a route we can access, we can generate some traffic to it and see how our requests and limits settings work.
@@ -86,22 +86,22 @@ Create a new deployment. This will deploy an httpd container and use the ab (apa
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: load-test
+  name: load-test-[username]
   labels:
-    app: load-test
+    app: load-test-[username]
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: load-test
+      app: load-test-[username]
   template:
     metadata:
       annotations:
       labels:
-        app: load-test
+        app: load-test-[username]
     spec:
       containers:
-        - name: load-test
+        - name: load-test-[username]
           image: registry.access.redhat.com/rhscl/httpd-24-rhel7
           env:
           - name: SERVICE_HOST
@@ -121,7 +121,7 @@ From the web console if you change to developer view and navigate to the Monitor
 
 ![cpu load](images/resource-mgmt/pod-load-cpu.png) 
 
-From the web console select your hello-world-nginx pod and navigate to the Metrics tab. We can see the traffic we are sending our pod is affecting the cpu quite a bit. In this example we can see the actual cpu usage is well over the request we set and over 100% of the limit we set.
+From the web console select your hello-world-nginx-[username] pod and navigate to the Metrics tab. We can see the traffic we are sending our pod is affecting the cpu quite a bit. In this example we can see the actual cpu usage is well over the request we set and over 100% of the limit we set.
 
 ![cpu quota](images/resource-mgmt/pod-load-cpu-quota.png)
 
