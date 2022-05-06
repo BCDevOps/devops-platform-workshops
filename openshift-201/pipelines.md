@@ -70,7 +70,7 @@ cat <<EOF | kubectl create -f -
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: mvn-build-run-
+  generateName: mvn-build-run-[username]
 spec:
   pipelineRef:
     name: p-mvn-build

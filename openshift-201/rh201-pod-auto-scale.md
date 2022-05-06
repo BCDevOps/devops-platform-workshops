@@ -11,10 +11,10 @@ A horizontal pod autoscaler (HPA) resource uses performance metrics collected by
 
 You can also create an HPA for DeploymentConfig, ReplicaSet, ReplicationController, or StatefulSet objects.
 
-This command will create a horizontal pod autoscaler resource that changes the number of replicas on the hello-world-nginx deployment to keep its pods under 80% of their total requested CPU usage.
+This command will create a horizontal pod autoscaler resource that changes the number of replicas on the hello-world-nginx-[username] deployment to keep its pods under 80% of their total requested CPU usage. Remember to update the command to replace [username] with your username.
 
 ```
-oc autoscale deployment/hello-world-nginx --min 1 --max 5 --cpu-percent 80
+oc autoscale deployment/hello-world-nginx-[username] --min 1 --max 5 --cpu-percent 80
 ```
 
 The maximum and minimum values for the horizontal pod autoscaler resource serve to accommodate bursts of load and avoid overloading the OpenShift cluster. If the load on the application changes too quickly, then it might be advisable to keep a number of spare pods to cope with sudden bursts of user requests. Conversely, too many pods can use up all cluster capacity and impact other applications sharing the same OpenShift cluster.
@@ -28,7 +28,7 @@ To get information about horizontal pod autoscaler resources in the current proj
 ```yaml
 oc get hpa 
 NAME                REFERENCE                      TARGETS    MINPODS   MAXPODS   REPLICAS
-hello-world-nginx   Deployment/hello-world-nginx   600%/80%   1         5          4        
+hello-world-nginx-[username]   Deployment/hello-world-nginx-[username]   600%/80%   1         5          4        
 ```
 
 The TARGETS column is the metrics on pods as a percentage of cpu request at current/target.
@@ -52,21 +52,21 @@ You can check the autoscaling API versions available in the cluster.
 oc api-versions | grep autoscaling
 ```
 
-The `oc autoscale` command will create a v1 type autoscaler. You can view with the hpa details with an `oc get hpa` command.
+The `oc autoscale` command will create a v1 type autoscaler. You can view with the hpa details with an `oc get hpa` command. Remember to edit the YAML to replace [username] with your username.
 
 ```yaml
 oc get hpa -o yaml
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: hello-world-nginx
+  name: hello-world-nginx-[username]
 spec:
   maxReplicas: 5
   minReplicas: 1
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: hello-world-nginx
+    name: hello-world-nginx-[username]
   targetCPUUtilizationPercentage: 80
 ```
 
@@ -76,12 +76,12 @@ To create a v2beta2 autoscaler you need to define in a yaml.
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: hello-world-nginx-mem-hpa
+  name: hello-world-nginx-[username]-mem-hpa
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: hello-world-nginx
+    name: hello-world-nginx-[username]
   minReplicas: 1
   maxReplicas: 5
   metrics:
@@ -118,10 +118,10 @@ Apply the `hello-world-nginx-mem-hpa` from above to your project. Trigger a re-d
 Describe the HPA.
 
 ```yaml
-oc describe hpa hello-world-nginx-mem-hpa
-Name:                       hello-world-nginx-mem-hpa
+oc describe hpa hello-world-nginx-[username]-mem-hpa
+Name:                       hello-world-nginx-[username]-mem-hpa
 Namespace:                  ad204f-dev
-Reference:                  Deployment/hello-world-nginx
+Reference:                  Deployment/hello-world-nginx-[username]
 Metrics:                    ( current / target )
   resource memory on pods:  44965888 / 30Mi
 Min replicas:               1
@@ -188,29 +188,29 @@ oc api-resources | grep vpa
 
 Lets now create a VPA with update mode turned to "Off" so we just get resource recommendations.
 
-Create a VPA using the below yaml:
+Create a VPA using the below yaml, remember to replace [username] with your username:
 
 ```yaml
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
-  name: vpa-recommender
+  name: vpa-recommender-[username]
 spec:
   targetRef:
     apiVersion: "apps/v1"
     kind:       Deployment 
-    name:       hello-world-nginx
+    name:       hello-world-nginx-[username]
   updatePolicy:
     updateMode: "Off"
 ```
 
-Re-trigger load-test deployment by updating the environment variable REQUESTS to a different number. Let the deployment fire up a new pod and send load to our hello-world-nginx pod.
+Re-trigger load-test deployment by updating the environment variable REQUESTS to a different number. Let the deployment fire up a new pod and send load to our hello-world-nginx-[username] pod.
 
 Give it a few minutes and check the vpa status sections for recommendations.
 
 
 ```yaml
-oc get vpa vpa-recommender -o yaml
+oc get vpa vpa-recommender-[username] -o yaml
 
  status:
     conditions:
@@ -219,7 +219,7 @@ oc get vpa vpa-recommender -o yaml
       type: RecommendationProvided
     recommendation:
       containerRecommendations:
-      - containerName: hello-world-nginx
+      - containerName: hello-world-nginx-[username]
         lowerBound:
           cpu: 25m
           memory: 262144k
@@ -246,11 +246,11 @@ If the VPA updateMode uses something other than `off` then the lowerBound and up
 
 ### Update Mode Auto
 
-Lets create an VPA in auto mode and send traffic to the hello-world-nginx pods and observe what happens.
+Lets create an VPA in auto mode and send traffic to the hello-world-nginx-[username] pods and observe what happens.
 
 VPAs in Auto updateMode won't work with HPA using the same CPU and memory metrics because it would cause a race condition. If HPA objects still exists from previous labs lets delete them to focus on VPAs.
 
-Then lets scale our hello-world-nginx deployment replicas up to three so the VPA can re-deploy our pods if needed.
+Then lets scale our hello-world-nginx-[username] deployment replicas up to three so the VPA can re-deploy our pods if needed.
 
 Then lets create another VPA in Auto updateMode:
 
@@ -259,19 +259,19 @@ cat <<EOF | oc apply -f -
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
-  name: vpa-auto
+  name: vpa-auto-[username]
 spec:
   targetRef:
     apiVersion: "apps/v1"
     kind:       Deployment 
-    name:       hello-world-nginx
+    name:       hello-world-nginx-[username]
   updatePolicy:
     updateMode: "Auto"
 EOF
 ```
 Again update the load-test deployment environment variable REQUESTS to a different number to trigger a redeployment and the load-test pod to start sending traffic again.
 
-Give it a few minutes and observe the VPA and the hello-world-nginx pods. We should seem them re-deploy based on updated values from the VPA.
+Give it a few minutes and observe the VPA and the hello-world-nginx-[username] pods. We should seem them re-deploy based on updated values from the VPA.
 
 Scale the load-test deployment down to 0 once it's done.
 
