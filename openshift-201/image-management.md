@@ -391,16 +391,17 @@ oc get is/hello-world -o yaml | grep -A10 tags
 
 Let's create a tag for both the `v1.0` and `v1.1` images.  The first image in the list is our latest build of the `hello-world` image which is `v1.1`.  The second item is the first build `v1.0`
 
-Perform the following commands (__NOTE:__ your numbers after the `sha256` will be different than above)
+Perform the following commands (__NOTE:__ your numbers after the `sha256` will be different than above).
+You will need to replace `{NAMESPACE}` with the current namespace in which you created the `ImageStream`
 
 <sub>Creates an ImageStreamTag for v1.0</sub>
 ```bash
-oc tag image-registry.openshift-image-registry.svc:5000/ad204f-dev/hello-world@sha256:9f388438ee6863477829e8d95cff895654030470aba5ca55a8f76a9f291c4ce2 hello-world:v1.0
+oc tag image-registry.openshift-image-registry.svc:5000/{NAMESPACE}/hello-world@sha256:9f388438ee6863477829e8d95cff895654030470aba5ca55a8f76a9f291c4ce2 hello-world:v1.0
 ```
 
 <sub>Creates an ImageStreamTag for v1.1</sub>
 ```bash
-oc tag image-registry.openshift-image-registry.svc:5000/ad204f-dev/hello-world@sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284 hello-world:v1.1
+oc tag image-registry.openshift-image-registry.svc:5000/{NAMESPACE}/hello-world@sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284 hello-world:v1.1
 ```
 
 We should now see our new tags on our `ImageStream`.
