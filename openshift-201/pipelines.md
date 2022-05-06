@@ -189,7 +189,7 @@ When the `EventListener` is created OpenShift will automatically create a `Servi
 
 For the purposes of this lab we will edit the `EventListener` named `maven-build-event-listener` to remove the GitHub `secretRef`.  This is **NOT** something you would do in production but to reduce the complexity of the lab we will remove it.
 
-To remove the `secretRef` perform the following:
+ To remove the `secretRef` perform the following:
 ```bash
 oc patch el maven-build-event-listener --type json -p '[{"op": "remove", "path":  "/spec/triggers/0/interceptors/0/params/0"}]'
 ```
