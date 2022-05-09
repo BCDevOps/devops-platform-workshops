@@ -21,9 +21,11 @@ In the following exercise, you will manage application builds with OpenShift, us
 
 The following commands are used to create a new application.  The `myapp` application created is a simple Java Sprint Boot app that will display a message based on environment variables.
 
+__NOTE:__ All resources created in this lab should include your username so you do not clash with other lab participants.  If you set the `$USERNAME` environment variable to your username then you can easily copy/paste the commands below.  Just ensure your username contains only '-', '.' or lowercase alphanumberic characters.
+
 ### Create a new application 
 ```bash
-oc new-app --name myapp \
+oc new-app --name myapp-$USERNAME \
 -i redhat-openjdk18-openshift:1.8 \
  --context-dir=openshift-201/materials/image-management/sample-app \
  https://github.com/BCDevOps/devops-platform-workshops
@@ -54,7 +56,7 @@ As you can see there are a few resources create with the `new-app` command.  One
 ### Follow Build
 Use the `oc logs` command to check the build logs from the `myapp` build:
 ```bash
-oc logs -f bc/myapp
+oc logs -f bc/myapp-$USERNAME
 ```
 <pre>
 ...<em>output omitted</em>...
@@ -64,7 +66,7 @@ Storing signatures
 Push successful
 </pre>
 
-Once the build is complete let's inspect the `ImageStream`.  To do so click on the `Builds -> ImageStreams` item in the left menu then choose `myapp` and select `YAML` or run `oc get is/myapp -o yaml`.  You should see something similiar to the following:
+Once the build is complete let's inspect the `ImageStream`.  To do so click on the `Builds -> ImageStreams` item in the left menu then choose `myapp` and select `YAML` or run `oc get is/myapp-$USERNAME -o yaml`.  You should see something similiar to the following:
 
 ![imagestream](images/image-management/imagestream.png)
 
@@ -86,16 +88,16 @@ myapp-85c7dc4569-njqlb  1/1     Running     0          36s
 ### Expose Application
 Expose the application to external access:
 ```bash
-oc expose svc/myapp
+oc expose svc/myapp-$USERNAME
 ```
 
 ### Test Application
 Perform the following command to get the host of the route we just exposed:
 ```bash
-export MY_HOST=`oc get routes myapp --no-headers | awk '{print $2}'`
+export MY_HOST=`oc get routes myapp-$USERNAME --no-headers | awk '{print $2}'`
 ```
 
-or run `oc get routes myapp` and copy the host name.
+or run `oc get routes myapp-$USERNAME` and copy the host name.
 
 Then run the following:
 ```bash
@@ -118,7 +120,7 @@ Environment variables can be set directly on your `Deployement` or `DeploymentCo
 #### Setting Environment Variable
 We can set the `NAME` environment variable on our `myapp` deployment by performtion the following:
 ```bash
-oc set env deployment/myapp NAME='YOUR_NAME_HERE'
+oc set env deployment/myapp-$USERNAME NAME='YOUR_NAME_HERE'
 ```
 
 This should automatically redeploy the app.
@@ -147,15 +149,15 @@ A `ConfigMap` is another way to inject configuration data into containers. Given
 #### Create the ConfigMap
 To create the `ConfigMap` perform the following:
 ```bash
-oc create configmap myapp-config \
+oc create configmap myapp-$USERNAME-config \
 --from-literal APP_MSG='Containers are fun'
 ```
 
 #### Update Deployment
 To update our deployment to use the `ConfigMap` perform the following:
 ```bash
-oc set env deployment/myapp \
---from configmap/myapp-config
+oc set env deployment/myapp-$USERNAME \
+--from configmap/myapp-$USERNAME-config
 ```
 
 This should automatically redeploy the app.
@@ -182,15 +184,15 @@ A `Secret` is a way to inject sensitive data into containers. Given our example 
 
 #### Create the Secret
 ```bash
-oc create secret generic myapp-secret \
+oc create secret generic myapp-$USERNAME-secret \
 --from-literal SECRET_APP_MSG='Shh... It is a secret'
 ```
 
 #### Update Deployment
 To update our deployment to use the `Secret` perform the following:
 ```bash
-oc set env deployment/myapp \
---from secret/myapp-secret
+oc set env deployment/myapp-$USERNAME \
+--from secret/myapp-$USERNAME-secret
 ```
 
 This should automatically redeploy the app.
@@ -219,7 +221,7 @@ An Image Stream doesn't contain the Docker image itself but is a pointer to imag
 The following command will create an "empty" `ImageStream`.  We will add a pointer when we build our image.
 
 ```bash
-oc create is hello-world
+oc create is hello-world-$USERNAME
 ```
 __NOTE:__ *`is`* is short for `imagestream`
 
@@ -229,14 +231,14 @@ cat <<EOF | oc apply -f -
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
-  name: docker-build
+  name: docker-build-$USERNAME
   labels:
     name: docker-build
 spec:
   output:
     to:
       kind: ImageStreamTag
-      name: 'hello-world:latest'
+      name: 'hello-world-$USERNAME:latest'
   strategy:
     type: Docker
   source:
@@ -249,13 +251,13 @@ EOF
 
 #### Start the build
 ```bash
-oc start-build docker-build
+oc start-build docker-build-$USERNAME
 ```
 
 #### Follow Build
 Use the `oc logs` command to check the build logs of the `docker-build`:
 ```bash
-oc logs -f bc/docker-build
+oc logs -f bc/docker-build-$USERNAME
 ```
 <pre>
 ...<em>output omitted</em>...
@@ -268,7 +270,7 @@ Push successful
 ### Create Deployment
 Run the following to create and start the `hello-world` application
 ```bash
-oc new-app hello-world
+oc new-app hello-world-$USERNAME
 ```
 You should see output similar to the follow:
 <pre>
@@ -281,7 +283,7 @@ You should see output similar to the follow:
 
 Notice in the `Deployment` created the annotation for the `image.openshift.io/triggers`
 ```bash
-oc get deployment hello-world -o yaml | grep -A2 annotations:
+oc get deployment hello-world-$USERNAME -o yaml | grep -A2 annotations:
 ```
 ```
 annotations:
@@ -315,14 +317,14 @@ cat <<EOF | oc apply -f -
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
-  name: docker-build
+  name: docker-build-$USERNAME
   labels:
     name: docker-build
 spec:
   output:
     to:
       kind: ImageStreamTag
-      name: 'hello-world:latest'
+      name: 'hello-world-$USERNAME:latest'
   strategy:
     type: Docker
   source:
@@ -335,13 +337,13 @@ EOF
 
 #### Start the build
 ```bash
-oc start-build docker-build
+oc start-build docker-build-$USERNAME
 ```
 
 #### Follow Build
 Use the `oc logs` command to check the build logs of the `docker-build`:
 ```bash
-oc logs -f bc/docker-build
+oc logs -f bc/docker-build-$USERNAME
 ```
 <pre>
 ...<em>output omitted</em>...
@@ -373,7 +375,7 @@ Hello World!  Docker Build - v1.1
 ### ImageStream Tags
 If we look at our `ImageStream` we should see 2 items for our `latest` image tag:
 ```bash
-oc get is/hello-world -o yaml | grep -A10 tags
+oc get is/hello-world-$USERNAME -o yaml | grep -A10 tags
 ```
 ```yaml
   tags:
@@ -396,17 +398,17 @@ You will need to replace `{NAMESPACE}` with the current namespace in which you c
 
 <sub>Creates an ImageStreamTag for v1.0</sub>
 ```bash
-oc tag image-registry.openshift-image-registry.svc:5000/{NAMESPACE}/hello-world@sha256:9f388438ee6863477829e8d95cff895654030470aba5ca55a8f76a9f291c4ce2 hello-world:v1.0
+oc tag image-registry.openshift-image-registry.svc:5000/{NAMESPACE}/hello-world-$USERNAME@sha256:9f388438ee6863477829e8d95cff895654030470aba5ca55a8f76a9f291c4ce2 hello-world-$USERNAME:v1.0
 ```
 
 <sub>Creates an ImageStreamTag for v1.1</sub>
 ```bash
-oc tag image-registry.openshift-image-registry.svc:5000/{NAMESPACE}/hello-world@sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284 hello-world:v1.1
+oc tag image-registry.openshift-image-registry.svc:5000/{NAMESPACE}/hello-world-$USERNAME@sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284 hello-world-$USERNAME:v1.1
 ```
 
 We should now see our new tags on our `ImageStream`.
 ```bash
-oc get is/hello-world -o yaml | grep -A25 tags
+oc get is/hello-world-$USERNAME -o yaml | grep -A25 tags
 ```
 ```yaml
   tags:
