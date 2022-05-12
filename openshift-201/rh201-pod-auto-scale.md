@@ -288,4 +288,44 @@ Have a look at the online documentation if you are interested more in VPAs, ther
 
 ## Pod Disruption Budgets
 
-**Work in Progess**
+A PodDisruptionBudget is an object that specifies the minimum number or percentage of replicas that must be up at a time. Setting these in projects can be helpful during node maintenance (such as scaling a cluster down or a cluster upgrade) and is only honored on voluntary evictions (not on node failures).
+
+This means that the drain event could be temporarily halted while it waits for more pods to become available on other nodes so that the budget isn’t crossed by evicting the pods.
+
+You can set an availability level, which specifies the minimum number of pods that must be available simultaneously, either:
+
+* minAvailable is the number of pods must always be available, even during a disruption.
+* maxUnavailable is the number of pods can be unavailable during a disruption.
+
+Values for minAvailable or maxUnavailable can be expressed as integers or as a percentage.
+
+* When you specify an integer, it represents a number of Pods. If you set minAvailable to 10, then 10 Pods must always be available, even during a disruption.
+  
+* When you specify a percentage it represents a percentage of total Pods. If you set maxUnavailable to "50%", then only 50% of the Pods can be unavailable during a disruption.
+
+When you specify the value as a percentage it may not map to an exact number of Pods. If you have 7 Pods and you set minAvailable to "50%", it's not immediately obvious whether that means 3 Pods or 4 Pods must be available. OpenShift will round up to the nearest integer, so in this case, 4 Pods must be available.
+
+A maxUnavailable of 0% or 0 or a minAvailable of 100% or equal to the number of replicas is permitted but can block nodes from being drained. It will also generate alerts for the Operations team who will contact you asking for it to be adjusted. **THIS IS IMPORTANT**, your configuration of a pdb in your project could effect a cluster wide upgrade process. If your using pdb's then be a good neighbor and ensure that it's configured correctly and that you are keeping an eye on it or configured monitoring to ensure the pdb is still valid for the deployment or object it's pointing to.
+
+
+Lets create a pod disruption budget where we always want at least 1 Nginx pod to be available for our deployment. Apply the following config to your project.
+
+```yaml
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: hello-world-nginx-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      deployment: hello-world-nginx
+```
+
+This indicates to OpenShift that we want at least 1 pod that matches the label Deployment: hello-world-nginx to be available at any given time. This means OpenShift will wait for the pod in one node drain request to be replaced before evicting the pods in a second node drain request.
+
+We can view the pdb with: `oc get pdb`.
+
+That's about all we can do for pdb's. They can only really be tested during a node drain event.
+  
+Please delete the pdb object when you are done with it.
