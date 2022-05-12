@@ -326,5 +326,6 @@ This indicates to OpenShift that we want at least 1 pod that matches the label D
 
 We can view the pdb with: `oc get pdb`.
 
-
 That's about all we can do for pdb's. They can only really be tested during a node drain event.
+  
+  Please delete the pdb object when you are done with it.
