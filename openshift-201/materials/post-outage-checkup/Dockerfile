@@ -1,4 +1,4 @@
 FROM registry.access.redhat.com/ubi8 
 
-COPY startup.sh startup.sh
-ENTRYPOINT [ "startup.sh" ]
+COPY startup.sh /tmp/startup.sh
+ENTRYPOINT [ "/tmp/startup.sh" ]
