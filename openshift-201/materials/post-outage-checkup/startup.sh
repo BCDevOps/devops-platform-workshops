@@ -9,5 +9,5 @@ if [[ -z "${DEPLOY_ENV}" ]]; then
   echo 'ERROR: Missing DEPLOY_ENV variable'
   exit 1
 else 
- sleep infinite 
+ sleep infinity 
 fi
