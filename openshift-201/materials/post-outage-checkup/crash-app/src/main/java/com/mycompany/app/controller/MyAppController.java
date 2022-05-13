@@ -8,7 +8,7 @@ public class MyAppController {
 
     @GetMapping("/hello")
     public ResponseEntity<String> hello() {
-        String name = System.getenv().getOrDefault("NAME", "unknown");
+        String name = System.getenv().getOrDefault("NAME", "Crash App");
         String message = System.getenv().getOrDefault("APP_MSG", null);
         String secret = System.getenv().getOrDefault("SECRET_APP_MSG", null);
         StringBuilder response = new StringBuilder();
