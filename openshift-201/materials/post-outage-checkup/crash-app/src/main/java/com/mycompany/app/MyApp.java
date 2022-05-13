@@ -9,7 +9,7 @@ public class MyApp {
 		System.out.println("Starting Crash App");
 		if (null == System.getenv().get("DEPLOY_ENV")) {
 			System.err.println("Missing DEPLOY_ENV variable");
-			System.exit(1);
+			throw new IllegalStateException("Missing DEPLOY_ENV variable");
 		}
 		SpringApplication.run(MyApp.class, args);
 	}
