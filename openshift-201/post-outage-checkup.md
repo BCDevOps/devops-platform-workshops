@@ -179,4 +179,4 @@ It is a good idea to create a checklist that has specifics for your application.
 Some other things to verify could include:
 * __Database__ - validate the database is running and communication is working to the database.  It is also a good idea to check the database replication
 * __CI/CD__ - Run a test pipleine to ensure everything is working as expected
-* __Backups__ - Manually run the recovery test script to make surethat the most recent backup is working.
+* __Backups__ - Manually run the recovery test script to make sure that the most recent backup is working.
