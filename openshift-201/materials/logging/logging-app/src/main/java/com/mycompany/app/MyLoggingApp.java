@@ -7,6 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MyLoggingApp {
     public static void main(String[] args) {
 
-		SpringApplication.run(MyApp.class, args);
+		SpringApplication.run(MyLoggingApp.class, args);
 	}
 }
