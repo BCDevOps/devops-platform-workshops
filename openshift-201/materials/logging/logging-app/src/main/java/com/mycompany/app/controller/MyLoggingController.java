@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-public class MyAppController {
-    private static final java.util.logging.Logger LOGGER = LoggerFactory.getLogger(MyAppController.class);
+public class MyLoggingController {
+    private static final java.util.logging.Logger LOGGER = LoggerFactory.getLogger(MyLoggingController.class);
 
     private static final String template = "[%d]: Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
