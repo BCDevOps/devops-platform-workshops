@@ -16,7 +16,7 @@ public class MyLoggingController {
     private final AtomicLong counter = new AtomicLong();
 
     @GetMapping("/hello/{user}")
-    public ResponseEntity<String> hello(@RequestParam String user) {
+    public ResponseEntity<String> hello(@PathParam String user) {
         long lc = counter.incrementAndGet();
         LOGGER.info("hello called {} times.", lc);
 
