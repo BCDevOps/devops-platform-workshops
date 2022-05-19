@@ -77,13 +77,13 @@ By default you will see something like this:
 1. Is your Index Pattern you created above.
 2. Are the fields selected to show (`_source` is selected by default)
 3. Are the Available Fields to choose
-4. Is the results shown or the log entries that match the filter, search, ect.
+4. Is the results shown or the log entries that match the filter, search, etc.
 5. Is the time frame shown
 6. Is the search bar used to search for specific entries
 7. Is the time frame chosen for the logs shown (default is last 15 minutes)
 
 ### Fields
-Let's select 2 fields for viewing from the `Avaialbe feilds` panel on the left.
+Let's select 2 fields for viewing from the `Availalbe feilds` panel on the left.
 
 1. `kubernetes.container_name` - this is the name of the container running in kubernetes.  This should be `logging-app-$USERNAME`
 2. `message` - is the message from our application
