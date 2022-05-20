@@ -2,7 +2,7 @@
 
 ## Objectives:
 
-After completing this section, you should know how to view application logs in Kibana, navigate the list of fields, and develop log queries.
+After completing this section, you should know how to view application logs in Kibana, navigate the list of fields, and create/save queries.
 
 ## Prerequisites
 All resources created in this lab should include your username so you do not clash with other lab participants.  If you set the `$USERNAME` environment variable to your username then you can easily copy/paste the commands below.  Just ensure your username contains only '-', '.' or lowercase alphanumberic characters.
@@ -74,13 +74,13 @@ By default you will see something like this:
 
 ![kibana-main](images/logging/kibana-main.png)
 
-1. Is your Index Pattern you created above.
-2. Are the fields selected to show (`_source` is selected by default)
-3. Are the Available Fields to choose
-4. Is the results shown or the log entries that match the filter, search, etc.
-5. Is the time frame shown
-6. Is the search bar used to search for specific entries
-7. Is the time frame chosen for the logs shown (default is last 15 minutes)
+1. Index Pattern you created above.
+2. Fields selected to show (`_source` is selected by default)
+3. Available Fields to add to your display
+4. Log entries that match the filter, search, etc.
+5. Current activity given the time frame chosen
+6. Search bar used to search for specific entries
+7. Time frame chosen for the logs shown (default is last 15 minutes)
 
 ### Fields
 Let's select 2 fields for viewing from the `Availalbe feilds` panel on the left.
@@ -127,12 +127,12 @@ Choose the `kubernetes.container_name` for the field, `is` as the operator and `
 
 ![kibana-filter](images/logging/kibana-filter.png)
 
-You should now only see your entries in the list similar to the query we performed above.  You can also save this filter by clicking the save button at the top just like we did with the query
+You should now only see your entries in the list similar to the query we performed above.  You can also save this filter by clicking the save button at the top just like we did with the query.
 
 ## Conclusion
 There are many fields available to choose from.  Feel free to experiment with adding other fields to your results.  For example you could add the `kubernetes.container_image` to your list if you are interested in looking at which version of the app the logs are from.
 
-The queries we did in this lab are pretty simple.  Take a looka the [Kibana Query Language](https://www.elastic.co/guide/en/kibana/current/kuery-query.html) for more information on how to write complex queries.
+The queries we did in this lab are pretty simple.  Take a look at the [Kibana Query Language](https://www.elastic.co/guide/en/kibana/current/kuery-query.html) for more information on how to write complex queries.
 
 ### Clean up
 To clean up the lab environment run the following command to delete all of the resources we created:
