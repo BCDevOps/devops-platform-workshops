@@ -83,7 +83,7 @@ By default you will see something like this:
 7. Time frame chosen for the logs shown (default is last 15 minutes)
 
 ### Fields
-Let's select 2 fields for viewing from the `Availalbe feilds` panel on the left.
+Let's select 2 fields for viewing from the `Availalbe fields` panel on the left.
 
 1. `kubernetes.container_name` - this is the name of the container running in kubernetes.  This should be `logging-app-$USERNAME`
 2. `message` - is the message from our application
