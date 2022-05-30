@@ -327,5 +327,66 @@ This indicates to OpenShift that we want at least 1 pod that matches the label D
 We can view the pdb with: `oc get pdb`.
 
 That's about all we can do for pdb's. They can only really be tested during a node drain event.
+<<<<<<< HEAD
   
 Please delete the pdb object when you are done with it.
+
+
+## Pod Anti-Affinity 
+
+Pod anti-affinity can prevent the scheduler from locating a new pod on the same node as pods with the same labels if the label selector on the new pod matches the label on the current pod.
+
+There are two types of pod anti-affinity rules: required and preferred.
+
+Required rules must be met before a pod can be scheduled on a node. Preferred rules specify that, if the rule is met, the scheduler tries to enforce the rules, but does not guarantee enforcement.
+
+You configure pod anti-affinity through the Pod spec files. You can specify a required rule, a preferred rule, or both. If you specify both, the node must first meet the required rule, then attempts to meet the preferred rule.
+
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: hello-world-nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+      labels:
+        deployment: hello-world-nginx
+    spec:
+      affinity:
+        podAntiAffinity: 
+          preferredDuringSchedulingIgnoredDuringExecution: 
+          - weight: 100  
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: deployment 
+                  operator: In 
+                  values:
+                  - hello-world-nginx
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - image: quay.io/redhattraining/hello-world-nginx:v1.0
+        name: hello-world-nginx
+        resources:
+          requests:
+            cpu: "10m"
+            memory: 20Mi
+          limits:
+            cpu: "80m"
+            memory: 100Mi
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+```
