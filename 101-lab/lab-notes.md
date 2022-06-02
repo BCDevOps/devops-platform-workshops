@@ -85,6 +85,8 @@ The day after the training, the lab has a kick-off meeting, during which we set 
         - monitoring app so you can track your resource usage
         - monitor app status via service golden signals
         - notifies you of problems, like if your pod goes down or if your PVC is getting full
+    - AppAssessment
+    - ACS
     - Vault
         - encrypted secret storage!
     - Network Policies
@@ -127,6 +129,8 @@ The day after the training, the lab has a kick-off meeting, during which we set 
 **Network Policies**
    - docs: https://github.com/bcgov/how-to-workshops/tree/master/labs/netpol-quickstart
 **Monitoring and Security scans**
+- AppAssessment - selfserve job to run an assessment on your project set for common configuration issues
+  - documentations here: <https://github.com/bcgov/AppAssessment>
 - ACS - RedHat's Image and container scanning,monitoring & enforcement tool
    - it's enabled for cluster security scanning, application team access coming soon!
 - Sysdig - monitoring solution to provide notifications about the status of your app,
