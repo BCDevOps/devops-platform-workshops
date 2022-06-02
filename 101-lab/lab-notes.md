@@ -127,7 +127,7 @@ The day after the training, the lab has a kick-off meeting, during which we set 
    - docs and templates: <https://github.com/BCDevOps/openshift-wiki/tree/master/docs/Vault>
    - rocketchat channel: #devops-vault 
 **Network Policies**
-   - docs: https://github.com/bcgov/how-to-workshops/tree/master/labs/netpol-quickstart
+- docs: https://github.com/bcgov/how-to-workshops/tree/master/labs/netpol-quickstart
 **Monitoring and Security scans**
 - AppAssessment - selfserve job to run an assessment on your project set for common configuration issues
   - documentations here: <https://github.com/bcgov/AppAssessment>
