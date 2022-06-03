@@ -116,6 +116,7 @@ spec:
           args: ["-dSrk", "-c $(CONCURRENCY)", "-n $(REQUESTS)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
   
 ```
+**Note:** As we don't set limits and request specifically in the deployment the default LimitRange will apply.
 
 From the web console if you change to developer view and navigate to the Monitoring tab select your nginx deployment. You should see the load-test pod traffic increasing metrics for our pod.
 
