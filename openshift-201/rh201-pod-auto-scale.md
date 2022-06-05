@@ -338,55 +338,44 @@ Pod anti-affinity can prevent the scheduler from locating a new pod on the same 
 
 There are two types of pod anti-affinity rules: required and preferred.
 
-Required rules must be met before a pod can be scheduled on a node. Preferred rules specify that, if the rule is met, the scheduler tries to enforce the rules, but does not guarantee enforcement.
+* `requiredDuringSchedulingIgnoredDuringExecution`: The scheduler can't schedule the Pod unless the rule is met. This functions like nodeSelector, but with a more expressive syntax.
+
+* `preferredDuringSchedulingIgnoredDuringExecution`: The scheduler tries to find a node that meets the rule. If a matching node is not available, the scheduler still schedules the Pod.
 
 You configure pod anti-affinity through the Pod spec files. You can specify a required rule, a preferred rule, or both. If you specify both, the node must first meet the required rule, then attempts to meet the preferred rule.
 
+Lets update our deployment to add an anti-affinity rule. If there are still HPAs or VPAs in place in your project you should clean them out.
 
 ```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: hello-world-nginx
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      deployment: hello-world-nginx
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      annotations:
-      labels:
-        deployment: hello-world-nginx
+.
+.
+.
     spec:
       affinity:
         podAntiAffinity: 
-          preferredDuringSchedulingIgnoredDuringExecution: 
-          - weight: 100  
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
+          requiredDuringSchedulingIgnoredDuringExecution: 
+          - labelSelector:
+              matchExpressions:
                 - key: deployment 
                   operator: In 
                   values:
                   - hello-world-nginx
-              topologyKey: kubernetes.io/hostname
+            topologyKey: kubernetes.io/hostname
       containers:
-      - image: quay.io/redhattraining/hello-world-nginx:v1.0
-        name: hello-world-nginx
-        resources:
-          requests:
-            cpu: "10m"
-            memory: 20Mi
-          limits:
-            cpu: "80m"
-            memory: 100Mi
-        ports:
-        - containerPort: 8080
-          protocol: TCP
+.
+.
+.
 ```
+Scale the deployment up to say 3 replicas. Once the pods are all running check to make sure they are on different nodes.
+
+```
+oc get pods -o wide
+NAME                                 READY   STATUS     IP              NODE                   
+hello-world-nginx-599d5d8898-58mxv   1/1     Running    10.97.14.47     mcs-silver-app-07.dmz   
+hello-world-nginx-599d5d8898-bgxdr   1/1     Running    10.97.23.120    mcs-silver-app-04.dmz   
+hello-world-nginx-599d5d8898-ph49f   1/1     Running    10.97.132.155   mcs-silver-app-22.dmz   
+```
+
+There are some more advanced options with pod affinity and anti-affinity and combining them both. You can also apply some weighting to different rules. See the Kubernetes documentation if you want to play around with some advanced scheduling configurations.
+
+* https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
