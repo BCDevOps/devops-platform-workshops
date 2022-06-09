@@ -391,33 +391,33 @@ If a resource that is added to a project like a new pod does not provide a compu
 
 The following listing shows a limit range defined using YAML syntax:
 
-```
-apiVersion: "v1"
-kind: "LimitRange"
+```yaml
+apiVersion: v1
+kind: LimitRange
 metadata:
-  name: "dev-limits"
+  name: dev-limits
 spec:
   limits:
-    - type: "Pod"
+    - type: Pod
       max: (1)
-        cpu: "500m"
-        memory: "750Mi"
+        cpu: 500m
+        memory: 750Mi
       min: (2)
-        cpu: "10m"
-        memory: "5Mi"
-    - type: "Container"
+        cpu: 10m
+        memory: 5Mi
+    - type: Container
       max: (3)
-        cpu: "500m"
-        memory: "750Mi"
+        cpu: 500m
+        memory: 750Mi
       min: (4)
-        cpu: "10m"
-        memory: "5Mi"
+        cpu: 10m
+        memory: 5Mi
       default: (5)
-        cpu: "100m"
-        memory: "100Mi"
+        cpu: 100m
+        memory: 100Mi
       defaultRequest: (6)
-        cpu: "20m"
-        memory: "20Mi"
+        cpu: 20m
+        memory: 20Mi
     - type: openshift.io/Image (7)
       max:
         storage: 1Gi
@@ -425,11 +425,11 @@ spec:
       max:
         openshift.io/image-tags: 10
         openshift.io/images: 20
-    - type: "PersistentVolumeClaim" (9)
+    - type: PersistentVolumeClaim (9)
       min:
-        storage: "1Gi"
+        storage: 1Gi
       max:
-        storage: "50Gi"
+        storage: 50Gi
 ```
 
 1. The maximum amount of CPU and memory that all containers within a pod can consume. A new pod that exceeds the maximum limits is not created. An existing pod that exceeds the maximum limits is restarted.
