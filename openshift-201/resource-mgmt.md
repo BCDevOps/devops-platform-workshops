@@ -22,7 +22,7 @@ Resource request and resource limits should be defined for each container in eit
 
 Let's create a deployment to test! Create this deployment in your project.
 
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -82,7 +82,7 @@ Now that our Nginx web server has a route we can access, we can generate some tr
 
 Create a new deployment for load testing. This will deploy an httpd container and use the ab (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment that will trigger a pod redeployment to run the load test again. Update the deployment below with the url to your Nginx web server under the `SERVICE_HOST` variable.
 
-```
+```yaml
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -486,7 +486,7 @@ Avoid setting LimitRange constraints that are too high, or ResourceQuota constra
 
 App project in the BC Gov clusters have a default-limits LimitRange that users can’t delete, these specify defaults for containers.
 
-```
+```yaml
 spec:
   limits:
   - default:
@@ -498,7 +498,7 @@ spec:
     type: Container
 ```
 
-## Futher Reading
+## Further Reading
 
    * https://sysdig.com/blog/kubernetes-pod-evicted/
    * https://sysdig.com/blog/troubleshoot-kubernetes-oom/
