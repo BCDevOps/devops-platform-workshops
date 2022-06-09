@@ -10,7 +10,7 @@ Welcome to the OpenShift 201 Training Labs.  You will find all of the lab materi
 
 ### Lab topics:
 
-The following are the labs related to the 201 Courses
+The Openshift 201 Lab is divided into the following topics: ```
 * [Resource Management](./resource-mgmt.md)
 * [Pod Auto Scaling](./rh201-pod-auto-scale.md)
 * [OpenShift Pipelines](./pipelines.md)
