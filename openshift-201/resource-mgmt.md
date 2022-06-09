@@ -56,6 +56,7 @@ spec:
         ports:
         - containerPort: 8080
           protocol: TCP
+
 ```
 
 You can use the oc edit command to modify a deployment or a deployment configuration, and ensure you use the correct indentation. Indentation mistakes can result in the editor refusing to save changes. To avoid indentation issues, you can use the oc set resources command to specify resource requests and limits. 
@@ -113,7 +114,7 @@ spec:
             value: "20"
           command: ["/opt/rh/httpd24/root/usr/bin/ab"]
           args: ["-dSrk", "-c $(CONCURRENCY)", "-n $(REQUESTS)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
-  
+
 ```
 **Note:** As we don't set limits and request specifically in the deployment the default LimitRange will apply. Run `oc describe LimitRange/default-limits` to see what is set as defaults.
 
@@ -217,7 +218,9 @@ Try adjusting the limits and requests on our web server pod and running the load
 **Summary**
 
 If the limit is set too low = you will end up with your pod/containers being CPU throttled or processes killed too early in the pod/containers lifecycle.
-If the limit is set too high = problems like memory leaks will take longer to become apparent. Also, you will end up being a bad neighbour to the rest of the users on the cluster. Reserving resources that your pod/containers will never use and stopping other teams from scheduling workloads onto the cluster as it's being held by your too high limits. #
+
+If the limit is set too high = problems like memory leaks will take longer to become apparent. Also, you will end up being a bad neighbour to the rest of the users on the cluster. Reserving resources that your pod/containers will never use and stopping other teams from scheduling workloads onto the cluster as it's being held by your too high limits.
+
 If the limit is set just right = your pod/containers will have some room to grow as load increases, your pod/containers will get scaled if they start going too high on resources to catch them before they get out of control, and there is space for other users to use resources on the cluster.
 
 ## Viewing Requests, Limits, and Actual Usage
