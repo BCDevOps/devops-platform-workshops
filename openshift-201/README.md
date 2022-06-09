@@ -7,6 +7,7 @@ Welcome to the OpenShift 201 Training Labs.  You will find all of the lab materi
 - oc CLI installed, find out [how to here](https://stackoverflow.developer.gov.bc.ca/questions/139)
 - an OpenShift project set created for you from Registry app, which you are an Admin of. You will either receive an email about this or during the OCP201 kick off.
 
+
 ### Lab topics:
 
 The following are the labs related to the 201 Courses

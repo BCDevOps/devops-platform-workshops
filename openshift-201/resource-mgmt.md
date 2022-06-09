@@ -18,7 +18,7 @@ A pod definition can include both resource requests and resource limits:
 
 * If the memory allocated by all of the processes in a container exceeds the memory limit, the node Out of Memory (OOM) killer will immediately select and kill a process in the container.
 
-Resource request and resource limits should be defined for each container in either a Deployment, DeploymentConfiguration, StatefulSets, BuildConfigs, and CronJob. If requests and limits have not been defined, then you will find a resources: {} line for each container.
+Resource request and resource limits should be defined for each container in either a Deployment, DeploymentConfiguration, StatefulSets, BuildConfigs, and CronJob. If requests and limits have not been defined, then you will find a `resources: {}` line for each container.
 
 Let's create a deployment to test! Create this deployment in your project.
 
@@ -58,9 +58,9 @@ spec:
           protocol: TCP
 ```
 
-You can use the oc edit command to modify a deployment or a deployment configuration, to ensure you use the correct indentation. Indentation mistakes can result in the editor refusing to save changes. To avoid indentation issues, you can use the oc set resources command to specify resource requests and limits. 
+You can use the oc edit command to modify a deployment or a deployment configuration, and ensure you use the correct indentation. Indentation mistakes can result in the editor refusing to save changes. To avoid indentation issues, you can use the oc set resources command to specify resource requests and limits. 
 
-Lets modify our deployment using the following command:
+Let's modify our deployment using the following command:
 
 ```
 [user@host ~]$ oc set resources deployment hello-world-nginx --requests cpu=15m,memory=25Mi --limits cpu=100m,memory=150Mi
@@ -68,19 +68,18 @@ Lets modify our deployment using the following command:
 
 This will cause the pod to re-deploy with updated resources.
 
-If a resource quota applies to a resource request, then the pod should define a resource request. If a resource quota applies to a resource limit, then the pod 
-should also define a resource limit. We recommend defining resource requests and limits always.
+If a resource quota applies to a resource request, then the pod should define a resource request. If a resource quota applies to a resource limit, then the pod should also define a resource limit. We recommend ALWAYS defining resource requests and limits for all workloads.
 
 ## Generate traffic and observe 
 
 Let's expose our deployment from above with a service and a route.
 
 * Expose the deployment with a service, the easiest way would be: `oc expose deployment/hello-world-nginx`
-* Create an secure route with edge TLS termination from this service. This can be done from the web console or CLI.
+* Create an secure route with edge TLS termination from this service, using the default host and TLS certs provided by the cluster: `oc create route edge --service=hello-world-nginx`
 
 Now that our Nginx web server has a route we can access, we can generate some traffic to it and see how our requests and limits settings work.
 
-Create a new deployment. This will deploy an httpd container and use the ab (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment that will trigger a pod redeployment to run the test again. Update the deployment below with the url to your Nginx web server under the SERVICE_HOST variable.
+Create a new deployment for load testing. This will deploy an httpd container and use the ab (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment that will trigger a pod redeployment to run the load test again. Update the deployment below with the url to your Nginx web server under the `SERVICE_HOST` variable.
 
 ```
 kind: Deployment
@@ -116,9 +115,9 @@ spec:
           args: ["-dSrk", "-c $(CONCURRENCY)", "-n $(REQUESTS)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
   
 ```
-**Note:** As we don't set limits and request specifically in the deployment the default LimitRange will apply.
+**Note:** As we don't set limits and request specifically in the deployment the default LimitRange will apply. Run `oc describe LimitRange/default-limits` to see what is set as defaults.
 
-From the web console if you change to developer view and navigate to the Monitoring tab select your nginx deployment. You should see the load-test pod traffic increasing metrics for our pod.
+From the web console if you change to developer view and navigate to the Observe tab select your nginx deployment. You should see the load-test pod traffic increasing CPU and Memory usage metrics for nginx workload.
 
 ![cpu load](images/resource-mgmt/pod-load-cpu.png) 
 
@@ -126,7 +125,7 @@ From the web console select your hello-world-nginx pod and navigate to the Metri
 
 ![cpu quota](images/resource-mgmt/pod-load-cpu-quota.png)
 
-Because the actual cpu usage is higher than our cpu limit openshift/kubernetes will throttle the available cpu to our pod. This would affecting the performance of our web server and cause response times of our application.
+Because the actual cpu usage is higher than our cpu limit openshift/kubernetes will throttle the available cpu to our pod. This would affecting the performance of our web server and cause slow response times of our application.
 
 ![cpu throttle](images/resource-mgmt/pod-load-cpu-throttle.png)
 
