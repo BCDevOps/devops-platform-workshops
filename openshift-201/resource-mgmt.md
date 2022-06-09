@@ -153,7 +153,7 @@ For each compute resource, a container is divided into one of three QoS classes 
 |---|---|---|
 |1 (highest) |*Guaranteed* |If limits and optionally requests are set (not equal to 0) for all resources and they are equal, then the container is classified as *Guaranteed*.|
 |2|*Burstable* |If requests and optionally limits are set (not equal to 0) for all resources, and they are not equal, then the container is classified as *Burstable*.|
-|3 (lowest)|*BestEffort*|If requests and limits are not set for any of the resources, then the container is classified as *BestEffort*.|
+|3 (lowest)|*BestEffort*|If requests and limits are all set to 0, then the container is classified as *BestEffort*.|
 
 
 Memory is an incompressible resource, so in low memory situations, containers that have the lowest priority are terminated first:
