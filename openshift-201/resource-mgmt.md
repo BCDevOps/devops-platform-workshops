@@ -154,7 +154,7 @@ For each compute resource, a container is divided into one of three QoS classes 
 |---|---|---|
 |1 (highest) |*Guaranteed* |If limits and optionally requests are set (not equal to 0) for all resources and they are equal, then the container is classified as *Guaranteed*.|
 |2|*Burstable* |If requests and optionally limits are set (not equal to 0) for all resources, and they are not equal, then the container is classified as *Burstable*.|
-|3 (lowest)|*BestEffort*|If requests and limits are all set to 0, then the container is classified as *BestEffort*.|
+|3 (lowest)|*BestEffort*|If requests and limits are all set to 0 (when default limit range is set), then the container is classified as *BestEffort*.|
 
 
 Memory is an incompressible resource, so in low memory situations, containers that have the lowest priority are terminated first:
@@ -248,7 +248,7 @@ hello-world-nginx-d598fbd96-45rqw   69m          34Mi
 load-test-6798678dc-8tgjc           46m          6Mi            
 ```
 
-The OpenShift web console also has numerous ways to view limits, requests and actual usage through the Metrics and Monitoring pages.
+The OpenShift web console also has numerous ways to view limits, requests and actual usage through the Metrics and Observe pages.
 
 ## Quotas 
 
@@ -285,9 +285,9 @@ The following table describes some compute resources that can be restricted by a
 
 |Compute Resource Name|	Quota Description|
 |---|----|
-|cpu (requests.cpu)	Total |CPU use across all containers|
-|memory (requests.memory)	|Total memory use across all containers|
-|storage (requests.storage)|	Total storage requests by containers across all persistent volume claims|
+|cpu (requests.cpu)	| Total CPU use across all containers|
+|memory (requests.memory)	| Total memory use across all containers|
+|storage (requests.storage)| Total storage requests by containers across all persistent volume claims|
 
 Quota attributes can track either resource requests or resource limits for all pods in the project. By default, quota attributes track resource requests. Instead, to track resource limits, prefix the compute resource name with limits, for example, limits.cpu.
 
@@ -361,7 +361,7 @@ If a modification to a project exceeds the quota for a resource count, then Open
 
 Important: 
 
-If a quota that restricts usage of compute resources for a project is set, then OpenShift refuses to create pods that do not specify resource requests or resource limits for that compute resource. To use most templates and builders with a project restricted by quotas, the project must also contain a limit range resource that specifies default values for container resource requests.
+If a quota that restricts usage of compute resources for a project is set, then OpenShift refuses to create pods that do not specify resource requests or resource limits for that compute resource. To use most templates and builders with a project restricted by quotas, the project must also contain a limit range resource that specifies default values for container resource requests. Run `oc describe LimitRange/default-limits` to see what is set as defaults in the project.
 
 **Quota scopes**
 
