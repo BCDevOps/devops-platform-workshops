@@ -26,7 +26,7 @@ __Objective__: Create an init container
 
 - Select Save
 - Ask the instructor to ensure the rocketchat instance is displayed to the class
-- Explore the `Pod Details` to notice the differente with the Init Container 
+- Explore the `Pod Details` to notice the difference with the Init Container 
 
 ![](./images/12_pod_lifecycle_02.png)
 
