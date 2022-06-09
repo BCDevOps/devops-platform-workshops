@@ -1,6 +1,6 @@
 # Autoscaling
 Autoscaling can be configured on pods to enable OpenShift to add or remove pods as load varies. In general, 
-the Horizonal Pod Autoscaler sets: 
+the Horizontal Pod Autoscaler sets: 
     - Upper limit of pods
     - Lower limit of pods
     - Metric threshold to use for scaling tasks

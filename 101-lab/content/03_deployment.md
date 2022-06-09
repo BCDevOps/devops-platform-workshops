@@ -8,7 +8,7 @@ The dev project is where applications are deployed. In this case, we will deploy
 ### Create an ImageStreamTag
 
 
-> Although we use the tag name `dev` there are better naming conventions! We strongly suggest associating image tags with a version that is meaninful for your project!
+> Although we use the tag name `dev` there are better naming conventions! We strongly suggest associating image tags with a version that is meaningful for your project!
 
 - From the CLI
 
