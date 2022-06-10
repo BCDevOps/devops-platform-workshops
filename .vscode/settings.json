@@ -1,9 +1,11 @@
 {
   "cSpell.words": [
-    "OCIO",
     "broughton",
     "checkmark",
-    "parkade",
-    "Kubernetes"
+    "kubernetes",
+    "kubelet",
+    "openshift",
+    "OCIO",
+    "parkade"
   ]
 }
