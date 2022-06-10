@@ -52,7 +52,7 @@ You can check the autoscaling API versions available in the cluster.
 oc api-versions | grep autoscaling
 ```
 
-The `oc autoscale` command will create a v1 type autoscaler. You can view with the hpa details with an `oc get hpa hello-world-nginx -o yaml` command.
+The `oc autoscale` command will create a v1 type autoscaler. You can view with the HPA details with an `oc get hpa hello-world-nginx -o yaml` command.
 
 ```yaml
 apiVersion: autoscaling/v1
@@ -204,7 +204,7 @@ spec:
 
 Re-trigger load-test deployment by updating the environment variable REQUESTS to a different number. Let the deployment fire up a new pod and send load to our hello-world-nginx pod.
 
-Give it a few minutes and check the vpa status sections for recommendations.
+Give it a few minutes and check the VPA status sections for recommendations.
 
 
 ```yaml
@@ -303,7 +303,7 @@ Values for minAvailable or maxUnavailable can be expressed as integers or as a p
 
 When you specify the value as a percentage it may not map to an exact number of Pods. If you have 7 Pods and you set minAvailable to "50%", it's not immediately obvious whether that means 3 Pods or 4 Pods must be available. OpenShift will round up to the nearest integer, so in this case, 4 Pods must be available.
 
-A maxUnavailable of 0% or 0 or a minAvailable of 100% or equal to the number of replicas is permitted but can block nodes from being drained. It will also generate alerts for the Operations team who will contact you asking for it to be adjusted. **THIS IS IMPORTANT**, your configuration of a pdb in your project could effect a cluster wide upgrade process. If your using pdb's then be a good neighbor and ensure that it's configured correctly and that you are keeping an eye on it or configured monitoring to ensure the pdb is still valid for the deployment or object it's pointing to.
+A maxUnavailable of 0% or 0 or a minAvailable of 100% or equal to the number of replicas is permitted but can block nodes from being drained. It will also generate alerts for the Operations team who will contact you asking for it to be adjusted. **THIS IS IMPORTANT**, your configuration of a PDB in your project could effect a cluster wide upgrade process. If your using PDBs then be a good neighbor and ensure that it's configured correctly and that you are keeping an eye on it or configured monitoring to ensure the PDB is still valid for the deployment or object it's pointing to.
 
 
 Lets create a pod disruption budget where we always want at least 1 Nginx pod to be available for our deployment. Apply the following config to your project.
@@ -322,12 +322,12 @@ spec:
 
 This indicates to OpenShift that we want at least 1 pod that matches the label Deployment: hello-world-nginx to be available at any given time. This means OpenShift will wait for the pod in one node drain request to be replaced before evicting the pods in a second node drain request.
 
-We can view the pdb with: `oc get pdb`.
+We can view the PDB with: `oc get pdb`.
 
-That's about all we can do for pdb's. They can only really be tested during a node drain event.
+That's about all we can do for PDB. They can only really be tested during a node drain event.
 <<<<<<< HEAD
   
-Please delete the pdb object when you are done with it.
+Please delete the PDB object when you are done with it.
 
 
 ## Pod Anti-Affinity 
