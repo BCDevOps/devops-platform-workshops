@@ -21,7 +21,7 @@ The maximum and minimum values for the horizontal pod autoscaler resource serve 
 
 You will need to determine what metric is best for your application to trigger scale up. Maybe your application takes a while to spin up and get marked as ready so you could set the CPU percent to 60%. Your application could scale up really quickly so you set 90% as the threshold to trigger scaling.
 
-Edit the load-test deployment requests environment variable which will re-trigger the deployment to start a load-test pod that will send traffic to the hello-world-nginx pod. You should see the number of pods increase as the CPU metrics grow.
+Run load-test to generate some traffic to nginx server `oc scale deployment load-test --replicas=1`. You should see the number of pods increase as the CPU metrics grow.
 
 To get information about horizontal pod autoscaler resources in the current project, use the oc get command.
 
@@ -147,7 +147,7 @@ Keep in mind your application will "work" with scaling up or down replicas. If a
 
 ### Advanced Options
 
-There are a few more advanced options with the HPAs like scaleup and scaledown policies. Check the online documentation for these details.
+There are a few more advanced options with the HPAs like scaleup and scaledown policies and behaviours. Check the online documentation for these details.
 
 * https://docs.openshift.com/container-platform/4.9/nodes/pods/nodes-pods-autoscaling.html
 * https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
@@ -169,7 +169,7 @@ VPA automatically deletes any pods that are out of alignment with its recommenda
 
 For developers, you can use the VPA to help ensure your pods stay up during periods of high demand by scheduling pods onto nodes that have appropriate resources for each pod. Administrators use the VPA to better utilize cluster resources, such as preventing pods from reserving more CPU resources than needed. The VPA monitors the resources that workloads are actually using and adjusts the resource requirements so capacity is available to other workloads. 
 
-The VPA CR must be in the same project as the pods you want to monitor. There are 4 updateModes available for the VPA:
+The VPA custom resources (CR) must be in the same project as the pods you want to monitor. There are 4 updateModes available for the VPA:
 
 * Auto, the VPA assigns resource requests on pod creation and updates the existing pods by terminating them when the requested resources differ significantly from the new recommendation.
 * Recreate, the VPA assigns resource requests on pod creation and updates the existing pods by terminating them when the requested resources differ significantly from the new recommendation. This mode should be used rarely, only if you need to ensure that the pods are restarted whenever the resource request changes. Otherwise prefer the "Auto" mode which may take advantage of restart free updates once they are available.
@@ -269,7 +269,7 @@ EOF
 ```
 Again update the load-test deployment environment variable REQUESTS to a different number to trigger a redeployment and the load-test pod to start sending traffic again.
 
-Give it a few minutes and observe the VPA and the hello-world-nginx pods. We should seem them re-deploy based on updated values from the VPA.
+Give it a few minutes and observe the VPA and the hello-world-nginx pods. We should see them re-deploy based on updated values from the VPA.
 
 Scale the load-test deployment down to 0 once it's done.
 
@@ -281,7 +281,7 @@ VPAs are not aware of OpenShift cluster infrastructure variables such as node si
 
 Have a look at the online documentation if you are interested more in VPAs, there are some more advanced options like exempting containers in a pod by using resourcePolicy.
 
-* https://docs.openshift.com/container-platform/4.8/nodes/pods/nodes-pods-vertical-autoscaler.html
+* https://docs.openshift.com/container-platform/4.9/nodes/pods/nodes-pods-vertical-autoscaler.html
 * https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler
 
 ## Pod Disruption Budgets

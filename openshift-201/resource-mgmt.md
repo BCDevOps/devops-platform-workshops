@@ -498,6 +498,8 @@ spec:
     type: Container
 ```
 
+> Note to turn off the load-test deployment when you have completed this session. `oc scale deployment load-test --replicas=0`
+
 ## Further Reading
 
    * https://sysdig.com/blog/kubernetes-pod-evicted/
