@@ -51,7 +51,7 @@ Push successful
 ## Kibana
 
 ### Accessing Kibana
-You can access Kibana directly at this [url](https://kibana-openshift-logging.apps.silver.devops.gov.bc.ca/) or it is also accessable from the OpenShift console.
+You can access Kibana directly at this [url](https://kibana-openshift-logging.apps.silver.devops.gov.bc.ca/) or it is also accessible from the OpenShift console.
 
 Select the running pod that was just created:
 
@@ -83,7 +83,7 @@ By default you will see something like this:
 7. Time frame chosen for the logs shown (default is last 15 minutes)
 
 ### Fields
-Let's select 2 fields for viewing from the `Availalbe fields` panel on the left.
+Let's select 2 fields for viewing from the `Available fields` panel on the left.
 
 1. `kubernetes.container_name` - this is the name of the container running in kubernetes.  This should be `logging-app-$USERNAME`
 2. `message` - is the message from our application
@@ -112,7 +112,7 @@ Let's say we are only interested in the messages with the number 10 in them.  Ch
 ```
 kubernetes.container_name:"logging-app-$USERNAME" AND message:10
 ```
-__NOTE__ if you aren't seeing results it may have been more than 15 minutes since the entry with the number 10 was logged.  If so, change the timefame in the upper right corner to `Last 30 minutes` or higher if needed.
+__NOTE__ if you aren't seeing results it may have been more than 15 minutes since the entry with the number 10 was logged.  If so, change the timeframe in the upper right corner to `Last 30 minutes` or higher if needed.
 
 ![kibana-search-10](images/logging/kibana-search-10.png)
 
