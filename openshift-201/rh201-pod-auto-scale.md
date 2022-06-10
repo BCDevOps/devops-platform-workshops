@@ -143,7 +143,7 @@ All pods must have resource requests configured
 
 The HPA makes a scaling decision based on the observed CPU or memory utilization values of pods in an OpenShift Container Platform cluster. Utilization values are calculated as a percentage of the resource requests of each pod. Missing resource request values can affect the optimal performance of the HPA.
   
-Keep in mind your application will "work" with scaling up or down replicas. If adding more pods to your application won't reduce the load or if scaling down pods would cause issues an HPA might not be the best choice. If your application is reliant on some persistant storage per pod that may also be something to consider when using HPAs.
+Keep in mind your application will "work" with scaling up or down replicas. If adding more pods to your application won't reduce the load or if scaling down pods would cause issues an HPA might not be the best choice. If your application is reliant on some persistent storage per pod that may also be something to consider when using HPAs.
 
 ### Advanced Options
 
@@ -246,7 +246,7 @@ If the VPA updateMode uses something other than `off` then the lowerBound and up
 
 Lets create an VPA in auto mode and send traffic to the hello-world-nginx pods and observe what happens.
 
-VPAs in Auto updateMode won't work with HPA using the same CPU and memory metrics because it would cause a race condition. If HPA objects still exists from previous labs lets delete them to focus on VPAs.
+> Note: VPAs in Auto updateMode won't work with HPA using the same CPU and memory metrics because it would cause a race condition. If HPA objects still exists from previous labs lets delete them to focus on VPAs.
 
 Then lets scale our hello-world-nginx deployment replicas up to three so the VPA can re-deploy our pods if needed.
 
@@ -277,7 +277,7 @@ Scale the load-test deployment down to 0 once it's done.
 
 Have a think what would be good for an app in a production environment. Maybe just getting recommendations to review might be good then you update manually. Having Auto mode on will terminate and restart pods and containers which maybe something your application can't handle in a production environment.
 
-VPAs are not aware of OpenShift cluster infrastructure variables such as node size in terms of memory and CPU. Therefore, it doesn't know whether a recommended pod size will fit your node. Also VPAs are not aware of quoats so it may resize to something bigger than can fit in the current quota.
+VPAs are not aware of OpenShift cluster infrastructure variables such as node size in terms of memory and CPU. Therefore, it doesn't know whether a recommended pod size will fit your node. Also VPAs are not aware of quotas so it may resize to something bigger than can fit in the current quota.
 
 Have a look at the online documentation if you are interested more in VPAs, there are some more advanced options like exempting containers in a pod by using resourcePolicy.
 
@@ -325,16 +325,15 @@ This indicates to OpenShift that we want at least 1 pod that matches the label D
 We can view the PDB with: `oc get pdb`.
 
 That's about all we can do for PDB. They can only really be tested during a node drain event.
-<<<<<<< HEAD
-  
-Please delete the PDB object when you are done with it.
+
+> Note to delete the PDB object when you are done with it. `oc delete pdb <pdb_name>`
 
 
 ## Pod Anti-Affinity 
 
 Pod anti-affinity can prevent the scheduler from locating a new pod on the same node as pods with the same labels if the label selector on the new pod matches the label on the current pod.
 
-There are two types of pod anti-affinity rules: required and preferred.
+There are two types of pod anti-affinity rules: required and preferred. (You can also check it out with `oc explain pod.spec.affinity.podAffinity`)
 
 * `requiredDuringSchedulingIgnoredDuringExecution`: The scheduler can't schedule the Pod unless the rule is met. This functions like nodeSelector, but with a more expressive syntax.
 
@@ -342,7 +341,9 @@ There are two types of pod anti-affinity rules: required and preferred.
 
 You configure pod anti-affinity through the Pod spec files. You can specify a required rule, a preferred rule, or both. If you specify both, the node must first meet the required rule, then attempts to meet the preferred rule.
 
-Lets update our deployment to add an anti-affinity rule. If there are still HPAs or VPAs in place in your project you should clean them out.
+Lets update our deployment to add an anti-affinity rule.
+
+> Note: If there are still HPAs or VPAs in place in your project you should clean them out.
 
 ```yaml
 .
