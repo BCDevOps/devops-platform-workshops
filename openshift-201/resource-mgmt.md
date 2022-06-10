@@ -18,11 +18,11 @@ A pod definition can include both resource requests and resource limits:
 
 * If the memory allocated by all of the processes in a container exceeds the memory limit, the node Out of Memory (OOM) killer will immediately select and kill a process in the container.
 
-Resource request and resource limits should be defined for each container in either a Deployment, DeploymentConfiguration, StatefulSets, BuildConfigs, and CronJob. If requests and limits have not been defined, then you will find a resources: {} line for each container.
+Resource request and resource limits should be defined for each container in either a Deployment, DeploymentConfiguration, StatefulSets, BuildConfigs, and CronJob. If requests and limits have not been defined, then you will find a `resources: {}` line for each container.
 
 Let's create a deployment to test! Create this deployment in your project.
 
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -56,11 +56,12 @@ spec:
         ports:
         - containerPort: 8080
           protocol: TCP
+
 ```
 
-You can use the oc edit command to modify a deployment or a deployment configuration, to ensure you use the correct indentation. Indentation mistakes can result in the editor refusing to save changes. To avoid indentation issues, you can use the oc set resources command to specify resource requests and limits. 
+You can use the oc edit command to modify a deployment or a deployment configuration, and ensure you use the correct indentation. Indentation mistakes can result in the editor refusing to save changes. To avoid indentation issues, you can use the oc set resources command to specify resource requests and limits. 
 
-Lets modify our deployment using the following command:
+Let's modify our deployment using the following command:
 
 ```
 [user@host ~]$ oc set resources deployment hello-world-nginx --requests cpu=15m,memory=25Mi --limits cpu=100m,memory=150Mi
@@ -68,21 +69,20 @@ Lets modify our deployment using the following command:
 
 This will cause the pod to re-deploy with updated resources.
 
-If a resource quota applies to a resource request, then the pod should define a resource request. If a resource quota applies to a resource limit, then the pod 
-should also define a resource limit. We recommend defining resource requests and limits always.
+If a resource quota applies to a resource request, then the pod should define a resource request. If a resource quota applies to a resource limit, then the pod should also define a resource limit. We recommend ALWAYS defining resource requests and limits for all workloads.
 
 ## Generate traffic and observe 
 
 Let's expose our deployment from above with a service and a route.
 
 * Expose the deployment with a service, the easiest way would be: `oc expose deployment/hello-world-nginx`
-* Create an secure route with edge TLS termination from this service. This can be done from the web console or CLI.
+* Create an secure route with edge TLS termination from this service, using the default host and TLS certs provided by the cluster: `oc create route edge --service=hello-world-nginx`
 
 Now that our Nginx web server has a route we can access, we can generate some traffic to it and see how our requests and limits settings work.
 
-Create a new deployment. This will deploy an httpd container and use the ab (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment that will trigger a pod redeployment to run the test again. Update the deployment below with the url to your Nginx web server under the SERVICE_HOST variable.
+Create a new deployment for load testing. This will deploy an httpd container and use the ab (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment that will trigger a pod redeployment to run the load test again. Update the deployment below with the url to your Nginx web server under the `SERVICE_HOST` variable.
 
-```
+```yaml
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -114,11 +114,11 @@ spec:
             value: "20"
           command: ["/opt/rh/httpd24/root/usr/bin/ab"]
           args: ["-dSrk", "-c $(CONCURRENCY)", "-n $(REQUESTS)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
-  
-```
-**Note:** As we don't set limits and request specifically in the deployment the default LimitRange will apply.
 
-From the web console if you change to developer view and navigate to the Monitoring tab select your nginx deployment. You should see the load-test pod traffic increasing metrics for our pod.
+```
+**Note:** As we don't set limits and request specifically in the deployment the default LimitRange will apply. Run `oc describe LimitRange/default-limits` to see what is set as defaults.
+
+From the web console if you change to developer view and navigate to the Observe tab select your nginx deployment. You should see the load-test pod traffic increasing CPU and Memory usage metrics for nginx workload.
 
 ![cpu load](images/resource-mgmt/pod-load-cpu.png) 
 
@@ -126,7 +126,7 @@ From the web console select your hello-world-nginx pod and navigate to the Metri
 
 ![cpu quota](images/resource-mgmt/pod-load-cpu-quota.png)
 
-Because the actual cpu usage is higher than our cpu limit openshift/kubernetes will throttle the available cpu to our pod. This would affecting the performance of our web server and cause response times of our application.
+Because the actual cpu usage is higher than our cpu limit openshift/kubernetes will throttle the available cpu to our pod. This would affecting the performance of our web server and cause slow response times of our application.
 
 ![cpu throttle](images/resource-mgmt/pod-load-cpu-throttle.png)
 
@@ -154,7 +154,7 @@ For each compute resource, a container is divided into one of three QoS classes 
 |---|---|---|
 |1 (highest) |*Guaranteed* |If limits and optionally requests are set (not equal to 0) for all resources and they are equal, then the container is classified as *Guaranteed*.|
 |2|*Burstable* |If requests and optionally limits are set (not equal to 0) for all resources, and they are not equal, then the container is classified as *Burstable*.|
-|3 (lowest)|*BestEffort*|If requests and limits are not set for any of the resources, then the container is classified as *BestEffort*.|
+|3 (lowest)|*BestEffort*|If requests and limits are all set to 0 (when default limit range is set), then the container is classified as *BestEffort*.|
 
 
 Memory is an incompressible resource, so in low memory situations, containers that have the lowest priority are terminated first:
@@ -218,7 +218,9 @@ Try adjusting the limits and requests on our web server pod and running the load
 **Summary**
 
 If the limit is set too low = you will end up with your pod/containers being CPU throttled or processes killed too early in the pod/containers lifecycle.
-If the limit is set too high = problems like memory leaks will take longer to become apparent. Also, you will end up being a bad neighbour to the rest of the users on the cluster. Reserving resources that your pod/containers will never use and stopping other teams from scheduling workloads onto the cluster as it's being held by your too high limits. #
+
+If the limit is set too high = problems like memory leaks will take longer to become apparent. Also, you will end up being a bad neighbour to the rest of the users on the cluster. Reserving resources that your pod/containers will never use and stopping other teams from scheduling workloads onto the cluster as it's being held by your too high limits.
+
 If the limit is set just right = your pod/containers will have some room to grow as load increases, your pod/containers will get scaled if they start going too high on resources to catch them before they get out of control, and there is space for other users to use resources on the cluster.
 
 ## Viewing Requests, Limits, and Actual Usage
@@ -246,7 +248,7 @@ hello-world-nginx-d598fbd96-45rqw   69m          34Mi
 load-test-6798678dc-8tgjc           46m          6Mi            
 ```
 
-The OpenShift web console also has numerous ways to view limits, requests and actual usage through the Metrics and Monitoring pages.
+The OpenShift web console also has numerous ways to view limits, requests and actual usage through the Metrics and Observe pages.
 
 ## Quotas 
 
@@ -283,9 +285,9 @@ The following table describes some compute resources that can be restricted by a
 
 |Compute Resource Name|	Quota Description|
 |---|----|
-|cpu (requests.cpu)	Total |CPU use across all containers|
-|memory (requests.memory)	|Total memory use across all containers|
-|storage (requests.storage)|	Total storage requests by containers across all persistent volume claims|
+|cpu (requests.cpu)	| Total CPU use across all containers|
+|memory (requests.memory)	| Total memory use across all containers|
+|storage (requests.storage)| Total storage requests by containers across all persistent volume claims|
 
 Quota attributes can track either resource requests or resource limits for all pods in the project. By default, quota attributes track resource requests. Instead, to track resource limits, prefix the compute resource name with limits, for example, limits.cpu.
 
@@ -359,7 +361,7 @@ If a modification to a project exceeds the quota for a resource count, then Open
 
 Important: 
 
-If a quota that restricts usage of compute resources for a project is set, then OpenShift refuses to create pods that do not specify resource requests or resource limits for that compute resource. To use most templates and builders with a project restricted by quotas, the project must also contain a limit range resource that specifies default values for container resource requests.
+If a quota that restricts usage of compute resources for a project is set, then OpenShift refuses to create pods that do not specify resource requests or resource limits for that compute resource. To use most templates and builders with a project restricted by quotas, the project must also contain a limit range resource that specifies default values for container resource requests. Run `oc describe LimitRange/default-limits` to see what is set as defaults in the project.
 
 **Quota scopes**
 
@@ -389,33 +391,33 @@ If a resource that is added to a project like a new pod does not provide a compu
 
 The following listing shows a limit range defined using YAML syntax:
 
-```
-apiVersion: "v1"
-kind: "LimitRange"
+```yaml
+apiVersion: v1
+kind: LimitRange
 metadata:
-  name: "dev-limits"
+  name: dev-limits
 spec:
   limits:
-    - type: "Pod"
+    - type: Pod
       max: (1)
-        cpu: "500m"
-        memory: "750Mi"
+        cpu: 500m
+        memory: 750Mi
       min: (2)
-        cpu: "10m"
-        memory: "5Mi"
-    - type: "Container"
+        cpu: 10m
+        memory: 5Mi
+    - type: Container
       max: (3)
-        cpu: "500m"
-        memory: "750Mi"
+        cpu: 500m
+        memory: 750Mi
       min: (4)
-        cpu: "10m"
-        memory: "5Mi"
+        cpu: 10m
+        memory: 5Mi
       default: (5)
-        cpu: "100m"
-        memory: "100Mi"
+        cpu: 100m
+        memory: 100Mi
       defaultRequest: (6)
-        cpu: "20m"
-        memory: "20Mi"
+        cpu: 20m
+        memory: 20Mi
     - type: openshift.io/Image (7)
       max:
         storage: 1Gi
@@ -423,11 +425,11 @@ spec:
       max:
         openshift.io/image-tags: 10
         openshift.io/images: 20
-    - type: "PersistentVolumeClaim" (9)
+    - type: PersistentVolumeClaim (9)
       min:
-        storage: "1Gi"
+        storage: 1Gi
       max:
-        storage: "50Gi"
+        storage: 50Gi
 ```
 
 1. The maximum amount of CPU and memory that all containers within a pod can consume. A new pod that exceeds the maximum limits is not created. An existing pod that exceeds the maximum limits is restarted.
@@ -484,7 +486,7 @@ Avoid setting LimitRange constraints that are too high, or ResourceQuota constra
 
 App project in the BC Gov clusters have a default-limits LimitRange that users can’t delete, these specify defaults for containers.
 
-```
+```yaml
 spec:
   limits:
   - default:
@@ -496,7 +498,7 @@ spec:
     type: Container
 ```
 
-## Futher Reading
+## Further Reading
 
    * https://sysdig.com/blog/kubernetes-pod-evicted/
    * https://sysdig.com/blog/troubleshoot-kubernetes-oom/
