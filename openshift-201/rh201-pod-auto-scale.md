@@ -19,7 +19,7 @@ oc autoscale deployment/hello-world-nginx --min 1 --max 5 --cpu-percent 80
 
 The maximum and minimum values for the horizontal pod autoscaler resource serve to accommodate bursts of load and avoid overloading the OpenShift cluster. If the load on the application changes too quickly, then it might be advisable to keep a number of spare pods to cope with sudden bursts of user requests. Conversely, too many pods can use up all cluster capacity and impact other applications sharing the same OpenShift cluster.
 
-You will need to determine what metric is best for your application to trigger scale up. Maybe your application takes a while to spin up and get marked as ready so you could set the cpu percent to 60%. Your application could scale up really quickly so you set 90% as the threshold to trigger scaling.
+You will need to determine what metric is best for your application to trigger scale up. Maybe your application takes a while to spin up and get marked as ready so you could set the CPU percent to 60%. Your application could scale up really quickly so you set 90% as the threshold to trigger scaling.
 
 Edit the load-test deployment requests environment variable which will re-trigger the deployment to start a load-test pod that will send traffic to the hello-world-nginx pod. You should see the number of pods increase as the CPU metrics grow.
 
@@ -39,7 +39,7 @@ A persistent value of `<unknown>` in the TARGETS column might indicate that the 
 
 ### API Versions 
 
-There are different API versions for autoscaling v1 just works with CPU metrics. The v2beta2 API handles more options and metrics including cpu and memory.
+There are different API versions for autoscaling. v1 API just works with CPU metrics, v2beta2 API handles more options and metrics including CPU and memory.
 
 |Metric | Description | API version|
 |---|---|----|
@@ -52,10 +52,9 @@ You can check the autoscaling API versions available in the cluster.
 oc api-versions | grep autoscaling
 ```
 
-The `oc autoscale` command will create a v1 type autoscaler. You can view with the hpa details with an `oc get hpa` command.
+The `oc autoscale` command will create a v1 type autoscaler. You can view with the hpa details with an `oc get hpa hello-world-nginx -o yaml` command.
 
 ```yaml
-oc get hpa -o yaml
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -70,7 +69,7 @@ spec:
   targetCPUUtilizationPercentage: 80
 ```
 
-To create a v2beta2 autoscaler you need to define in a yaml.
+To create a v2beta2 autoscaler you need to define a yaml manifest for it, like the following.
 
 ```yaml
 apiVersion: autoscaling/v2beta2
@@ -93,9 +92,7 @@ spec:
         averageValue: 30Mi
 ```
 
-Under metrics you can set type to AverageValue and specify averageValue memory.
-
-You can also specify Utilization in the metrics section of the v2beta2 HPA.
+Under metrics.resource.target you can set type to AverageValue and specify averageValue memory. You can also specify Utilization in the metrics section of the v2beta2 HPA. Check out the available options by `oc explain --api-version='autoscaling/v2beta2' HorizontalPodAutoscaler.spec.metrics.resource.target`. Note you'll need to specify the API version as it defaults to v1.
 
 ```yaml
 metrics: 
@@ -119,6 +116,7 @@ Describe the HPA.
 
 ```yaml
 oc describe hpa hello-world-nginx-mem-hpa
+
 Name:                       hello-world-nginx-mem-hpa
 Namespace:                  ad204f-dev
 Reference:                  Deployment/hello-world-nginx
@@ -151,7 +149,7 @@ Keep in mind your application will "work" with scaling up or down replicas. If a
 
 There are a few more advanced options with the HPAs like scaleup and scaledown policies. Check the online documentation for these details.
 
-* https://docs.openshift.com/container-platform/4.8/nodes/pods/nodes-pods-autoscaling.html
+* https://docs.openshift.com/container-platform/4.9/nodes/pods/nodes-pods-autoscaling.html
 * https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 
 
