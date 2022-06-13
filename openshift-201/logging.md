@@ -62,7 +62,7 @@ Navigate to the Logs tab and click the `Show in Kibana` link
 ![pod-logs-2](images/logging/pod-logs-02.png)
 
 ### First time Setup
-If this is your first time logging in to Kibana you may see a screen to setup a search index.  See the steps in the Logging and Visualizations 101 lab [here](https://github.com/BCDevOps/devops-platform-workshops/blob/801b98ea01582e5585e80f736dcab8aa2dff4c36/101-lab/content/12_logging_and_visualizations.md#access-the-archive-link-from-a-pod)
+If this is your first time logging in to Kibana you may see a screen to setup a search index.  See the steps in the Logging and Visualizations 101 lab [here](https://github.com/BCDevOps/devops-platform-workshops/blob/master/101-lab/content/12_logging_and_visualizations.md#logging-and-visualizations).
 
 
 ### View Logs
