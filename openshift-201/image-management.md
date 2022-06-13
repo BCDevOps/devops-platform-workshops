@@ -49,7 +49,7 @@ imagestream.image.openshift.io "myapp" created
 ...<em>output omitted</em>...
 </pre>
 
-As you can see there are a few resources create with the `new-app` command.  One is the `BuildConfig`.  To see the `myapp` `BuildConfig`, select Developer view in the console. Next, click on the `Builds -> BuildConfigs` item in the left menu then choose `myapp` and select `YAML` or run `oc get bc/myapp -o yaml`.  You should see something similar to the following:
+As you can see there are a few resources create with the `new-app` command.  One is the `BuildConfig`.  To see the `myapp` `BuildConfig`, select Administrator view in the console. Next, click on the `Builds -> BuildConfigs` item in the left menu then choose `myapp` and select `YAML` or run `oc get bc/myapp-$USER_NAME -o yaml`.  You should see something similar to the following:
 
 ![buildconfig](images/image-management/buildconfig.png)
 
@@ -116,7 +116,7 @@ Hello world from unknown
 ## Application Configuration
 The `myapp` application has 3 environment variables that can be set to change the output of our `hello` endpoint.
 1. `NAME` is who is saying hello
-2. `APP_MSG` message to ouput
+2. `APP_MSG` message to output
 3. `SECRET_APP_MSG` a secret message to output
 
 There are multiple ways to configure these environment variables in OpenShift
