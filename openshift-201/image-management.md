@@ -221,6 +221,8 @@ curl http://$MY_HOST/hello
 Hello world from [YOUR_NAME_HERE]. Message received = Containers are fun with secret message: Shh... It is a secret
 ```
 
+> Note: scale down the application to save resources with `oc scale deployment/myapp-$USER_NAME --replicas=0`.
+
 ## Image Streams
 An Image Stream doesn't contain the Docker image itself but is a pointer to images.  We will demonstrate the use of an `ImageStream` below.
 
@@ -234,7 +236,7 @@ __NOTE:__ *`is`* is short for `imagestream`
 
 ### Create a BuildConfig
 ```bash
-cat <<EOF | oc apply -f -
+cat <<EOF | oc create -f -
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
@@ -415,6 +417,10 @@ oc tag image-registry.openshift-image-registry.svc:5000/{NAMESPACE}/hello-world-
 
 We should now see our new tags on our `ImageStream`.
 ```bash
+# list of tags
+oc get is/hello-world-$USER_NAME
+
+# details
 oc get is/hello-world-$USER_NAME -o yaml | grep -A25 tags
 ```
 ```yaml
@@ -442,3 +448,7 @@ oc get is/hello-world-$USER_NAME -o yaml | grep -A25 tags
       image: sha256:43378e2447d3fd0d1a8e84ac82ae88bf269d1c60ab0de29b1dc41475d5270284
     tag: v1.1
 ```
+
+Now you can update the deployment to use the ImageStreamTag `hello-world-$USER_NAME:v1.1` directly.
+
+> Note: scale down the application to save resources with `oc scale deployment/hello-world-$USER_NAME --replicas=0`.
