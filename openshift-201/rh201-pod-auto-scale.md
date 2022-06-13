@@ -19,9 +19,9 @@ oc autoscale deployment/hello-world-nginx --min 1 --max 5 --cpu-percent 80
 
 The maximum and minimum values for the horizontal pod autoscaler resource serve to accommodate bursts of load and avoid overloading the OpenShift cluster. If the load on the application changes too quickly, then it might be advisable to keep a number of spare pods to cope with sudden bursts of user requests. Conversely, too many pods can use up all cluster capacity and impact other applications sharing the same OpenShift cluster.
 
-You will need to determine what metric is best for your application to trigger scale up. Maybe your application takes a while to spin up and get marked as ready so you could set the cpu percent to 60%. Your application could scale up really quickly so you set 90% as the threshold to trigger scaling.
+You will need to determine what metric is best for your application to trigger scale up. Maybe your application takes a while to spin up and get marked as ready so you could set the CPU percent to 60%. Your application could scale up really quickly so you set 90% as the threshold to trigger scaling.
 
-Edit the load-test deployment requests environment variable which will re-trigger the deployment to start a load-test pod that will send traffic to the hello-world-nginx pod. You should see the number of pods increase as the CPU metrics grow.
+Run load-test to generate some traffic to nginx server `oc scale deployment load-test --replicas=1`. You should see the number of pods increase as the CPU metrics grow.
 
 To get information about horizontal pod autoscaler resources in the current project, use the oc get command.
 
@@ -39,7 +39,7 @@ A persistent value of `<unknown>` in the TARGETS column might indicate that the 
 
 ### API Versions 
 
-There are different API versions for autoscaling v1 just works with CPU metrics. The v2beta2 API handles more options and metrics including cpu and memory.
+There are different API versions for autoscaling. v1 API just works with CPU metrics, v2beta2 API handles more options and metrics including CPU and memory.
 
 |Metric | Description | API version|
 |---|---|----|
@@ -52,10 +52,9 @@ You can check the autoscaling API versions available in the cluster.
 oc api-versions | grep autoscaling
 ```
 
-The `oc autoscale` command will create a v1 type autoscaler. You can view with the hpa details with an `oc get hpa` command.
+The `oc autoscale` command will create a v1 type autoscaler. You can view with the HPA details with an `oc get hpa hello-world-nginx -o yaml` command.
 
 ```yaml
-oc get hpa -o yaml
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -70,7 +69,7 @@ spec:
   targetCPUUtilizationPercentage: 80
 ```
 
-To create a v2beta2 autoscaler you need to define in a yaml.
+To create a v2beta2 autoscaler you need to define a yaml manifest for it, like the following.
 
 ```yaml
 apiVersion: autoscaling/v2beta2
@@ -93,9 +92,7 @@ spec:
         averageValue: 30Mi
 ```
 
-Under metrics you can set type to AverageValue and specify averageValue memory.
-
-You can also specify Utilization in the metrics section of the v2beta2 HPA.
+Under metrics.resource.target you can set type to AverageValue and specify averageValue memory. You can also specify Utilization in the metrics section of the v2beta2 HPA. Check out the available options by `oc explain --api-version='autoscaling/v2beta2' HorizontalPodAutoscaler.spec.metrics.resource.target`. Note you'll need to specify the API version as it defaults to v1.
 
 ```yaml
 metrics: 
@@ -119,6 +116,7 @@ Describe the HPA.
 
 ```yaml
 oc describe hpa hello-world-nginx-mem-hpa
+
 Name:                       hello-world-nginx-mem-hpa
 Namespace:                  ad204f-dev
 Reference:                  Deployment/hello-world-nginx
@@ -145,13 +143,13 @@ All pods must have resource requests configured
 
 The HPA makes a scaling decision based on the observed CPU or memory utilization values of pods in an OpenShift Container Platform cluster. Utilization values are calculated as a percentage of the resource requests of each pod. Missing resource request values can affect the optimal performance of the HPA.
   
-Keep in mind your application will "work" with scaling up or down replicas. If adding more pods to your application won't reduce the load or if scaling down pods would cause issues an HPA might not be the best choice. If your application is reliant on some persistant storage per pod that may also be something to consider when using HPAs.
+Keep in mind your application will "work" with scaling up or down replicas. If adding more pods to your application won't reduce the load or if scaling down pods would cause issues an HPA might not be the best choice. If your application is reliant on some persistent storage per pod that may also be something to consider when using HPAs.
 
 ### Advanced Options
 
-There are a few more advanced options with the HPAs like scaleup and scaledown policies. Check the online documentation for these details.
+There are a few more advanced options with the HPAs like scaleup and scaledown policies and behaviours. Check the online documentation for these details.
 
-* https://docs.openshift.com/container-platform/4.8/nodes/pods/nodes-pods-autoscaling.html
+* https://docs.openshift.com/container-platform/4.9/nodes/pods/nodes-pods-autoscaling.html
 * https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 
 
@@ -171,7 +169,7 @@ VPA automatically deletes any pods that are out of alignment with its recommenda
 
 For developers, you can use the VPA to help ensure your pods stay up during periods of high demand by scheduling pods onto nodes that have appropriate resources for each pod. Administrators use the VPA to better utilize cluster resources, such as preventing pods from reserving more CPU resources than needed. The VPA monitors the resources that workloads are actually using and adjusts the resource requirements so capacity is available to other workloads. 
 
-The VPA CR must be in the same project as the pods you want to monitor. There are 4 updateModes available for the VPA:
+The VPA custom resources (CR) must be in the same project as the pods you want to monitor. There are 4 updateModes available for the VPA:
 
 * Auto, the VPA assigns resource requests on pod creation and updates the existing pods by terminating them when the requested resources differ significantly from the new recommendation.
 * Recreate, the VPA assigns resource requests on pod creation and updates the existing pods by terminating them when the requested resources differ significantly from the new recommendation. This mode should be used rarely, only if you need to ensure that the pods are restarted whenever the resource request changes. Otherwise prefer the "Auto" mode which may take advantage of restart free updates once they are available.
@@ -206,7 +204,7 @@ spec:
 
 Re-trigger load-test deployment by updating the environment variable REQUESTS to a different number. Let the deployment fire up a new pod and send load to our hello-world-nginx pod.
 
-Give it a few minutes and check the vpa status sections for recommendations.
+Give it a few minutes and check the VPA status sections for recommendations.
 
 
 ```yaml
@@ -248,7 +246,7 @@ If the VPA updateMode uses something other than `off` then the lowerBound and up
 
 Lets create an VPA in auto mode and send traffic to the hello-world-nginx pods and observe what happens.
 
-VPAs in Auto updateMode won't work with HPA using the same CPU and memory metrics because it would cause a race condition. If HPA objects still exists from previous labs lets delete them to focus on VPAs.
+> Note: VPAs in Auto updateMode won't work with HPA using the same CPU and memory metrics because it would cause a race condition. If HPA objects still exists from previous labs lets delete them to focus on VPAs.
 
 Then lets scale our hello-world-nginx deployment replicas up to three so the VPA can re-deploy our pods if needed.
 
@@ -271,7 +269,7 @@ EOF
 ```
 Again update the load-test deployment environment variable REQUESTS to a different number to trigger a redeployment and the load-test pod to start sending traffic again.
 
-Give it a few minutes and observe the VPA and the hello-world-nginx pods. We should seem them re-deploy based on updated values from the VPA.
+Give it a few minutes and observe the VPA and the hello-world-nginx pods. We should see them re-deploy based on updated values from the VPA.
 
 Scale the load-test deployment down to 0 once it's done.
 
@@ -279,11 +277,11 @@ Scale the load-test deployment down to 0 once it's done.
 
 Have a think what would be good for an app in a production environment. Maybe just getting recommendations to review might be good then you update manually. Having Auto mode on will terminate and restart pods and containers which maybe something your application can't handle in a production environment.
 
-VPAs are not aware of OpenShift cluster infrastructure variables such as node size in terms of memory and CPU. Therefore, it doesn't know whether a recommended pod size will fit your node. Also VPAs are not aware of quoats so it may resize to something bigger than can fit in the current quota.
+VPAs are not aware of OpenShift cluster infrastructure variables such as node size in terms of memory and CPU. Therefore, it doesn't know whether a recommended pod size will fit your node. Also VPAs are not aware of quotas so it may resize to something bigger than can fit in the current quota.
 
 Have a look at the online documentation if you are interested more in VPAs, there are some more advanced options like exempting containers in a pod by using resourcePolicy.
 
-* https://docs.openshift.com/container-platform/4.8/nodes/pods/nodes-pods-vertical-autoscaler.html
+* https://docs.openshift.com/container-platform/4.9/nodes/pods/nodes-pods-vertical-autoscaler.html
 * https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler
 
 ## Pod Disruption Budgets
@@ -305,7 +303,7 @@ Values for minAvailable or maxUnavailable can be expressed as integers or as a p
 
 When you specify the value as a percentage it may not map to an exact number of Pods. If you have 7 Pods and you set minAvailable to "50%", it's not immediately obvious whether that means 3 Pods or 4 Pods must be available. OpenShift will round up to the nearest integer, so in this case, 4 Pods must be available.
 
-A maxUnavailable of 0% or 0 or a minAvailable of 100% or equal to the number of replicas is permitted but can block nodes from being drained. It will also generate alerts for the Operations team who will contact you asking for it to be adjusted. **THIS IS IMPORTANT**, your configuration of a pdb in your project could effect a cluster wide upgrade process. If your using pdb's then be a good neighbor and ensure that it's configured correctly and that you are keeping an eye on it or configured monitoring to ensure the pdb is still valid for the deployment or object it's pointing to.
+A maxUnavailable of 0% or 0 or a minAvailable of 100% or equal to the number of replicas is permitted but can block nodes from being drained. It will also generate alerts for the Operations team who will contact you asking for it to be adjusted. **THIS IS IMPORTANT**, your configuration of a PDB in your project could effect a cluster wide upgrade process. If your using PDBs then be a good neighbor and ensure that it's configured correctly and that you are keeping an eye on it or configured monitoring to ensure the PDB is still valid for the deployment or object it's pointing to.
 
 
 Lets create a pod disruption budget where we always want at least 1 Nginx pod to be available for our deployment. Apply the following config to your project.
@@ -324,19 +322,18 @@ spec:
 
 This indicates to OpenShift that we want at least 1 pod that matches the label Deployment: hello-world-nginx to be available at any given time. This means OpenShift will wait for the pod in one node drain request to be replaced before evicting the pods in a second node drain request.
 
-We can view the pdb with: `oc get pdb`.
+We can view the PDB with: `oc get pdb`.
 
-That's about all we can do for pdb's. They can only really be tested during a node drain event.
-<<<<<<< HEAD
-  
-Please delete the pdb object when you are done with it.
+That's about all we can do for PDB. They can only really be tested during a node drain event.
+
+> Note to delete the PDB object when you are done with it. `oc delete pdb <pdb_name>`
 
 
 ## Pod Anti-Affinity 
 
 Pod anti-affinity can prevent the scheduler from locating a new pod on the same node as pods with the same labels if the label selector on the new pod matches the label on the current pod.
 
-There are two types of pod anti-affinity rules: required and preferred.
+There are two types of pod anti-affinity rules: required and preferred. (You can also check it out with `oc explain pod.spec.affinity.podAffinity`)
 
 * `requiredDuringSchedulingIgnoredDuringExecution`: The scheduler can't schedule the Pod unless the rule is met. This functions like nodeSelector, but with a more expressive syntax.
 
@@ -344,7 +341,9 @@ There are two types of pod anti-affinity rules: required and preferred.
 
 You configure pod anti-affinity through the Pod spec files. You can specify a required rule, a preferred rule, or both. If you specify both, the node must first meet the required rule, then attempts to meet the preferred rule.
 
-Lets update our deployment to add an anti-affinity rule. If there are still HPAs or VPAs in place in your project you should clean them out.
+Lets update our deployment to add an anti-affinity rule.
+
+> Note: If there are still HPAs or VPAs in place in your project you should clean them out.
 
 ```yaml
 .

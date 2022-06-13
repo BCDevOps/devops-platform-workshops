@@ -138,7 +138,7 @@ Trigger Bindings extract field from an event payload and stores them as paramete
 ![triggerbinding](images/pipelines/triggerbinding.png)
 
 1. `branchName` parameter will be pulled from the body of the event, with the assigned value of `ref`
-2. `contenttype` parameter will be pulled from the header of the event, with the assgined value of the `Content-Type` header.
+2. `contenttype` parameter will be pulled from the header of the event, with the assigned value of the `Content-Type` header.
 
 Given the following http request:
 
@@ -160,7 +160,7 @@ User-Agent: Mozilla/5.0
 
 The value of `branchName` would be `main` and the value of `contenttype` would be `application/json`
 
-**NOTE:** Fields in your cooresponding `TriggerTemplate` **must** match fields defined in the `TriggerBinding` in order for the mapping to occur
+**NOTE:** Fields in your corresponding `TriggerTemplate` **must** match fields defined in the `TriggerBinding` in order for the mapping to occur
 
 ### TriggerTemplate
 Trigger Templates receive input from the `TriggerBinding`, and then performs a series of action that result in the initiation of a new pipeline run.
@@ -233,7 +233,7 @@ curl -k -d '{"ref":"main","repository":{"url":"https://github.com/bcgov/pipeline
 http://$HOST
 ```
 
-This should produce output similiar to the following:
+This should produce output similar to the following:
 ```json
 {"eventListener":"maven-build-event-listener","namespace":"ad204f-test","eventListenerUID":"cfad4b21-3fa0-44ad-98b6-5b37fbcac5d6","eventID":"523e43d4-6c92-4379-aac1-cbae2d43a5d0"}
 ```

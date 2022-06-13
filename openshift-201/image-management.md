@@ -66,7 +66,7 @@ Storing signatures
 Push successful
 </pre>
 
-Once the build is complete let's inspect the `ImageStream`.  To do so click on the `Builds -> ImageStreams` item in the left menu then choose `myapp` and select `YAML` or run `oc get is/myapp-$USERNAME -o yaml`.  You should see something similiar to the following:
+Once the build is complete let's inspect the `ImageStream`.  To do so click on the `Builds -> ImageStreams` item in the left menu then choose `myapp` and select `YAML` or run `oc get is/myapp-$USERNAME -o yaml`.  You should see something similar to the following:
 
 ![imagestream](images/image-management/imagestream.png)
 
@@ -107,7 +107,7 @@ Hello world from unknown
 ```
 
 ## Application Configuration
-The `myapp` application has 3 environment variables that can be set to change the ouput of our `hello` endpoint.
+The `myapp` application has 3 environment variables that can be set to change the output of our `hello` endpoint.
 1. `NAME` is who is saying hello
 2. `APP_MSG` message to ouput
 3. `SECRET_APP_MSG` a secret message to output
@@ -118,7 +118,7 @@ There are multiple ways to configure these environment variables in OpenShift
 Environment variables can be set directly on your `Deployement` or `DeploymentConfig`.  
 
 #### Setting Environment Variable
-We can set the `NAME` environment variable on our `myapp` deployment by performtion the following:
+We can set the `NAME` environment variable on our `myapp` deployment by performing the following:
 ```bash
 oc set env deployment/myapp-$USERNAME NAME='YOUR_NAME_HERE'
 ```
