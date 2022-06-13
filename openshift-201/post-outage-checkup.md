@@ -173,6 +173,8 @@ curl http://$MY_HOST/hello
 Hello world from Crash App
 ```
 
+> Note: scale down the application to save resources with `oc scale deployment/crash-app-$USER_NAME --replicas=0`.
+
 ## Checklist
 It is a good idea to create a checklist that has specifics for your application. We recommend that you create an issue template in github for your application which details all the specific things that you'll need to check to feel secure that your app is up and running after an outage.
 
