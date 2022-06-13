@@ -17,10 +17,10 @@ We will setup a sample application and proceed with what steps should be taken a
 
 ### Create a new application 
 ```bash
- oc new-app --name crash-app-$USER_NAME \
+oc new-app --name crash-app-$USER_NAME \
 -i redhat-openjdk18-openshift:1.8 \
- --context-dir=openshift-201/materials/post-outage-checkup/crash-app \
- https://github.com/BCDevOps/devops-platform-workshops
+--context-dir=openshift-201/materials/post-outage-checkup/crash-app \
+https://github.com/BCDevOps/devops-platform-workshops
 
 ```
 
