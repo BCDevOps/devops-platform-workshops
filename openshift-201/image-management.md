@@ -83,9 +83,9 @@ Once the build is complete let's inspect the `ImageStream`.  To do so click on t
 4. The `items` are the associated images to the `latest` tag in this case.  `dockerImageReference` is the SHA identifier that this `ImageStreamTag` currently references and the `image` is the SHA identifier that this `ImageStreamTag` previously referenced.  In this case they are the same because we only have one image generation.
 
 ### Application Status
-Wait for the application to be ready and running:
+Wait for the build to complete and the application pod to be ready and running:
 ```bash
-oc get pods
+oc get pods -w
 
 NAME                    READY   STATUS      RESTARTS   AGE
 myapp-1-build           0/1     Completed   0          10m
@@ -127,12 +127,12 @@ Environment variables can be set directly on your `Deployement` or `DeploymentCo
 #### Setting Environment Variable
 We can set the `NAME` environment variable on our `myapp` deployment by performing the following:
 ```bash
-oc set env deployment/myapp-$USER_NAME NAME='YOUR_NAME_HERE'
+oc set env deployment/myapp-$USER_NAME NAME='<YOUR_NAME_HERE>'
 ```
 
 This should automatically redeploy the app.
 ```bash
-oc get pods
+oc get pods -w
 
 NAME                   READY   STATUS              RESTARTS   AGE
 myapp-77ff765f49-nsqhc 1/1     Running             0          4m27s
@@ -169,7 +169,7 @@ oc set env deployment/myapp-$USER_NAME \
 
 This should automatically redeploy the app.
 ```bash
-oc get pods
+oc get pods -w
 
 NAME                   READY   STATUS              RESTARTS   AGE
 myapp-c97b5b874-zsz2j   1/1     Running             0          4m27s
@@ -204,7 +204,7 @@ oc set env deployment/myapp-$USER_NAME \
 
 This should automatically redeploy the app.
 ```bash
-oc get pods
+oc get pods -w
 
 NAME                   READY   STATUS              RESTARTS   AGE
 myapp-5fd4dcf7c8-9tlkq  1/1     Running             0          4m27s
