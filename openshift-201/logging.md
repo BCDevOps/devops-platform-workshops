@@ -5,11 +5,11 @@
 After completing this section, you should know how to view application logs in Kibana, navigate the list of fields, and create/save queries.
 
 ## Prerequisites
-All resources created in this lab should include your username so you do not clash with other lab participants.  If you set the `$USERNAME` environment variable to your username then you can easily copy/paste the commands below.  Just ensure your username contains only '-', '.' or lowercase alphanumberic characters.
+All resources created in this lab should include your username so you do not clash with other lab participants.  If you set the `$USER_NAME` environment variable to your username then you can easily copy/paste the commands below.  Just ensure your username contains only '-', '.' or lowercase alphanumberic characters.
 
 example:
 ```bash
-export USERNAME=jmacdonald
+export USER_NAME=jmacdonald
 ```
 
 ## Setup
@@ -17,7 +17,7 @@ We will setup a sample application that will produce a log entry every 5 seconds
 
 ### Create a new application 
 ```bash
- oc new-app --name logging-app-$USERNAME \
+ oc new-app --name logging-app-$USER_NAME \
  --context-dir=openshift-201/materials/logging \
  https://github.com/BCDevOps/devops-platform-workshops
 
@@ -38,7 +38,7 @@ You should see output similar to the follow:
 ### Follow Build
 Use the `oc logs` command to check the build logs from the `logging-app` build:
 ```bash
-oc logs -f bc/logging-app-$USERNAME
+oc logs -f bc/logging-app-$USER_NAME
 ```
 <pre>
 ...<em>output omitted</em>...
@@ -62,7 +62,7 @@ Navigate to the Logs tab and click the `Show in Kibana` link
 ![pod-logs-2](images/logging/pod-logs-02.png)
 
 ### First time Setup
-If this is your first time logging in to Kibana you may see a screen to setup a search index.  See the steps in the Logging and Visualizations 101 lab [here](https://github.com/BCDevOps/devops-platform-workshops/blob/801b98ea01582e5585e80f736dcab8aa2dff4c36/101-lab/content/12_logging_and_visualizations.md#access-the-archive-link-from-a-pod)
+If this is your first time logging in to Kibana you may see a screen to setup a search index.  See the steps in the Logging and Visualizations 101 lab [here](https://github.com/BCDevOps/devops-platform-workshops/blob/master/101-lab/content/12_logging_and_visualizations.md#logging-and-visualizations).
 
 
 ### View Logs
@@ -85,7 +85,7 @@ By default you will see something like this:
 ### Fields
 Let's select 2 fields for viewing from the `Available fields` panel on the left.
 
-1. `kubernetes.container_name` - this is the name of the container running in kubernetes.  This should be `logging-app-$USERNAME`
+1. `kubernetes.container_name` - this is the name of the container running in kubernetes.  This should be `logging-app-$USER_NAME`
 2. `message` - is the message from our application
 
 Your screen should look similar to following:
@@ -93,11 +93,11 @@ Your screen should look similar to following:
 ![kibana-selected-fields](images/logging/kibana-selected-fields.png)
 
 ### Queries
-Depending on how many other participants are in the lab you may see other `logging-app-$USERNAME` entries.  To only show your entries add the following in the search bar at the top and hit the `Enter` key or the `Update` button to the right of the search bar:
+Depending on how many other participants are in the lab you may see other `logging-app-$USER_NAME` entries.  To only show your entries add the following in the search bar at the top and hit the `Enter` key or the `Update` button to the right of the search bar:
 ```
-kubernetes.container_name:"logging-app-$USERNAME"
+kubernetes.container_name:"logging-app-$USER_NAME"
 ```
-__NOTE:__ replace $USERNAME with your actual user name
+__NOTE:__ replace $USER_NAME with your actual user name
 
 ![kibana-search](images/logging/kibana-search.png)
 
@@ -110,7 +110,7 @@ If you want to save your query (including the selected fields) click the save bu
 
 Let's say we are only interested in the messages with the number 10 in them.  Change the search terms to be the following:
 ```
-kubernetes.container_name:"logging-app-$USERNAME" AND message:10
+kubernetes.container_name:"logging-app-$USER_NAME" AND message:10
 ```
 __NOTE__ if you aren't seeing results it may have been more than 15 minutes since the entry with the number 10 was logged.  If so, change the timeframe in the upper right corner to `Last 30 minutes` or higher if needed.
 
@@ -123,7 +123,7 @@ Clear out the text in your search bar and then click the `Add a filter +` button
 
 ![kibana-add-filter](images/logging/kibana-add-filter.png)
 
-Choose the `kubernetes.container_name` for the field, `is` as the operator and `logging-app-$USERNAME` (replacing $USERNAME with your username) as the value and then click save.
+Choose the `kubernetes.container_name` for the field, `is` as the operator and `logging-app-$USER_NAME` (replacing $USER_NAME with your username) as the value and then click save.
 
 ![kibana-filter](images/logging/kibana-filter.png)
 
@@ -137,7 +137,7 @@ The queries we did in this lab are pretty simple.  Take a look at the [Kibana Qu
 ### Clean up
 To clean up the lab environment run the following command to delete all of the resources we created:
 ```bash
-oc delete all -l app=logging-app-$USERNAME
+oc delete all -l app=logging-app-$USER_NAME
 
 deployment.apps "logging-app-jmacdonald" deleted
 buildconfig.build.openshift.io "logging-app-jmacdonald" deleted

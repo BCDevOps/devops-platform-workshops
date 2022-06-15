@@ -271,7 +271,7 @@ Again update the load-test deployment environment variable REQUESTS to a differe
 
 Give it a few minutes and observe the VPA and the hello-world-nginx pods. We should see them re-deploy based on updated values from the VPA.
 
-Scale the load-test deployment down to 0 once it's done.
+Scale the load-test deployment down to 0 once it's done, `oc scale deployment/load-test --replicas=0`.
 
 ### Summary 
 
@@ -374,6 +374,8 @@ hello-world-nginx-599d5d8898-58mxv   1/1     Running    10.97.14.47     mcs-silv
 hello-world-nginx-599d5d8898-bgxdr   1/1     Running    10.97.23.120    mcs-silver-app-04.dmz   
 hello-world-nginx-599d5d8898-ph49f   1/1     Running    10.97.132.155   mcs-silver-app-22.dmz   
 ```
+
+> Note: scale down the application to save resources with `oc scale deployment/hello-world-nginx --replicas=0`.
 
 There are some more advanced options with pod affinity and anti-affinity and combining them both. You can also apply some weighting to different rules. See the Kubernetes documentation if you want to play around with some advanced scheduling configurations.
 
