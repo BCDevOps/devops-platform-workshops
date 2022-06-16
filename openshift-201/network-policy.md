@@ -179,7 +179,7 @@ Lets try our curl command again.
 
 `oc rsh hello-world-nginx-599d5d8898-2k9n2 curl -v 10.97.58.168:8080`
 
-We should now see "Hello. world..." returning from the curl command.
+We should now see "Hello, world..." returning from the curl command.
 
 ## Allow from OpenShift Router
 
@@ -212,6 +212,8 @@ Lets try to access the route from our browser, it should be working.
 ## Allow specific ports
 
 #TODO#
+Phil to update this with steps for ACS.
+
 
 ```yaml
 kind: NetworkPolicy
