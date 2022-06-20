@@ -98,10 +98,10 @@
 
 1\. How long are logs stored in Kibana? 
 
-1. Logs are stored indefinitely 
-2. Logs stores build up but then are burned in the winter
-3. Logs are stored for 3 days 
-4. Logs are stored for 14 days
+- Logs are stored indefinitely 
+- Log stores build up annually but then are burned in the winter
+- Logs are stored for 3 days 
+- Logs are stored for 14 days
 
 
 
