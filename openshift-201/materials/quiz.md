@@ -34,7 +34,7 @@
   
 1\. A horizontal autoscaler works by:  
   
--  Adjusting the number of pods based on load  
+- Adjusting the number of pods based on load  
 - Adjusting a pod's CPU and memory usage based on load  
 - Adjusting the resource limit for a pod  
 - All of the above  
@@ -75,7 +75,7 @@
 
 - Keep the size of the image as small as possible
 - The latest tag should always be used to ensure your application stays up to date
-- Don't treat containers as VMs.  Containers should have one process.
+- Don't treat containers as VMs. Containers should have one process.
 - Images should be run as a non-root user
 
 ## Post Outage Checkup
@@ -90,7 +90,7 @@
 2\. Sysdig monitor... (select all that apply): 
 
 - Can monitor your application's health
-- Can otify you of events or issues
+- Can notify you of events or issues
 - Offers urgent technical support
 - Has a dedicated rocketchat channel
 
