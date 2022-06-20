@@ -75,7 +75,7 @@
 
 - Keep the size of the image as small as possible
 - The latest tag should always be used to ensure your application stays up to date
-- Don't treat containers as VMs.  Containers should have one process.
+- Don't treat containers as VMs.  Containers should have one process
 - Images should be run as a non-root user
 
 ## Post Outage Checkup
