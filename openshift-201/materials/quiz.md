@@ -16,16 +16,16 @@
 - Guaranteed class  
 - OpenShift class  
   
-3\. What happens when a pod uses more CPU than the specified limit?  
+3\. What happens when a pod needs more CPU than the specified limit?  
   
-- The pod is killed  
+- The pod is evicted  
 - The pod's cpu usage is throttled  
--  More pods are created to deal with the load  
+- More pods are created to deal with the load  
 - The pod will use unallocated resources from the node  
   
 4\. What happens when a pod uses memory than the specified limit?  
   
-- The pod is killed  
+- The pod is evicted  
 - The pod's memory usage is throttled  
 -  More pods are created to deal with the load  
 - The pod will use unallocated resources from the node
@@ -75,11 +75,7 @@
 
 - Keep the size of the image as small as possible
 - The latest tag should always be used to ensure your application stays up to date
-<<<<<<< HEAD
-- Don't treat containers as VMs.  Containers should have one process
-=======
 - Don't treat containers as VMs. Containers should have one process.
->>>>>>> 5237e55e71d64b582469f8ef959d691ed94c0a55
 - Images should be run as a non-root user
 
 ## Post Outage Checkup
