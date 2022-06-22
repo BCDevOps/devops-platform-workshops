@@ -484,7 +484,7 @@ Important:
 Avoid setting LimitRange constraints that are too high, or ResourceQuota constraints that are too low. A violation of LimitRange constraints prevents pod creation, resulting in error messages. A violation of ResourceQuota constraints prevents a pod from being scheduled to any node. The pod might be created but remain in the pending state.
 
 
-App project in the BC Gov clusters have a default-limits LimitRange that users can’t delete, these specify defaults for containers.
+App projects in the BC Gov clusters have a default-limits LimitRange that users can’t delete, these specify defaults for containers.
 
 ```yaml
 spec:
