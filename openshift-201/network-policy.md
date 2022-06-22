@@ -181,6 +181,69 @@ Lets try our curl command again.
 
 We should now see "Hello, world..." returning from the curl command.
 
+## Allow only from specific Pod & Port
+
+If we want to only allow specific traffic to access a pod on a specific port we can do that too!
+
+Lets add this network policy which applies to only specific pods:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-nginx-2-to-mysql
+spec:
+  podSelector:
+    matchLabels:
+      name: mysql
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              deployment: hello-world-nginx-2
+      ports:
+        - protocol: TCP
+          port: 3306
+
+```
+
+Once we have our network policy in place we'll need to set up some more pods to test. Lets scale our existing hello-world-nginx deployment down to 1 pod to make things more straight forward. Keep in mind if you have any autoscalers in place.
+
+Copy the hello-world-nginx deployment to a new deployment called hello-world-nginx-2 just with 1 replica.
+
+From the developer catalog deploy the `MySQL (Ephemeral)` template. We can use all the default options.
+
+So we should have at least 3 pods running. 1 mysql pod, 1 hello-world-nginx, and 1 hello-world-nginx2 pod.
+
+
+Ok lets do some testing! First lets get our pod list.
+
+```
+oc get pods -o wide 
+NAME                                   READY   STATUS     AGE   IP             NODE                    
+hello-world-nginx-2-6fd5855c9b-q86jz   1/1     Running    17h   10.97.138.81   mcs-silver-app-29.dmz
+hello-world-nginx-599d5d8898-6q67s     1/1     Running    13d   10.97.58.168   mcs-silver-app-44.dmz 
+mysql-1-w7h95                          1/1     Running    17h   10.97.41.145   mcs-silver-app-11.dmz 
+```
+Lets try to connect from our nginx-2 pod to our mysql pod. Your command should look something similar.
+
+`oc rsh hello-world-nginx-2-6fd5855c9b-q86jz curl -v telnet://10.97.41.145:3306`
+
+We should get a response with probably some warnings but we should also see a connected response.
+
+`* Connected to 10.97.41.145 (10.97.41.145) port 3306 (#0)`
+
+Great our rule is working! Lets now test from our hello-world-nginx pod which should NOT work.
+
+`oc rsh hello-world-nginx-599d5d8898-6q67s curl -v telnet://10.97.41.145:3306`
+
+Oh strange that seems to be working also. Ah from above we have a `allow-same-namespace` network policy. Remember network policies are additive so having the allow-same-namespace and this network policy in place means they are working together. The allow-same-namespace is letting all traffic between pods. Let's delete the `allow-same-namespace` network policy now and test again.
+
+`oc rsh hello-world-nginx-599d5d8898-6q67s curl -v telnet://10.97.41.145:3306`
+
+You should see the curl command running but no response is returning. Great! our network policy is now working.
 ## Allow from OpenShift Router
 
 Pod to pod communication is now working but accessing the route is still failing. 
@@ -206,29 +269,6 @@ spec:
 Lets try to access the route from our browser, it should be working.
 
 * https://route-https-ad204f-dev.apps.silver.devops.gov.bc.ca/
-
-
-
-## Allow specific ports
-
-#TODO#
-Phil to update this with steps for ACS.
-
-
-```yaml
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: allow-http-and-https
-spec:
-  podSelector: {}
-  ingress:
-  - ports:
-    - protocol: TCP
-      port: 80
-    - protocol: TCP
-      port: 443
-```
 
 
 ## Links
