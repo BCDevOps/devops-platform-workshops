@@ -66,7 +66,7 @@ spec:
         - protocol: TCP
           port: 5978
 ```
-* **namespace:** network polices are scoped to namespaces 
+* **namespace:** network polices are scoped to namespaces.
 * **podSelector:** selects the grouping of pods to which the policy applies or empty podSelector selects all pods in the namespace.
 * **policyTypes:** list which may include either Ingress, Egress, or both. 
 * **ingress:** each rule allows traffic which matches both the from and ports sections.
@@ -128,7 +128,7 @@ spec:
 ```
 The deny by default network policy is there to enforce the zero trust networking or walled garden pattern. So we start by denying all then build our allow list.
 
-You should still have your hello-world-nginx deployment and pod(s) up and running from a previous lab. If not then fire them up again.
+You should still have your `hello-world-nginx` deployment and pod(s) up and running from a previous lab. If not then fire them up again.
 
 You should also have a service and route pointing to these pods.
 
@@ -141,7 +141,7 @@ hello-world-nginx-599d5d8898-2k9n2   1/1     Running   8d      10.97.128.134   m
 hello-world-nginx-599d5d8898-6q67s   1/1     Running   8d      10.97.58.168    mcs-silver-app-44.dmz  
 ```
 
-Lets test the deny by default network policy and see if we can curl the http server running in one pod from another pod. Update the command below based on your pod name and pod ip address.
+Lets test the `deny-by-default` network policy and see if we can curl the http server running in one pod from another pod. Update the command below based on your pod name and pod ip address.
 
 `oc rsh <pod1 name> curl -v <pod2 ip>:8080`
 
@@ -181,6 +181,33 @@ Lets try our curl command again.
 
 We should now see "Hello, world..." returning from the curl command.
 
+## Allow from OpenShift Router
+
+Pod to pod communication is now working but accessing the route is still failing. 
+
+As network traffic from the route flows through the OpenShift router pods to our http pods we'll need to allow traffic from those pods. We can do that with a `namespaceSelector` that matches the namespace the router pods live in.
+
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-openshift-ingress
+spec:
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          network.openshift.io/policy-group: ingress
+  podSelector: {}
+  policyTypes:
+  - Ingress
+```
+Lets try to access the route from our browser, it should be working.
+
+* https://route-https-ad204f-dev.apps.silver.devops.gov.bc.ca/
+
+
 ## Allow only from specific Pod & Port
 
 If we want to only allow specific traffic to access a pod on a specific port we can do that too!
@@ -209,9 +236,9 @@ spec:
 
 ```
 
-Once we have our network policy in place we'll need to set up some more pods to test. Lets scale our existing hello-world-nginx deployment down to 1 pod to make things more straight forward. Keep in mind if you have any autoscalers in place.
+Once we have our network policy in place we'll need to set up some more pods to test. Lets scale our existing `hello-world-nginx` deployment down to 1 pod to make things more straight forward. Keep in mind if you have any autoscalers in place.
 
-Copy the hello-world-nginx deployment to a new deployment called hello-world-nginx-2 just with 1 replica.
+Copy the `hello-world-nginx` deployment to a new deployment called `hello-world-nginx-2` just with 1 replica.
 
 From the developer catalog deploy the `MySQL (Ephemeral)` template. We can use all the default options.
 
@@ -244,33 +271,6 @@ Oh strange that seems to be working also. Ah from above we have a `allow-same-na
 `oc rsh hello-world-nginx-599d5d8898-6q67s curl -v telnet://10.97.41.145:3306`
 
 You should see the curl command running but no response is returning. Great! our network policy is now working.
-## Allow from OpenShift Router
-
-Pod to pod communication is now working but accessing the route is still failing. 
-
-As network traffic from the route flows through the OpenShift router pods to our http pods we'll need to allow traffic from those pods. We can do that with a `namespaceSelector` that matches the namespace the router pods live in.
-
-
-```yaml
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-from-openshift-ingress
-spec:
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          network.openshift.io/policy-group: ingress
-  podSelector: {}
-  policyTypes:
-  - Ingress
-```
-Lets try to access the route from our browser, it should be working.
-
-* https://route-https-ad204f-dev.apps.silver.devops.gov.bc.ca/
-
-
 ## Links
 
 * Existing documentation and walk through on Network Policy: https://developer.gov.bc.ca/TLDR
