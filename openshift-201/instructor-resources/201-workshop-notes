@@ -93,8 +93,93 @@ Can be used just for the recommender, or have the VPA automatically apply these 
 
 ### Pod Disruption Budgets
 
-For when nodes are getting updated for maintenance. Your pods should have multiple replicas (at least 3), running on multiple nodes of the cluster. This specifies the minimum numbers of replicas to keep available.
+- For when nodes are getting updated for maintenance. Your pods should have multiple replicas (at least 3), running on multiple nodes of the cluster. This specifies the minimum numbers of replicas to keep available.
 
-Don’t set PDB to same as deployment replica count
+- Don’t set PDB to same as deployment replica count
 
-PDB’s only influence scheduled interruptions like upgrades/maintenance, they can’t influence unplanned events like power outages.  The Kamloops data centre has a lot of built in redundancy for power and physical interruptions. 
+- PDB’s only influence scheduled interruptions like upgrades/maintenance, they can’t influence unplanned events like power outages.  The Kamloops data centre has a lot of built in redundancy for power and physical interruptions. 
+
+## OpenShift Pipelines
+
+### What is a CI/CD pipeline
+
+### Cloud Native CI/CD
+- Created like any other OpenShift resource (with YAML/JSON files)
+
+- No orchestrator engine (unlike Jenkins)
+
+### Resources 
+
+- Tasks are the lowest level resource (the task is a pod, with the steps inside the task run in different containers)
+
+- Pipeline run - an instance in time of a pipeline, given specific parameters. 
+
+### Task
+
+### Pipeline
+### Pipeline Run 
+- Not all pipelines will have a 'finally' task
+
+### Workspaces
+
+- A shared volume that can be used to pass data back and forth between tasks. 
+
+### Triggers
+- Triggers are the glue that holds everything together, and make the pipeline automated 
+
+eg. example of an input could be the branch you want to build from
+
+### Sample Pipeline
+
+### Migrating from Jenkins to Tekton
+
+Tekton: Pipeline is kind of like a template, the pipeline run takes the parameters needed and executes them
+
+## Best Practices for Image Management
+
+### Component Parts
+### Version/Tag
+### Building Images
+### Testing
+
+- Unit tests: are the lowest level, testing individual units/functions/modules of an application in isolation. 
+
+- Integration: might interact with an external dependency such as a database. 
+
+- UI (aka Functional Tests): testing a slice fo functionality on the whole system. 
+
+### Security 
+
+### Configuration
+
+- It is really good practice to decouple configuration artifacts from the image content
+- IF you find yourself trying to modify the contents of an image after creating it, stop! The way to make changes is through configuration. 
+
+### ConfigMap
+### Secrets
+### Image Streams
+### Artifactory
+
+## Post Outage Checkup
+### Before an Outage
+### My Application is Down
+### Outage Recovery
+### Pods 
+### Common Problems - Crash Loop Backoff
+### Inspecting Logs
+### Common Problems - Image Pull Backoff 
+### Recovery Checklist
+
+## Application Logging with Kibana
+
+### Kibana Logging
+### Usage
+
+## Network Policy and ACS
+### Networking Policy
+### YAML Structure
+### Selector Behaviour
+### Deny by Default
+### Network Policy & OpenShift SDN 
+### ACS Network Graph - View Network Policies
+### ACS Network Grph - View NEtwork Flows
