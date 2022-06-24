@@ -1,10 +1,10 @@
 <!-- These notes are to support the mural slides for the 201 workshop -->
 
-#201 Workshop Instructor Notes
+# 201 Workshop Instructor Notes
 
-##Resource Management
+## Resource Management
 
-###Setting Pod Limits & Requests
+### Setting Pod Limits & Requests
 Sysdig Blog link-  shows how to create graphs that line up with the numbered/highlighted points in the graphic 
 
 Example has multiple containers in the pod, with their own limits and requests
@@ -156,6 +156,7 @@ Tekton: Pipeline is kind of like a template, the pipeline run takes the paramete
 - IF you find yourself trying to modify the contents of an image after creating it, stop! The way to make changes is through configuration. 
 
 ### ConfigMap
+
 ### Secrets
 ### Image Streams
 ### Artifactory
@@ -168,6 +169,9 @@ Tekton: Pipeline is kind of like a template, the pipeline run takes the paramete
 ### Common Problems - Crash Loop Backoff
 ### Inspecting Logs
 ### Common Problems - Image Pull Backoff 
+
+- Could also be a secret. If there is a pull secret involved, this can be wroth checkign to ensure it is still valid. 
+
 ### Recovery Checklist
 
 ## Application Logging with Kibana
@@ -182,4 +186,4 @@ Tekton: Pipeline is kind of like a template, the pipeline run takes the paramete
 ### Deny by Default
 ### Network Policy & OpenShift SDN 
 ### ACS Network Graph - View Network Policies
-### ACS Network Grph - View NEtwork Flows
+### ACS Network Graph - View Network Flows
