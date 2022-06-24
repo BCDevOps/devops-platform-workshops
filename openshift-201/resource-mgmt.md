@@ -64,7 +64,7 @@ You can use the oc edit command to modify a deployment or a deployment configura
 Let's modify our deployment using the following command:
 
 ```
-[user@host ~]$ oc set resources deployment hello-world-nginx --requests cpu=15m,memory=25Mi --limits cpu=100m,memory=150Mi
+oc set resources deployment hello-world-nginx --requests cpu=15m,memory=25Mi --limits cpu=100m,memory=150Mi
 ```
 
 This will cause the pod to re-deploy with updated resources.
@@ -453,7 +453,7 @@ spec:
 Users can create a limit range resource in the same way as any other OpenShift resource; that is, by passing a YAML or JSON resource definition file to the oc create command:
 
 ```
-[user@host ~]$ oc create --save-config -f dev-limits.yml
+oc create --save-config -f dev-limits.yml
 ```
 
 Red Hat OpenShift Container Platform does not provide an oc create command specifically for limit ranges like it does for resource quotas. The only alternative is to use YAML or JSON files.
