@@ -255,7 +255,7 @@ hello-world-nginx-2-6fd5855c9b-q86jz   1/1     Running    17h   10.97.138.81   m
 hello-world-nginx-599d5d8898-6q67s     1/1     Running    13d   10.97.58.168   mcs-silver-app-44.dmz 
 mysql-1-w7h95                          1/1     Running    17h   10.97.41.145   mcs-silver-app-11.dmz 
 ```
-Lets try to connect from our nginx-2 pod to our mysql pod. Your command should look something similar.
+Lets try to connect from our `hello-world-nginx-2` pod to our mysql pod. Your command should look something similar.
 
 `oc rsh hello-world-nginx-2-6fd5855c9b-q86jz curl -v telnet://10.97.41.145:3306`
 
@@ -263,7 +263,7 @@ We should get a response with probably some warnings but we should also see a co
 
 `* Connected to 10.97.41.145 (10.97.41.145) port 3306 (#0)`
 
-Great our rule is working! Lets now test from our hello-world-nginx pod which should NOT work.
+Great our rule is working! Lets now test from our `hello-world-nginx` pod which should NOT work.
 
 `oc rsh hello-world-nginx-599d5d8898-6q67s curl -v telnet://10.97.41.145:3306`
 
@@ -271,7 +271,7 @@ Oh strange that seems to be working also. Ah from above we have a `allow-same-na
 
 `oc rsh hello-world-nginx-599d5d8898-6q67s curl -v telnet://10.97.41.145:3306`
 
-You should see the curl command running but no response is returning. Great! our network policy is now working.
+You should see the curl command running but no response is returning. Great! Our network policy is now working.
 
 ## ACS Network Graph
 
@@ -292,9 +292,9 @@ We won't go through all the details for `Network Graph` web interface to get a b
 
 ## ACS Simulating Network Policy
 
-ACS allow us to visualize our Network Policy before we apply them. Lets test this out.
+ACS allows us to visualize our Network Policy before we apply them. Lets test this out.
 
-First lets save this network policy to a file locally. Make to update the namespace section.
+First lets save this network policy to a file locally. Make sure to update the namespace section.
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -324,7 +324,6 @@ By hovering over the `hello-world-nginx` deployment in the web UI we should be a
 
 You can close the `Network Policy Simulator` window now. You can apply network policy from ACS but it's best that your network policy YAML are stored with your code and applied via an automated method and not manually. The ACS `Network Policy Simulator` is great to visualize and confirm our network policy is correct before we apply it. 
 
-
 ### Generate network policies
 
 There is also a section of `Network Policy Simulator` that can generate policies for us based on ACS observed network communication flows. There are a couple of points to take note of about this tooling:
@@ -336,7 +335,7 @@ So based on this we probably won't see any generated policy as we will always ha
 
 ## ACS Network flows baseline
 
-ACS will generate a baseline network flow for our deployments this can be viewed from the `Network Graph` section, clicking on a deployment, then `baseline settings`. Again this is handy to visualize but as we have a deny all default network policy in place we shouldn't see too much here that is different that what we set in our network policies. We may see some additional ports here for things like DNS and metrics  .
+ACS will generate a baseline network flow for our deployments this can be viewed from the `Network Graph` section, clicking on a deployment, then `baseline settings`. Again this is handy to visualize but as we have a deny all default network policy in place we shouldn't see too much here that is different that what we set in our network policies. We may see some additional ports here for things like DNS and metrics.
 
 From the `baseline settings` tab you can also click on `simulate baseline as network policy`. This will generate a YAML network policy file with rules for the observed baseline traffic.
 
