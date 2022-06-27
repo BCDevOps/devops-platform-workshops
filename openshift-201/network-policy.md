@@ -16,12 +16,9 @@ When a pod is isolated for egress or ingress, the only allowed connections from 
 
 For a connection from a source pod to a destination pod to be allowed, both the egress policy on the source pod and the ingress policy on the destination pod need to allow the connection. If either side does not allow the connection, it will not happen.
 
+By using network policies declarative YAML this code becomes part of your application, ensuring the consistency of “single source of truth” from your codebase.
+
 **Note:** The current BC Gov OpenShift cluster is configured with OpenShift SDN networking which does not support Egress Network Policies. It's good to understand the options but we currently can't lab and test Egress configurations.
-
-
-
-**todo** 
-By implementing stronger security through declarative code we believe this avoids the anti-pattern of having configuration rules in a separate system - this code becomes part of your application, ensuring the consistency of “single source of truth” from your codebase.
 
 ## Lab Prep
 
