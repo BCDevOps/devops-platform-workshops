@@ -18,6 +18,11 @@ For a connection from a source pod to a destination pod to be allowed, both the 
 
 **Note:** The current BC Gov OpenShift cluster is configured with OpenShift SDN networking which does not support Egress Network Policies. It's good to understand the options but we currently can't lab and test Egress configurations.
 
+
+
+**todo** 
+By implementing stronger security through declarative code we believe this avoids the anti-pattern of having configuration rules in a separate system - this code becomes part of your application, ensuring the consistency of “single source of truth” from your codebase.
+
 ## Lab Prep
 
 If you have any network policies in your project please delete them. If you are doing this from the cli you can do `oc get networkpolicy` and `oc delete networkpolicy`. From the web console you can see networkpolicies under the network tab.
@@ -233,7 +238,6 @@ spec:
       ports:
         - protocol: TCP
           port: 3306
-
 ```
 
 Once we have our network policy in place we'll need to set up some more pods to test. Lets scale our existing `hello-world-nginx` deployment down to 1 pod to make things more straight forward. Keep in mind if you have any autoscalers in place.
@@ -271,8 +275,77 @@ Oh strange that seems to be working also. Ah from above we have a `allow-same-na
 `oc rsh hello-world-nginx-599d5d8898-6q67s curl -v telnet://10.97.41.145:3306`
 
 You should see the curl command running but no response is returning. Great! our network policy is now working.
+
+## ACS Network Graph
+
+Lets now check out Red Hat Advanced Cluster Manager (ACS) and see how we can visualize network policies!
+
+You should be able to log into ACS by navigating to the URL: https://acs.developer.gov.bc.ca
+
+Once logged in you should be able to click on `Network Graph` on the left navigation bar.
+
+![acs network graph](images/network-policy-acs/acs-network-graph.png) 
+
+You will be scoped to see only your projects.
+
+We won't go through all the details for `Network Graph` web interface to get a better understanding please walkthrough the documentation:
+
+* https://docs.openshift.com/acs/3.70/operating/manage-network-policies.html#network-graph-view_manage-network-policies
+
+
+## ACS Simulating Network Policy
+
+ACS allow us to visualize our Network Policy before we apply them. Lets test this out.
+
+First lets save this network policy to a file locally. Make to update the namespace section.
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-nginx-to-mysql
+  namespace: ad204f-dev **Update to your namespace name**
+spec:
+  podSelector:
+    matchLabels:
+      name: mysql
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              deployment: hello-world-nginx
+      ports:
+        - protocol: TCP
+          port: 3306
+```
+
+From the ACS `Network Graph` view click on `Network Policy Simulator` and click on the upload YAML button.
+
+By hovering over the `hello-world-nginx` deployment in the web UI we should be able to see the added network flow that will apply.
+
+You can close the `Network Policy Simulator` window now. You can apply network policy from ACS but it's best that your network policy YAML are stored with your code and applied via an automated method and not manually. The ACS `Network Policy Simulator` is great to visualize and confirm our network policy is correct before we apply it. 
+
+
+### Generate network policies
+
+There is also a section of `Network Policy Simulator` that can generate policies for us based on ACS observed network communication flows. There are a couple of points to take note of about this tooling:
+
+* If a deployment already has a network policy, Red Hat Advanced Cluster Security for Kubernetes does not generate new policies or delete existing policies.
+* Generated policies only restrict traffic to existing deployments.
+
+So based on this we probably won't see any generated policy as we will always have at least 1 deny all network policy in place.
+
+## ACS Network flows baseline
+
+ACS will generate a baseline network flow for our deployments this can be viewed from the `Network Graph` section, clicking on a deployment, then `baseline settings`. Again this is handy to visualize but as we have a deny all default network policy in place we shouldn't see too much here that is different that what we set in our network policies. We may see some additional ports here for things like DNS and metrics  .
+
+From the `baseline settings` tab you can also click on `simulate baseline as network policy`. This will generate a YAML network policy file with rules for the observed baseline traffic.
+
 ## Links
 
 * Existing documentation and walk through on Network Policy: https://developer.gov.bc.ca/TLDR
 * https://docs.openshift.com/container-platform/4.8/networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.html
-
+* https://kubernetes.io/docs/concepts/services-networking/network-policies/
+* https://docs.openshift.com/acs/3.70/operating/manage-network-policies.html
