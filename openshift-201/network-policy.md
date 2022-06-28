@@ -1,6 +1,6 @@
 # Network Policies and ACS
 
-By default, all pods in a project are accessible from other pods and network endpoints. To isolate one or more pods in a project, you can create NetworkPolicy objects in that project to indicate the allowed incoming connections. Project administrators can create and delete NetworkPolicy objects within their own project.
+Without a network policy in place, all pods in a project are accessible from other pods and network endpoints. To isolate one or more pods in a project, you can create NetworkPolicy objects in that project to indicate the allowed incoming connections. Project administrators can create and delete NetworkPolicy objects within their own project. A 'deny by default' policy is automatically created and active in all projects on the platform. Later in this lab we look at how to build a list of allowed list onto the default of denying network connections. 
 
 Network Policies allow you to specify how a pod is allowed to communicate with various network entities.
 
