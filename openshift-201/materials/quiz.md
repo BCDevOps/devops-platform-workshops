@@ -103,5 +103,12 @@
 - Logs are stored for 3 days 
 - Logs are stored for 14 days
 
+## Network Policy & ACS
+
+1\. Network policies control: 
+- Traffic between pods
+- Outbound connections
+- Incoming connections
+- Highway 1 traffic 
 
 
