@@ -39,8 +39,8 @@
 - Adjusting the resource limit for a pod  
 - All of the above  
   
-2\. Which vertical pod autoscaling mode should be used to get resource recommendations?
-
+2\. Which vertical pod autoscaling mode should be used to get resource recommendations only (without applying them)?
+ 
 - Auto
 - Recreate
 - Initial
