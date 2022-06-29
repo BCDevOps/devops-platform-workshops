@@ -2,12 +2,13 @@
 
 ## Resource management:
 
-1\. Our example node has a total of 4000m (4 cores) of CPU and 8000Mi (8GB) of memory. If there is one pod running that requests 700m of cpu and 400Mi of memory, how much cpu and memory remains free to be allocated by the node?  
+1\. Our example node has a total of 4000m (4 cores) of CPU and 8000Mi (8GB) of memory. If there is one pod running on the node that requests 700m of cpu and 400Mi of memory, how much cpu and memory remains free to be allocated by the node?  
   
-- 3300m of CPU & 7600Mi of memory.  
-- 4000m of CPU & 8000Mi of memory.  
-- 3700m of CPU & 7400 Mi of memory.  
-- 3000m of CPU and 7000Mi of memory.  
+- Less than 3300m of CPU & 7600Mi of memory.  
+- 3300m of CPU & 7600Mi of memory.
+- More than 3300m of CPU & 7600Mi of memory.
+- 4000m of CPU & 8000 Mi of memory. 
+ 
   
 2\. If the pod CPU and Memory requests and limits are set to the same non-zero value, what quality of service is being achieved?  
   
