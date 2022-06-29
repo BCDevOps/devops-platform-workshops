@@ -81,7 +81,7 @@
 
 ## Post Outage Checkup
 
-1\. What should you do if you notice your application is down? 
+1\. What should you do first if you notice your application is down? 
 
 - Check the platform services status page
 - DM a platform admin
