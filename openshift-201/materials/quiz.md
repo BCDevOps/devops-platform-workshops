@@ -81,19 +81,20 @@
 
 ## Post Outage Checkup
 
-1\. What should you do first if you notice your application is down? 
+1\. If your application is down and you think it is a problem with the platform, you should... 
 
 - Check the platform services status page
-- DM a platform admin
-- Call 77000
+- Check the #Devops-alerts rocketchat channel
+- Check with other teams to see if they are experiencing problems
 - All of the above
 
-2\. Sysdig monitor... (select all that apply): 
+2\. How can I make troubleshooting an outage easier?
 
-- Can monitor your application's health
-- Can notify you of events or issues
-- Offers urgent technical support
-- Has a dedicated rocketchat channel
+- Set up monitoring and alerts in sysdig
+- Prepare and outage recovery checklist
+- Check the logs
+- All of the above
+
 
 ## Kibana Logging
 
