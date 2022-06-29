@@ -23,7 +23,7 @@
 - More pods are created to deal with the load  
 - The pod will use unallocated resources from the node  
   
-4\. What happens when a pod uses memory than the specified limit?  
+4\. What happens when a pod uses more memory than the specified limit?  
   
 - The pod is evicted  
 - The pod's memory usage is throttled  
