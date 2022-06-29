@@ -56,12 +56,12 @@
 - Change Interface / Change Directory
 - Cheese Intolerance / Cheese Disaster
 
-2\. Which of the following statements is incorrect: 
+2\. Which of the following statements is INCORRECT: 
 
-- A pipeline step consists of tasks
-- A pipleline task consists of steps
-- A pipeline runs with no CI/CD engine to manage and maintain
-- Pipeline tasks run on different pod 
+- A tekton pipeline step consists of tasks
+- A tekton pipleline task consists of steps
+- A tekton pipeline runs with no CI/CD engine to manage and maintain
+- Tekton pipeline tasks run on different pods
 
 ## Best Practices for Image Management
 
