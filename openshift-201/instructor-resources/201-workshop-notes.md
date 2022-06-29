@@ -13,10 +13,10 @@ Requests allow the schedule to place the pod onto a node. Request values should 
 
 Limits set the maximum resources that your container can use, and kubernetes will take action (throttling CPU, terminating pods OOM). 
 
-###Kubernetes Resource Requests and Limits
+### Kubernetes Resource Requests and Limits
 Nodes can be overcommitted as it is unlikely that all pods will be operating at 100% at the same time. Requests reserve a guaranteed amount of resources. In normal circumstances your pods will be able to run close to their limit values. 
 
-###Right Sizing Requests and Limits
+### Right Sizing Requests and Limits
 
 There is no magic button to determine ideal resource usage in OpenShift, it will take some experimentation and adjustment. 
 
