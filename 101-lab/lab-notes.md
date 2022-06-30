@@ -138,4 +138,7 @@ The day after the training, the lab has a kick-off meeting, during which we set 
    - UI: <https://app.sysdigcloud.com/>
    - rocketchat channel: #devops-sysdig
 - Platform Status page to let you know if any OpenShift Clusters or platform services are experiencing an outage: <https://status.developer.gov.bc.ca/>
+** Stack Overflow** 
+- BC Government's Stack Overflow instance, a good place to ask/answer questions, or search for answers <https://stackoverflow.developer.gov.bc.ca/>
+
 ```
