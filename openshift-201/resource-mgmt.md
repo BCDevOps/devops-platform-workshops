@@ -78,9 +78,27 @@ Let's expose our deployment from above with a service and a route.
 * Expose the deployment with a service, the easiest way would be: `oc expose deployment/hello-world-nginx`
 * Create an secure route with edge TLS termination from this service, using the default host and TLS certs provided by the cluster: `oc create route edge --service=hello-world-nginx`
 
-Now that our Nginx web server has a route we can access, we can generate some traffic to it and see how our requests and limits settings work.
+Now that our nginx web server has a route we can access, we can generate some traffic to it and see how our requests and limits settings work. First, let's create a network policy to allow ingress to our pods. 
 
-Create a new deployment for load testing. This will deploy an httpd container and use the ab (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment that will trigger a pod redeployment to run the load test again. Update the deployment below with the url to your Nginx web server under the `SERVICE_HOST` variable.
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-openshift-ingress
+  labels:
+    app: 201-demo
+spec:
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              network.openshift.io/policy-group: ingress
+  podSelector: {}
+  policyTypes:
+    - Ingress
+```
+
+Next, create a new deployment for load testing. This will deploy an httpd container and use the ab (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment that will trigger a pod redeployment to run the load test again. Update the deployment below with the url to your nginx web server under the `SERVICE_HOST` variable.
 
 ```yaml
 kind: Deployment
