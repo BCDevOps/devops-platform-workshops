@@ -42,7 +42,7 @@ Alternativly, navigate to the [Openshift CLI Mirror](https://mirror.openshift.co
 
 > For Linux/Mac users that may be working with multiple versions of `oc`, it is helpful to have both versions of `oc` (3.xx/4.xx) on your machine. You can create an `alias` to `oc 3.xx` instead of adding it to your path. This way you can utilize the different versions for different OpenShift environment.
 
-2. Unpack `oc` into a place that is easily reference-able from a command line interface or add it to your `PATH`
+3. Unpack `oc` into a place that is easily reference-able from a command line interface or add it to your `PATH`
 
 ## Login with OC command line
 
