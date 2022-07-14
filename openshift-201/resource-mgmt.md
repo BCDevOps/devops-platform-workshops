@@ -59,7 +59,7 @@ spec:
 
 ```
 
-You can use the oc edit command to modify a deployment or a deployment configuration, and ensure you use the correct indentation. Indentation mistakes can result in the editor refusing to save changes. To avoid indentation issues, you can use the oc set resources command to specify resource requests and limits. 
+You can use the `oc edit` command to modify a deployment or a deployment configuration, and ensure you use the correct indentation. Indentation mistakes can result in the editor refusing to save changes. To avoid indentation issues, you can use the `oc set resources` command to specify resource requests and limits. 
 
 Let's modify our deployment using the following command:
 
@@ -98,7 +98,7 @@ spec:
     - Ingress
 ```
 
-Next, create a new deployment for load testing. This will deploy an httpd container and use the ab (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment that will trigger a pod redeployment to run the load test again. Update the deployment below with the url to your nginx web server under the `SERVICE_HOST` variable.
+Next, create a new deployment for load testing. This will deploy an httpd container and use the `ab` (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment that will trigger a pod redeployment to run the load test again. Update the deployment below with the url to your nginx web server under the `SERVICE_HOST` variable.
 
 ```yaml
 kind: Deployment
@@ -231,7 +231,7 @@ Limits should not be set to less than the expected peak container cpu/memory usa
 
 Ensure application is tuned with respect to configured request and limit values, if appropriate. This step is particularly relevant to applications which pool memory, such as the JVM. 
 
-Try adjusting the limits and requests on our web server pod and running the load test again. Observe the results in the openshift dashboards and confirm the pod is not getting throttled. You can consult the ab program details as well - https://httpd.apache.org/docs/2.4/programs/ab.html and set the values to something your app/web server would be expecting at peak usage.
+Try adjusting the limits and requests on our web server pod and running the load test again. Observe the results in the openshift dashboards and confirm the pod is not getting throttled. You can consult the `ab` program details as well - https://httpd.apache.org/docs/2.4/programs/ab.html and set the values to something your app/web server would be expecting at peak usage.
 
 **Summary**
 
@@ -243,7 +243,7 @@ If the limit is set just right = your pod/containers will have some room to grow
 
 ## Viewing Requests, Limits, and Actual Usage
 
-The oc describe pod command displays requests and limits.
+The `oc describe pod` command displays requests and limits.
 
 ```
 [user@host ~]$ oc describe pods
@@ -327,7 +327,7 @@ spec:
   - NotTerminating
   - NotBestEffort
 ```
-Use the `oc get resourcequota` command to list available quotas, and use the oc describe resourcequota command to view usage statistics related to any hard limits defined in the quota, for example:
+Use the `oc get resourcequota` command to list available quotas, and use the `oc describe resourcequota` command to view usage statistics related to any hard limits defined in the quota, for example:
 
 ```
 NAME                         AGE     REQUEST                                                           LIMIT
@@ -474,9 +474,9 @@ Users can create a limit range resource in the same way as any other OpenShift r
 oc create --save-config -f dev-limits.yml
 ```
 
-Red Hat OpenShift Container Platform does not provide an oc create command specifically for limit ranges like it does for resource quotas. The only alternative is to use YAML or JSON files.
+Red Hat OpenShift Container Platform does not provide an `oc create` command specifically for limit ranges like it does for resource quotas. The only alternative is to use YAML or JSON files.
 
-Use the oc describe limitrange command to view the limit constraints enforced in a project:
+Use the `oc describe limitrange` command to view the limit constraints enforced in a project:
 
 ```
 [user@host ~]$ oc describe limitrange dev-limits
