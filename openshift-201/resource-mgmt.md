@@ -59,7 +59,7 @@ spec:
 
 ```
 
-You can use the `oc edit` command to modify a deployment or a deployment configuration, and ensure you use the correct indentation. Indentation mistakes can result in the editor refusing to save changes. To avoid indentation issues, you can use the `oc set resources` command to specify resource requests and limits. 
+You can use the `oc edit` command to modify a deployment or a deployment configuration. Ensure you use the correct indentation. Indentation mistakes can result in the editor refusing to save changes. To avoid indentation issues, you can use the `oc set resources` command to specify resource requests and limits.
 
 Let's modify our deployment using the following command:
 
@@ -76,7 +76,7 @@ If a resource quota applies to a resource request, then the pod should define a 
 Let's expose our deployment from above with a service and a route.
 
 * Expose the deployment with a service, the easiest way would be: `oc expose deployment/hello-world-nginx`
-* Create an secure route with edge TLS termination from this service, using the default host and TLS certs provided by the cluster: `oc create route edge --service=hello-world-nginx`
+* Create a secure route with edge TLS termination from this service, using the default host and TLS certs provided by the cluster: `oc create route edge --service=hello-world-nginx`
 
 Now that our nginx web server has a route we can access, we can generate some traffic to it and see how our requests and limits settings work. First, let's create a network policy to allow ingress to our pods. 
 
@@ -98,7 +98,7 @@ spec:
     - Ingress
 ```
 
-Next, create a new deployment for load testing. This will deploy an httpd container and use the `ab` (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment that will trigger a pod redeployment to run the load test again. Update the deployment below with the url to your nginx web server under the `SERVICE_HOST` variable.
+Next, create a new deployment for load testing. This will deploy an httpd container and use the `ab` (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment, that will trigger a pod redeployment to run the load test again. Update the deployment below with the URL to your nginx web server under the `SERVICE_HOST` variable.
 
 ```yaml
 kind: Deployment
@@ -136,15 +136,15 @@ spec:
 ```
 **Note:** As we don't set limits and request specifically in the deployment the default LimitRange will apply. Run `oc describe LimitRange/default-limits` to see what is set as defaults.
 
-From the web console if you change to developer view and navigate to the Observe tab select your nginx deployment. You should see the load-test pod traffic increasing CPU and Memory usage metrics for nginx workload.
+From the web console, change to Developer view and navigate to the Observe tab. From the Workload dashboard, select your nginx deployment. You should see the load-test pod traffic increasing CPU and Memory usage metrics for the nginx workload.
 
 ![cpu load](images/resource-mgmt/pod-load-cpu.png) 
 
-From the web console select your hello-world-nginx pod and navigate to the Metrics tab. We can see the traffic we are sending our pod is affecting the cpu quite a bit. In this example we can see the actual cpu usage is well over the request we set and over 100% of the limit we set.
+From the web console, select your hello-world-nginx pod and navigate to the Metrics tab. We can see the traffic we are sending our pod is affecting the CPU quite a bit. In this example we can see the actual CPU usage is well over the request we set and over 100% of the limit we set.
 
 ![cpu quota](images/resource-mgmt/pod-load-cpu-quota.png)
 
-Because the actual cpu usage is higher than our cpu limit openshift/kubernetes will throttle the available cpu to our pod. This would affecting the performance of our web server and cause slow response times of our application.
+Because the actual CPU usage is higher than our CPU limit, OpenShift/Kubernetes will throttle the available CPU to our pod. This would affect the performance of our web server and cause slow response times in our application.
 
 ![cpu throttle](images/resource-mgmt/pod-load-cpu-throttle.png)
 
@@ -205,27 +205,27 @@ NAME       READY   STATUS    RESTARTS   AGE
 frontend   0/2     Evicted   0          10s
 ```
 
-## Managing application cpu/memory strategy
+## Managing application CPU/memory strategy
 
-The steps for sizing application cpu/memory on OpenShift Container Platform are as follows:
+The steps for sizing application CPU/memory on OpenShift Container Platform are as follows:
 
-1. Determine expected container cpu/memory usage
+1. Determine expected container CPU/memory usage
 
-Determine expected mean and peak container cpu/memory usage, empirically if necessary (for example, by separate load testing). Remember to consider all the processes that may potentially run in parallel in the container: for example, does the main application spawn any ancillary scripts?
+Determine expected mean and peak container CPU/memory usage, empirically if necessary (for example, by separate load testing). Remember to consider all the processes that may potentially run in parallel in the container: for example, does the main application spawn any ancillary scripts?
 
 2. Determine risk appetite
 
-Determine risk appetite for eviction or throttling. If the risk appetite is low, the container should request cpu/memory according to the expected peak usage plus a percentage safety margin. Protect your critical pods setting values so they are classified as Guaranteed. If the risk appetite is higher, it may be more appropriate to request cpu/memory according to the expected mean usage.
+Determine risk appetite for eviction or throttling. If the risk appetite is low, the container should request CPU/memory according to the expected peak usage plus a percentage safety margin. Protect your critical pods setting values so they are classified as Guaranteed. If the risk appetite is higher, it may be more appropriate to request CPU/memory according to the expected mean usage.
 
-3. Set container cpu/memory request
+3. Set container CPU/memory request
 
-Set container cpu/memory request based on the above. The more accurately the request represents the application cpu/memory usage, the better. If the request is too high, cluster and quota usage will be inefficient. If the request is too low, the chances of application eviction increase.
+Set container CPU/memory request based on the above. The more accurately the request represents the application CPU/memory usage, the better. If the request is too high, cluster and quota usage will be inefficient. If the request is too low, the chances of application eviction increase.
 
-4. Set container cpu/memory limit.
+4. Set container CPU/memory limit.
 
-Setting a limit has the effect of immediately killing a container process or cpu throttling if the combined cpu or memory usage of all processes in the container exceeds the limit, and is therefore a mixed blessing. On the one hand, it may make unanticipated excess cpu/memory usage obvious early ("fail fast"); on the other hand it also terminates processes abruptly.
+Setting a limit has the effect of immediately killing a container process or CPU throttling if the combined CPU or memory usage of all processes in the container exceeds the limit, and is therefore a mixed blessing. On the one hand, it may make unanticipated excess CPU/memory usage obvious early ("fail fast"); on the other hand it also terminates processes abruptly.
 
-Limits should not be set to less than the expected peak container cpu/memory usage plus a percentage safety margin.
+Limits should not be set to less than the expected peak container CPU/memory usage plus a percentage safety margin.
 
 5. Ensure application is tuned
 
@@ -352,7 +352,7 @@ pods             2       100
 requests.cpu     60m     500m
 requests.memory  276Mi   2Gi
 ```
-Also getting the yaml output of a quota will show the status of the quota.
+Also getting the YAML output of a quota will show the status of the quota.
 
 ```yaml
 status:
@@ -391,8 +391,8 @@ Adding a scope to a quota restricts the set of resources to which that quota can
 |---|---|
 |Terminating | Match pods where spec.activeDeadlineSeconds >= 0.|
 | NotTerminating | Match pods where spec.activeDeadlineSeconds is nil.|
-| BestEffort | Match pods that have best effort quality of service for either cpu or memory.|
-| NotBestEffort| Match pods that do not have best effort quality of service for cpu and memory.|
+| BestEffort | Match pods that have best effort quality of service for either CPU or memory.|
+| NotBestEffort| Match pods that do not have best effort quality of service for CPU and memory.|
 
 You'll notice there are a few quotas within the BC Gov OpenShift projects. Have a look at quota details and see how much has been consumed.
 ## Limit Ranges
