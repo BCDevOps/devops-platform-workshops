@@ -56,11 +56,26 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
   rocketchat-[username]-7-k82w2    0/1       Running   0          1m        10.97.40.235    mcs-silver-app-12.dmz
   ```
 
-- Delete single pod, refresh the URL of application and notice that the application is served by the surviving pods
+- Delete single pod, refresh the URL of application and notice that the application is served by the surviving pods:
   ```oc:cli
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username] -o name | head -1 | xargs -I {} oc -n [-dev] delete {}
+  ```
+- **Mac OSX**
+  You can use [homebrew] to install the watch command on OSX. 
 
-  watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].[namespace].apps.silver.devops.gov.bc.ca/api/info
+  To install homebrew run this command in your terminal: 
+  ```/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
+  Once homebrew is installed, install the watch command needed for the next step by running:
+  ```brew install watch
+  ```
+   
+  ```watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].[namespace].apps.silver.devops.gov.bc.ca/api/info
+  ```
+<!---should above command be: ```watch -dg -n 1 curl -fsSL https://rocketchat-[username].[-dev].apps.silver.devops.gov.bc.ca/api/info
+  ```-->
+- **Windows**
+  Windows users can skip the 'watch' steps and monitor their pods from the OpenShift console. 
 
   # Notice that eventually your RocketChat will be back to having 2 pods
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username]
