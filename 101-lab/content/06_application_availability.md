@@ -64,18 +64,22 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
   You can use [homebrew] to install the watch command on OSX. 
 
   To install homebrew run this command in your terminal: 
-  ```/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```oc:cli
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   ```
   Once homebrew is installed, install the watch command needed for the next step by running:
-  ```brew install watch
+  ```oc:cli
+  brew install watch
   ```
    
-  ```watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].apps.silver.devops.gov.bc.ca/api/info
+  ```oc:cli
+  watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].apps.silver.devops.gov.bc.ca/api/info
   ```
 - **Windows**
   Windows users can skip the 'watch' steps and monitor their pods from the OpenShift console. 
 
   # Notice that eventually your RocketChat will be back to having 2 pods
+  ```oc:cli
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username]
   ```
   
