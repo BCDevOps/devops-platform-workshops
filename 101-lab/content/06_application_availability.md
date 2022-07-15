@@ -72,7 +72,7 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
    
   ```watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].[namespace].apps.silver.devops.gov.bc.ca/api/info
   ```
-<!---should above command be: ```watch -dg -n 1 curl -fsSL https://rocketchat-[username].[-dev].apps.silver.devops.gov.bc.ca/api/info
+<!---should above command be: ```watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].apps.silver.devops.gov.bc.ca/api/info
   ```-->
 - **Windows**
   Windows users can skip the 'watch' steps and monitor their pods from the OpenShift console. 
