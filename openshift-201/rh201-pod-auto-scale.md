@@ -31,7 +31,7 @@ NAME                REFERENCE                      TARGETS    MINPODS   MAXPODS 
 hello-world-nginx   Deployment/hello-world-nginx   600%/80%   1         5          4        
 ```
 
-The TARGETS column is the metrics on pods as a percentage of cpu request at current/target.
+The TARGETS column is the metrics on pods as a percentage of CPU request at current/target.
 
 The horizontal pod autoscaler initially has a value of `<unknown>` in the TARGETS column. It might take up to five minutes before `<unknown>` changes to display a percentage for current usage.
 
