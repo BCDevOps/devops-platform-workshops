@@ -23,7 +23,7 @@ You will need to determine what metric is best for your application to trigger s
 
 Run load-test to generate some traffic to nginx server `oc scale deployment load-test --replicas=1`. You should see the number of pods increase as the CPU metrics grow.
 
-To get information about horizontal pod autoscaler resources in the current project, use the oc get command.
+To get information about horizontal pod autoscaler resources in the current project, use the `oc get hpa` command.
 
 ```yaml
 oc get hpa 
@@ -33,7 +33,7 @@ hello-world-nginx   Deployment/hello-world-nginx   600%/80%   1         5       
 
 The TARGETS column is the metrics on pods as a percentage of cpu request at current/target.
 
-The horizontal pod autoscaler initially has a value of `<unknown>` in the TARGETS column. It might take up to five minutes before <unknown> changes to display a percentage for current usage.
+The horizontal pod autoscaler initially has a value of `<unknown>` in the TARGETS column. It might take up to five minutes before `<unknown>` changes to display a percentage for current usage.
 
 A persistent value of `<unknown>` in the TARGETS column might indicate that the deployment does not define resource requests for the metric. The horizontal pod autoscaler will not scale these pods.
 
