@@ -110,7 +110,7 @@ Specify averageUtilization and a target average memory utilization over all the 
 
 For memory-based autoscaling, memory usage must increase and decrease proportionally to the replica count. On average an increase in replica count must lead to an overall decrease in memory (working set) usage per-pod. A decrease in replica count must lead to an overall increase in per-pod memory usage.
 
-Apply the `hello-world-nginx-mem-hpa` from above to your project. Trigger a re-deploy of the load-test deployment.
+Replace your existing HPA with the `hello-world-nginx-mem-hpa` spec from above in your project. Trigger a re-deploy of the load-test deployment.
 
 Describe the HPA.
 
