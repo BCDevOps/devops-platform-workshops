@@ -177,14 +177,14 @@ The VPA custom resources (CR) must be in the same project as the pods you want t
 * Off, only provides recommended resource limits and requests, allowing you to manually apply the recommendations. The off mode does not update pods.
 
 
-Lets first confirm that the VPA operator is installed in our cluster, we should see 2 results.
+Let's first confirm that the VPA operator is installed in our cluster, we should see 2 results.
 
 ```
 oc api-resources | grep vpa
 ```
 ### Update Mode Off
 
-Lets now create a VPA with update mode turned to "Off" so we just get resource recommendations.
+Let's now create a VPA with update mode turned to "Off" so we just get resource recommendations.
 
 Create a VPA using the below yaml:
 
@@ -244,13 +244,13 @@ If the VPA updateMode uses something other than `off` then the lowerBound and up
 
 ### Update Mode Auto
 
-Lets create an VPA in auto mode and send traffic to the hello-world-nginx pods and observe what happens.
+Let's create an VPA in auto mode and send traffic to the hello-world-nginx pods and observe what happens.
 
-> Note: VPAs in Auto updateMode won't work with HPA using the same CPU and memory metrics because it would cause a race condition. If HPA objects still exists from previous labs lets delete them to focus on VPAs.
+> Note: VPAs in Auto updateMode won't work with HPA using the same CPU and memory metrics because it would cause a race condition. If HPA objects still exists from previous labs, let's delete them to focus on VPAs.
 
-Then lets scale our hello-world-nginx deployment replicas up to three so the VPA can re-deploy our pods if needed.
+Then let's scale our hello-world-nginx deployment replicas up to three so the VPA can re-deploy our pods if needed.
 
-Then lets create another VPA in Auto updateMode:
+Then let's create another VPA in Auto updateMode:
 
 ```yaml
 cat <<EOF | oc apply -f -
@@ -306,7 +306,7 @@ When you specify the value as a percentage it may not map to an exact number of 
 A maxUnavailable of 0% or 0 or a minAvailable of 100% or equal to the number of replicas is permitted but can block nodes from being drained. It will also generate alerts for the Operations team who will contact you asking for it to be adjusted. **THIS IS IMPORTANT**, your configuration of a PDB in your project could effect a cluster wide upgrade process. If your using PDBs then be a good neighbor and ensure that it's configured correctly and that you are keeping an eye on it or configured monitoring to ensure the PDB is still valid for the deployment or object it's pointing to.
 
 
-Lets create a pod disruption budget where we always want at least 1 Nginx pod to be available for our deployment. Apply the following config to your project.
+Let's create a pod disruption budget where we always want at least 1 Nginx pod to be available for our deployment. Apply the following config to your project.
 
 ```yaml
 apiVersion: policy/v1beta1
@@ -341,7 +341,7 @@ There are two types of pod anti-affinity rules: required and preferred. (You can
 
 You configure pod anti-affinity through the Pod spec files. You can specify a required rule, a preferred rule, or both. If you specify both, the node must first meet the required rule, then attempts to meet the preferred rule.
 
-Lets update our deployment to add an anti-affinity rule.
+Let's update our deployment to add an anti-affinity rule.
 
 > Note: If there are still HPAs or VPAs in place in your project you should clean them out.
 
