@@ -136,7 +136,7 @@ spec:
 ```
 **Note:** As we don't set limits and request specifically in the deployment the default LimitRange will apply. Run `oc describe LimitRange/default-limits` to see what is set as defaults.
 
-From the web console, change to Developer view and navigate to the Observe tab. From the Workload dashboard, select your nginx deployment. You should see the load-test pod traffic increasing CPU and Memory usage metrics for the nginx workload.
+From the web console, change to Developer view and navigate to the Observe tab. From the Workload dashboard, select your nginx deployment. You should see the load-test pod traffic increasing CPU and memory usage metrics for the nginx workload.
 
 ![cpu load](images/resource-mgmt/pod-load-cpu.png) 
 
