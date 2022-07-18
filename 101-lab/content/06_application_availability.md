@@ -41,32 +41,32 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
 - Notice the balancing across nodes by exploring the details of each pod
 ![](./images/04_app_availability_06.png)
 
-  - Or from the CLI notice the hosts the pod runs on (in the last field)
+- Or from the CLI notice the hosts the pod runs on (in the last field)
 
-  ```oc:cli
-  oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username] -o wide
-  ```
-  you can also simply combine with grep:
-  ```
-  oc -n [-dev] get pods -o wide | grep rocketchat-[username]
-  ```
-  - The output should look similar to this:
-  ```
+```oc:cli
+oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username] -o wide
+```
+you can also simply combine with grep:
+```
+oc -n [-dev] get pods -o wide | grep rocketchat-[username]
+```
+- The output should look similar to this:
+```
   rocketchat-[username]-7-k6kcc    1/1       Running   0          16m       10.97.40.235    mcs-silver-app-11.dmz
   rocketchat-[username]-7-k82w2    0/1       Running   0          1m        10.97.40.235    mcs-silver-app-12.dmz
-  ```
+```
 
-- Delete single pod, refresh the URL of application and notice that the application is served by the surviving pods:
-  ```oc:cli
+### Delete single pod, refresh the URL of application and notice that the application is served by the surviving pods:
+```oc:cli
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username] -o name | head -1 | xargs -I {} oc -n [-dev] delete {}
-  ```
-- **Mac OSX**
-  You can use [homebrew] to install the watch command on OSX. 
+```
+- **Mac OS X**
+    You can use [homebrew](https://brew.sh/) to install the watch command on OSX. 
 
-  To install homebrew run this command in your terminal: 
-  ```oc:cli
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  ```
+    To install homebrew run this command in your terminal: 
+    ```oc:cli
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
   Once homebrew is installed, install the watch command needed for the next step by running:
   ```oc:cli
   brew install watch
@@ -75,20 +75,24 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
   watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].apps.silver.devops.gov.bc.ca/api/info
   ```
 - **Windows**
-  Windows users can skip the 'watch' steps and monitor their pods from the OpenShift console. 
+    Windows users can skip the 'watch' steps and monitor their pods from the OpenShift console. 
 
-  # Notice that eventually your RocketChat will be back to having 2 pods
-  ```oc:cli
+### Notice that eventually your RocketChat will be back to having 2 pods
+```oc:cli
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username]
-  ```
+```
 - Perform deployment, refresh the URL of application and notice that the application is served by the surviving pods
-  ```oc:cli
+```oc:cli
   oc -n [-dev] rollout latest deployment/rocketchat-[username]
-  
+```
+
+- **Mac OS X**  
+  ```oc:cli  
   # Monitor pods being created and deleted; and
   watch -dg -n 1 -x oc -n [-dev] get pods -l deployment=rocketchat-[username]
 
   # From another terminal, monitor RocketChat response
   watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].[namespace].apps.silver.devops.gov.bc.ca/api/info
-
   ```
+- **Windows**
+    Windows users can skip the 'watch' steps and monitor their pods from the OpenShift console.
