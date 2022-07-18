@@ -71,7 +71,6 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
   ```oc:cli
   brew install watch
   ```
-   
   ```oc:cli
   watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].apps.silver.devops.gov.bc.ca/api/info
   ```
@@ -82,7 +81,6 @@ oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
   ```oc:cli
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username]
   ```
-  
 - Perform deployment, refresh the URL of application and notice that the application is served by the surviving pods
   ```oc:cli
   oc -n [-dev] rollout latest deployment/rocketchat-[username]
