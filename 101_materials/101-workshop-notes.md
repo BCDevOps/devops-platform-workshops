@@ -69,3 +69,34 @@ These notes are a work in progress, designed to support facilitators and student
 ### App Availability
 ### Recap: what have we covered so far?
 
+## Configuring Builds and Deploys 
+### Configuring Builds and Deploys 
+### Designing Apps for Configuration
+### What's wrong with this app?
+### ConfigMaps
+### Secrets
+### Environment Variables
+### Adding Storage
+### Persistent Volume Claims Spec
+### PVC Access Mode Use Cases 
+### Persistent Volume Claim (PVC) Spec 
+### Storage Services
+### Database Utilities 
+### Recap: what have we covered so far?
+
+## ARCHITECTING A WILDFIRE API
+
+### What is security and why should you care?
+### Platform Security Tools
+### Development Security Tools
+### Where To Get Help
+### Recap: what have we covered so far?
+
+## Application Day 2 Operations 
+### Event Streams
+### Debugging Pods
+### Logging and Visualizations
+### Recap: what have we covered so far?
+
+## Next Steps 
+### Where to Further Your Learning
