@@ -1,6 +1,6 @@
 # OpenShift 101 Notes
 
-These notes are a work in progress, designed to support facilitators and students with the workshop content found on the [OpenShift 101 mural board](https://app.mural.co/t/platformservices5977/m/platformservices5977/1646945371597/a8a55e85f341c492d8ef9c656f2381115d6b5c65?sender=uf0df5317d8dbea9ee48c7230). These notes include material covered verbally when these slides are presented. 
+These notes are a work in progress. They are designed to support facilitators and students with the workshop content found on the [OpenShift 101 mural board](https://app.mural.co/t/platformservices5977/m/platformservices5977/1646945371597/a8a55e85f341c492d8ef9c656f2381115d6b5c65?sender=uf0df5317d8dbea9ee48c7230). These notes include material covered verbally when these slides are presented. 
 
 ## Welcome and Introduction 
 
