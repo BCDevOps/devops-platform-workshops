@@ -2,15 +2,15 @@
 
 # Welcome to the Openshift 101 Lab
 
-This lab has been designed as a do-it-at-your-own pace set of exercises. Essentially you are provided a set of training namespaces in an Openshift Environment to perform your work. You are apart of a cohort! So share, collaborate, and problem solve together as you would if you were all apart of the same project team :) 
+This lab has been designed as a do-it-at-your-own pace set of exercises. These exercsises are designed to support the material covered in the OpenShift 101 Workshop. Refer back to the [OpenShift 101 mural slides](https://app.mural.co/invitation/mural/platformservices5977/1646945371597?sender=uf0df5317d8dbea9ee48c7230&key=53ce5618-7a78-4548-b12c-c3495babe255) as you work through the lab. 
+
+During the lab period,  you are provided a set of training namespaces in an OpenShift environment to perform your work. You are apart of a cohort! So share, collaborate, and problem solve together as you would if you were all apart of the same project team :) 
 
 ## Important Notes
 
 The lab follows a continuous improvement model. This means we track suggestions, feature improvements, bugs, and typos in github. If you have any issues that are outside of the planned experience for this lab please create an issue so we can improve this workshop for others. 
 
 [You can find issues here](https://github.com/BCDevOps/devops-platform-workshops/issues/new?template=101-lab-issue.md&title=101+Lab+Questions%2FBugs)
-
-
 
 ## Get prepared for
 
@@ -25,4 +25,22 @@ The OCP 101 Lab was initially delivered as a 2 day session pre-covid. The delive
 
 You are not alone! The lab, when scheduled, has at least one touch point scheduled mid way to address any questions/concerns. There is also a RocketChat channel that will be created specifically for the scheduled lab to be used by the cohort and facilitators. 
 
+## Table of Contents: 
 
+* [Overview](./00_overview.md)
+* [Setup](./01_setup.md)
+* [Adding User Access](./01_adding_team_members.md)
+* [OCP4 Web Console](./01b_web_console_overview.md)
+* [Builds](./02_builds.md)
+* [Deployments](./03_deployment.md)
+* [Configuring Deployments](./04_configuring_deployments.md)
+* [Resource Management](./05_resource_management.md)
+* [Application Availability](./06_application_availability.md)
+* [Autoscaling](./07_autoscaling.md)
+* [Persistent Storage](./08_persistent_storage.md)
+* [Persistent Configurations](./09_persistent_configurations.md)
+* [Event Streams](./10_event_streams.md)
+* [Debugging Containers](./11_debugging_containers.md)
+* [Logging and Visualizations](./12_logging_and_visualizations.md)
+* [Metrics](./13_metrics.md)
+* [Cheat Sheet](./14_cheatsheet.md)
