@@ -42,15 +42,25 @@ These notes are a work in progress. They are designed to support facilitators an
 ### Where to Start?
 ### Alignment
 ### Requests OpenShift Projects
+- Namespaces are functionally separate, and the only thing they have in common is their license plate/name. You must use network policies if you need namespaces to connect to each other. 
+
 ### Request OpenShift Projects
 ### Project Sets cont. 
 ### Project Sets Example
-### Resource and quota
+### Resource and quota 
+- Resources can be tuned more efficiently over time, as a better picture of your application's resources needs is developed. 
+
 ### Requesting New Users to Github,Rocket.Chat etc 
 ### Access Control in OpenShift
+- For the more critical namespaces (like PROD), a limited number of people should have access. Much of the interaction with the namespace should be automated and run through a service account. 
+
 ### Tools Project
+- Has it's own dedicated quota to run tools to support your application. 
+
 ### Team Roles/Functions
 ### Designing For High Availability
+- Backup Container - can manage backing up and restoring mongodb, postgres and mysql databases. 
+
 ### Recap: what have we covered so far?
 
 ## OpenShift Basic Tasks 
