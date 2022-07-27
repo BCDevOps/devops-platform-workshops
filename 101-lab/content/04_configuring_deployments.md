@@ -7,7 +7,7 @@ Additional actions are available to edit your deployment configuration. Review a
 ## Using `oc explain`
 
 `oc explain` is a great utility to discover all the available fields for an
-Openshift of K8s object. 
+OpenShift of K8s object. 
 
 - Discover the fields that belong to a Deployment
   - `oc explain deployment`
@@ -36,3 +36,4 @@ cutting over traffic and terminating the previous container.
   - Go back to topology and observe the behaviour. You should notice that the old pod is killed before a new one is created.
   - edit the YAML and switch the strategy back to RollingUpdate
 
+Next page - [Resource Management](./05_resource_management.md)

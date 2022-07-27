@@ -62,3 +62,5 @@ oc -n [-dev] set resources deployment/rocketchat-[username] --requests=cpu=150m,
 ## Troubleshooting OOM
 
 The dreaded `OOM` or Out of Memory is when your pods are utilizing less memory than is required for the containers inside of the pod to work. Often there are __no logs__ visible during these issues. Often the symptoms of OOM are `CrashLoop Back off` failure events as well as `rollout` failures. These can be investigated in the `Events` panel. To resolve this you can first increase memory utilization. After that you should investigate if the memory utilization fix is a band-aid or not. In other words, is the application consuming more memory than it should.
+
+Next page - [Application Availability](./06_application_availability.md) 

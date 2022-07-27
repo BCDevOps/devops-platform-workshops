@@ -22,3 +22,5 @@ oc get events --sort-by='.lastTimestamp'
 
 - Navigate through some of the events and review some of the output that could be helpful 
 in debugging pods
+
+Next page - [Debugging Containers](./11_debugging_containers.md)

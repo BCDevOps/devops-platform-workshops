@@ -157,3 +157,5 @@ With `oc edit`
 
  
 - Redeploy the application after secret changes
+
+Next page - [Event Streams](./10_event_streams.md)

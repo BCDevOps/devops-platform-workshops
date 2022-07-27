@@ -318,4 +318,4 @@ oc -n [-dev] set probe deployment/rocketchat-[username] --readiness --get-url=ht
 
 You added a __readiness__ check to the `rocketchat-[username]` deployment so that you no longer have a false positive of when the pod should be considered available. By default pods are considered to be 'ready' when the container starts up and the entrypoint script is running. This however is not useful for things like webservers or databases! Not only do you need the entrypoint script to run but you need to wait for the server to listen on a port. 
 
-
+Next page - [Configuring Deployments](./04_configuring_deployments.md)

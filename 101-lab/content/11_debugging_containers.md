@@ -80,3 +80,5 @@ oc -n [-dev] port-forward [pod name from above] 8000:3000
 ```
 
 - Navigate to http://127.0.0.1:8000
+
+Next page - [Logging and Visualizations](./12_logging_and_visualizations.md)

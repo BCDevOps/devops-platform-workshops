@@ -43,3 +43,5 @@ oc policy add-role-to-user [role] [username]
 - Edit: This is the primary role required for developers/devops to do work in a project. It allows the creation/edit/deletion of Openshift Objects including __Secrets__
 
 - View: This is the basic role that provides users with read access to your project. __Secrets are not viewable__ with this privilege.
+
+Next page - [OCP4 Web Console](./01b_web_console_overview.md)

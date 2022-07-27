@@ -166,3 +166,4 @@ To fix that we will need to replace the `RWX` PVC with a `RWO` PVC and change th
     ```oc:cli
     oc -n [-dev] delete pvc/mongodb-[username]-file-rwx
     ```
+Next page - [Persistent Configurations](./09_persistent_configurations.md)

@@ -42,3 +42,4 @@ oc -n [-dev] autoscale deployment/rocketchat-[username] --min 1 --max 10 --cpu-p
   ```oc:cli
   oc -n [-dev] delete hpa/rocketchat-[username]
   ```
+Next page - [Persistent Storage](./08_persistent_storage.md)

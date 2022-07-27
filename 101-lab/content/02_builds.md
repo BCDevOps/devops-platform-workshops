@@ -70,3 +70,5 @@ oc -n [-tools] status
 ![](./images/01_build_logs.png)
 ![](./images/01_build_logs_02.png)
 ![](./images/01_build_logs_03.png)
+
+Next page - [Deployment](./03_deployment.md)

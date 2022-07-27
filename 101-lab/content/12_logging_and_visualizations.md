@@ -56,3 +56,5 @@ The shortcut towards accessing the Kibana is from the `Logs` tab of a running po
   ```sql
     kubernetes.namespace_name:"<namespace_name>" AND level:error
   ```
+
+Next page - [Metrics](./13_metrics.md)

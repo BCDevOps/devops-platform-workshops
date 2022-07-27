@@ -27,3 +27,5 @@ This course has been completely redesigning and will more than likely have its f
 While we love the idea of everyone getting their hands onto Openshift. The individuals that will get the most value out of the workshop are members that will be performing active developement in Openshift. This includes Application Development as well as Operational Management. The course is __very technical__.
 
 __Please be aware the throughout the labs, you will be guided to make common mistakes, and then guide you on how to fix them.__
+
+Next page - [Setup](./01_adding_team_members.md)

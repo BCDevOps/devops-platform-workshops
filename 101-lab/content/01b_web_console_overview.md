@@ -26,3 +26,5 @@ required to deploy a project
 
 
 During this workshop you will be interacting with both views.
+
+Next page - [Builds](./02_builds.md)

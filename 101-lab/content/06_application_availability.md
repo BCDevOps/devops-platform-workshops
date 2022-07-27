@@ -96,3 +96,5 @@ oc -n [-dev] get pods -o wide | grep rocketchat-[username]
   ```
 - **Windows**
     Windows users can skip the 'watch' steps and monitor their pods from the OpenShift console.
+
+Next page - [Autoscaling](./07_autoscaling.md)
