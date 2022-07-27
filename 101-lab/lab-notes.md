@@ -13,7 +13,7 @@ Useful links:
 
 OCP tools namespace: https://console.apps.silver.devops.gov.bc.ca/topology/ns/d8f105-tools?view=graph
 OCP dev namespace: https://console.apps.silver.devops.gov.bc.ca/topology/ns/d8f105-dev?view=graph
-lab material: https://ocp101-labs-d8f105-tools.apps.silver.devops.gov.bc.ca/
+lab material: https://github.com/BCDevOps/devops-platform-workshops/tree/master/101-lab/content
 lab repo if you’d like to host the material later on: https://github.com/BCDevOps/devops-platform-workshops/tree/master/101-lab
 Just Ask, to request an invite to our GitHub orgs: https://just-ask-web-bdec76-prod.apps.silver.devops.gov.bc.ca/
 ```
