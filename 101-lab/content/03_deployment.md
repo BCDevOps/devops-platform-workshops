@@ -79,7 +79,7 @@ Note that since only admin users have access to manage rolebindings in a namespa
 
 ![](./images/03_deploy_image_04.png)
 
-- Click on the pod within the deployment config and navigate to the pods `Events` tab for more detail
+- Click on the pod within the deployment and navigate to the pods `Events` tab for more detail
 
 ![](./images/03_deploy_image_05.png)
 
