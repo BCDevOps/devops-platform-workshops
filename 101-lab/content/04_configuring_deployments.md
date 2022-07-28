@@ -1,6 +1,6 @@
 
 # Exploring Deployment Options
-Additional actions are available to edit your deployment configuration. Review and explore; 
+Additional actions are available to edit your deployment. Review and explore; 
   - Resource Limits
   - Replicas
 
