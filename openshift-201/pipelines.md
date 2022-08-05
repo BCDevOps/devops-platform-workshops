@@ -239,3 +239,5 @@ This should produce output similar to the following:
 ```
 
 If you now look at the pipelines you should see a new `PipelineRun` created and started just as if we manually started it from above.
+
+Next page - [Best Practices for Image Management](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/image-management.md)
