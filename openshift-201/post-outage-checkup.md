@@ -1,4 +1,4 @@
-# Post Outage Check Up
+# Post Outage Checkup
 
 ## Objectives:
 
@@ -182,3 +182,5 @@ Some other things to verify could include:
 * __Database__ - validate the database is running and communication is working to the database.  It is also a good idea to check the database replication
 * __CI/CD__ - Run a test pipeline to ensure everything is working as expected
 * __Backups__ - Manually run the recovery test script to make sure that the most recent backup is working.
+
+Next page - [Application Logging with Kibana](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/logging.md)
