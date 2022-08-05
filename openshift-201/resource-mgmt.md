@@ -518,6 +518,8 @@ spec:
 
 > Note to turn off the load-test deployment when you have completed this session. `oc scale deployment load-test --replicas=0`
 
+Next page - [Pod auto scaling](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/rh201-pod-auto-scale.md)
+
 ## Further Reading
 
    * https://sysdig.com/blog/kubernetes-pod-evicted/
