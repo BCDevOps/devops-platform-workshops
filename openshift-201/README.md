@@ -15,6 +15,6 @@ The Openshift 201 Lab is divided into the following topics:
 * [Pod Auto Scaling](./rh201-pod-auto-scale.md)
 * [OpenShift Pipelines](./pipelines.md)
 * [Best Practices for Image Management](./image-management.md)
-* [Post Outage Check up](./post-outage-checkup.md)
+* [Post Outage Checkup](./post-outage-checkup.md)
 * [Application Logging with Kibana](./logging.md)
 * [Network Policy & ACS](./network-policy.md)
