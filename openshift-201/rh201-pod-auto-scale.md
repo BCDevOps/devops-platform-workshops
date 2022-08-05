@@ -380,3 +380,5 @@ hello-world-nginx-599d5d8898-ph49f   1/1     Running    10.97.132.155   mcs-silv
 There are some more advanced options with pod affinity and anti-affinity and combining them both. You can also apply some weighting to different rules. See the Kubernetes documentation if you want to play around with some advanced scheduling configurations.
 
 * https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+
+Next page - [OpenShift Pipelines](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/pipelines.md)
