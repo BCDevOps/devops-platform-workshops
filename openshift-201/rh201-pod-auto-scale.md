@@ -381,4 +381,4 @@ There are some more advanced options with pod affinity and anti-affinity and com
 
 * https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
 
-Next page - [OpenShift Pipelines](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/pipelines.md)
+

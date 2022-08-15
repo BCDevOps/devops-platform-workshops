@@ -453,4 +453,4 @@ Now you can update the deployment to use the ImageStreamTag `hello-world-$USER_N
 
 > Note: scale down the application to save resources with `oc scale deployment/hello-world-$USER_NAME --replicas=0`.
 
-Next page - [Post Outage Checkup](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/post-outage-checkup.md)
+
