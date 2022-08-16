@@ -101,7 +101,7 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 1Gi
+            storage: 50Mi
   - name: ssh-creds
     secret:
       secretName: ssh-key-path
