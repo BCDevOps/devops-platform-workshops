@@ -130,6 +130,13 @@ After a few minutes the pipeline should succeed:
 ![pipeline success](images/pipelines/pipeline-success.png)
 
 
+> Note: If a new pipelineRun is failing with message about out of resource quota, then it's time for you to clean up some of the existing one to save up the space there. You can either go to the console Pipeline page and delete individual `PipelineRun` or through oc cli:
+
+```
+oc get pipelinerun
+oc delete pipelinerun <name>
+```
+
 ## Triggers
 As mentioned before triggers can be used to automatically start a pipeline.  An example of this is a git web hook (triggering the pipeline when a merge request happens).
 
