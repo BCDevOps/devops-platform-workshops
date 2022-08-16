@@ -7,7 +7,7 @@ After completing this section, you should have an understanding of OpenShift Pip
 ## Prerequisites
 This lab is based on the `pipeline-templates` which has it's own set of [prerequisites](https://github.com/bcgov/pipeline-templates/tree/main/tekton#prerequisites) and [installation instructions](https://github.com/bcgov/pipeline-templates/tree/main/tekton#installation).
 
-Please follow those instructions before continuing on.
+Please follow those instructions before continuing on, and apply the tekton resources to your `-tools` namespace. 
 
 **NOTE:** You must be a member of the `bcgov` GitHub org to obtain a valid token from SonarCloud.  If you haven't already, please create a token in [SonarCloud](https://sonarcloud.io/).
 
