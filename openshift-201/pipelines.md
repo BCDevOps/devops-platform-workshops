@@ -225,6 +225,29 @@ Or by viewing the routes in the OpenShift Console:
 
 ![eventlistener-route](images/pipelines/eventlistener-route.png)
 
+Now let's test it out!
+
+First thing first, let's create a network policy to allow traffic to the eventListener pod:
+
+```bash
+cat <<EOF | kubectl create -f -
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-openshift-ingress-to-eventlistener
+  labels:
+    eventlistener: maven-build-event-listener
+spec:
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              network.openshift.io/policy-group: ingress
+  podSelector: {}
+  policyTypes:
+    - Ingress
+EOF
+```
 
 To simulate a github webhook perform the following replacing `$HOST` with the value you received in the previous step
 
