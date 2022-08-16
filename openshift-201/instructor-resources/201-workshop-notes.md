@@ -5,7 +5,7 @@
 ## Resource Management
 
 ### Setting Pod Limits & Requests
-Sysdig Blog link-  shows how to create graphs that line up with the numbered/highlighted points in the graphic 
+Sysdig Blog link-  shows how to create monitoring graphs that line up with the numbered/highlighted points in the graphic 
 
 Example has multiple containers in the pod, with their own limits and requests
 
