@@ -9,7 +9,9 @@ This lab is based on the `pipeline-templates` which has it's own set of [prerequ
 
 Please follow those instructions before continuing on.
 
-**NOTE:** You must be a member of the `bcgov` GitHub org to obtain a valid token from SonarCloud.  If you haven't already please create a token in [SonarCloud](https://sonarcloud.io/) and make sure you've set the token in the `secrets.ini` file during the installation instructions above.
+**NOTE:** You must be a member of the `bcgov` GitHub org to obtain a valid token from SonarCloud.  If you haven't already, please create a token in [SonarCloud](https://sonarcloud.io/).
+
+To create a token in SonarCloud, log in to [SonarCloud](https://sonarcloud.io/). Click the 'account' icon in the top right corner of the page, and click on the 'My Account' menu item. Navigate to the 'Security' tab. Enter a name for your token, then click 'Generate'. Your newly created SonarCloud token should now be visible, make sure to use this token when creating the `secrets.ini` file during the installation instructions above.
 
 ## Tasks
 `Tasks` are the building blocks of a pipeline and consists of sequentially executed steps. It is essentially a function of inputs and outputs. `Tasks` are reusable and can be used in multiple Pipelines.
