@@ -122,7 +122,7 @@ The `myapp` application has 3 environment variables that can be set to change th
 There are multiple ways to configure these environment variables in OpenShift
 
 ### Environment Variables
-Environment variables can be set directly on your `Deployement` or `DeploymentConfig`.  
+Environment variables can be set directly on your `Deployment` or `DeploymentConfig`.  
 
 #### Setting Environment Variable
 We can set the `NAME` environment variable on our `myapp` deployment by performing the following:
@@ -230,7 +230,7 @@ An Image Stream doesn't contain the Docker image itself but is a pointer to imag
 The following command will create an "empty" `ImageStream`.  We will add a pointer when we build our image.
 
 ```bash
-oc create is hello-world-$USER_NAME
+oc create is hello-world-$USER
 ```
 __NOTE:__ *`is`* is short for `imagestream`
 
