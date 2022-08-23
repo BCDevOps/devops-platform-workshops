@@ -5,11 +5,15 @@
 After completing this section, you should have an understanding of OpenShift Pipelines, know how to create and start a pipeline, and how to migrate from Jenkins
 
 ## Prerequisites
+Before you begin, you will need to [set up your GitHub SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh). Follow these instructions to create the necessary files.
+
 This lab is based on the `pipeline-templates` which has it's own set of [prerequisites](https://github.com/bcgov/pipeline-templates/tree/main/tekton#prerequisites) and [installation instructions](https://github.com/bcgov/pipeline-templates/tree/main/tekton#installation).
 
-Please follow those instructions before continuing on.
+Please follow those instructions before continuing on, and apply the tekton resources to your `-tools` namespace. 
 
-**NOTE:** You must be a member of the `bcgov` GitHub org to obtain a valid token from SonarCloud.  If you haven't already please create a token in [SonarCloud](https://sonarcloud.io/) and make sure you've set the token in the `secrets.ini` file during the installation instructions above.
+**NOTE:** You must be a member of the `bcgov` GitHub org to obtain a valid token from SonarCloud.  If you haven't already, please create a token in [SonarCloud](https://sonarcloud.io/).
+
+To create a token in SonarCloud, log in to [SonarCloud](https://sonarcloud.io/). Click the 'account' icon in the top right corner of the page, and click on the 'My Account' menu item. Navigate to the 'Security' tab. Enter a name for your token, then click 'Generate'. Your newly created SonarCloud token should now be visible, make sure to use this token when creating the `secrets.ini` file during the installation instructions above.
 
 ## Tasks
 `Tasks` are the building blocks of a pipeline and consists of sequentially executed steps. It is essentially a function of inputs and outputs. `Tasks` are reusable and can be used in multiple Pipelines.
@@ -97,7 +101,7 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 1Gi
+            storage: 50Mi
   - name: ssh-creds
     secret:
       secretName: ssh-key-path
@@ -125,6 +129,13 @@ After a few minutes the pipeline should succeed:
 
 ![pipeline success](images/pipelines/pipeline-success.png)
 
+
+> Note: If a new pipelineRun is failing with message about out of resource quota, then it's time for you to clean up some of the existing one to save up the space there. You can either go to the console Pipeline page and delete individual `PipelineRun` or through oc cli:
+
+```
+oc get pipelinerun
+oc delete pipelinerun <name>
+```
 
 ## Triggers
 As mentioned before triggers can be used to automatically start a pipeline.  An example of this is a git web hook (triggering the pipeline when a merge request happens).
@@ -223,6 +234,29 @@ Or by viewing the routes in the OpenShift Console:
 
 ![eventlistener-route](images/pipelines/eventlistener-route.png)
 
+Now let's test it out!
+
+First thing first, let's create a network policy to allow traffic to the eventListener pod:
+
+```bash
+cat <<EOF | kubectl create -f -
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-openshift-ingress-to-eventlistener
+  labels:
+    eventlistener: maven-build-event-listener
+spec:
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              network.openshift.io/policy-group: ingress
+  podSelector: {}
+  policyTypes:
+    - Ingress
+EOF
+```
 
 To simulate a github webhook perform the following replacing `$HOST` with the value you received in the previous step
 

@@ -22,8 +22,15 @@ By using network policies declarative YAML this code becomes part of your applic
 
 ## Lab Prep
 
-If you have any network policies in your project please delete them. If you are doing this from the cli you can do `oc get networkpolicy` and `oc delete networkpolicy`. From the web console you can see networkpolicies under the network tab.
+If you have any network policies in your project please delete them. If you are using the web console, you can see networkpolicies under the network tab and delete them (other than the deny by default one called `platform-services-controlled-deny-by-default`). If you are doing this from the cli:
 
+```shell
+# get all the networkpolicies from this namespace
+oc get networkpolicy
+
+# delete all the other networkpolicies with the name of them
+oc delete networkpolicy <name>
+```
 
 ## Network Policy Structure
 

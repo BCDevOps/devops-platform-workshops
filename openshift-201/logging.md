@@ -45,6 +45,8 @@ Push successful
 ### Accessing Kibana
 You can access Kibana directly at this [url](https://kibana-openshift-logging.apps.silver.devops.gov.bc.ca/) or it is also accessible from the OpenShift console.
 
+Note: If you receive an unauthorized error (e.g. `{"statusCode":401,"error":"Unauthorized","message":"Authentication Exception"}`), follow steps here to fix: https://stackoverflow.developer.gov.bc.ca/a/119/16
+
 Select the running pod that was just created:
 
 ![pod-logs-1](images/logging/pod-logs-01.png)

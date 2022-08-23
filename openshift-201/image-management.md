@@ -84,6 +84,16 @@ myapp-1-build           0/1     Completed   0          10m
 myapp-85c7dc4569-njqlb  1/1     Running     0          36s
 ```
 
+> Note: sometime the build would take longer time. This might result in the replicaController being upset about where it complains about the image configuration being empty. When this happen, you won't see the deployment go through successfully. So if you are seeing the error and you are sure the image is ready, scale down the deployment:
+
+```bash
+# scale down so deployment will pick up the image later on
+oc scale deployment myapp-$USER_NAME --replicas=0
+# now scale it back up again:
+oc scale deployment myapp-$USER_NAME --replicas=1
+```
+
+
 ### Expose Application
 Expose the application to external access:
 ```bash
@@ -114,7 +124,7 @@ The `myapp` application has 3 environment variables that can be set to change th
 There are multiple ways to configure these environment variables in OpenShift
 
 ### Environment Variables
-Environment variables can be set directly on your `Deployement` or `DeploymentConfig`.  
+Environment variables can be set directly on your `Deployment` or `DeploymentConfig`.  
 
 #### Setting Environment Variable
 We can set the `NAME` environment variable on our `myapp` deployment by performing the following:
