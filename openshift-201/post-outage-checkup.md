@@ -4,20 +4,12 @@
 
 After completing this section, you should know what to do after there is an outage and how to handle common problems that may occur.
 
-## Prerequisites
-All resources created in this lab should include your username so you do not clash with other lab participants.  If you set the `$USER_NAME` environment variable to your username then you can easily copy/paste the commands below.  Just ensure your username contains only '-', '.' or lowercase alphanumberic characters.
-
-example:
-```bash
-export USER_NAME=jmacdonald
-```
-
 ## Setup
 We will setup a sample application and proceed with what steps should be taken after an outage occurs.
 
 ### Create a new application 
 ```bash
-oc new-app --name crash-app-$USER_NAME \
+oc new-app --name crash-app \
 -i redhat-openjdk18-openshift:1.8 \
 --context-dir=openshift-201/materials/post-outage-checkup/crash-app \
 https://github.com/BCDevOps/devops-platform-workshops
@@ -38,21 +30,21 @@ You should see output similar to the follow:
 ### Expose Application
 Expose the application to external access:
 ```bash
-oc expose svc/crash-app-$USER_NAME
+oc expose svc/crash-app
 ```
 
 Perform the following command to get the host of the route we just exposed:
 ```bash
-export MY_HOST=`oc get routes crash-app-$USER_NAME --no-headers | awk '{print $2}'`
+export MY_HOST=`oc get routes crash-app --no-headers | awk '{print $2}'`
 ```
 
-or run `oc get routes crash-app-$USER_NAME` and copy the host name.
+or run `oc get routes crash-app` and copy the host name.
 
 
 ### Follow Build
 Use the `oc logs` command to check the build logs from the `crash-app` build:
 ```bash
-oc logs -f bc/crash-app-$USER_NAME
+oc logs -f bc/crash-app
 ```
 <pre>
 ...<em>output omitted</em>...
@@ -84,7 +76,7 @@ We aren't getting what we expect and it looks as though there is an error.
 ### Verify the Route
 Let's ensure our route is setup correctly.
 ```bash
-oc describe route/crash-app-$USER_NAME
+oc describe route/crash-app
 ```
 <pre>
 Name:             crash-app
@@ -116,8 +108,8 @@ Let's take a look at the pods via the command line to validate the status:
 oc get pods
 
 NAME                                 READY   STATUS             RESTARTS   AGE
-crash-app-jmacdonald-1-build         0/1     Completed          0          2m7s
-crash-app-jmacdonald-65887546-9z8rv  0/1     CrashLoopBackOff   1          52s
+crash-app-1-build         0/1     Completed          0          2m7s
+crash-app-65887546-9z8rv  0/1     CrashLoopBackOff   1          52s
 
 ```
 
@@ -126,7 +118,7 @@ Viewing this from the console will see something like the following:
 
 Use the new pod name shown above (the characters after `crash-app-` will be different for you) to display the output of the logs.
 ```bash
-oc logs crash-app-$USER_NAME-65887546-9z8rv
+oc logs crash-app-65887546-9z8rv
 ```
 <pre>
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
@@ -141,7 +133,7 @@ __NOTE:__ Sometimes the restarting of the container occurs so quickly that you c
 As we can see we are missing a `DEPLOY_ENV` environment variable.  Let's set that on our deployment and see if we can resolve the `CrashLoopBackOff` error.
 
 ```bash
-oc set env deployment/crash-app-$USER_NAME DEPLOY_ENV='YES'
+oc set env deployment/crash-app DEPLOY_ENV='YES'
 ```
 
 This should automatically redeploy the app.
@@ -149,14 +141,14 @@ This should automatically redeploy the app.
 oc get pods
 
 NAME                                  READY   STATUS              RESTARTS   AGE
-crash-app-jmacdonald-65887546-9z8rv   0/1     CrashLoopBackOff    0          4m27s
-crash-app-jmacdonald-c97b5b874-zsz2j  0/1     ContainerCreating   0          5s
+crash-app-65887546-9z8rv   0/1     CrashLoopBackOff    0          4m27s
+crash-app-c97b5b874-zsz2j  0/1     ContainerCreating   0          5s
 ```
 
 Our pod should eventually get to and stay in the `Running` status.  We can check our logs again and verify it has started successfully
 
 ```bash
-oc logs crash-app-$USER_NAME-c97b5b874-zsz2j
+oc logs crash-app-c97b5b874-zsz2j
 ```
 <pre>
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
@@ -173,7 +165,7 @@ curl http://$MY_HOST/hello
 Hello world from Crash App
 ```
 
-> Note: scale down the application to save resources with `oc scale deployment/crash-app-$USER_NAME --replicas=0`.
+> Note: scale down the application to save resources with `oc scale deployment/crash-app --replicas=0`.
 
 ## Checklist
 It is a good idea to create a checklist that has specifics for your application. We recommend that you create an issue template in github for your application which details all the specific things that you'll need to check to feel secure that your app is up and running after an outage.
