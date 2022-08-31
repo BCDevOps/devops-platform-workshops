@@ -3,8 +3,9 @@ Welcome to the OpenShift 201 Training Labs.  You will find all of the lab materi
 
 
 ### Prerequisites:
-- Completion of the OCP101 lab material. You can find the material hosted on [this GitHub Page](https://ocp101-labs-d8f105-tools.apps.silver.devops.gov.bc.ca/) or [source content here](https://github.com/BCDevOps/devops-platform-workshops/tree/master/101-lab/content).
-- oc CLI installed, find out [how to here](https://stackoverflow.developer.gov.bc.ca/questions/139)
+- Completion of the OCP101 workshop and lab exercises. You can find the lab material hosted on [this GitHub Page](https://ocp101-labs-d8f105-tools.apps.silver.devops.gov.bc.ca/) or [source content here](https://github.com/BCDevOps/devops-platform-workshops/tree/master/101-lab/content).
+- oc CLI installed and up to date, find out [how to here](https://stackoverflow.developer.gov.bc.ca/questions/139)
+- You must be a member of the BC Gov github orgs. You would have set this up during the OpenShift 101 lab. 
 - An OpenShift project set created for you from Registry app, which you are an Admin of. You will either receive an email about this in advance of the course, or set this up during the OCP201 kick off.
 
 
