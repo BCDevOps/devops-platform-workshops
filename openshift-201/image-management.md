@@ -97,7 +97,7 @@ oc scale deployment myapp-$USER_NAME --replicas=1
 ### Expose Application
 Expose the application to external access:
 ```bash
-oc expose svc/myapp-
+oc expose svc/myapp
 ```
 
 ### Test Application
