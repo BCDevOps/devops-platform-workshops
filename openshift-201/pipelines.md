@@ -1,5 +1,9 @@
 # Introduction to OpenShift Pipelines
 
+[![Video Walkthrough Thumbnail](././images/pipelines/pipelines-thumbnail.png)](https://youtu.be/WfR6rKGzi7Q)
+
+[Video walkthrough](https://youtu.be/WfR6rKGzi7Q)
+
 ## Objectives:
 
 After completing this section, you should have an understanding of OpenShift Pipelines, know how to create and start a pipeline, and how to migrate from Jenkins
