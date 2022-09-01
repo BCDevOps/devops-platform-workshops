@@ -5,7 +5,7 @@
 After completing this section, you should have an understanding of OpenShift Pipelines, know how to create and start a pipeline, and how to migrate from Jenkins
 
 ## Prerequisites
-Before you begin, you will need to [set up your GitHub SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh). Follow these instructions to create the necessary files.
+Before you begin, you will need to [set up your GitHub SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh). If you need to create a new SSH key or you are having authentication errors, be sure to use the instructions for creating an `rsa` format key **not** a `ed25519` format key. Do not use a passphrase with your key.
 
 This lab is based on the `pipeline-templates` which has it's own set of [prerequisites](https://github.com/bcgov/pipeline-templates/tree/main/tekton#prerequisites) and [installation instructions](https://github.com/bcgov/pipeline-templates/tree/main/tekton#installation).
 
