@@ -1,5 +1,9 @@
 # Limiting Resource Usage by an Application
 
+[![Video Walkthrough Thumbnail](././images/resource-mgmt/resource-management-thumbnail.png)](https://youtu.be/xTb_Cjcm9SE)
+
+[Video walkthrough](https://youtu.be/xTb_Cjcm9SE)
+
 ## Objectives:
 
 After completing this section, you should be able to limit the resources consumed by containers, pods, and projects and have an understanding of LimitRanges and Quotas.
