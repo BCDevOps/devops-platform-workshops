@@ -22,7 +22,7 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 
 - Reduce the CPU (request and limit) to `65 millicores` and Memory (request and limits) to `100 Megabytes` and monitor the startup time of the pod
   ```oc:cli
-  oc -n [-dev] set resources deployment/rocketchat-[username] --requests=cpu=65m,memory=100Mi --limits=cpu=65m,memory=100Mi
+  oc -n [-dev] set resources deployment/rocketchat-[username] --requests=cpu="65m",memory="100Mi" --limits=cpu="65m",memory="100Mi"
   ```
 - Monitor the startup events of your pod and measure the time it takes to start
   ```oc:cli
@@ -37,7 +37,7 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 
 - Remove the limits previously imposed, and set your pod to `1 core` (or `1000 millicores`) for the request and limit
   ```oc:cli
-  oc -n [-dev] set resources deployment/rocketchat-[username] --requests=cpu=1000m,memory=512Mi --limits=cpu=1000m,memory=1024Mi
+  oc -n [-dev] set resources deployment/rocketchat-[username] --requests=cpu="1000m",memory="512Mi" --limits=cpu="1000m",memory="1024Mi"
   ```
 
 - Monitor the status and speed of the new deployment
@@ -56,7 +56,7 @@ If there are many team members (and therefor workloads) working together in the 
 - Reset resources utilization to something more appropriate
 
 ```oc:cli
-oc -n [-dev] set resources deployment/rocketchat-[username] --requests=cpu=150m,memory=256Mi --limits=cpu=200m,memory=400Mi
+oc -n [-dev] set resources deployment/rocketchat-[username] --requests=cpu="150m",memory="256Mi" --limits=cpu="200m",memory="400Mi"
 ```
 
 ## Troubleshooting OOM
