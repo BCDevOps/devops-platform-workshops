@@ -96,7 +96,7 @@ oc -n [-tools] policy add-role-to-user system:image-puller system:serviceaccount
 _ Remember:  if somebody else in the lab has completed this step already and you're not experienceing the ImagePull error, move on to the next step _Objective 2_.
 
 With the appropriate access in place, you can try bringing up a new pod to see if the issue has been resolved. With Deployments this can be done by
-`oc scale deployment/rocketchat-[username] --replicas=0` waiting for the pods to scale down to 0 and then to scale back up with `oc scale deployment/rocketchat-[username] --replicas=1`
+`oc -n [-dev] scale deployment/rocketchat-[username] --replicas=0` waiting for the pods to scale down to 0 and then to scale back up with `oc scale -n [-dev] deployment/rocketchat-[username] --replicas=1`
 
 - Validate that the image is able to be pulled
 
