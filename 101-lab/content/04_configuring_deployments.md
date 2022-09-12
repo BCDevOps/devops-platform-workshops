@@ -26,8 +26,8 @@ Review the deployment configuration `ReplicaSet` tab:
 ## Changing the Deployment Strategy Option
 The default deployment configuration provides a `Rolling Update` style deployment, which waits for the container to be ready prior to 
 cutting over traffic and terminating the previous container. 
-
-  - Change the strategy to a `Recreate` and redeploy a couple of times
+  - Navigagte back to your rocketchat-[username] deployment
+  - From the 'actions' menu, change the strategy to a `Recreate`. Next, redeploy a couple of times by editing your pod count to zero, then increasing to one pod
   - edit the YAML for the deployment and replace the `spec.strategy.type` from `RollingUpdate` to `Recreate
 ![](./images/04_deploy_strategy_01.png)
 ![](./images/04_deploy_strategy_02.png)
