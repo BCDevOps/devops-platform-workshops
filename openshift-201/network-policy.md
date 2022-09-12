@@ -1,5 +1,9 @@
 # Network Policies and ACS
 
+[![Video Walkthrough Thumbnail](././images/network-policy-acs/netpol-video-thumb.png)](https://youtu.be/Md7wrljdP44)
+
+[Video walkthrough](https://youtu.be/Md7wrljdP44)
+
 Without a network policy in place, all pods in a namespace are accessible from other pods and network endpoints. To isolate one or more pods in a namespace, you can create NetworkPolicy objects in that namespace to indicate the allowed incoming connections. Namespace administrators can create and delete NetworkPolicy objects within their own namespaces. A 'deny by default' policy is automatically created and active in all namespaces on the platform. Later in this lab we look at how to build a list of allowed list onto the default of denying network connections. 
 
 Network Policies allow you to specify how a pod is allowed to communicate with various network entities.
