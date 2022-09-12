@@ -319,7 +319,7 @@ You should see the curl command running but no response is returning. Great! Our
 
 ## ACS Network Graph
 
-Lets now check out Red Hat Advanced Cluster Manager (ACS) and see how we can visualize network policies!
+Lets now check out Red Hat Advanced Cluster Security (ACS) manager and see how we can visualize network policies!
 
 You should be able to log into ACS by navigating to the URL: https://acs.developer.gov.bc.ca
 
