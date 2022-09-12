@@ -217,11 +217,8 @@ By default your rocketchat deployment has no environment variables defined. So w
 a database has been deployed, the app does not know how or where to connect to MongoDB. We will need to add environment variables to the deployment configuration.
 
 - In the Web Console, navigate to `Topology` and select your rocketchat deployment
-- Select the `Actions` tab on the top right
-![](./images/03_deploy_env_01.png)
-
-- Select `Edit Deployment`
-- Select the `Environment` tab
+- Click on the name of your rocketchat-[username] deployment in the right-hand menu pane
+- Click the `Environment` tab
 ![](./images/03_deploy_env_02.png)
 
 - Add the following environment variable with the connection string details configured for mongodb
