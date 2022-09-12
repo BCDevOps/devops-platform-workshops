@@ -9,7 +9,7 @@ We will setup a sample application that will produce a log entry every 5 seconds
 
 ### Create a new application 
 ```bash
- oc new-app --name logging-app \
+ oc -n [-dev] new-app --name logging-app \
  --context-dir=openshift-201/materials/logging \
  https://github.com/BCDevOps/devops-platform-workshops
 
@@ -28,9 +28,9 @@ You should see output similar to the follow:
 
 
 ### Follow Build
-Use the `oc logs` command to check the build logs from the `logging-app` build:
+Use the `oc -n [-dev] logs` command to check the build logs from the `logging-app` build:
 ```bash
-oc logs -f bc/logging-app
+oc -n [-dev] logs -f bc/logging-app
 ```
 <pre>
 ...<em>output omitted</em>...
@@ -130,7 +130,7 @@ The queries we did in this lab are pretty simple.  Take a look at the [Kibana Qu
 ### Clean up
 To clean up the lab environment run the following command to delete all of the resources we created:
 ```bash
-oc delete all -l app=logging-app
+oc -n [-dev] delete all -l app=logging-app
 
 deployment.apps "logging-app" deleted
 buildconfig.build.openshift.io "logging-app" deleted
