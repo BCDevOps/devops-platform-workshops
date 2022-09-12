@@ -301,7 +301,7 @@ mysql-1-w7h95                          1/1     Running    17h   10.97.41.145   m
 ```
 Lets try to connect from our `hello-world-nginx-2` pod to our mysql pod. Your command should look something similar.
 
-`oc rsh hello-world-nginx-2-6fd5855c9b-q86jz curl -v telnet://10.97.41.145:3306`
+`oc -n [-dev] rsh hello-world-nginx-2-6fd5855c9b-q86jz curl -v telnet://10.97.41.145:3306`
 
 We should get a response with probably some warnings but we should also see a connected response.
 
