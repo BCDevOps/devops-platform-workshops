@@ -8,7 +8,7 @@ Many templates include reasonable CPU and Memory resource configurations, howeve
 ## Explore Default Resource Configurations
 Since the Rocket Chat application was built from scratch and not deployed from a template, explore the current resources allocated to the pods: 
 
-- Navigate to your rocketchat deploymentconfig and select `Yaml`
+- Navigate to your rocketchat deployment and select `Yaml`
 - Take a look a the resources spec under `.spec.template.spec.containers.resources`
   it should be `{}`. This identifies that it is using the default resource allocation.
 
