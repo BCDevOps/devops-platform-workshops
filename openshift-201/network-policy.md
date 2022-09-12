@@ -246,14 +246,51 @@ spec:
 
 Once we have our network policy in place we'll need to set up some more pods to test. Lets scale our existing `hello-world-nginx` deployment down to 1 pod to make things more straight forward. Keep in mind if you have any autoscalers in place.
 
-Copy the `hello-world-nginx` deployment to a new deployment called `hello-world-nginx-2` just with 1 replica.
+Create anothher deployment identical to `hello-world-nginx` that is instead called `hello-world-nginx-2'.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-nginx-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: hello-world-nginx-2
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+      labels:
+        deployment: hello-world-nginx-2
+    spec:
+      containers:
+      - image: quay.io/redhattraining/hello-world-nginx:v1.0
+        name: hello-world-nginx-2
+        resources:
+          requests:
+            cpu: "10m"
+            memory: 20Mi
+          limits:
+            cpu: "80m"
+            memory: 100Mi
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+
+```
 
 From the developer catalog deploy the `MySQL (Ephemeral)` template. We can use all the default options.
 
 So we should have at least 3 pods running. 1 mysql pod, 1 hello-world-nginx, and 1 hello-world-nginx2 pod.
 
 
-Ok lets do some testing! First lets get our pod list.
+Let's do some testing! First lets get our pod list.
 
 ```
 oc -n [-dev] get pods -o wide 
