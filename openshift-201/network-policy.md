@@ -1,6 +1,6 @@
 # Network Policies and ACS
 
-Without a network policy in place, all pods in a project are accessible from other pods and network endpoints. To isolate one or more pods in a project, you can create NetworkPolicy objects in that project to indicate the allowed incoming connections. Project administrators can create and delete NetworkPolicy objects within their own project. A 'deny by default' policy is automatically created and active in all projects on the platform. Later in this lab we look at how to build a list of allowed list onto the default of denying network connections. 
+Without a network policy in place, all pods in a namespace are accessible from other pods and network endpoints. To isolate one or more pods in a namespace, you can create NetworkPolicy objects in that namespace to indicate the allowed incoming connections. Namespace administrators can create and delete NetworkPolicy objects within their own namespaces. A 'deny by default' policy is automatically created and active in all namespaces on the platform. Later in this lab we look at how to build a list of allowed list onto the default of denying network connections. 
 
 Network Policies allow you to specify how a pod is allowed to communicate with various network entities.
 
@@ -22,7 +22,7 @@ By using network policies declarative YAML this code becomes part of your applic
 
 ## Lab Prep
 
-If you have any network policies in your project please delete them. If you are using the web console, you can see networkpolicies under the network tab and delete them (other than the deny by default one called `platform-services-controlled-deny-by-default`). If you are doing this from the cli:
+If you have any network policies in your namespace please delete them. If you are using the web console, you can see networkpolicies under the network tab and delete them (other than the deny by default one called `platform-services-controlled-deny-by-default`). If you are doing this from the cli:
 
 ```shell
 # get all the networkpolicies from this namespace
@@ -117,7 +117,7 @@ contains two elements in the from array, and allows connections from Pods in the
 
 ## Deny By Default Policy
 
-You'll notice that there is a `platform-services-controlled-deny-by-default` network policy in your project that will show up even if you delete it! This is controlled by the platform administrators.
+You'll notice that there is a `platform-services-controlled-deny-by-default` network policy in your namespace that will show up even if you delete it! This is controlled by the platform administrators.
 
 ```yaml
 kind: NetworkPolicy
@@ -141,7 +141,7 @@ You should still have your `hello-world-nginx` deployment and pod(s) up and runn
 
 You should also have a service and route pointing to these pods.
 
-Lets get a list of the pods in our project. Make sure you've got at least 2 pods running.
+Lets get a list of the pods in our namespace. Make sure you've got at least 2 pods running.
 
 ```
 oc -n [-dev] get pods -o wide 
@@ -170,7 +170,7 @@ This should also fail. If it does seem to be working try from a incognito window
 
 We've confirmed ingress traffic to our pod and http server is being blocked. Lets now allow traffic from pods in the same namespace.
 
-To make pods accept connections from other pods in the same project, but reject all other connections from pods in other projects, add the following NetworkPolicy object:
+To make pods accept connections from other pods in the same namespace, but reject all other connections from pods in other namespaces, add the following NetworkPolicy object:
 
 ```yaml
 kind: NetworkPolicy
@@ -290,7 +290,7 @@ Once logged in you should be able to click on `Network Graph` on the left naviga
 
 ![acs network graph](images/network-policy-acs/acs-network-graph.png) 
 
-You will be scoped to see only your projects.
+You will be scoped to see only your namspaces.
 
 We won't go through all the details for `Network Graph` web interface to get a better understanding please walkthrough the documentation:
 
