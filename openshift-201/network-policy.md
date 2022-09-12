@@ -144,7 +144,7 @@ You should also have a service and route pointing to these pods.
 Lets get a list of the pods in our project. Make sure you've got at least 2 pods running.
 
 ```
-oc get pods -o wide 
+oc -n [-dev] get pods -o wide 
 NAME                                 READY   STATUS    AGE     IP              NODE                   
 hello-world-nginx-599d5d8898-2k9n2   1/1     Running   8d      10.97.128.134   mcs-silver-app-32.dmz  
 hello-world-nginx-599d5d8898-6q67s   1/1     Running   8d      10.97.58.168    mcs-silver-app-44.dmz  
