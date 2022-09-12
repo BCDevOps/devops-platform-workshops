@@ -29,7 +29,7 @@ If you have any network policies in your project please delete them. If you are 
 oc get networkpolicy
 
 # delete all the other networkpolicies with the name of them
-oc delete networkpolicy <name>
+oc delete networkpolicy [name]
 ```
 
 ## Network Policy Structure
@@ -152,7 +152,7 @@ hello-world-nginx-599d5d8898-6q67s   1/1     Running   8d      10.97.58.168    m
 
 Lets test the `deny-by-default` network policy and see if we can curl the http server running in one pod from another pod. Update the command below based on your pod name and pod ip address.
 
-`oc rsh <pod1 name> curl -v <pod2 ip>:8080`
+`oc rsh [pod1 name] curl -v [pod2 ip]:8080`
 
 so:
 
