@@ -246,7 +246,7 @@ spec:
 
 Once we have our network policy in place we'll need to set up some more pods to test. Lets scale our existing `hello-world-nginx` deployment down to 1 pod to make things more straight forward. Keep in mind if you have any autoscalers in place.
 
-Create another deployment identical to `hello-world-nginx` that is instead called `hello-world-nginx-2'.
+Create another deployment identical to `hello-world-nginx` that is instead called `hello-world-nginx-2`
 
 ```yaml
 apiVersion: apps/v1
