@@ -15,7 +15,7 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 ![](./images/11_resources_01.png)
 
 
-- Review the current metrics of your `rocketchat-[username]` pod by navigating to it from the DeploymentConfig and then selecting `Pods`
+- Review the current metrics of your `rocketchat-[username]` pod by navigating to it from the Deployment and then selecting `Pods`
 
 ![](./images/11_resources_02.png)
 ![](./images/11_resources_03.png)
