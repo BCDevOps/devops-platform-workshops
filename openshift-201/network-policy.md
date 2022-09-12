@@ -327,7 +327,7 @@ Once logged in you should be able to click on `Network Graph` on the left naviga
 
 ![acs network graph](images/network-policy-acs/acs-network-graph.png) 
 
-You will be scoped to see only your namspaces.
+You will be scoped to see only your namspaces, so your network graph will not be identical to the image above.
 
 We won't go through all the details for `Network Graph` web interface to get a better understanding please walkthrough the documentation:
 
