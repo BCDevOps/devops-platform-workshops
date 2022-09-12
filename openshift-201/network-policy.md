@@ -26,10 +26,10 @@ If you have any network policies in your project please delete them. If you are 
 
 ```shell
 # get all the networkpolicies from this namespace
-oc get networkpolicy
+oc -n [-dev] get networkpolicy
 
 # delete all the other networkpolicies with the name of them
-oc delete networkpolicy [name]
+oc -n [-dev] delete networkpolicy [name]
 ```
 
 ## Network Policy Structure
@@ -152,11 +152,11 @@ hello-world-nginx-599d5d8898-6q67s   1/1     Running   8d      10.97.58.168    m
 
 Lets test the `deny-by-default` network policy and see if we can curl the http server running in one pod from another pod. Update the command below based on your pod name and pod ip address.
 
-`oc rsh [pod1 name] curl -v [pod2 ip]:8080`
+`oc -n [-dev] rsh [pod1 name] curl -v [pod2 ip]:8080`
 
 so:
 
-`oc rsh hello-world-nginx-599d5d8898-2k9n2 curl -v 10.97.58.168:8080`
+`oc -n [-dev] rsh hello-world-nginx-599d5d8898-2k9n2 curl -v 10.97.58.168:8080`
 
 The curl command should not complete and eventually time out.
 
@@ -186,7 +186,7 @@ spec:
 
 Lets try our curl command again.
 
-`oc rsh hello-world-nginx-599d5d8898-2k9n2 curl -v 10.97.58.168:8080`
+`oc -n [-dev] rsh hello-world-nginx-599d5d8898-2k9n2 curl -v 10.97.58.168:8080`
 
 We should now see "Hello, world..." returning from the curl command.
 
@@ -256,7 +256,7 @@ So we should have at least 3 pods running. 1 mysql pod, 1 hello-world-nginx, and
 Ok lets do some testing! First lets get our pod list.
 
 ```
-oc get pods -o wide 
+oc -n [-dev] get pods -o wide 
 NAME                                   READY   STATUS     AGE   IP             NODE                    
 hello-world-nginx-2-6fd5855c9b-q86jz   1/1     Running    17h   10.97.138.81   mcs-silver-app-29.dmz
 hello-world-nginx-599d5d8898-6q67s     1/1     Running    13d   10.97.58.168   mcs-silver-app-44.dmz 
@@ -272,11 +272,11 @@ We should get a response with probably some warnings but we should also see a co
 
 Great our rule is working! Lets now test from our `hello-world-nginx` pod which should NOT work.
 
-`oc rsh hello-world-nginx-599d5d8898-6q67s curl -v telnet://10.97.41.145:3306`
+`oc -n [-dev] rsh hello-world-nginx-599d5d8898-6q67s curl -v telnet://10.97.41.145:3306`
 
 Oh strange that seems to be working also. Ah from above we have a `allow-same-namespace` network policy. Remember network policies are additive so having the allow-same-namespace and this network policy in place means they are working together. The allow-same-namespace is letting all traffic between pods. Let's delete the `allow-same-namespace` network policy now and test again.
 
-`oc rsh hello-world-nginx-599d5d8898-6q67s curl -v telnet://10.97.41.145:3306`
+`oc [-n] rsh hello-world-nginx-599d5d8898-6q67s curl -v telnet://10.97.41.145:3306`
 
 You should see the curl command running but no response is returning. Great! Our network policy is now working.
 
