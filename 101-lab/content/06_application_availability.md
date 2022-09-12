@@ -81,10 +81,6 @@ oc -n [-dev] get pods -o wide | grep rocketchat-[username]
 ```oc:cli
   oc -n [-dev] get pods --field-selector=status.phase=Running -l deployment=rocketchat-[username]
 ```
-- Perform deployment, refresh the URL of application and notice that the application is served by the surviving pods
-```oc:cli
-  oc -n [-dev] rollout latest deployment/rocketchat-[username]
-```
 
 - **Mac OS X**  
   ```oc:cli  
