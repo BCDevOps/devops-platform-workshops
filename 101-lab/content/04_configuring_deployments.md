@@ -1,24 +1,23 @@
 
 # Exploring Deployment Options
-Additional actions are available to edit your deployment. Review and explore; 
+Additional actions are available to edit your deployment. Review and explore:
   - Resource Limits
   - Replicas
 
 ## Using `oc explain`
 
-`oc explain` is a great utility to discover all the available fields for an
-OpenShift of K8s object. 
+`oc explain` is a great utility to discover all the available fields for an OpenShift or Kubernetes object. 
 
 - Discover the fields that belong to a Deployment
   - `oc explain deployment`
-  - check out what is inside the `spec` field
+  - Check out what is inside the `spec` field
   - `oc explain deployment.spec`
   - From this view you can see that `replicas` are configurable 
 
 ## Versioning a Deployment Configuration
 At this point in time, your deployment configuration has undergone many changes, such as adding environment variables and adding health checks. 
-Review the deployment configuration `ReplicaSet` tab: 
-  - Navigate to your Deployment and select `ReplicaSet`
+Review the deployment configuration `ReplicaSets` tab: 
+  - Navigate to your Deployment and select `ReplicaSets`
   ![Rocketchat deployment details screen showing ReplicaSets tabs](./images/04_deployment_configuration.png)
   - Select your latest replica set and select `edit`
   - Compare the differences between that replica set and an older one - this can be done through the UI or by comparing the YAML
