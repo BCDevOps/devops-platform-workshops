@@ -2,6 +2,17 @@
 Prior to beginning this lab, navigate to the public route you created and finish the initial setup of your application. 
 Ensure to select `Keep standlone` on the last page of the initial Rocket.Chat application setup. 
 
+Adjust the settings to match the images below:
+
+
+![RocketChat Setup Wizard #1. Name: Matt Spencer, Username: mattspencer, Organization Email: matt.spencer@gov.bc.ca, Password: ********](./images/04_rc_setup_01.png)
+![RocketChat Setup Wizard #2. Organization Type: Nonprofit, Organization Name: OpenShift 101 Lab, Industry: Help Center, Size: 11-50 People, Country: Canada, Website: *blank*](./images/04_rc_setup_02.png)
+![RocketChat Setup Wizard #3. Site Name: Matt's Rocketchat, Language: Default, Server Type: Private Team](./images/04_rc_setup_03.png)
+![RocketChat Setup Wizard #4. Keep Standalone.](./images/04_rc_setup_04.png)
+
+
+
+
 ### Single Pod Applications
 Single pod applications are not highly-available and can be abruptly terminated if the pod crashes or due to regularly 
 scheduled platform maintenance. In order to simulate the effect on an application: 
