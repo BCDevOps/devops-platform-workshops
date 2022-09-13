@@ -19,7 +19,7 @@ OpenShift of K8s object.
 At this point in time, your deployment configuration has undergone many changes, such as adding environment variables and adding health checks. 
 Review the deployment configuration `ReplicaSet` tab: 
   - Navigate to your Deployment and select `ReplicaSet`
-  ![](./images/04_deployment_configuration.png)
+  ![Rocketchat deployment details screen showing ReplicaSets tabs](./images/04_deployment_configuration.png)
   - Select your latest replica set and select `edit`
   - Compare the differences between that replica set and an older one - this can be done through the UI or by comparing the YAML
 
@@ -29,8 +29,8 @@ cutting over traffic and terminating the previous container.
   - Navigagte back to your rocketchat-[username] deployment
   - From the 'actions' menu, change the strategy to a `Recreate`. Next, redeploy a couple of times by editing your pod count to zero, then increasing to one pod
   - edit the YAML for the deployment and replace the `spec.strategy.type` from `RollingUpdate` to `Recreate
-![](./images/04_deploy_strategy_01.png)
-![](./images/04_deploy_strategy_02.png)
+![Rocketchat deployment details screen showing YAML tab with RollingUpdate strategy](./images/04_deploy_strategy_01.png)
+![Rocketchat deployment details screen showing YAML tab with Recreate strategy](./images/04_deploy_strategy_02.png)
   - Now make a small change to the deployment to trigger a new deploy (for testing)
   - `oc -n [-dev] set env deployment/rocketchat-[username] TEST=BAR`
   - Go back to topology and observe the behaviour. You should notice that the old pod is killed before a new one is created.
