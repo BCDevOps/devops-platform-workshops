@@ -153,7 +153,7 @@ From the web console
 With `oc edit`
 ![](./images/07_persistent_config_15.png)
 
-> take note that you were adding a new value `id_rsa` under a field called `stringData`. Openshift will automatically, encode that as base64 and place it in the `data` field upon saving. You can confirm this with `oc get secret rocketchat-[username]-secret -o yaml` after saving. 
+> take note that you were adding a new value `id_rsa` under a field called `stringData`. Openshift will automatically, encode that as base64 and place it in the `data` field upon saving. You can confirm this with `oc -n [-dev] get secret rocketchat-[username]-secret -o yaml` after saving. 
 
  
 - Redeploy the application after secret changes
