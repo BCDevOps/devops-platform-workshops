@@ -95,7 +95,7 @@ metadata:
 ![](./images/07_persistent_config_10.png)
 ![](./images/07_persistent_config_11.png)
 
-- Navigate back to your `rocketchat-[username]-secret` and attach the `secret` to your `rocketchat-[username]` DeploymentConfig by navigating to the `Add Secret to Workload`
+- Navigate back to your `rocketchat-[username]-secret` and attach the `secret` to your `rocketchat-[username]` Deployment by navigating to the `Add Secret to Workload`
 
 - Attach the secret as an environment variable
 
