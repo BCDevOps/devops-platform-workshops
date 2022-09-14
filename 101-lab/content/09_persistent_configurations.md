@@ -123,10 +123,10 @@ Data
 SECRET_API_KEY:  16 bytes
 ```
 
-- Export the secret to view the contents with `oc get --export secret rocketchat-[username]-secret -o yaml`
+- Export the secret to view the contents with `oc get secret rocketchat-[username]-secret -o yaml`
 
 ```
-oc get --export secret rocketchat-[username]-secret -o yaml
+oc get secret rocketchat-[username]-secret -o yaml
 apiVersion: v1
 data:
   SECRET_API_KEY: SSdtIFVMVFJBIFNFQ1JFVA==
