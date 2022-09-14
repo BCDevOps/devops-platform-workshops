@@ -9,7 +9,13 @@ Many templates include reasonable CPU and Memory resource configurations, howeve
 Since the Rocket Chat application was built from scratch and not deployed from a template, explore the current resources allocated to the pods: 
 
 - Navigate to your rocketchat deployment and select `Yaml`
-- Take a look a the resources spec under `.spec.template.spec.containers.resources`. These values should reflect the resource requests (cpu=500m,memory=512Mi) and limits (cpu=1000m,memory=1024Mi) we set earlier.  If we had not set any values for requests or limits earlier, we would see `{}` in the resources spec to indicate the deployment was using the default resource allocation. 
+- Take a look a the resources spec under `.spec.template.spec.containers.resources`. These values should reflect the resource requests (cpu=500m,memory=512Mi) and limits (cpu=1000m,memory=1024Mi) we set earlier.  If we had not set any values for requests or limits earlier, we would see `{}` in the resources spec to indicate the deployment was using the default resource allocation for the platform. 
+
+- To view the limitranges that are in place, run the command: 
+`oc get LimitRange`
+
+- You should see there is a limitrange in place called 'default-limits'. This set of request and limit values are applied when resource specifications are not defined.  To view the details of this limitrange, run: 
+`oc -n [-dev] describe LimitRange default-limits`
 
 - Review the current metrics of your `rocketchat-[username]` pod by navigating to it from the Deployment and then selecting `Pods`
 
