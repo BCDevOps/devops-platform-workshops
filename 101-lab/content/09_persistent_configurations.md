@@ -107,7 +107,7 @@ metadata:
 - Once the pods have been redeployed the environment variable should be available for them to use. This is a very common pattern that applications can use to hold sensitive information like api keys in memory. You can verify that the environment variable exists by accessing the pod terminal or using `oc rsh` and outputting its value with a simple `echo $SECRET_API_KEY`
 
 
-- From the cli, review the secret with `oc describe secret rocketchat-[username]-secret`
+- From the cli, review the secret with `oc -n [-dev] describe secret rocketchat-[username]-secret`
 
 ```
 oc describe secret rocketchat-[username]-secret
