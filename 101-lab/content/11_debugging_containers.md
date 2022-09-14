@@ -52,7 +52,10 @@ In this lab, we will scale down the database deployment so that application pods
 
     Removing debug pod ...
     ```
-
+- Resolve the crash loop backoff by scaling your database back to have 1 replica: 
+    ```
+    oc -n [-dev] scale dc/mongodb-[username] --replicas=1
+    ```
 
 ### RSH and RSYNC
 RSH is available to all normal pods through the web console under the `Terminal` tab, as well as through the 
