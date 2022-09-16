@@ -14,7 +14,7 @@ You can also create an HPA for DeploymentConfig, ReplicaSet, ReplicationControll
 This command will create a horizontal pod autoscaler resource that changes the number of replicas on the hello-world-nginx deployment to keep its pods under 80% of their total requested CPU usage.
 
 ```
-oc autoscale deployment/hello-world-nginx --min 1 --max 5 --cpu-percent 80
+oc -n [-dev] autoscale deployment/hello-world-nginx --min 1 --max 5 --cpu-percent 80
 ```
 
 The maximum and minimum values for the horizontal pod autoscaler resource serve to accommodate bursts of load and avoid overloading the OpenShift cluster. If the load on the application changes too quickly, then it might be advisable to keep a number of spare pods to cope with sudden bursts of user requests. Conversely, too many pods can use up all cluster capacity and impact other applications sharing the same OpenShift cluster.
@@ -52,7 +52,7 @@ You can check the autoscaling API versions available in the cluster.
 oc api-versions | grep autoscaling
 ```
 
-The `oc autoscale` command will create a v1 type autoscaler. You can view with the HPA details with an `oc get hpa hello-world-nginx -o yaml` command.
+The `oc autoscale` command will create a v1 type autoscaler. You can view with the HPA details with an `oc -n [-dev] get hpa hello-world-nginx -o yaml` command.
 
 ```yaml
 apiVersion: autoscaling/v1
@@ -115,7 +115,7 @@ Replace your existing HPA with the `hello-world-nginx-mem-hpa` spec from above i
 Describe the HPA.
 
 ```yaml
-oc describe hpa hello-world-nginx-mem-hpa
+oc -n [-dev] describe hpa hello-world-nginx-mem-hpa
 
 Name:                       hello-world-nginx-mem-hpa
 Namespace:                  ad204f-dev
@@ -208,7 +208,7 @@ Give it a few minutes and check the VPA status sections for recommendations.
 
 
 ```yaml
-oc get vpa vpa-recommender -o yaml
+oc -n [-dev] get vpa vpa-recommender -o yaml
 
  status:
     conditions:
@@ -271,7 +271,7 @@ Again update the load-test deployment environment variable REQUESTS to a differe
 
 Give it a few minutes and observe the VPA and the hello-world-nginx pods. We should see them re-deploy based on updated values from the VPA.
 
-Scale the load-test deployment down to 0 once it's done, `oc scale deployment/load-test --replicas=0`.
+Scale the load-test deployment down to 0 once it's done, `oc -n [-dev] scale deployment/load-test --replicas=0`.
 
 ### Summary 
 
@@ -368,14 +368,14 @@ Let's update our deployment to add an anti-affinity rule.
 Scale the deployment up to say 3 replicas. Once the pods are all running check to make sure they are on different nodes.
 
 ```
-oc get pods -o wide
+oc -n [-dev] get pods -o wide
 NAME                                 READY   STATUS     IP              NODE                   
 hello-world-nginx-599d5d8898-58mxv   1/1     Running    10.97.14.47     mcs-silver-app-07.dmz   
 hello-world-nginx-599d5d8898-bgxdr   1/1     Running    10.97.23.120    mcs-silver-app-04.dmz   
 hello-world-nginx-599d5d8898-ph49f   1/1     Running    10.97.132.155   mcs-silver-app-22.dmz   
 ```
 
-> Note: scale down the application to save resources with `oc scale deployment/hello-world-nginx --replicas=0`.
+> Note: scale down the application to save resources with `oc -n [-dev] scale deployment/hello-world-nginx --replicas=0`.
 
 There are some more advanced options with pod affinity and anti-affinity and combining them both. You can also apply some weighting to different rules. See the Kubernetes documentation if you want to play around with some advanced scheduling configurations.
 
