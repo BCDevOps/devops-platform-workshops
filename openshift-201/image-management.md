@@ -420,7 +420,7 @@ oc tag image-registry.openshift-image-registry.svc:5000/{NAMESPACE}/hello-world@
 We should now see our new tags on our `ImageStream`.
 ```bash
 # list of tags
-oc get is/hello-world
+oc -n [-dev] get is/hello-world
 
 # details
 oc -n [-dev] get is/hello-world -o yaml | grep -A25 tags
@@ -453,6 +453,6 @@ oc -n [-dev] get is/hello-world -o yaml | grep -A25 tags
 
 Now you can update the deployment to use the ImageStreamTag `hello-world:v1.1` directly.
 
-> Note: scale down the application to save resources with `oc scale deployment/hello-world --replicas=0`.
+> Note: scale down the application to save resources with `oc -n [-dev] scale deployment/hello-world --replicas=0`.
 
 
