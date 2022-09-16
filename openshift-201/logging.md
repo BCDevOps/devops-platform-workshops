@@ -87,19 +87,6 @@ Your screen should look similar to following:
 ![kibana-selected-fields](images/logging/kibana-selected-fields.png)
 
 ### Queries
-Depending on how many other participants are in the lab you may see other `logging-app` entries.  To only show your entries add the following in the search bar at the top and hit the `Enter` key or the `Update` button to the right of the search bar:
-```
-kubernetes.container_name:"logging-app"
-```
-
-![kibana-search](images/logging/kibana-search.png)
-
-
-Notice Kibana highlights your search term.
-
-If you want to save your query (including the selected fields) click the save button at the top.
-
-![kibana-save-search](images/logging/kibana-save-search.png)
 
 Let's say we are only interested in the messages with the number 10 in them.  Change the search terms to be the following:
 ```
@@ -108,6 +95,12 @@ kubernetes.container_name:"logging-app" AND message:10
 __NOTE__ if you aren't seeing results it may have been more than 15 minutes since the entry with the number 10 was logged.  If so, change the timeframe in the upper right corner to `Last 30 minutes` or higher if needed.
 
 ![kibana-search-10](images/logging/kibana-search-10.png)
+
+Notice Kibana highlights your search term.
+
+If you want to save your query (including the selected fields) click the save button at the top.
+
+![kibana-save-search](images/logging/kibana-save-search.png)
 
 ### Filters
 If you plan on doing a Google type search you can use a query.  If you are selecting a possible value from a drop down like the `kubernetes.container_name` it can be faster to use a filter.
