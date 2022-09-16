@@ -1,5 +1,9 @@
 # Application Logging with Kibana
 
+[![Video Walkthrough Thumbnail](././images/resource-mgmt/logging-with-kibana.png)](https://youtu.be/VnpelRzTjOw)
+
+[Video walkthrough](https://youtu.be/VnpelRzTjOw)
+
 ## Objectives:
 
 After completing this section, you should know how to view application logs in Kibana, navigate the list of fields, and create/save queries.
