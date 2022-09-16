@@ -24,7 +24,7 @@ The following commands are used to create a new application.  The `myapp` applic
 
 ### Create a new application 
 ```bash
-oc new-app --name myapp \
+oc -n [-dev] new-app --name myapp \
 --image-stream=redhat-openjdk18-openshift:1.8 \
 --context-dir=openshift-201/materials/image-management/sample-app \
 https://github.com/BCDevOps/devops-platform-workshops
@@ -55,7 +55,7 @@ As you can see there are a few resources create with the `new-app` command.  One
 ### Follow Build
 Use the `oc logs` command to check the build logs from the `myapp` build:
 ```bash
-oc logs -f bc/myapp
+oc -n [-dev] logs -f bc/myapp
 ```
 <pre>
 ...<em>output omitted</em>...
@@ -77,7 +77,7 @@ Once the build is complete let's inspect the `ImageStream`.  To do so click on t
 ### Application Status
 Wait for the build to complete and the application pod to be ready and running:
 ```bash
-oc get pods -w
+oc -n [-dev] get pods -w
 
 NAME                    READY   STATUS      RESTARTS   AGE
 myapp-1-build           0/1     Completed   0          10m
@@ -88,16 +88,16 @@ myapp-85c7dc4569-njqlb  1/1     Running     0          36s
 
 ```bash
 # scale down so deployment will pick up the image later on
-oc scale deployment myapp-$USER_NAME --replicas=0
+oc -n [-dev] scale deployment myapp --replicas=0
 # now scale it back up again:
-oc scale deployment myapp-$USER_NAME --replicas=1
+oc -n [-dev] scale deployment myapp --replicas=1
 ```
 
 
 ### Expose Application
 Expose the application to external access:
 ```bash
-oc expose svc/myapp
+oc -n [-dev] expose svc/myapp
 ```
 
 ### Test Application
@@ -129,12 +129,12 @@ Environment variables can be set directly on your `Deployment` or `DeploymentCon
 #### Setting Environment Variable
 We can set the `NAME` environment variable on our `myapp` deployment by performing the following:
 ```bash
-oc set env deployment/myapp NAME='<YOUR_NAME_HERE>'
+oc -n [-dev] set env deployment/myapp NAME='<YOUR_NAME_HERE>'
 ```
 
 This should automatically redeploy the app.
 ```bash
-oc get pods -w
+oc -n [-dev] get pods -w
 
 NAME                   READY   STATUS              RESTARTS   AGE
 myapp-77ff765f49-nsqhc 1/1     Running             0          4m27s
@@ -158,20 +158,20 @@ A `ConfigMap` is another way to inject configuration data into containers. Given
 #### Create the ConfigMap
 To create the `ConfigMap` perform the following:
 ```bash
-oc create configmap myapp-config \
+oc -n [-dev] create configmap myapp-config \
 --from-literal APP_MSG='Containers are fun'
 ```
 
 #### Update Deployment
 To update our deployment to use the `ConfigMap` perform the following:
 ```bash
-oc set env deployment/myapp \
+oc -n [-dev] set env deployment/myapp \
 --from configmap/myapp-config
 ```
 
 This should automatically redeploy the app.
 ```bash
-oc get pods -w
+oc -n [-dev] get pods -w
 
 NAME                   READY   STATUS              RESTARTS   AGE
 myapp-c97b5b874-zsz2j   1/1     Running             0          4m27s
@@ -193,20 +193,20 @@ A `Secret` is a way to inject sensitive data into containers. Given our example 
 
 #### Create the Secret
 ```bash
-oc create secret generic myapp-secret \
+oc -n [-dev] create secret generic myapp-secret \
 --from-literal SECRET_APP_MSG='Shh... It is a secret'
 ```
 
 #### Update Deployment
 To update our deployment to use the `Secret` perform the following:
 ```bash
-oc set env deployment/myapp \
+oc -n [-dev] set env deployment/myapp \
 --from secret/myapp-secret
 ```
 
 This should automatically redeploy the app.
 ```bash
-oc get pods -w
+oc -n [-dev] get pods -w
 
 NAME                   READY   STATUS              RESTARTS   AGE
 myapp-5fd4dcf7c8-9tlkq  1/1     Running             0          4m27s
@@ -232,7 +232,7 @@ An Image Stream doesn't contain the Docker image itself but is a pointer to imag
 The following command will create an "empty" `ImageStream`.  We will add a pointer when we build our image.
 
 ```bash
-oc create is hello-world
+oc -n [-dev] create is hello-world
 ```
 __NOTE:__ *`is`* is short for `imagestream`
 
@@ -262,13 +262,13 @@ EOF
 
 #### Start the build
 ```bash
-oc start-build docker-build
+oc -n [-dev] start-build docker-build
 ```
 
 #### Follow Build
 Use the `oc logs` command to check the build logs of the `docker-build`:
 ```bash
-oc logs -f bc/docker-build
+oc -n [-dev] logs -f bc/docker-build
 ```
 <pre>
 ...<em>output omitted</em>...
@@ -281,7 +281,7 @@ Push successful
 ### Create Deployment
 Run the following to create and start the `hello-world` application
 ```bash
-oc new-app hello-world
+oc -n [-dev] new-app hello-world
 ```
 You should see output similar to the follow:
 <pre>
@@ -294,7 +294,7 @@ You should see output similar to the follow:
 
 Notice in the `Deployment` created the annotation for the `image.openshift.io/triggers`
 ```bash
-oc get deployment hello-world -o yaml | grep -A2 annotations:
+oc -n [-dev] get deployment hello-world -o yaml | grep -A2 annotations:
 ```
 ```
 annotations:
@@ -307,7 +307,7 @@ This annotation uses a JSON path expression to update the image reference inside
 #### Application Status
 Wait for the application to be ready and running:
 ```bash
-oc get pods
+oc -n [-dev] get pods
 
 NAME                          READY   STATUS      RESTARTS   AGE
 hello-world-1-build           0/1     Completed   0          10m
@@ -316,7 +316,7 @@ hello-world-85c7dc4569-njqlb  1/1     Running     0          36s
 
 Use the pod name shown above (the characters after `hello-world-` will be different for you) to display the output of the logs.
 ```bash
-oc logs hello-world-85c7dc4569-njqlb
+oc -n [-dev] logs hello-world-85c7dc4569-njqlb
 
 Hello World!  Docker Build - v1.0
 ```
@@ -348,13 +348,13 @@ EOF
 
 #### Start the build
 ```bash
-oc start-build docker-build
+oc -n [-dev] start-build docker-build
 ```
 
 #### Follow Build
 Use the `oc logs` command to check the build logs of the `docker-build`:
 ```bash
-oc logs -f bc/docker-build
+oc -n [-dev] logs -f bc/docker-build
 ```
 <pre>
 ...<em>output omitted</em>...
@@ -368,7 +368,7 @@ Push successful
 Notice our `hello-world` deployment is automatically deploying our new image.  This is because our `ImageStream` tag `latest` was updated with a new image from our `BuildConfig`
 
 ```bash
-oc get pods
+oc -n [-dev] get pods
 
 NAME                          READY   STATUS              RESTARTS   AGE
 hello-world-1-build           0/1     Completed           0          10m
@@ -378,7 +378,7 @@ hello-world-785c7dc456-njqlb  1/1     Running             0          36s
 
 Use the new pod name shown above (the characters after `hello-world-` will be different for you) to display the output of the logs once the pod has the `Running` status.
 ```bash
-oc logs hello-world-75c89d744f-nzxpk
+oc -n [-dev] logs hello-world-75c89d744f-nzxpk
 
 Hello World!  Docker Build - v1.1
 ```
@@ -386,7 +386,7 @@ Hello World!  Docker Build - v1.1
 ### ImageStream Tags
 If we look at our `ImageStream` we should see 2 items for our `latest` image tag:
 ```bash
-oc get is/hello-world -o yaml | grep -A10 tags
+oc -n [-dev] get is/hello-world -o yaml | grep -A10 tags
 ```
 ```yaml
   tags:
@@ -423,7 +423,7 @@ We should now see our new tags on our `ImageStream`.
 oc get is/hello-world
 
 # details
-oc get is/hello-world -o yaml | grep -A25 tags
+oc -n [-dev] get is/hello-world -o yaml | grep -A25 tags
 ```
 ```yaml
   tags:
