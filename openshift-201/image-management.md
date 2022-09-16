@@ -103,7 +103,7 @@ oc -n [-dev] expose svc/myapp
 ### Test Application
 Perform the following command to get the host of the route we just exposed:
 ```bash
-export MY_HOST=`oc get routes myapp --no-headers | awk '{print $2}'`
+export MY_HOST=`oc -n [-dev] get routes myapp --no-headers | awk '{print $2}'`
 ```
 
 or run `oc get routes myapp` and copy the host name.
