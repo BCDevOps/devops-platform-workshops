@@ -65,7 +65,7 @@ Storing signatures
 Push successful
 </pre>
 
-Once the build is complete let's inspect the `ImageStream`.  To do so click on the `Builds -> ImageStreams` item in the left menu then choose `myapp` and select `YAML` or run `oc get is/myapp -o yaml`.  You should see something similar to the following:
+Once the build is complete let's inspect the `ImageStream`.  To do so click on the `Builds -> ImageStreams` item in the left menu then choose `myapp` and select `YAML` or run `oc -n [-dev] get is/myapp -o yaml`.  You should see something similar to the following:
 
 ![imagestream](images/image-management/imagestream.png)
 
