@@ -1,5 +1,9 @@
 # Best Practices of Image Management
 
+[![Video Walkthrough Thumbnail](././images/image-management/image-management-thumbnail.png)](https://youtu.be/1_gUD1Q8qSw)
+
+[Video walkthrough](https://youtu.be/1_gUD1Q8qSw)
+
 ## Objectives:
 
 After completing this section, you should have an understanding of the best practices around image management.
