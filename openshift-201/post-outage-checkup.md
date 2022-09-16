@@ -35,7 +35,7 @@ oc -n [-dev] expose svc/crash-app
 
 Perform the following command to get the host of the route we just exposed:
 ```bash
-export MY_HOST=`oc get routes crash-app --no-headers | awk '{print $2}'`
+export MY_HOST=`oc -n [-dev] get routes crash-app --no-headers | awk '{print $2}'`
 ```
 
 or run `oc -n [-dev] get routes crash-app` and copy the host name.
