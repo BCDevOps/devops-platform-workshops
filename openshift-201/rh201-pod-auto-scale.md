@@ -26,7 +26,7 @@ Run load-test to generate some traffic to nginx server `oc scale deployment load
 To get information about horizontal pod autoscaler resources in the current project, use the `oc get hpa` command.
 
 ```yaml
-oc get hpa 
+oc -n [-dev] get hpa 
 NAME                REFERENCE                      TARGETS    MINPODS   MAXPODS   REPLICAS
 hello-world-nginx   Deployment/hello-world-nginx   600%/80%   1         5          4        
 ```
@@ -49,7 +49,7 @@ There are different API versions for autoscaling. v1 API just works with CPU met
 You can check the autoscaling API versions available in the cluster.
 
 ```
-oc api-versions | grep autoscaling
+oc  api-versions | grep autoscaling
 ```
 
 The `oc autoscale` command will create a v1 type autoscaler. You can view with the HPA details with an `oc -n [-dev] get hpa hello-world-nginx -o yaml` command.
