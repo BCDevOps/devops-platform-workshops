@@ -9,7 +9,7 @@ We will setup a sample application and proceed with what steps should be taken a
 
 ### Create a new application 
 ```bash
-oc new-app --name crash-app \
+oc -n [-dev] new-app --name crash-app \
 -i redhat-openjdk18-openshift:1.8 \
 --context-dir=openshift-201/materials/post-outage-checkup/crash-app \
 https://github.com/BCDevOps/devops-platform-workshops
@@ -30,7 +30,7 @@ You should see output similar to the follow:
 ### Expose Application
 Expose the application to external access:
 ```bash
-oc expose svc/crash-app
+oc -n [-dev] expose svc/crash-app
 ```
 
 Perform the following command to get the host of the route we just exposed:
@@ -38,13 +38,13 @@ Perform the following command to get the host of the route we just exposed:
 export MY_HOST=`oc get routes crash-app --no-headers | awk '{print $2}'`
 ```
 
-or run `oc get routes crash-app` and copy the host name.
+or run `oc -n [-dev] get routes crash-app` and copy the host name.
 
 
 ### Follow Build
 Use the `oc logs` command to check the build logs from the `crash-app` build:
 ```bash
-oc logs -f bc/crash-app
+oc -n [-dev] logs -f bc/crash-app
 ```
 <pre>
 ...<em>output omitted</em>...
@@ -76,7 +76,7 @@ We aren't getting what we expect and it looks as though there is an error.
 ### Verify the Route
 Let's ensure our route is setup correctly.
 ```bash
-oc describe route/crash-app
+oc -n [-dev] describe route/crash-app
 ```
 <pre>
 Name:             crash-app
@@ -105,7 +105,7 @@ __NOTE:__ depending on how fast you get here it may show the pod in an `Error` s
 Let's take a look at the pods via the command line to validate the status:
 
 ```bash
-oc get pods
+oc -n [-dev] get pods
 
 NAME                                 READY   STATUS             RESTARTS   AGE
 crash-app-1-build         0/1     Completed          0          2m7s
@@ -118,7 +118,7 @@ Viewing this from the console will see something like the following:
 
 Use the new pod name shown above (the characters after `crash-app-` will be different for you) to display the output of the logs.
 ```bash
-oc logs crash-app-65887546-9z8rv
+oc -n [-dev] logs crash-app-65887546-9z8rv
 ```
 <pre>
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
@@ -133,12 +133,12 @@ __NOTE:__ Sometimes the restarting of the container occurs so quickly that you c
 As we can see we are missing a `DEPLOY_ENV` environment variable.  Let's set that on our deployment and see if we can resolve the `CrashLoopBackOff` error.
 
 ```bash
-oc set env deployment/crash-app DEPLOY_ENV='YES'
+oc -n [-dev] set env deployment/crash-app DEPLOY_ENV='YES'
 ```
 
 This should automatically redeploy the app.
 ```bash
-oc get pods
+oc -n [-dev] get pods
 
 NAME                                  READY   STATUS              RESTARTS   AGE
 crash-app-65887546-9z8rv   0/1     CrashLoopBackOff    0          4m27s
@@ -148,7 +148,7 @@ crash-app-c97b5b874-zsz2j  0/1     ContainerCreating   0          5s
 Our pod should eventually get to and stay in the `Running` status.  We can check our logs again and verify it has started successfully
 
 ```bash
-oc logs crash-app-c97b5b874-zsz2j
+oc -n [-dev] logs crash-app-c97b5b874-zsz2j
 ```
 <pre>
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
