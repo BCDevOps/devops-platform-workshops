@@ -1,6 +1,6 @@
 # Application Logging with Kibana
 
-[![Video Walkthrough Thumbnail](././images/resource-mgmt/logging-with-kibana.png)](https://youtu.be/VnpelRzTjOw)
+[![Video Walkthrough Thumbnail](././images/logging/logging-with-kibana.png)](https://youtu.be/VnpelRzTjOw)
 
 [Video walkthrough](https://youtu.be/VnpelRzTjOw)
 

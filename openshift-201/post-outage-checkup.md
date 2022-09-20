@@ -1,5 +1,9 @@
 # Post Outage Checkup
 
+[![Video Walkthrough Thumbnail](././images/post-outage-checkup/post-outage-checkup-thumb.png)](https://youtu.be/WfR6rKGzi7Q)
+
+[Video walkthrough](https://youtu.be/WfR6rKGzi7Q)
+
 ## Objectives:
 
 After completing this section, you should know what to do after there is an outage and how to handle common problems that may occur.
