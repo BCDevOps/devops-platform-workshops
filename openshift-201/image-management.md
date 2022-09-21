@@ -459,4 +459,4 @@ Now you can update the deployment to use the ImageStreamTag `hello-world:v1.1` d
 
 > Note: scale down the application to save resources with `oc -n [-dev] scale deployment/hello-world --replicas=0`.
 
-
+Next topic - [Pod Auto Scaling](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/rh201-pod-auto-scale.md)

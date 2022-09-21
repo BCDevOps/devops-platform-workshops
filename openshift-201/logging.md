@@ -133,3 +133,4 @@ deployment.apps "logging-app" deleted
 buildconfig.build.openshift.io "logging-app" deleted
 imagestream.image.openshift.io "logging-app" deleted
 ```
+Next topic - [Best Practices of Image Management](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/image-management.md)

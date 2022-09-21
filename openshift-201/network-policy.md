@@ -387,6 +387,8 @@ ACS will generate a baseline network flow for our deployments this can be viewed
 
 From the `baseline settings` tab you can also click on `simulate baseline as network policy`. This will generate a YAML network policy file with rules for the observed baseline traffic.
 
+Next topic - [Application Logging With Kibana](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/logging.md)
+
 ## Links
 
 * Existing documentation and walk through on Network Policy: https://developer.gov.bc.ca/TLDR
