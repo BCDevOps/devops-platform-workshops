@@ -1,8 +1,8 @@
 # Best Practices of Image Management
 
-[![Video Walkthrough Thumbnail](././images/image-management/image-management-thumbnail.png)](https://youtu.be/1_gUD1Q8qSw)
+[![Video Walkthrough Thumbnail](././images/image-management/image-management-thumbnail.png)](https://youtu.be/jQ15EXSuKL4)
 
-[Video walkthrough](https://youtu.be/1_gUD1Q8qSw)
+[Video walkthrough](https://youtu.be/jQ15EXSuKL4)
 
 ## Objectives:
 
