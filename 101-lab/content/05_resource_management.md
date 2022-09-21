@@ -17,7 +17,7 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 - You should see there is a limitrange in place called 'default-limits'. This set of request and limit values are applied when resource specifications are not defined.  To view the details of this limitrange, run: 
 `oc -n [-dev] describe LimitRange default-limits`
 
-- Review the current metrics of your `rocketchat-[username]` pod by navigating to it from the Deployment and then selecting `Pods`
+- Review the current metrics of your `rocketchat-[username]` pod. Navigate to your Deployment and then select the Pods tab to see a list of pods in your Deployment. Navigate to your pod by clicking its name and then select the Metrics tab to see your current pod metrics.
 
 ![rocketchat Deployment showing Pods tab with a single pod running](./images/05_resource_management_01.png)
 ![rocketchat Pod Details showing Metrics tab with Memory and CPU usage graphs](./images/05_resource_management_02.png)
