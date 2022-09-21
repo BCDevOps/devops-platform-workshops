@@ -19,8 +19,8 @@ Since the Rocket Chat application was built from scratch and not deployed from a
 
 - Review the current metrics of your `rocketchat-[username]` pod by navigating to it from the Deployment and then selecting `Pods`
 
-![](./images/11_resources_02.png)
-![](./images/11_resources_03.png)
+![rocketchat Deployment showing Pods tab with a single pod running](./images/05_resource_management_01.png)
+![rocketchat Pod Details showing Metrics tab with Memory and CPU usage graphs](./images/05_resource_management_02.png)
 
 - Reduce the CPU (request and limit) to `65 millicores` and Memory (request and limits) to `100 Megabytes` and monitor the startup time of the pod
   ```oc:cli
