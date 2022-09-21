@@ -7,6 +7,7 @@ Welcome to the OpenShift 201 Training Labs.  You will find all of the lab materi
 - oc CLI installed and up to date, find out [how to here](https://stackoverflow.developer.gov.bc.ca/questions/139)
 - You must be a member of the BC Gov github orgs. You would have set this up during the OpenShift 101 lab. 
 - An OpenShift project set created for you from Registry app, which you are an Admin of. You will either receive an email about this in advance of the course, or set this up during the OCP201 kick off.
+- These instructions assume the use of a bash-based shell such as zsh (included on OS X) or [WSL](https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/) for Windows. Please set this up prior to the course. 
 
 
 ### Lab topics:
