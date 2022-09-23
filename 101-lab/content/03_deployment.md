@@ -137,6 +137,8 @@ oc -n [-dev] logs -f "$(oc -n [-dev] get pods --field-selector=status.phase=Runn
 ```
 *note* you can follow the logs with `-f` argument
 
+In OpenShift 4.10, it is now possible to launch a debug terminal from within the web console when a pod is in the `CrashLoopBackOff` state. The debug terminal can be launched from the `logs` window for a pod. This can be useful to gather additional information when troubleshooting.  
+
 Taking a look at the logs it is clear that the RocketChat pod is failing because it is not able to connect to a __mongo database__.
 
 ## Deploying the Database
