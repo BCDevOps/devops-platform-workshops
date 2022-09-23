@@ -280,4 +280,6 @@ This should produce output similar to the following:
 
 If you now look at the pipelines you should see a new `PipelineRun` created and started just as if we manually started it from above.
 
+**Note:** if you are creating your own pipelines in the future, you can use the 'pipeline builder' feature of the OpenShift web console. The can be accessed via the 'create' button on the Pipelines window of the web console. Since the 4.10 update, this pipeline builder will filter the tasks to show only those which are supported by the cluster. 
+
 Next Topic - [Resource Management](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/resource-mgmt.md)
