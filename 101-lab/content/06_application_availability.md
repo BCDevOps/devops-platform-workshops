@@ -50,7 +50,8 @@ with multiple pods. Please refer to specific application documentaion for detail
 oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
 ```
 - Notice the balancing across nodes by exploring the details of each pod
-![](./images/04_app_availability_06.png)
+![1st Pod is on Node mcs-silver-app-39.dmz](./images/06_application_availability_01.png)
+![2nd Pod is on Node mcs-silver-app-12.dmz](./images/06_application_availability_02.png)
 
 - Or from the CLI notice the hosts the pod runs on (in the last field)
 
