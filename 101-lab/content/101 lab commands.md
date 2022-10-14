@@ -37,7 +37,7 @@ oc -n d8f105-dev set probe deployment/rocketchat-mattspencer --readiness --get-u
 oc -n d8f105-dev set env deployment/rocketchat-mattspencer TEST=BAR
 ```
 
-## RESOURCE REQUESTS AND LIMITS 
+## Resource Requests and Limits 
 ```
 oc -n d8f105-dev set resources deployment/rocketchat-mattspencer --requests=cpu=65m,memory=100Mi --limits=cpu=65m,memory=100Mi
 oc -n d8f105-dev rollout restart deployment/rocketchat-mattspencer
@@ -47,7 +47,7 @@ oc -n d8f105-dev rollout restart deployment/rocketchat-mattspencer
 time oc -n d8f105-dev rollout restart deployment/rocketchat-mattspencer
 oc -n d8f105-dev set resources deployment/rocketchat-mattspencer --requests=cpu=150m,memory=256Mi --limits=cpu=200m,memory=400Mi
 ```
-## APPLICATION AVAILABILITY 
+## Application Availability 
 ```
 oc -n d8f105-dev scale deployment/rocketchat-mattspencer --replicas=2
 oc -n d8f105-dev get pods --field-selector=status.phase=Running -l deployment=rocketchat-mattspencer -o wide
