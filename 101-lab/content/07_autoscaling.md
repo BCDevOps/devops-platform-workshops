@@ -1,9 +1,10 @@
 # Autoscaling
 Autoscaling can be configured on pods to enable OpenShift to add or remove pods as load varies. In general, 
 the Horizontal Pod Autoscaler sets: 
-    - Upper limit of pods
-    - Lower limit of pods
-    - Metric threshold to use for scaling tasks
+    
+- Upper limit of pods
+- Lower limit of pods
+- Metric threshold to use for scaling tasks
 
 Currently CPU and memory metrics are supported, with additional arbitrary metrics support intended for the future. 
 
