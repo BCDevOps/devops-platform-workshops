@@ -33,10 +33,13 @@ oc -n [-dev] autoscale deployment/rocketchat-[username] --min 1 --max 10 --cpu-p
   printf '{"text":"Example message","attachments":[{"title":"Rocket.Chat","title_link":"https://rocket.chat","text":"Rocket.Chat, the best open source chat","image_url":"https://rocket.chat/images/mockup.png","color":"#764FA5"}]}' > /tmp/rocketchat-post-msg.json && ab -p /tmp/rocketchat-post-msg.json -n 10000 -c 10 -T "application/json" [http://rocketchat-patricksimonian-ocp101-june-dev.apps.training-us.clearwater.devops.gov.bc.ca]/hooks/<integration>/<token>
   ```
 
+- Review the deployment and try to add or remove replicas by editing its `.spec.replicas` YAML value
 
-- Review the deployment config and try to add or remove replicas
+  ![Editing a deployment's YAML to change the replica count](./images/07_autoscaling_01.png)
 
-![](./images/05_autoscaling_02.png)
+- Observe how the autoscaler reacts to your new replica count and changes it
+
+  ![Topology view showing the autoscaler changing the replica count](./images/07_autoscaling_02.png)
 
 - Remove the autoscaler
   ```oc:cli
