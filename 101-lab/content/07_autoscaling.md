@@ -1,6 +1,5 @@
 # Autoscaling
-Autoscaling can be configured on pods to enable OpenShift to add or remove pods as load varies. In general, 
-the Horizontal Pod Autoscaler sets: 
+Autoscaling can be configured on pods to enable OpenShift to add or remove pods as load varies. In general, the Horizontal Pod Autoscaler sets: 
     
 - Upper limit of pods
 - Lower limit of pods
@@ -9,8 +8,7 @@ the Horizontal Pod Autoscaler sets:
 Currently CPU and memory metrics are supported, with additional arbitrary metrics support intended for the future. 
 
 ## Autoscaling Pods
-This lab will provide a simple demonstration of autoscaling based on CPU, as this is configurable in the 
-Web Console. 
+This lab will provide a simple demonstration of autoscaling based on CPU, as this is configurable in the Web Console. 
 
 - First take some time to discover the configurable fields that belong to a HorizontalPodAutoscaler `oc explain HorizontalPodAutoscaler` 
 - from the cli run 
@@ -43,4 +41,5 @@ oc -n [-dev] autoscale deployment/rocketchat-[username] --min 1 --max 10 --cpu-p
   ```oc:cli
   oc -n [-dev] delete hpa/rocketchat-[username]
   ```
+
 Next page - [Persistent Storage](./08_persistent_storage.md)
