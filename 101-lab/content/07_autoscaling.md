@@ -8,7 +8,7 @@ the Horizontal Pod Autoscaler sets:
 
 Currently CPU and memory metrics are supported, with additional arbitrary metrics support intended for the future. 
 
-### Autoscaling Pods
+## Autoscaling Pods
 This lab will provide a simple demonstration of autoscaling based on CPU, as this is configurable in the 
 Web Console. 
 
