@@ -211,6 +211,17 @@ To remove the `secretRef` perform the following:
 oc patch el maven-build-event-listener --type json -p '[{"op": "remove", "path":  "/spec/triggers/0/interceptors/0/params/0"}]'
 ```
 
+You can run 
+```bash
+oc get el
+```
+to get a list of the event listeners, then:
+
+```bash
+oc get el maven-build-event-listener -o yaml
+```
+to view the yaml output of the EventListener that you just patched. 
+
 The `interceptors` section of the `EventListener` should now look like the following:
 ```yaml
 interceptors:
