@@ -151,6 +151,7 @@ Triggers consist of the following main resources: TriggerBinding, TriggerTemplat
 ### TriggerBinding
 Trigger Bindings extract field from an event payload and stores them as parameters.
 
+`oc get triggerbinding maven-build-trigger-binding -o yaml`
 
 ![triggerbinding](images/pipelines/triggerbinding.png)
 
@@ -182,6 +183,8 @@ The value of `branchName` would be `main` and the value of `contenttype` would b
 ### TriggerTemplate
 Trigger Templates receive input from the `TriggerBinding`, and then performs a series of action that result in the initiation of a new pipeline run.
 
+`oc get triggertemplate maven-build-trigger -o yaml`
+
 ![triggertemplate](images/pipelines/triggertemplate.png)
 
 1. Parameters defined by this `TriggerTemplate`.  These usually include parameters needed to start a pipeline.  **Note:** in order to map values from the `TriggerBinding` these parameter names **must** match the parameter names in the `TriggerBinding`
@@ -190,6 +193,8 @@ Trigger Templates receive input from the `TriggerBinding`, and then performs a s
 
 ### EventListener
 Provides an endpoint that listens for incoming HTTP-based event with JSON payload.  It will extract event parameters for each `TriggerBinding` and creates resources as specified by the `TriggerTemplate`
+
+`oc get eventlistener maven-build-event-listener -o yaml` 
 
 ![eventlistener](images/pipelines/eventlistener.png)
 
