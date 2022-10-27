@@ -69,5 +69,5 @@ It may be necessary, from time to time, to override the initial command/entrypoi
 - Remove the previous command to enable the rocketchat instance to start properly again
 
 ## References
-- https://blog.openshift.com/kubernetes-pods-life/
+- https://blog.openshift.com/kubernetes-pods-life/ 
 
