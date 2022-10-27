@@ -24,10 +24,10 @@ oc -n [-tools] get imagestreamtag/rocketchat-[username]:dev
 
 __Objective__: Deploy RocketChat from the image previously built.
 
-- from the CLI
+- from the CLI, `-l` flag will add a lable `ocp101=participant` to your deployment.
 
 ```oc:cli
-oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[username]
+oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[username] -l ocp101=participant
 ```
 
 - The output should be as follows
@@ -152,7 +152,7 @@ for your application.
   - Find out what 'mongodb-ephemeral' is
 
 ```oc:cli
-oc -n [-dev] new-app --search mongodb-ephemeral
+oc -n [-dev] new-app --search mongodb-ephemeral -l ocp101=participant
 ```
 
   - The output will tell us that `mongodb-ephemeral` is a template in the `openshift` project:
@@ -175,7 +175,7 @@ oc -n openshift get template/mongodb-ephemeral -o json | oc process -f - --param
   - Create MongoDB based on a template in the catalog
 
 ```oc:cli
-  oc -n [-dev] new-app --template=openshift/mongodb-ephemeral -p MONGODB_VERSION=3.6 -p DATABASE_SERVICE_NAME=mongodb-[username] -p MONGODB_USER=dbuser -p MONGODB_PASSWORD=dbpass -p MONGODB_DATABASE=rocketchat --name=rocketchat-[username]
+  oc -n [-dev] new-app --template=openshift/mongodb-ephemeral -p MONGODB_VERSION=3.6 -p DATABASE_SERVICE_NAME=mongodb-[username] -p MONGODB_USER=dbuser -p MONGODB_PASSWORD=dbpass -p MONGODB_DATABASE=rocketchat --name=rocketchat-[username] -l ocp101=participant
 ```
 > If you ran the cli command you would get an output like this 
   ```
@@ -272,7 +272,7 @@ oc -n [-dev] expose svc/rocketchat-[username]
   - Using `oc create route` for secure (https) route
   
 ```oc:cli
-oc -n [-dev] create route edge rocketchat-[username] --service=rocketchat-[username] --insecure-policy=Redirect
+oc -n [-dev] create route edge rocketchat-[username] --service=rocketchat-[username] --insecure-policy=Redirect -l ocp101=participant
 ```
 
 After creating the route you may access your application! 
