@@ -8,7 +8,7 @@ A Pod can be extended beyond the normal operation of the container by allowing d
 Init containers are best used to prepare the pod for normal operation. In this lab, you will add a simple init container that posts a message to rocketchat with your pod hostname.
 
 __Objective__: Create an init container
-- From the Web Console, navigate to `Topology` and select your `rocketchat-[username]` deploymentconfig.
+- From the Web Console, navigate to `Topology` and select your `rocketchat-[username]` deployment.
 - Navigate to the __YAML__ tab.
   > If you wish to perform this from the cli with the `oc` tool, type `oc edit deployment/rocketchat-[username]`
 
