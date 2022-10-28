@@ -39,7 +39,7 @@ oc -n [-dev] logs rocketchat-[username]-[pod-id] -c init
 ## Lifecycle Hooks
 Lifecycle hooks can be configured to start and stop a container properly. The lifecycle hook is tied directly to each container. Add a similar pre and post hook as the `initContainer` to demonstrate when it executes in your rocketchat deployment. 
 
-- From the Web Console, navigate to the `rocketchat-[username]` deploymentconfig and click on `YAML` tab
+- From the Web Console, navigate to the `rocketchat-[username]` deployment and click on `YAML` tab
     - If you wish to perform this from the cli with the `oc` tool, type `oc edit deployment/rocketchat-[username]`
 - Add the following section of code under `spec: -> template: -> spec: -> containers`
 ```
@@ -58,7 +58,7 @@ Lifecycle hooks can be configured to start and stop a container properly. The li
 ## Overriding the Entrypoint 
 It may be necessary, from time to time, to override the initial command/entrypoint of a container image. Generally this is used for troubleshooting purposes, or to override a vendor provided image. 
 
-- From the Web Console, navigate to the `rocketchat-[username]` deploymentconfig and click on `YAML` tab
+- From the Web Console, navigate to the `rocketchat-[username]` deployment and click on `YAML` tab
     - If you wish to perform this from the cli with the `oc` tool, type `oc edit deployment/rocketchat-[username]`
 - Add the following section of code under `spec: -> template: -> spec: -> containers`
 
