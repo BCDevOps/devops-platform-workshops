@@ -25,7 +25,8 @@ The day after the training, the lab has a kick-off meeting, during which we set 
 - General Lab Intro Information
     - lab is self-directed over about 2 weeks
     - 3 meetings
-    - if you aren't finished in the next 2 weeks, let us know and we'll do what we can to keep your access to the namespaces a little longer
+    - In this lab, we'll all be creating our own instance of Rocketchat, and an an associated database that will both run on OpenShift
+    - If you aren't finished in the next 2 weeks, let us know and we'll do what we can to keep your access to the namespaces a little longer
     - point out and show off links to the lab content and content repo
 - RocketChat and GitHub Access
     - Everyone sign into RocketChat and join the channel (show them how?)
