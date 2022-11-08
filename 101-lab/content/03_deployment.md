@@ -141,6 +141,8 @@ In OpenShift 4.10, it is now possible to launch a debug terminal from within the
 
 Taking a look at the logs it is clear that the RocketChat pod is failing because it is not able to connect to a __mongo database__.
 
+In the steps that follow, we will deploy the database and give our RocketChat deployment the credentials needed to access the database. This will resolve the CrashLoopBackOff problem.
+
 ## Deploying the Database
 
 
