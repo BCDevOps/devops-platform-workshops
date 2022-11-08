@@ -225,9 +225,9 @@ a database has been deployed, the app does not know how or where to connect to M
 - Click the `Environment` tab
 ![](./images/03_deploy_env_02.png)
 
-- Add the following environment variable with the connection string details configured for mongodb
+- Add the following environment variable with the connection string details configured for mongodb for key `MONGO_URL`:
 ```
-MONGO_URL=mongodb://dbuser:dbpass@mongodb-[username]:27017/rocketchat
+mongodb://dbuser:dbpass@mongodb-[username]:27017/rocketchat
 ```
 ![](./images/03_deploy_config_01.png)
 
