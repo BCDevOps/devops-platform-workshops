@@ -136,7 +136,7 @@ The day after the training, the lab has a kick-off meeting, during which we set 
    - it's enabled for cluster security scanning, application team access coming soon!
 - Sysdig - monitoring solution to provide notifications about the status of your app,
    - documentation: <https://github.com/BCDevOps/platform-services/tree/master/monitoring/sysdig>
-   - UI: <https://app.sysdigcloud.com/>
+   - UI: <[https://app.sysdigcloud.com/](https://app.sysdigcloud.com/api/oauth/openid/bcdevops)>
    - rocketchat channel: #devops-sysdig
 - Platform Status page to let you know if any OpenShift Clusters or platform services are experiencing an outage: <https://status.developer.gov.bc.ca/>
 **Stack Overflow** 
