@@ -27,7 +27,7 @@ __Objective__: Deploy RocketChat from the image previously built.
 - from the CLI, `-l` flag will add a lable `ocp101=participant` to your deployment.
 
 ```oc:cli
-oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[username] -l ocp101=participant
+oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[username]
 ```
 
 - The output should be as follows
