@@ -27,7 +27,7 @@ __Objective__: Deploy RocketChat from the image previously built.
 - from the CLI, `-l` flag will add a lable `ocp101=participant` to your deployment.
 
 ```oc:cli
-oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[username]
+oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[username] -l ocp101=participant
 ```
 
 - The output should be as follows
@@ -274,7 +274,7 @@ oc -n [-dev] expose svc/rocketchat-[username]
   - Using `oc create route` for secure (https) route
   
 ```oc:cli
-oc -n [-dev] create route edge rocketchat-[username] --service=rocketchat-[username] --insecure-policy=Redirect -l ocp101=participant
+oc -n [-dev] create route edge rocketchat-[username] --service=rocketchat-[username] --insecure-policy=Redirect
 ```
 
 After creating the route you may access your application! 
