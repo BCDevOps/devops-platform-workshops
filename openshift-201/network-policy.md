@@ -141,7 +141,7 @@ spec:
 ```
 The deny by default network policy is there to enforce the zero trust networking or walled garden pattern. So we start by denying all then build our allow list.
 
-You should still have your `hello-world-nginx` deployment and pod(s) up and running from a previous lab. If not then fire them up again.
+You should still have your `hello-world-nginx` deployment and pod(s) up and running from the [Resource Management](resource-mgmt.md) lab. If not, then create these and/or make sure they are running before you proceed.
 
 You should also have a service and route pointing to these pods.
 
