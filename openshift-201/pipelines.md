@@ -11,7 +11,7 @@ After completing this section, you should have an understanding of OpenShift Pip
 ## Prerequisites
 These instructions assume the use of a bash-based shell such as `zsh` (included on OS X) or [WSL](https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/) for Windows. Please use one of these shells, or make the appropriate modifications to the commands shown in these instructions. 
 
-Before you begin, you will need to [set up your GitHub SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh). If you need to create a new SSH key or you are having authentication errors, be sure to use the instructions for creating an `rsa` format key **not** a `ed25519` format key. Do not use a passphrase with your key.
+Before you begin, you will need to [set up your GitHub SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh). If you need to create a new SSH key or you are having authentication errors, be sure to use the instructions for creating an `rsa` format key **not** a `ed25519` format key. Do not use a passphrase with your key. Be sure to test your ssh connection before proceeding. 
 
 This lab is based on the `pipeline-templates` which has it's own set of [prerequisites](https://github.com/bcgov/pipeline-templates/tree/main/tekton#prerequisites) and [installation instructions](https://github.com/bcgov/pipeline-templates/tree/main/tekton#installation).
 
