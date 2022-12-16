@@ -28,8 +28,9 @@ oc -n d8f105-dev patch deployment/rocketchat-mattspencer -p '{"spec":{"template"
 oc -n d8f105-dev set env deployment/rocketchat-mattspencer 'MONGO_URL=mongodb://$(MONGO_USER):$(MONGO_PASS)@mongodb-mattspencer:27017/rocketchat'
 oc -n d8f105-dev rollout resume deployment/rocketchat-mattspencer 
 oc -n d8f105-dev get deployment/rocketchat-mattspencer -o json | jq '.spec.template.spec.containers[].env'
-
-
+```
+## Create a Route for your Rocket.Chat App
+```
 oc -n d8f105-dev expose svc/rocketchat-mattspencer
 OR
 oc -n d8f105-dev create route edge rocketchat-mattspencer --service=rocketchat-mattspencer --insecure-policy=Redirect
