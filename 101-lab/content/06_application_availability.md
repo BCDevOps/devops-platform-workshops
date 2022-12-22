@@ -1,6 +1,12 @@
 # Application Availability
+
+[![Video Walkthrough Thumbnail](././images/06_application_availability_thumb.png)](https://youtu.be/42UxHJkNLwc)
+
+[Video walkthrough](https://youtu.be/42UxHJkNLwc)
+
 Prior to beginning this lab, navigate to the public route you created and finish the initial setup of your application. 
 Ensure to select `Keep standlone` on the last page of the initial Rocket.Chat application setup. 
+
 
 Adjust the settings to match the images below:
 

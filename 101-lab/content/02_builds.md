@@ -1,6 +1,10 @@
 # Builds
 In this lab, you will create a simple Docker based build for the Rocket Chat application.
 
+[![Video Walkthrough Thumbnail](././images/02_builds_thumb.png)](https://youtu.be/j7a74_I6MYw)
+
+[Video walkthrough](https://youtu.be/j7a74_I6MYw)
+
 ## The Tools Project
 The tools project is what will hold various support tools for the application. In this case, all builds will run in this project.
 
