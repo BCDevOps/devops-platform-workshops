@@ -1,4 +1,9 @@
 # Persistent Storage
+
+[![Video Walkthrough Thumbnail](././images/08_persistent_storage_thumb.png)](https://youtu.be/yG_dzkUUYfg)
+
+[Video walkthrough](https://youtu.be/yG_dzkUUYfg)
+
 Up to this point you have leveraged a single mongodb pod with ephemeral storage. In order to maintain the 
 application data, persistent storage is required.  
 

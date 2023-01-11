@@ -4,6 +4,10 @@ Additional actions are available to edit your deployment. Review and explore:
   - Resource Limits
   - Replicas
 
+[![Video Walkthrough Thumbnail](././images/04_configuring_deployments_thumb.png)](https://youtu.be/ITNGojE7uJM)
+
+[Video walkthrough](https://youtu.be/ITNGojE7uJM)
+
 ## Using `oc explain`
 
 `oc explain` is a great utility to discover all the available fields for an OpenShift or Kubernetes object. 
