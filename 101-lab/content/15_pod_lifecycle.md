@@ -24,7 +24,7 @@ __Objective__: Create an init container
 
 ![](./images/15_pod_lifecycle_05.png)
 
-- Configure the WebHook. Be sure to set 'enabled' to 'true', choose the account name you set earlier, choose the default #general channel. Optionally, you can link to an avatar image or set and emoji as the avatar. Be sure to save the settings at the bottom right of the page, and confirm that no errors appear at the top right of the page. 
+- Configure the WebHook. Be sure to set 'enabled' to 'true', choose to post as the account name you set earlier, choose the default #general channel. Optionally, you can link to an avatar image or set and emoji as the avatar. Be sure to save the settings at the bottom right of the page, and confirm that no errors appear at the top right of the page. 
 
 ![](./images/15_pod_lifecycle_06.png)
 
