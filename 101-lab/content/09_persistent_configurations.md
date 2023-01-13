@@ -139,7 +139,7 @@ type: Opaque
 ```
 > on Mac's and Linux machines that have the base64 binary, you can decode the value as a reference
 ```
-echo "c2hlYXN0ZXdhcnQ=" | base64 -d
+echo "SSdtIFVMVFJBIFNFQ1JFVA==" | base64 -d
 ```
 
 - To edit an existing secret, from the webconsole you can navigate to the secret and select the `YAML` tab or `oc edit secret rocketchat-[username]-secret` from the cli. Secrets are base64 encoded. If adding new values or editing existing values of a Secret it is often easier to
