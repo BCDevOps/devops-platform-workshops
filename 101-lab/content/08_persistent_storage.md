@@ -7,6 +7,8 @@
 Up to this point you have leveraged a single mongodb pod with ephemeral storage. In order to maintain the 
 application data, persistent storage is required.  
 
+Some background information about volumes and volumemounts can be found [here](https://kubernetes.io/docs/concepts/storage/volumes/).
+
 - Let's first take a look at our application prior to this lab
 ![](./images/06_persistent_storage_01.png)
 
