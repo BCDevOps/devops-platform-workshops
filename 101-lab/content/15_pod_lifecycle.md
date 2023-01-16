@@ -96,6 +96,8 @@ lifecycle:
 
 ![](./images/15_pod_lifecycle_10.png)
 
+- Test your lifecycle hooks by scaling up your deployment to run on an extra pod. When you're finished, scale down to 1 pod again. 
+
 ## Overriding the Entrypoint 
 It may be necessary, from time to time, to override the initial command/entrypoint of a container image. Generally this is used for troubleshooting purposes, or to override a vendor provided image. 
 
