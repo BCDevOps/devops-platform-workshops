@@ -1,4 +1,9 @@
 # Persistent Configurations
+
+[![Video Walkthrough Thumbnail](././images/09_persistent_configurations_thumb.png)](https://youtu.be/g6TyE3rIHeo)
+
+[Video walkthrough](https://youtu.be/g6TyE3rIHeo)
+
 In cases where configurations need to change frequently or common configurations should be shared across deployments or pods, it is not ideal to build said configurations into the container image or maintain multiple copies of the configuration. OpenShift supports `configMaps` which can be a standalone object that is easily mounted into pods. In cases where the configuration file or data is sensitive in nature, OpenShift supports `secrets` to handle this sensitive data. 
 
 ### ConfigMaps
