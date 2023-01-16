@@ -63,7 +63,7 @@ initContainers:
 ![](./images/15_pod_lifecycle_08.png)
 
 
-- Now that you've added this init container, every time one of your Rocketchat pods initializes, the 'Say Hello' message will be posted to your #general channel on Rocketchat web application.
+- Now that you've added this init container, every time one of your Rocketchat pods initializes, the 'Say Hello' message will be posted to your #general channel on Rocketchat web application. You can test this by scaling up your rocketchat deployment to have an additional pod. 
 
 ![](./images/15_pod_lifecycle_09.png)
 
@@ -82,7 +82,7 @@ Lifecycle hooks can be configured to start and stop a container properly. The li
 
 - From the Web Console, navigate to the `rocketchat-[username]` deployment and click on `YAML` tab
     - If you wish to perform this from the cli with the `oc` tool, type `oc edit deployment/rocketchat-[username]`
-- After replacing both URLs below with the webhook URL from the earlier step, as well as replacing $HOSTNAME with the Add the following section of code under `spec: -> template: -> spec: -> containers`. Again, pay careful attention to the YAML indentation. 
+- After replacing both URLs below with the webhook URL from the earlier step, as well as replacing $HOSTNAME with the Add the following section of code under `spec: -> template: -> spec: -> containers -> resources`. Again, pay careful attention to the YAML indentation. 
 ```YAML
 lifecycle:
             postStart:
