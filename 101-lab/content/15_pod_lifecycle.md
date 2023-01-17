@@ -44,7 +44,7 @@ __Objective__: Create an init container
 ```YAML
 initContainers:
         - name: init
-          image: giantswarm/tiny-tools
+          image: docker.io/giantswarm/tiny-tools
           command:
             - /bin/sh
             - '-c'
