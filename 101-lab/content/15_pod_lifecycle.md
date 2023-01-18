@@ -2,7 +2,7 @@
 A Pod can be extended beyond the normal operation of the container by allowing developers to: 
 - add `init` containers
 - add `pre` and `post` lifecycle hooks
-- modify the default `entrypoint` of a container
+- modify the default `entrypoint` of a container 
 
 ## Init Containers
 Init containers are specialized containers that run before app containers in a pod. Init containers can contain utilities or setup scripts not present in an app image.
@@ -98,6 +98,7 @@ lifecycle:
 
 - Test your lifecycle hooks by scaling up your deployment to run on an extra pod. When you're finished, scale down to 1 pod again. 
 
+<!--  ## Although previously working ~October 2022, these steps no longer work as expected so are commented out here ##
 ## Overriding the Entrypoint 
 It may be necessary, from time to time, to override the initial command/entrypoint of a container image. Generally this is used for troubleshooting purposes, or to override a vendor provided image. 
 
@@ -117,6 +118,7 @@ Your rocketchat deployment YAML should look similar to this (some sections have 
 Be sure to save the changes to your YAML. Then:
 - Take note of the pattern that will happen in the rocketchat notification screen
 - Remove the previous command to enable the rocketchat instance to start properly again
+-->
 
 ## References
 - https://blog.openshift.com/kubernetes-pods-life/
