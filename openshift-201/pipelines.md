@@ -136,6 +136,8 @@ After a few minutes the pipeline should succeed:
 ![pipeline success](images/pipelines/pipeline-success.png)
 
 
+> Note: You'll see an error message from the SonarCloud scan step about "Sonar project doesn't exist". This is expected, there is no real project created in Sonarcloud. For the demonstration purpose, as long as the PipelineRun completes, then things are good!
+
 > Note: If a new pipelineRun is failing with message about out of resource quota, then it's time for you to clean up some of the existing one to save up the space there. You can either go to the console Pipeline page and delete individual `PipelineRun` or through oc cli:
 
 ```
