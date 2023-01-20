@@ -145,7 +145,7 @@ You should still have your `hello-world-nginx` deployment and pod(s) up and runn
 
 You should also have a service and route pointing to these pods.
 
-Lets get a list of the pods in our namespace. Make sure you've got at least 2 pods running.
+Lets get a list of the pods in our namespace. Scale your deployment to make sure you've got at least 2 pods running. You can do this with the `oc scale` command for your hello-world-nginx deployment, or use the web console to edit the pod count for the deployment.
 
 ```
 oc -n [-dev] get pods -o wide 
