@@ -249,6 +249,10 @@ oc -n [-dev] set env deployment/rocketchat-[username] "MONGO_URL=mongodb://dbuse
 > this is a stretch exercise, completing this section is not a requirement for the next section of the lab
 
 If you are feeling at odds with things like __dbpass__ being out in the open as an environment variable. That is a good thing! For demonstration purposes you are creating a `Single Value Env`. Sensitive information like passwords should be stored in a `Secret` and referenced as `envFrom`. In addition, you can also use the [Downward API](https://docs.openshift.com/container-platform/4.4/nodes/containers/nodes-containers-downward-api.html#nodes-containers-downward-api-container-secrets_nodes-containers-downward-api) to refer to the secret created by MongoDB.
+
+If you don't have the `jq` tool installed, you can [download it here](https://stedolan.github.io/jq/download/) OR if you have [homebrew](https://brew.sh/) installed you can use it to install `jq` by running this command: `
+brew install jq`
+
   ```oc:cli
   oc -n [-dev] rollout pause deployment/rocketchat-[username] 
 
