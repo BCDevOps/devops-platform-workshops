@@ -39,14 +39,14 @@ In this lab, we will scale down the database deployment so that application pods
 - Run the `oc debug` command to start a debug pod (your output will vary)
     ```
     $ oc -n [-dev] debug <rocketchat-pod-name>
-    Defaulting container name to rocketchat-shelly.
-    Use 'oc describe pod/rocketchat-shelly-6-bm827-debug -n ocp101-june-dev' to see all of the containers in this pod.
+    ```
+- Open a new separate terminal window, and view all of the containers in your debug pod using:
+    ```
+    oc describe pod/rocketchat-shelly-6-bm827-debug -n [-dev]
+    ```
 
-    Debugging with pod/rocketchat-shelly-6-bm827-debug, original command: container-entrypoint node main.js
-    Waiting for pod to start ...
-    If you don't see a command prompt, try pressing enter.
-    sh-4.2$ 
-    sh-4.2$ 
+- After this is complete, return to your debug pod terminal and run the `exit` command. This will remove the debug pod.
+    ```
     sh-4.2$ exit
     exit
 
