@@ -15,7 +15,7 @@ Entities that a Pod can communicate with are identified through a combination of
 
 When defining a pod or namespace based NetworkPolicy, you use a selector to specify what traffic is allowed to(ingress) and from(egress) the Pod(s) that match the selector. When IP based NetworkPolicies are created, we define policies based on IP blocks (CIDR ranges).
 
-By default, a pod is non-isolated for egress and ingress. All outbound & inbound connections are allowed.
+By default in OpenShift, a pod is non-isolated for egress and ingress. All outbound & inbound connections are allowed. However, on the BCGov OpenShift platform, the `platform-services-controlled-deny-by-default` network policy is applied to all namespaces which blocks all ingress. This network policy will be automatically replaced if it is deleted.  
 When a pod is isolated for egress or ingress, the only allowed connections from and into the pod are those allowed by the list of some NetworkPolicy that applies to the pod for egress or ingress. The effects of those egress lists combine additively. Network policies do not conflict, they are just additive.
 
 For a connection from a source pod to a destination pod to be allowed, both the egress policy on the source pod and the ingress policy on the destination pod need to allow the connection. If either side does not allow the connection, it will not happen.
