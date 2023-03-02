@@ -106,7 +106,7 @@ oc -n [-dev] get pods -o wide | grep rocketchat-[username]
   watch -dg -n 1 -x oc -n [-dev] get pods -l deployment=rocketchat-[username]
 
   # From another terminal, monitor RocketChat response
-  watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].[namespace].apps.silver.devops.gov.bc.ca/api/info
+  watch -dg -n 1 curl -fsSL https://rocketchat-[username]-[-dev].apps.silver.devops.gov.bc.ca/api/info
   ```
 - **Windows**
     Windows users can skip the 'watch' steps and monitor their pods from the OpenShift console.
