@@ -115,6 +115,13 @@ spec:
     emptyDir: {}
 EOF
 ```
+**Note: You may get an error similar to below, this is expected and you can continue with lab exercise**
+
+```
+E0308 09:52:04.872808   44101 memcache.go:255] couldn't get resource list for external.metrics.k8s.io/v1beta1: Got empty response for: external.metrics.k8s.io/v1beta1
+pipelinerun.tekton.dev/mvn-build-run-65k2j
+```
+
 or via the OpenShift Console by performing the following:
 
 ![pipeline console 01](images/pipelines/pipeline-console-01.png)
