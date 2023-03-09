@@ -98,49 +98,47 @@ The day after the training, the lab has a kick-off meeting, during which we set 
 ```
 **Database Stuff**
 - Patroni - HA Postgres 
-   - templates and docs: <https://github.com/bcgov/patroni-postgres-container>
+   - templates and docs: https://github.com/bcgov/patroni-postgres-container
    - rocketchat channel: #patroni 
 - EDB - HA Postgres with enterprise support
    - note that you will need a license BEFORE you can start any work with this solution (talk to olena about costs)
-   - templates and docs: <https://github.com/bcgov/platform-services-edb-template>
+   - templates and docs: https://github.com/bcgov/platform-services-edb-template
    - rocketchat channel: #edb
 - CrunchyDB - HA Postgres that we're still testing on the cluster
    - rocketchat channel: #crunchydb
 - Backup Container - easy-to-deploy backup solution for Postgres/Mongo/MariaDB 
-   - templates and docs: <https://github.com/BCDevOps/backup-container>
+   - templates and docs: https://github.com/BCDevOps/backup-container
 **Images/Artifacts**
 - Artifactory - artifact repository which caches public repositories and provides private repositories for teams. Includes security scanning.
-   - docs: <https://github.com/BCDevOps/developer-experience/blob/master/apps/artifactory/DEVHUB-README.md>
+   - docs: https://github.com/BCDevOps/developer-experience/blob/master/apps/artifactory/DEVHUB-README.md
    - UI: https://artifacts.developer.gov.bc.ca
    - rocketchat channel: #devops-artifactory 
 - Common Images - the Platform Team creates certain images for teams to use, including one for Mongo and one for Patroni
    - pull images from artifacts.developer.gov.bc.ca/bcgov-docker-local
-   - docs: <https://github.com/BCDevOps/openshift-wiki/blob/master/docs/Artifactory/common_images.md>
+   - docs: https://github.com/BCDevOps/openshift-wiki/blob/master/docs/Artifactory/common_images.md
 - Xray Scanning - artifact scanning solution build into Artifactory
    - you gain access to this automatically for any image you put into a private repo on Artifactory!
 **SSO**
 - Keycloak - primary SSO provider on the platform
-   - documentation: <https://github.com/bcgov/sso-keycloak/wiki/>
+   - documentation: https://github.com/bcgov/sso-keycloak/wiki/
    - rocketchat channel: #sso 
 **Secrets**
 - Vault - a secret storage solution that encrypts your private information like passwords
-   - UI: <https://vault.developer.gov.bc.ca/ui>
-   - docs and templates: <https://github.com/BCDevOps/openshift-wiki/tree/master/docs/Vault>
+   - UI: https://vault.developer.gov.bc.ca/ui
+   - docs and templates: https://github.com/BCDevOps/openshift-wiki/tree/master/docs/Vault
    - rocketchat channel: #devops-vault 
 **Network Policies**
 - docs: https://github.com/bcgov/how-to-workshops/tree/master/labs/netpol-quickstart
 **Monitoring and Security scans**
 - AppAssessment - selfserve job to run an assessment on your project set for common configuration issues
-  - documentations here: <https://github.com/bcgov/AppAssessment>
+  - documentations here: https://github.com/bcgov/AppAssessment
 - ACS - RedHat's Image and container scanning,monitoring & enforcement tool
    - it's enabled for cluster security scanning, application team access coming soon!
 - Sysdig - monitoring solution to provide notifications about the status of your app,
-   - documentation: <https://github.com/BCDevOps/platform-services/tree/master/monitoring/sysdig>
-   - UI: <[https://app.sysdigcloud.com/](https://app.sysdigcloud.com/api/oauth/openid/bcdevops)>
+   - documentation: https://github.com/BCDevOps/platform-services/tree/master/monitoring/sysdig
+   - UI: [https://app.sysdigcloud.com/](https://app.sysdigcloud.com/api/oauth/openid/bcdevops)
    - rocketchat channel: #devops-sysdig
-- Platform Status page to let you know if any OpenShift Clusters or platform services are experiencing an outage: <https://status.developer.gov.bc.ca/>
+- Platform Status page to let you know if any OpenShift Clusters or platform services are experiencing an outage: https://status.developer.gov.bc.ca/
 **Stack Overflow** 
-- BC Government's Stack Overflow instance, a good place to ask/answer questions, or search for answers <https://stackoverflow.developer.gov.bc.ca/>
-**Infrastructure as code**
-- Working with templates: <https://cloud.redhat.com/blog/part-2-creating-a-template-a-technical-walkthrough>
+- BC Government's Stack Overflow instance, a good place to ask/answer questions, or search for answers https://stackoverflow.developer.gov.bc.ca/
 ```
