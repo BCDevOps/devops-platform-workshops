@@ -1,8 +1,8 @@
 # Post Outage Checkup
 
-[![Video Walkthrough Thumbnail](././images/post-outage-checkup/post-outage-checkup-thumb.png)]([https://youtu.be/WfR6rKGzi7Q](https://youtu.be/1_gUD1Q8qSw))
+[![Video Walkthrough Thumbnail](././images/post-outage-checkup/post-outage-checkup-thumb.png)](https://youtu.be/1_gUD1Q8qSw)
 
-[Video walkthrough](https://youtu.be/WfR6rKGzi7Q)
+[Video walkthrough](https://youtu.be/1_gUD1Q8qSw)
 
 ## Objectives:
 
