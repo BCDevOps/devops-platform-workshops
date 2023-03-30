@@ -66,35 +66,6 @@ The day after the training, the lab has a kick-off meeting, during which we set 
 - How far did everyone get?
     - Should we leave the lab stuff up for you guys?
 - Questions?
-- Services and Best Practices (don't worry, there are links and notes that will be posted about this!)
-    - Databases
-        - Already used MongoDB - the second most popular DB on the cluster
-        - Postgres is the most popular, and can be implemented in a few ways:
-            - Patroni is most common; you can use our images in either `bcgov` or Artifactory!
-            - EDB Operator is for teams with a license - this nets you additional enterprise-level support. Talk to Olena!
-            - CrunchyDB offers both enterprise and community licenses. Still new to the cluster!
-        - Our community has built an awesome backup-container, super easy DB backups! Take advantage of it!
-    - Images and Artifacts
-        - Artifactory:
-            - an artifact repository that can be used to host/access docker images, libraries and packages, helm charts, etc. 
-            - includes artifact scanning so you can make sure to use secure artifacts and images!
-        - Common images: pre-built docker images we have created for teams to use!
-            - Includes Postgres, MongoDB, AppAssessment
-    - KeyCloak
-        - an SSO (Single Sign-On) solution that lets your app use IDIR login, plus also GitHub IDs and BCeID
-    - Sysdig
-        - monitoring app so you can track your resource usage
-        - monitor app status via service golden signals
-        - notifies you of problems, like if your pod goes down or if your PVC is getting full
-    - AppAssessment
-    - ACS
-    - Vault
-        - encrypted secret storage!
-    - Network Policies
-        - All namespaces on our cluster are deny access to all network traffic by default. You must explicitly allow your pods to talk to each other.
-        - You didn't have to worry about this in the lab because we made a network policy for you, but you'll need to make one on your own.
-        - Make sure you allow only the network traffic you actually need (use RC as an example?)
-
 ```
 **Database Stuff**
 - Patroni - HA Postgres 
@@ -110,12 +81,12 @@ The day after the training, the lab has a kick-off meeting, during which we set 
    - templates and docs: https://github.com/BCDevOps/backup-container
 **Images/Artifacts**
 - Artifactory - artifact repository which caches public repositories and provides private repositories for teams. Includes security scanning.
-   - docs: https://github.com/BCDevOps/developer-experience/blob/master/apps/artifactory/DEVHUB-README.md
+   - docs: https://docs.developer.gov.bc.ca/setup-artifactory-project-repository/
    - UI: https://artifacts.developer.gov.bc.ca
    - rocketchat channel: #devops-artifactory 
 - Common Images - the Platform Team creates certain images for teams to use, including one for Mongo and one for Patroni
    - pull images from artifacts.developer.gov.bc.ca/bcgov-docker-local
-   - docs: https://github.com/BCDevOps/openshift-wiki/blob/master/docs/Artifactory/common_images.md
+   - docs: https://docs.developer.gov.bc.ca/prebuilt-images/
 - Xray Scanning - artifact scanning solution build into Artifactory
    - you gain access to this automatically for any image you put into a private repo on Artifactory!
 **SSO**
@@ -125,20 +96,23 @@ The day after the training, the lab has a kick-off meeting, during which we set 
 **Secrets**
 - Vault - a secret storage solution that encrypts your private information like passwords
    - UI: https://vault.developer.gov.bc.ca/ui
-   - docs and templates: https://github.com/BCDevOps/openshift-wiki/tree/master/docs/Vault
+   - vault getting started guide: https://docs.developer.gov.bc.ca/vault-getting-started-guide/
    - rocketchat channel: #devops-vault 
 **Network Policies**
-- docs: https://github.com/bcgov/how-to-workshops/tree/master/labs/netpol-quickstart
+- docs: https://docs.developer.gov.bc.ca/openshift-network-policies/
 **Monitoring and Security scans**
 - AppAssessment - selfserve job to run an assessment on your project set for common configuration issues
   - documentations here: https://github.com/bcgov/AppAssessment
 - ACS - RedHat's Image and container scanning,monitoring & enforcement tool
    - it's enabled for cluster security scanning, application team access coming soon!
-- Sysdig - monitoring solution to provide notifications about the status of your app,
+   - UI: https://acs.developer.gov.bc.ca/
+- [Sysdig](https://docs.developer.gov.bc.ca/sysdig-monitor-onboarding/) - monitoring solution to provide notifications about the status of your app,
    - documentation: https://github.com/BCDevOps/platform-services/tree/master/monitoring/sysdig
    - UI: [https://app.sysdigcloud.com/](https://app.sysdigcloud.com/api/oauth/openid/bcdevops)
    - rocketchat channel: #devops-sysdig
 - Platform Status page to let you know if any OpenShift Clusters or platform services are experiencing an outage: https://status.developer.gov.bc.ca/
 **Stack Overflow** 
 - BC Government's Stack Overflow instance, a good place to ask/answer questions, or search for answers https://stackoverflow.developer.gov.bc.ca/
+**More learning and labs**
+[Foundations of OpenShift](https://developers.redhat.com/learn/openshift/foundations-openshift)
 ```
