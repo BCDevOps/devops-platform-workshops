@@ -82,7 +82,7 @@ Lifecycle hooks can be configured to start and stop a container properly. The li
 
 - From the Web Console, navigate to the `rocketchat-[username]` deployment and click on `YAML` tab
     - If you wish to perform this from the cli with the `oc` tool, type `oc edit deployment/rocketchat-[username]`
-- After replacing both URLs below with the webhook URL from the earlier step, as well as replacing $HOSTNAME with the Add the following section of code under `spec: -> template: -> spec: -> containers`. Again, pay careful attention to the YAML indentation. 
+- After replacing both URLs below with the webhook URL from the earlier step, add the following section of code under `spec: -> template: -> spec: -> containers`. Again, pay careful attention to the YAML indentation. 
 ```YAML
 lifecycle:
             postStart:
@@ -98,13 +98,12 @@ lifecycle:
 
 - Test your lifecycle hooks by scaling up your deployment to run on an extra pod. When you're finished, scale down to 1 pod again. 
 
-<!--  ## Although previously working ~October 2022, these steps no longer work as expected so are commented out here ##
 ## Overriding the Entrypoint 
 It may be necessary, from time to time, to override the initial command/entrypoint of a container image. Generally this is used for troubleshooting purposes, or to override a vendor provided image. 
 
 - From the Web Console, navigate to the `rocketchat-[username]` deployment and click on `YAML` tab
     - If you wish to perform this from the cli with the `oc` tool, type `oc edit deployment/rocketchat-[username]`
-- After replacing $HOSTNAME and your WebHook URL, add the following section of code under `spec: -> template: -> spec: -> containers:`
+- After replacing the example URL with your WebHook URL, add the following section of code under `spec: -> template: -> spec: -> containers:`
 
 ```YAML
 command:  ["/bin/sh", "-c", "c=$(curl -X POST -H 'Content-Type: application/json' --data '{\"text\": \"'\"$HOSTNAME\"' is AN OVERRIDING COMMAND! \"}' https://chat.pathfinder.gov.bc.ca/hooks/xxx/xxx)"]
@@ -118,7 +117,6 @@ Your rocketchat deployment YAML should look similar to this (some sections have 
 Be sure to save the changes to your YAML. Then:
 - Take note of the pattern that will happen in the rocketchat notification screen
 - Remove the previous command to enable the rocketchat instance to start properly again
--->
 
 ## References
 - https://blog.openshift.com/kubernetes-pods-life/
