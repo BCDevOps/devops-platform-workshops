@@ -3,10 +3,10 @@
 ## Openshift Architecture
 
 How are pods and containers related to each other?
-- a) one or more pods run inside a container
-- b) one or more containers run inside a pod
-- c) only one pod runs inside a container
-- d) only one container runs inside a pod
+- a) One or more pods run inside a container
+- b) One or more containers run inside a pod
+- c) Only one pod runs inside a container
+- d) Only one container runs inside a pod
 
 I want two pods to communicate with each other. What needs to be true for this to happen?
 - a) Both pods need to be running on the same node
@@ -17,29 +17,29 @@ I want two pods to communicate with each other. What needs to be true for this t
 ## BCGov-specific patterns
 
 How many applications should I be running per project set?
-- a) one
-- b) two
-- c) three
-- d) it depends on how much quota the namespace has.
+- a) One
+- b) Two
+- c) Three
+- d) It depends on how much quota the namespace has.
 
 What’s the difference between a resource request and a resource limit?
-- a) a request is a guaranteed minimum assigned to a pod, while a limit is the ideal amount that I want my pod to have
-- b) a request is the ideal amount I want my pod to have, while a limit is the most my pod is allowed to have
-- c) a request is a guaranteed minimum assigned to a pod, while the limit is the most my pod is allowed to have
-- d) asking nicely vs demanding
+- a) A request is a guaranteed minimum assigned to a pod, while a limit is the ideal amount that I want my pod to have
+- b) A request is the ideal amount I want my pod to have, while a limit is the most my pod is allowed to have
+- c) A request is a guaranteed minimum assigned to a pod, while the limit is the most my pod is allowed to have
+- d) Asking nicely vs demanding
 
 ## Openshift Basic Tasks
 
 I’ve just built a new image for my wildfire application. How should I tag this image?
-- a) wildfire-app:latest
-- b) wildfire-app:v1_new
-- c) wildfire-app:v2
-- d) wildfire-app:rhwajklfbfbfewa
+- a) Wildfire-app:latest
+- b) Wildfire-app:v1_new
+- c) Wildfire-app:v2
+- d) Wildfire-app:rhwajklfbfbfewa
 
 I want to deploy a database. How should I deploy it?
-- a) using a Deployment or DeploymentConfig with the rolling deployment option
-- b) using a Deployment or DeploymentConfig with the recreate deployment option
-- c) using a StatefulSet
+- a) Using a Deployment or DeploymentConfig with the rolling deployment option
+- b) Using a Deployment or DeploymentConfig with the recreate deployment option
+- c) Using a StatefulSet
 - d) "Hey Alexa, deploy my database"
 
 ## Platform-Specific Components and Tasks
@@ -51,21 +51,21 @@ I want to deploy a database. How should I configure the persistent volumes for t
 - d) One volume should belong only to the master pod using the RWO access mode, because the member pods don’t need their own volumes when the data would just be the same anyway.
 
 When should I change the reclaim policy of my persistent volume from “delete” to “retain”?
-- a) when my data is super important and should never be deleted.
-- b) when the persistent volume contains my database backups, because I need to hold onto them for a long time.
-- c) never, because I should not be touching the persistent volume object at all
-- d) when i really want to know what happens if I change this setting
+- a) When my data is super important and should never be deleted.
+- b) When the persistent volume contains my database backups, because I need to hold onto them for a long time.
+- c) Never, because I should not be touching the persistent volume object at all
+- d) When i really want to know what happens if I change this setting
 
 ## Day 2 Application Operations
 
 My pod is failing to start with an ImagePullBackoff error. What could cause this?
-- a) my pod is trying to pull an image that doesn’t exist
-- b) my pod is trying to pull an image using the wrong tag
-- c) my application is crashing after the pod starts
-- d) my pod is trying to mount a secret that doesn’t exist
+- a) My pod is trying to pull an image that doesn’t exist
+- b) My pod is trying to pull an image using the wrong tag
+- c) My application is crashing after the pod starts
+- d) My pod is trying to mount a secret that doesn’t exist
 
 My pod keeps failing with a CrashLoopBackoff error. Where should I look to start troubleshooting this problem?
-- a) it’s probably an application error, so I should look in the application logs
-- b) it’s a problem with the pod’s configuration, so I should check the event logs
-- c) it’s a problem with the platform, so I should check the platform’s status page
-- d) it's probably fine, ignore it
+- a) It’s probably an application error, so I should look in the application logs
+- b) It’s a problem with the pod’s configuration, so I should check the event logs
+- c) It’s a problem with the platform, so I should check the platform’s status page
+- d) It's probably fine, ignore it
