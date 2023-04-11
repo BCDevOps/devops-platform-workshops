@@ -36,7 +36,7 @@ metadata:
   2. Then create a `volumeMount` under `.spec.template.spec.containers.volumeMounts`
   ```yaml
   - name: rocketchat-[username]-volume
-    mountPath: /opt/configs
+              mountPath: /opt/configs
   ```
 > pro tip: if you are not sure what fields are available you can always use oc explain! `oc explain deployment.spec.template.spec.containers.volumeMounts`
 
