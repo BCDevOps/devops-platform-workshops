@@ -28,15 +28,15 @@ metadata:
 - Attach the `configMap` to your `rocketchat-[username]` deployment by navigating to the `YAML` tab in your Rocket Chat Deployment and pasting in the following code
   1. You will first need to create a `volume`. This is located under `.spec.template.spec.volumes`
   ```yaml
-   - name: rocketchat-[username]-volume
-          configMap:
-            name: rocketchat-[username]-configmap
+  - name: rocketchat-[username]-volume
+       configMap:
+         name: rocketchat-[username]-configmap
   ```
 
   2. Then create a `volumeMount` under `.spec.template.spec.containers.volumeMounts`
   ```yaml
-    - name: rocketchat-[username]-volume
-      mountPath: /opt/configs
+  - name: rocketchat-[username]-volume
+    mountPath: /opt/configs
   ```
 > pro tip: if you are not sure what fields are available you can always use oc explain! `oc explain deployment.spec.template.spec.containers.volumeMounts`
 
