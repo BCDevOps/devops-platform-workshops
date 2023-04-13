@@ -4,6 +4,10 @@ A Pod can be extended beyond the normal operation of the container by allowing d
 - add `pre` and `post` lifecycle hooks
 - modify the default `entrypoint` of a container 
 
+[![Video Walkthrough Thumbnail](././images/15_pod_lifecycle_thumb.png)](https://youtu.be/T3n3i-ucmkE)
+
+[Video walkthrough](https://youtu.be/T3n3i-ucmkE)
+
 ## Init Containers
 Init containers are specialized containers that run before app containers in a pod. Init containers can contain utilities or setup scripts not present in an app image.
 
