@@ -140,6 +140,8 @@ spec:
           args: ["-dSrk", "-c $(CONCURRENCY)", "-n $(REQUESTS)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
 
 ```
+**Important:** When you're not actively working on the lab exercises, please set your load test to 0 pods. Please remember to do this when you're finished with this exercise too. 
+
 **Note:** As we don't set limits and request specifically in the deployment the default LimitRange will apply. Run `oc describe LimitRange/default-limits` to see what is set as defaults.
 
 From the web console, change to Developer view and navigate to the Observe tab. From the Dashboard dropdown list, pick `Kubernetes / Compute Resources / Workload`. Then in the `Workload` dropdown, select your nginx deployment. You should see the load-test pod traffic increasing CPU and memory usage metrics for the nginx workload.
