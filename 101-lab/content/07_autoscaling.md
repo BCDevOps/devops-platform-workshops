@@ -32,9 +32,9 @@ oc -n [-dev] autoscale deployment/rocketchat-[username] --min 1 --max 10 --cpu-p
   #    Set "Post as"  as "rocket.cat"
   #    Click on "Save Changes" at the bottom
   #    Copy "Webhook URL" (see "COPY TO CLIPBOARD" button/link)
-  #    Replace "https://rocketchat-[username]-[-dev].pathfinder.gov.bc.ca/hooks/<integration>/<token>" with the real roken.
   #    Make sure the domain matches the exposed route (no "localhost:3000")!!!
-  printf '{"text":"Example message","attachments":[{"title":"Rocket.Chat","title_link":"https://rocket.chat","text":"Rocket.Chat, the best open source chat","image_url":"https://rocket.chat/images/mockup.png","color":"#764FA5"}]}' > /tmp/rocketchat-post-msg.json && ab -p /tmp/rocketchat-post-msg.json -n 10000 -c 10 -T "application/json" [http://rocketchat-patricksimonian-ocp101-june-dev.apps.training-us.clearwater.devops.gov.bc.ca]/hooks/<integration>/<token>]
+  #    Paste the command below into your terminal, replace the URL at the end with the URL from your clipboard, and run it to begin the load test:
+  printf '{"text":"Example message","attachments":[{"title":"Rocket.Chat","title_link":"https://rocket.chat","text":"Rocket.Chat, the best open source chat","image_url":"https://rocket.chat/images/mockup.png","color":"#764FA5"}]}' > /tmp/rocketchat-post-msg.json && ab -p /tmp/rocketchat-post-msg.json -n 10000 -c 10 -T "application/json" http://rocketchat-[username]-[namespace].apps.silver.devops.gov.bc.ca/hooks/[integration]/[token]
   ```
 
 - Review the deployment and try to add or remove replicas by editing its `.spec.replicas` YAML value
