@@ -38,7 +38,7 @@ In this lab, we will scale down the database deployment so that application pods
     ```
 - Run the `oc debug` command to start a debug pod (your output will vary)
     ```
-    $ oc -n [-dev] debug <rocketchat-pod-name>
+    $ oc -n [-dev] debug [rocketchat-pod-name]
     ```
 - Open a new separate terminal window, and view all of the containers in your debug pod using:
     ```
