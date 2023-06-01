@@ -55,13 +55,13 @@ initContainers:
             - >-
               c=$(curl -X POST -H 'Content-Type: application/json' --data
               '{"text":"Say Hello"}'
-              http://[YOUR_WEBHOOK_URL])
+              [YOUR_WEBHOOK_URL])
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           imagePullPolicy: Always
 ```
-
+**Be careful when pasting your Webhook URL into the YAML above, you will need the ) after your URL.** 
 - Save your changes to the YAML. It should look similar to this: 
 
 ![](./images/15_pod_lifecycle_08.png)
