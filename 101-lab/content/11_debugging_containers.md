@@ -42,7 +42,7 @@ In this lab, we will scale down the database deployment so that application pods
     ```
 - Open a new separate terminal window, and view all of the containers in your debug pod using:
     ```
-    oc describe pod/rocketchat-shelly-6-bm827-debug -n [-dev]
+    oc describe pod/[rocketchat-debug-pod-name] -n [-dev]
     ```
 
 - After this is complete, return to your debug pod terminal and run the `exit` command. This will remove the debug pod.
