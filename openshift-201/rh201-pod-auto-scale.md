@@ -44,7 +44,7 @@ A persistent value of `<unknown>` in the TARGETS column might indicate that the 
 
 ### API Versions 
 
-There are different API versions for autoscaling. v1 API just works with CPU metrics, v2beta2 API handles more options and metrics including CPU and memory.
+There are different API versions for autoscaling. `autoscaling/v2` is the new default horizontal pod autoscaler version since `oc 4.12`
 
 |Metric | Description | API version|
 |---|---|----|
@@ -57,10 +57,10 @@ You can check the autoscaling API versions available in the cluster.
 oc  api-versions | grep autoscaling
 ```
 
-The `oc autoscale` command will create a v1 type autoscaler. You can view with the HPA details with an `oc -n [-dev] get hpa hello-world-nginx -o yaml` command.
+The `oc autoscale` command will create a v2 type autoscaler. You can view with the HPA details with an `oc -n [-dev] get hpa hello-world-nginx -o yaml` command.
 
 ```yaml
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: hello-world-nginx
@@ -97,7 +97,7 @@ spec:
         averageValue: 30Mi
 ```
 
-Under metrics.resource.target you can set type to AverageValue and specify averageValue memory. You can also specify Utilization in the metrics section of the v2beta2 HPA. Check out the available options by `oc explain --api-version='autoscaling/v2beta2' HorizontalPodAutoscaler.spec.metrics.resource.target`. Note you'll need to specify the API version as it defaults to v1.
+Under metrics.resource.target you can set type to AverageValue and specify averageValue memory. You can also specify Utilization in the metrics section of the v2beta2 HPA. Check out the available options by `oc explain --api-version='autoscaling/v2beta2' HorizontalPodAutoscaler.spec.metrics.resource.target`. Note you'll need to specify the API version as it defaults to v2.
 
 ```yaml
 metrics: 
