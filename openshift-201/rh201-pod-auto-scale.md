@@ -44,7 +44,7 @@ A persistent value of `<unknown>` in the TARGETS column might indicate that the 
 
 ### API Versions 
 
-There are different API versions for autoscaling. `autoscaling/v2` is the new default horizontal pod autoscaler version since `oc 4.12`
+There are different API versions for autoscaling. `autoscaling/v2` is the new default horizontal pod autoscaler version since `oc 4.12`.
 
 |Metric | Description | API version|
 |---|---|----|
