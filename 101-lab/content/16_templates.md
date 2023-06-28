@@ -6,14 +6,14 @@ In this section, we'll create a template that includes all of the objects we've 
 
 ## Get the YAML
 
-We can use the `oc get` command to gather the YAML files that represent our OpenShift commands and their configuration. We need to collect the YAML for a variety of objects, which we can do with the following command: 
+We can use the `oc get` command to gather the YAML files that represent our OpenShift commands and their configuration. We need to collect the YAML for a variety of objects. After replacing [username] we can do this with the following command: 
 
-<!-- add buildconfig,imagestream from tools namespace-->
 ```
 oc get deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-[username] -o yaml > template.yaml
 ```
-
 The command above will save the YAML definitions for these objects on your local machine in a file named `template.yaml`. 
+
+**Note:** we've also created some objects in the [-tools] namespace including our buildconfig and imagestream, but for the purposes of this demonstration we're not going to add them to our template.
 
 ## Remove unnecessary information
 
@@ -39,7 +39,7 @@ In order to tell OpenShift that we're creating a YAML file that should be used a
 2. On the second line, add a new field: `kind: Template` and then rename the `items:` field to `objects:`
 3. Remove `kind: List`
 
-We can add a new field called 'parameters' near the beginning of our yaml file, above  `objects`. Replace `[username]` with your username. 
+Next, add a new field called 'parameters' near the beginning of our yaml file, above  `objects`. Replace `[username]` with your username. 
 
 ```
 parameters: 
@@ -50,10 +50,49 @@ parameters:
     required: true
     value: 'dev'
 ```
-Next, let's search through the file for the places where our username or namespace suffix is being used and replace them with `${OWNER}` and `${APP_NAMESPACE}`. This way, in the future we can just make changes to a parameter values and they'll be applied throughout our template. Be sure to check carefully, don't just find and replace all! Be sure to save your `template.yaml` file. 
+Next, let's search through the file for the places where our username or namespace suffix `-dev` is being used and replace them with `${OWNER}` and `${APP_NAMESPACE}`. This way, in the future we can just make changes to a parameter values and they'll be applied throughout our template. Be sure to check carefully, don't just find and replace all! Be sure to save your `template.yaml` file. 
 
-## Process the template
+## Test the template
 
-`oc process -f template.yaml | oc create -f - ` --dry-run=client
+The `oc process` command is used to process a template into a resource list. The `-f` flag used to indicate that we need to process a file.  
+
+The `oc create` command can be used to create new objects in OpenShift, again using the ``f` flag. 
+
+Below, we can use the pipe character `|` to take the output from the `oc process` command and feed it into the `oc create` command. We add `--dry run=client` to get a simulated output before actually running the command. This way, we can check that our template is working correctly: 
+
+`oc process -f template.yaml | oc create -f - --dry-run=client`
+
+Your output should look similar to the below: 
+```
+oc process -f template.yaml | oc apply -f - --dry-run=client  
+
+deployment.apps/rocketchat-mattspencer configured (dry run)
+deploymentconfig.apps.openshift.io/mongodb-mattspencer configured (dry run)
+route.route.openshift.io/rocketchat-mattspencer configured (dry run)
+service/mongodb-mattspencer configured (dry run)
+service/rocketchat-mattspencer configured (dry run)
+configmap/rocketchat-mattspencer-configmap configured (dry run)
+persistentvolumeclaim/mongodb-mattspencer-file configured (dry run)
+secret/mongodb-mattspencer configured (dry run)
+secret/rocketchat-mattspencer-secret configured (dry run)
+```
+
+If the dry run looks to be producing a successful output, let's move on to test our template. 
+
+## Delete objects, recreate them with the template
+
+Currently, out template would just be creating objects that already exist. Let's create a situation where all of the objects that we'd previously created in the `-dev` namespace have been deleted. 
+
+Before deleting objects, it's also good practice to do a dry run to make sure you're only deleing the objects you intend to: 
+
+`oc delete deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-mattspencer --dry-run=client`
+
+If you can see that you'll only be deleting your own objects, then proceed without the dry-run flag: 
+
+`oc delete deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-mattspencer`
+
+Now that we've deleted all of our objects that we created in the [-dev] namespace, let's use our template to recreate them. 
 
 `oc process -f template.yaml | oc create -f - `
+
+After some time, once your mongodb restarts and rocketchat application is back up and running, you should see your application is recreated and functioning. 
