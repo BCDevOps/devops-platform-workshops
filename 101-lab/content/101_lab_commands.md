@@ -8,15 +8,15 @@ oc -n d8f105-tools logs -f bc/rocketchat-mattspencer
 ## Deployment
 ```
 oc -n d8f105-tools tag rocketchat-mattspencer:latest rocketchat-mattspencer:dev
-oc -n d8f105-dev new-app d8f105-tools/rocketchat-mattspencer:dev --name=rocketchat-mattspencer
+oc -n d8f105-dev new-app d8f105-tools/rocketchat-mattspencer:dev --name=rocketchat-mattspencer -l ocp101=participant
 oc -n d8f105-dev set resources deployment/rocketchat-mattspencer --requests='cpu=500m,memory=512Mi' --limits='cpu=1000m,memory=1024Mi'
 oc -n d8f105-tools policy add-role-to-user system:image-puller system:serviceaccount: d8f105-dev:default
 oc scale deployment/rocketchat-mattspencer --replicas=0
 oc scale deployment/rocketchat-mattspencer --replicas=1
 oc -n d8f105-dev tag d8f105-tools/rocketchat-mattspencer:dev rocketchat-mattspencer:dev
 oc -n d8f105-dev set image deployment/rocketchat-mattspencer rocketchat-mattspencer=rocketchat-mattspencer:dev
-oc -n d8f105-dev new-app --search mongodb-ephemeral
-oc -n d8f105-dev new-app --template=openshift/mongodb-ephemeral -p MONGODB_VERSION=3.6 -p DATABASE_SERVICE_NAME=mongodb-mattspencer -p MONGODB_USER=dbuser -p MONGODB_PASSWORD=dbpass -p MONGODB_DATABASE=rocketchat --name=rocketchat-mattspencer
+oc -n d8f105-dev new-app --search mongodb-ephemeral -l ocp101=participant
+oc -n d8f105-dev new-app --template=openshift/mongodb-ephemeral -p MONGODB_VERSION=3.6 -p DATABASE_SERVICE_NAME=mongodb-mattspencer -p MONGODB_USER=dbuser -p MONGODB_PASSWORD=dbpass -p MONGODB_DATABASE=rocketchat --name=rocketchat-mattspencer -l ocp101=participant
 oc -n d8f105-dev set env deployment/rocketchat-mattspencer "MONGO_URL=mongodb://dbuser:dbpass@mongodb-mattspencer:27017/rocketchat"
 ```
 _STRETCH_ 
