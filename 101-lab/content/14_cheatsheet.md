@@ -25,3 +25,4 @@ oc -n [-dev] get all -o name --no-headers | grep -i -F -e '-[username]' | xargs 
 oc -n [-dev] get pvc,secret,configmap -o name --no-headers | grep -i -F -e '-[username]' | xargs -I {} oc -n [-dev] delete '{}'
 
 ```
+Next page - [Pod Lifecycle](./15_pod_lifecycle.md)

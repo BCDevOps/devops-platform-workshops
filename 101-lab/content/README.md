@@ -44,3 +44,5 @@ You are not alone! The lab, when scheduled, has at least one touch point schedul
 * [Logging and Visualizations](./12_logging_and_visualizations.md)
 * [Metrics](./13_metrics.md)
 * [Cheat Sheet](./14_cheatsheet.md)
+* [Pod Lifecycle](./15_pod_lifecycle.md)
+* [Templates](./16_templates.md)
