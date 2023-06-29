@@ -4,6 +4,8 @@ So far in the lab exercises, we've primarily used the 'new-app' command to creat
 
 In this section, we'll create a template that includes all of the objects we've created for our rocketchat application and mongo database. 
 
+You may find it helpful to install a tool such as [Visual Studio Code](https://code.visualstudio.com/) to help work through this section of the lab.  
+
 ## Get the YAML
 
 We can use the `oc get` command to gather the YAML files that represent our OpenShift commands and their configuration. We need to collect the YAML for a variety of objects. After replacing [username] we can do this with the following command: 
