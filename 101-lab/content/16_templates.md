@@ -4,12 +4,14 @@ So far in the lab exercises, we've primarily used the 'new-app' command to creat
 
 In this section, we'll create a template that includes all of the objects we've created for our rocketchat application and mongo database. 
 
+You may find it helpful to install a tool such as [Visual Studio Code](https://code.visualstudio.com/) to help work through this section of the lab.  
+
 ## Get the YAML
 
 We can use the `oc get` command to gather the YAML files that represent our OpenShift commands and their configuration. We need to collect the YAML for a variety of objects. After replacing [username] we can do this with the following command: 
 
 ```
-oc get deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-[username] -o yaml > template.yaml
+oc -n [-dev] get deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-[username] -o yaml > template.yaml
 ```
 The command above will save the YAML definitions for these objects on your local machine in a file named `template.yaml`. 
 
@@ -62,11 +64,11 @@ The `oc create` command can be used to create new objects in OpenShift, again us
 
 Below, we can use the pipe character `|` to take the output from the `oc process` command and feed it into the `oc create` command. We add `--dry run=client` to get a simulated output before actually running the command. This way, we can check that our template is working correctly: 
 
-`oc process -f template.yaml | oc create -f - --dry-run=client`
+`oc -n [-dev] process -f template.yaml | oc create -f - --dry-run=client`
 
 Your output should look similar to the below: 
 ```
-oc process -f template.yaml | oc apply -f - --dry-run=client  
+oc -n d8f105-dev process -f template.yaml | oc apply -f - --dry-run=client  
 
 deployment.apps/rocketchat-mattspencer configured (dry run)
 deploymentconfig.apps.openshift.io/mongodb-mattspencer configured (dry run)
@@ -87,14 +89,14 @@ Currently, out template would just be creating objects that already exist. Let's
 
 Before deleting objects, it's also good practice to do a dry run to make sure you're only deleing the objects you intend to: 
 
-`oc delete deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-[username] --dry-run=client`
+`oc -n [-dev] delete deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-[username] --dry-run=client`
 
 If you can see that you'll only be deleting your own objects, then proceed without the dry-run flag: 
 
-`oc delete deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-[username]`
+`oc delete deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-mattspencer`
 
 Now that we've deleted all of our objects that we created in the [-dev] namespace, let's use our template to recreate them. 
 
-`oc process -f template.yaml | oc create -f - `
+`oc -n [-dev] process -f template.yaml | oc create -f - `
 
 After some time, once your mongodb restarts and rocketchat application is back up and running, you should see your application is recreated and functioning. 
