@@ -43,7 +43,7 @@ In order to tell OpenShift that we're creating a YAML file that should be used a
 2. On the second line, add a new field: `kind: Template` and then rename the `items:` field to `objects:`
 3. Remove `kind: List`
 
-Next, add a new field called 'parameters' near the beginning of our yaml file, above  `objects`. Replace `[username]` with your username. 
+Next, add a new field called 'parameters' to our yaml file, above  `objects`. Replace `[username]` with your username. 
 
 ```
 parameters: 
