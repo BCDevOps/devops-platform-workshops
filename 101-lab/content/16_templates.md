@@ -11,7 +11,7 @@ You may find it helpful to install a tool such as [Visual Studio Code](https://c
 We can use the `oc get` command to gather the YAML files that represent our OpenShift commands and their configuration. We need to collect the YAML for a variety of objects. After replacing [username] we can do this with the following command: 
 
 ```
-oc get deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-[username] -o yaml > template.yaml
+oc -n [-dev] get deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-[username] -o yaml > template.yaml
 ```
 The command above will save the YAML definitions for these objects on your local machine in a file named `template.yaml`. 
 
