@@ -13,8 +13,6 @@ After completing this section, you should have an understanding of OpenShift Pip
 ## Prerequisites
 These instructions assume the use of a bash-based shell such as `zsh` (included on OS X) or [WSL](https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/) for Windows. Please use one of these shells, or make the appropriate modifications to the commands shown in these instructions. 
 
-Before you begin, you will need to [set up your GitHub Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). 
-
 This lab is based on the `pipeline-templates` which has it's own set of [prerequisites](https://github.com/bcgov/pipeline-templates/tree/main/tekton#tekton-pipelines) and [installation instructions](https://github.com/bcgov/pipeline-templates/tree/main/tekton#install-in-docker-containerdocker-strategy).
 
 Please follow those instructions before continuing on, and apply the tekton resources to your `-tools` namespace. 
