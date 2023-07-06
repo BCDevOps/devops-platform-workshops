@@ -60,7 +60,7 @@ Next, let's search through the file for the places where our username or namespa
 
 The `oc process` command is used to process a **template** into a **resource list**. The `-f` flag used to indicate that we need to process a file.  
 
-The `oc create` command can be used to create new objects in OpenShift, again using the ``f` flag. 
+The `oc create` command can be used to create new objects in OpenShift, again using the `-f` flag. 
 
 Below, we can use the pipe character `|` to take the output from the `oc process` command and feed it into the `oc create` command. We add `--dry run=client` to get a simulated output before actually running the command. This way, we can check that our template is working correctly: 
 
