@@ -1,6 +1,6 @@
 # Introduction to OpenShift Pipelines
 
-[![Video Walkthrough Thumbnail](././images/pipelines/pipelines-thumbnail.png)](https://youtu.be/WfR6rKGzi7Q)
+[![Video Walkthrough Thumbnail](././images/pipelines/pipelines-thumbnail.png)](https://youtu.be/Nm-uS5S--HQ)
 
 [Video walkthrough](https://youtu.be/WfR6rKGzi7Q)
 
