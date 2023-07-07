@@ -125,3 +125,4 @@ Be sure to save the changes to your YAML. Then:
 ## References
 - https://blog.openshift.com/kubernetes-pods-life/
 
+Next page - [Templates](./16_templates.md)
