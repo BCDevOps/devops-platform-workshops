@@ -4,8 +4,6 @@
 
 [Video walkthrough](https://youtu.be/Nm-uS5S--HQ)
 
-**Please note, when the video and written instructions differ, please follow the written instructions. We've recently switched from SSH authentication to using a GitHub Personal Access Token and the video demo needs updating. **
-
 ## Objectives:
 
 After completing this section, you should have an understanding of OpenShift Pipelines, know how to create and start a pipeline, and how to migrate from Jenkins
