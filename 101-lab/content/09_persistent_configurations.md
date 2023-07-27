@@ -15,7 +15,7 @@ Create a configMap with arbitrary data and mount it inside of your `rocketchat-[
 ![](./images/07_persistent_config_02.png)
 
 - In the Web Console, go to `+Add` and select `YAML`
-- Paste in the following ConfigMap Code and save 
+- Paste in the following ConfigMap Code, replace [username] with your username and save 
 ```yaml
 apiVersion: v1
 data:
@@ -23,6 +23,8 @@ data:
 kind: ConfigMap
 metadata:
   name: rocketchat-[username]-configmap
+  labels:
+    app: rocketchat-[username]
 ```
 
 - Attach the `configMap` to your `rocketchat-[username]` deployment by navigating to the `YAML` tab in your Rocket Chat Deployment and pasting in the following code
@@ -91,6 +93,8 @@ kind: Secret
 metadata:
   creationTimestamp: null
   name: rocketchat-[username]-secret
+  labels:
+    app: rocketchat-[username]
 ```
 
 ![](./images/07_persistent_config_09.png)
