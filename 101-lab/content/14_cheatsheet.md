@@ -2,6 +2,8 @@
 This is a placeholder to work with the students and determine what they find valuable in this sheet. 
 
 ## Deleting your lab
+- Don't delete your lab work yet if you're planning to complete the 'pod lifecycle' and 'templates' sections of the course! Move on to those first. 
+
 __WARNING__: You should ALWAYS validate the output before using `oc delete`. You can do that by replacing `oc delete` with `oc get`, or if using with xargs prefix with `echo`.
 
 __WARNING__: Always double check, and triple check before running `oc delete`!!!
