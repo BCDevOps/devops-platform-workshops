@@ -48,6 +48,10 @@ Now that we notice all messages and configuration is gone whenever pods cycle, l
   - The mount path is `/var/lib/mongodb/data`
 ![](./images/06_persistent_storage_04b.png)
 
+- Label your PVC
+  ```
+  oc -n d8f105-dev patch pvc mongodb-[username]-file -p '{"metadata":{"labels":{"app":"rocketchat-[username]"}}}'
+  ```
 
 - Scale up `mongodb-[username]` instance to 1 pod
   ```oc:cli
