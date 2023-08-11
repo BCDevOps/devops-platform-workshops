@@ -35,7 +35,7 @@ __If you do not have `oc` installed__ or your version is incorrect follow these 
 
 1. Option 1:
 If you have access to the Openshift cluster you can simply download directly from the console
-![cluster download link](./images/01_setup_cli_tools.png)
+<kbd>![cluster download link](./images/01_setup_cli_tools.png)</kbd>
 
 2. Option 2:
 Alternativly, navigate to the [Openshift CLI Mirror](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/) and download the version of `oc` that matches your operating system. 
@@ -50,7 +50,7 @@ Alternativly, navigate to the [Openshift CLI Mirror](https://mirror.openshift.co
 
 2. Click your username in the top right corner of the screen and choose 'copy login command' 
 
-![](./images/01_login.png)
+<kbd>![](./images/01_login.png)</kbd>
 
 3. Log in again as prompted, then click 'display token'. 
 

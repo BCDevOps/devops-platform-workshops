@@ -1,6 +1,6 @@
 # Persistent Configurations
 
-[![Video Walkthrough Thumbnail](././images/09_persistent_configurations_thumb.png)](https://youtu.be/g6TyE3rIHeo)
+<kbd>[![Video Walkthrough Thumbnail](././images/09_persistent_configurations_thumb.png)](https://youtu.be/g6TyE3rIHeo)</kbd>
 
 [Video walkthrough](https://youtu.be/g6TyE3rIHeo)
 
@@ -11,8 +11,8 @@ In cases where configurations need to change frequently or common configurations
 #### Creating a Config Map and Adding it to a Deployment
 Create a configMap with arbitrary data and mount it inside of your `rocketchat-[username]` pod: 
 
-![](./images/07_persistent_config_01.png)
-![](./images/07_persistent_config_02.png)
+<kbd>![](./images/07_persistent_config_01.png)</kbd>
+<kbd>![](./images/07_persistent_config_02.png)</kbd>
 
 - In the Web Console, go to `+Add` and select `YAML`
 - Paste in the following ConfigMap Code, replace [username] with your username and save 
@@ -42,18 +42,18 @@ metadata:
   ```
 > pro tip: if you are not sure what fields are available you can always use oc explain! `oc explain deployment.spec.template.spec.containers.volumeMounts`
 
-![](./images/07_persistent_config_04.png)
-![](./images/07_persistent_config_03.png)
+<kbd>![](./images/07_persistent_config_04.png)</kbd>
+<kbd>![](./images/07_persistent_config_03.png)</kbd>
 
 > it should like similar to this
-![](./images/07_persistent_config_05.png)
+<kbd>![](./images/07_persistent_config_05.png)</kbd>
 
 
 - Save the changes which will trigger a new deployment of your `rocketchat-[username]` pod
 
 - Using the pod terminal in the Web Console or `oc rsh`, explore the path of the mounted configMap
 
-![](./images/07_persistent_config_06.png)
+<kbd>![](./images/07_persistent_config_06.png)</kbd>
 
 #### Changing Config Map Content
 The content in your `configMap` can be changed and in most cases it's NOT dynamically updated in the pod. With that said, a new deployment will be required for the changes to be picked up.
@@ -63,12 +63,12 @@ The content in your `configMap` can be changed and in most cases it's NOT dynami
 Navigate to `Administrator View -> Workloads -> Configmaps` from the console and select your ConfigMap from the list
 
 
-![](./images/07_persistent_config_06.png)
-![](./images/07_persistent_config_07.png)
+<kbd>![](./images/07_persistent_config_06.png)</kbd>
+<kbd>![](./images/07_persistent_config_07.png)</kbd>
 
 - Using the pod terminal in the Web Console or `oc rsh`, explore the path of the mounted configMap
 
-![](./images/07_persistent_config_08.png)
+<kbd>![](./images/07_persistent_config_08.png)</kbd>
 
 
 
@@ -97,19 +97,19 @@ metadata:
     app: rocketchat-[username]
 ```
 
-![](./images/07_persistent_config_09.png)
+<kbd>![](./images/07_persistent_config_09.png)</kbd>
 
 - Explore the other mongo secrets to see different variations of secret data by navigating to `Administrator View -> Workloads -> Secrets`
 
-![](./images/07_persistent_config_10.png)
-![](./images/07_persistent_config_11.png)
+<kbd>![](./images/07_persistent_config_10.png)</kbd>
+<kbd>![](./images/07_persistent_config_11.png)</kbd>
 
 - Navigate back to your `rocketchat-[username]-secret` and attach the `secret` to your `rocketchat-[username]` Deployment by navigating to the `Add Secret to Workload`
 
 - Attach the secret as an environment variable
 
-![](./images/07_persistent_config_12.png)
-![](./images/07_persistent_config_13.png)
+<kbd>![](./images/07_persistent_config_12.png)</kbd>
+<kbd>![](./images/07_persistent_config_13.png)</kbd>
 
 
 - This change will trigger a new deployment of your `rocketchat-[username]` pod
@@ -158,9 +158,9 @@ edit in plain text and have it b64 encoded for you. To do this you will need to 
 - Add another secret value but this time as a sensitive configuration file such as an ssh key
 
 From the web console
-![](./images/07_persistent_config_14.png)
+<kbd>![](./images/07_persistent_config_14.png)</kbd>
 With `oc edit`
-![](./images/07_persistent_config_15.png)
+<kbd>![](./images/07_persistent_config_15.png)</kbd>
 
 > take note that you were adding a new value `id_rsa` under a field called `stringData`. Openshift will automatically, encode that as base64 and place it in the `data` field upon saving. You can confirm this with `oc -n [-dev] get secret rocketchat-[username]-secret -o yaml` after saving. 
 

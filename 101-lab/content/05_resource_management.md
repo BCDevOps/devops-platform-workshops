@@ -5,7 +5,7 @@ Many templates include reasonable CPU and Memory resource configurations. Howeve
 
 The platform default resource configuration is maintained by the Platform Services team. It is based on a measurement of average CPU and memory utilization, and it serves as a great starting point for your pod's horsepower.
 
-[![Video Walkthrough Thumbnail](././images/05_resource_requests_and_limits_thumb.png)](https://youtu.be/dhLnaUGgnQY)
+<kbd>[![Video Walkthrough Thumbnail](././images/05_resource_requests_and_limits_thumb.png)](https://youtu.be/dhLnaUGgnQY)</kbd>
 
 [Video walkthrough](https://youtu.be/dhLnaUGgnQY)
 
@@ -24,8 +24,8 @@ Since the Rocket.Chat application was built from scratch and not deployed from a
 
 - Review the current metrics of your `rocketchat-[username]` pod. Navigate to your Deployment and then select the Pods tab to see a list of pods in your Deployment. Navigate to your pod by clicking its name and then select the Metrics tab to see your current pod metrics.
 
-![rocketchat Deployment showing Pods tab with a single pod running](./images/05_resource_management_01.png)
-![rocketchat Pod Details showing Metrics tab with Memory and CPU usage graphs](./images/05_resource_management_02.png)
+<kbd>![rocketchat Deployment showing Pods tab with a single pod running](./images/05_resource_management_01.png)</kbd>
+<kbd>![rocketchat Pod Details showing Metrics tab with Memory and CPU usage graphs](./images/05_resource_management_02.png)</kbd>
 
 - Reduce the CPU (request and limit) to `65 millicores` and Memory (request and limits) to `100 Megabytes` and monitor the startup time of the pod
   ```oc:cli

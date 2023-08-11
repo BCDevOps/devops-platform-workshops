@@ -5,7 +5,7 @@ Logs of a running pod can be accessed from the Web Console or from the `oc` cli:
 
 - The `Logs` tab of any running pod can be used to view active logs for the current pod
 
-![](./images/09_debugging_00.png)
+<kbd>![](./images/09_debugging_00.png)</kbd>
 
 - The `oc` command can be used to view or tail the logs: 
 
@@ -28,7 +28,7 @@ In this lab, we will scale down the database deployment so that application pods
     ```
 - Once the new pod starts, notice the CrashLoopBackOff
 
-![](./images/09_debugging_01.png)
+<kbd>![](./images/09_debugging_01.png)</kbd>
 
 #### Using the `oc` command to start a debug container
 

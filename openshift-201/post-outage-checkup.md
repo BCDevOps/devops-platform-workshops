@@ -1,6 +1,6 @@
 # Post Outage Checkup
 
-[![Video Walkthrough Thumbnail](././images/post-outage-checkup/post-outage-checkup-thumb.png)](https://youtu.be/1_gUD1Q8qSw)
+<kbd>[![Video Walkthrough Thumbnail](././images/post-outage-checkup/post-outage-checkup-thumb.png)](https://youtu.be/1_gUD1Q8qSw)</kbd>
 
 [Video walkthrough](https://youtu.be/1_gUD1Q8qSw)
 
@@ -94,11 +94,11 @@ Service:	  crash-app
 It looks as though we have a valid `Requested Host` and that our `Service` is hooked up to our route.
 
 You could also verify the same in the console:
-![crash](images/post-outage-checkup/crash-app-route.png)
+<kbd>![crash](images/post-outage-checkup/crash-app-route.png)</kbd>
 
 ### Validate Service
 Let's ensure our service has a valid pod attached to it.  In the console under Networking->Services click on our `crash-app` service and then the `Pods` tab.
-![crash](images/post-outage-checkup/crash-app-service.png)
+<kbd>![crash](images/post-outage-checkup/crash-app-service.png)</kbd>
 
 It looks like we do have a pod attached but the `Status` is showing `CrashLoopBackOff`.
 This usually indicates your application is failing to start.
@@ -118,7 +118,7 @@ crash-app-65887546-9z8rv  0/1     CrashLoopBackOff   1          52s
 ```
 
 Viewing this from the console will see something like the following:
-![crash](images/post-outage-checkup/crash-app-console.png)
+<kbd>![crash](images/post-outage-checkup/crash-app-console.png)</kbd>
 
 Use the new pod name shown above (the characters after `crash-app-` will be different for you) to display the output of the logs.
 ```bash

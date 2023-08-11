@@ -11,7 +11,7 @@ The shortcut towards accessing the Kibana is from the `Logs` tab of a running po
 
 - Select the running `rocketchat-[username]` pod and select the Logs tab
 
-![](./images/10_logging_01.png)
+<kbd>![](./images/10_logging_01.png)</kbd>
 
 - Click on the "Show in Kibana" link to go to Kibana
   - Kibana login is setup with SSO, you will see the same login page as of OpenShift console
@@ -21,26 +21,26 @@ The shortcut towards accessing the Kibana is from the `Logs` tab of a running po
   - Index pattern: `app*`
   - Timestamp field name: `@timestamp`
 
-![](./images/10_logging_setup_01.png)
+<kbd>![](./images/10_logging_setup_01.png)</kbd>
 
-![](./images/10_logging_setup_02.png)
+<kbd>![](./images/10_logging_setup_02.png)</kbd>
 
 
 - Review the logging interface and the query that has been automatically populated (there are more examples to explore at the end of this section)
 
-![](./images/10_logging_02.png)
+<kbd>![](./images/10_logging_02.png)</kbd>
 
 - Modify the query and time picker to select the entire namespace within the last few hours
 
-![](./images/10_logging_03.png)
+<kbd>![](./images/10_logging_03.png)</kbd>
 
 - Review how Kibana surfaces key information about the log sources in the left panel
 
-![](./images/10_logging_04.png)
+<kbd>![](./images/10_logging_04.png)</kbd>
 
 - Create a simple visualization of the information surfaced by Kibana
 
-![](./images/10_logging_viz_01.png)
+<kbd>![](./images/10_logging_viz_01.png)</kbd>
 
 
 #### Some useful queries you can try on:
