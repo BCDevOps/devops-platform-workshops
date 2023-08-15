@@ -1,6 +1,6 @@
 # Autoscaling Pods
 
-[![Video Walkthrough Thumbnail](././images/autoscaling-pods/autoscaling-thumb.png)](https://youtu.be/SX4j8-kFgN8)
+<kbd>[![Video Walkthrough Thumbnail](././images/autoscaling-pods/autoscaling-thumb.png)](https://youtu.be/SX4j8-kFgN8)</kbd>
 
 [Video walkthrough](https://youtu.be/SX4j8-kFgN8)
 

@@ -14,13 +14,13 @@ The web console separates functions that are runnable in openshift by two person
 
 Developer View is a simplified view of the web console that is more closely related to the work that
 that developers perform. 
-![developer view](./images/01b_console_view_01.png)
+<kbd>![developer view](./images/01b_console_view_01.png)</kbd>
 
 ### Administrator View
 
 This view is more detailed and provides access to more of the Openshift Infrastructure Objects that are
 required to deploy a project
-![admin view](./images/01b_console_view_02.png)
+<kbd>![admin view](./images/01b_console_view_02.png)</kbd>
 
 
 

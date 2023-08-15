@@ -1,6 +1,6 @@
 # Persistent Storage
 
-[![Video Walkthrough Thumbnail](././images/08_persistent_storage_thumb.png)](https://youtu.be/yG_dzkUUYfg)
+<kbd>[![Video Walkthrough Thumbnail](././images/08_persistent_storage_thumb.png)](https://youtu.be/yG_dzkUUYfg)</kbd>
 
 [Video walkthrough](https://youtu.be/yG_dzkUUYfg)
 
@@ -10,7 +10,7 @@ application data, persistent storage is required.
 Some background information about volumes and volumemounts can be found [here](https://kubernetes.io/docs/concepts/storage/volumes/).
 
 - Let's first take a look at our application prior to this lab
-![](./images/06_persistent_storage_01.png)
+<kbd>![](./images/06_persistent_storage_01.png)</kbd>
 
 ### Deleting Pods with Ephemeral Storage
 __Objective__: Observe that by using ephemeral storage causes RocketChat to lose any previous data or configuration after a redeployment.
@@ -24,7 +24,7 @@ To understand what will happen when a pod with ephemeral storage is removed,
   ```oc:cli
   oc -n [-dev] scale deployment/rocketchat-[username] dc/mongodb-[username] --replicas=1
   ```
-![](./images/06_persistent_storage_02.png)
+<kbd>![](./images/06_persistent_storage_02.png)</kbd>
 
 ### Adding Storage to Existing Deployment Configurations
 __Objective__: Add persistent storage to MongoDB so that it won't lose data created by RocketChat.
@@ -35,18 +35,18 @@ Now that we notice all messages and configuration is gone whenever pods cycle, l
   oc -n [-dev] scale deployment/rocketchat-[username] dc/mongodb-[username] --replicas=0
   ```
 - Remove the emptyDir Storage by navigating to the mongodb deploymentconfig
-![](./images/06_persistent_storage_03.png)
+<kbd>![](./images/06_persistent_storage_03.png)</kbd>
 
 - Add a new volume by navigating to `Administrator -> Storage -> Persitant Volume Claims -> Create Persistant Volume Claims` and name it `mongodb-[username]-file`
 
-![](./images/06_persistent_storage_04a.png)
+<kbd>![](./images/06_persistent_storage_04a.png)</kbd>
 
   - Select the `netapp-file-standard` storage class. Set the type to RWO, the size to 1GB, select `Filesystem` mode, and name it `mongodb-[username]-file`
 
   - Navigate back to your Mongo DeploymentConfig and select `Add Storage` from the `Actions` Tab
 
   - The mount path is `/var/lib/mongodb/data`
-![](./images/06_persistent_storage_04b.png)
+<kbd>![](./images/06_persistent_storage_04b.png)</kbd>
 
 - Label your PVC
   ```
@@ -82,13 +82,13 @@ RWO storage (which was selected above) can only be attached to a single pod at a
 
 - Ensure your `mongodb-[username]` deployment strategy is set to `Rolling and then trigger a redeployment.
 
-![](./images/06_persistent_storage_07.png)
+<kbd>![](./images/06_persistent_storage_07.png)</kbd>
 
 - Notice and investigate the issue
 
 > rolling deployments will start up a new version of your application pod before killing the previous one. There is a brief moment where two pods for the mongo application exist at the same time. Because the storage type is __RWO__ it is unable to mount to two pods at the same time. This will cause the rolling deployment to hang and eventually time out. 
 
-![](./images/06_persistent_storage_08.png)
+<kbd>![](./images/06_persistent_storage_08.png)</kbd>
 
 - Switch to recreate
 
@@ -102,11 +102,11 @@ RWX storage allows multiple pods to access the same PV at the same time.
   oc -n [-dev] scale dc/mongodb-[username] --replicas=0
   ```
 
-![](./images/06_persistent_storage_09.png)
+<kbd>![](./images/06_persistent_storage_09.png)</kbd>
 
 - Remove the previous storage volume and recreate as `netapp-file-standard` (mounting at `/var/lib/mongodb/data`) with type RWX, and naming it `mongodb-[username]-file-rwx`
 
-  ![](./images/06_persistent_storage_10.png)
+  <kbd>![](./images/06_persistent_storage_10.png)</kbd>
   ```oc:cli
   oc -n [-dev] rollout pause dc/mongodb-[username] 
   # Remove all volumes

@@ -1,6 +1,6 @@
 # Limiting Resource Usage by an Application
 
-[![Video Walkthrough Thumbnail](././images/resource-mgmt/resource-management-thumbnail.png)](https://youtu.be/xTb_Cjcm9SE)
+<kbd>[![Video Walkthrough Thumbnail](././images/resource-mgmt/resource-management-thumbnail.png)](https://youtu.be/xTb_Cjcm9SE)</kbd>
 
 [Video walkthrough](https://youtu.be/xTb_Cjcm9SE)
 

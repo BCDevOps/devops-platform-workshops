@@ -1,6 +1,6 @@
 # Introduction to OpenShift Pipelines
 
-[![Video Walkthrough Thumbnail](././images/pipelines/pipelines-thumbnail.png)](https://youtu.be/Nm-uS5S--HQ)
+<kbd>[![Video Walkthrough Thumbnail](././images/pipelines/pipelines-thumbnail.png)](https://youtu.be/Nm-uS5S--HQ)</kbd>
 
 [Video walkthrough](https://youtu.be/Nm-uS5S--HQ)
 
@@ -27,10 +27,10 @@ To create a token in SonarCloud, log in to [SonarCloud](https://sonarcloud.io/).
 
 The following example shows the [`t-generate-id`](https://github.com/bcgov/pipeline-templates/blob/main/tekton/base/tasks/generate-id.yaml) task.
 
-![task](images/pipelines/task-yaml.png)
+<kbd>![task](images/pipelines/task-yaml.png)
 
 
-1. Defines the task API version and type of Kubernetes resource
+1</kbd>. Defines the task API version and type of Kubernetes resource
 2. Defines the workspaces (shared storage volumes) used by the task (optional)
 3. Results define the output of the task that can be used by other tasks (optional)
 4. This defines the steps to executed sequentially.  You can specify the name, image for the container and which script/command you want to run for this step
@@ -43,10 +43,10 @@ A `Pipeline` is a collection of `Task` resources arranged in a specific order of
 The following example shows the [`mvn-build`](https://github.com/bcgov/pipeline-templates/blob/main/tekton/base/pipelines/maven.yaml) pipeline.
 
 
-![pipeline](images/pipelines/pipeline-yaml.png)
+<kbd>![pipeline](images/pipelines/pipeline-yaml.png)
 
 
-1. Defines the Pipeline API version and type of Kubernetes resource
+1</kbd>. Defines the Pipeline API version and type of Kubernetes resource
 2. Defines the parameters (inputs) used in this Pipeline
 3. Defines the workspaces (shared storage volumes) used by the Pipeline
 4. Defines the tasks in the Pipeline.
@@ -59,9 +59,9 @@ The following example shows the [`mvn-build`](https://github.com/bcgov/pipeline-
 </br>
 
 The details of the pipeline are as follows:
-![pipeline details](images/pipelines/pipeline-details.png)
+<kbd>![pipeline details](images/pipelines/pipeline-details.png)
 
-Notice the `mvn-run` and `mvn-sonar-scan` tasks are run in parallel.  The triangle before the `mvn-sonar-scan` indicates a `when` condition as shown here:
+No</kbd>tice the `mvn-run` and `mvn-sonar-scan` tasks are run in parallel.  The triangle before the `mvn-sonar-scan` indicates a `when` condition as shown here:
 ```yaml
  - name: mvn-sonar-scan
     when:
@@ -119,26 +119,26 @@ pipelinerun.tekton.dev/mvn-build-run-65k2j
 
 or via the OpenShift Console by performing the following:
 
-![pipeline console 01](images/pipelines/pipeline-console-01.png)
+<kbd>![pipeline console 01](images/pipelines/pipeline-console-01.png)</kbd>
 
 After you've selected the `p-mvn-build` then do the following:
 
-![pipeline console 02](images/pipelines/pipeline-console-02.png)
+<kbd>![pipeline console 02](images/pipelines/pipeline-console-02.png)</kbd>
 
 Then proceed to fill out the following form:
 
-![pipeline start](images/pipelines/pipeline-start.png)
+<kbd>![pipeline start](images/pipelines/pipeline-start.png)
 
-Once complete press the start button and a new `PipelineRun` will start:
+On</kbd>ce complete press the start button and a new `PipelineRun` will start:
 
-![pipeline run](images/pipelines/pipeline-run.png)
+<kbd>![pipeline run](images/pipelines/pipeline-run.png)
 
-After a few minutes the pipeline should succeed:
+Af</kbd>ter a few minutes the pipeline should succeed:
 
-![pipeline success](images/pipelines/pipeline-success.png)
+<kbd>![pipeline success](images/pipelines/pipeline-success.png)
 
 
-> Note: You'll see an error message from the SonarCloud scan step about "Sonar project doesn't exist". This is expected, there is no real project created in Sonarcloud. For the demonstration purpose, as long as the PipelineRun completes, then things are good!
+></kbd> Note: You'll see an error message from the SonarCloud scan step about "Sonar project doesn't exist". This is expected, there is no real project created in Sonarcloud. For the demonstration purpose, as long as the PipelineRun completes, then things are good!
 
 > Note: If a new pipelineRun is failing with message about out of resource quota, then it's time for you to clean up some of the existing one to save up the space there. You can either go to the console Pipeline page and delete individual `PipelineRun` or through oc cli:
 
@@ -156,9 +156,9 @@ Triggers consist of the following main resources: TriggerBinding, TriggerTemplat
 Trigger Bindings extract field from an event payload and stores them as parameters.
 
 
-![triggerbinding](images/pipelines/triggerbinding.png)
+<kbd>![triggerbinding](images/pipelines/triggerbinding.png)
 
-1. `branchName` parameter will be pulled from the body of the event, with the assigned value of `ref`
+1.</kbd> `branchName` parameter will be pulled from the body of the event, with the assigned value of `ref`
 2. `contenttype` parameter will be pulled from the header of the event, with the assigned value of the `Content-Type` header.
 
 Given the following http request:
@@ -186,29 +186,29 @@ The value of `branchName` would be `main` and the value of `contenttype` would b
 ### TriggerTemplate
 Trigger Templates receive input from the `TriggerBinding`, and then performs a series of action that result in the initiation of a new pipeline run.
 
-![triggertemplate](images/pipelines/triggertemplate.png)
+<kbd>![triggertemplate](images/pipelines/triggertemplate.png)
 
-1. Parameters defined by this `TriggerTemplate`.  These usually include parameters needed to start a pipeline.  **Note:** in order to map values from the `TriggerBinding` these parameter names **must** match the parameter names in the `TriggerBinding`
+1.</kbd> Parameters defined by this `TriggerTemplate`.  These usually include parameters needed to start a pipeline.  **Note:** in order to map values from the `TriggerBinding` these parameter names **must** match the parameter names in the `TriggerBinding`
 2. `pipelineRef` defines the pipeline that this trigger template will start.
 3. Parameters from TriggerTemplate can be referenced via `$(tt.params.<PARAM-NAME>)`.  Where `tt` stands for trigger template and `<PARAM-NAME>` is the name of the parameter you'd like to reference.
 
 ### EventListener
 Provides an endpoint that listens for incoming HTTP-based event with JSON payload.  It will extract event parameters for each `TriggerBinding` and creates resources as specified by the `TriggerTemplate`
 
-![eventlistener](images/pipelines/eventlistener.png)
+<kbd>![eventlistener](images/pipelines/eventlistener.png)
 
-1. Specifies the `ServiceAccount` that will be used to instantiate resources
+1.</kbd> Specifies the `ServiceAccount` that will be used to instantiate resources
 2. Interceptors act as a filter and will process event payload data before passing it to the `TriggerBinding`.  In this case it will use a built in `github` interceptor and validate the webhook secret along with the `EventType` of the webhook.
 3. Defines the `TriggerBindings` to be used in this `EventListener`
 4. Defines the `TriggerTemplate` to be used in this `EventListener`
 
 When the `EventListener` is created OpenShift will automatically create a `Service` and `Pod` to handle events
 
-![eventlistener-services](images/pipelines/eventlistener-service.png)
+<kbd>![eventlistener-services](images/pipelines/even</kbd>tlistener-service.png)
 
-![eventlistener-pod](images/pipelines/eventlistener-pod.png)
+<kbd>![eventlistener-pod](images/pipelines/eventlistener-pod.png)
 
-For the purposes of this lab we will edit the `EventListener` named `maven-build-event-listener` to remove the GitHub `secretRef`.  This is **NOT** something you would do in production but to reduce the complexity of the lab we will remove it.
+Fo</kbd>r the purposes of this lab we will edit the `EventListener` named `maven-build-event-listener` to remove the GitHub `secretRef`.  This is **NOT** something you would do in production but to reduce the complexity of the lab we will remove it.
 
 To remove the `secretRef` perform the following:
 ```bash
@@ -253,7 +253,7 @@ oc get route el-maven-build-event-listener -o=jsonpath='{.spec.host}'
 
 Or by viewing the routes in the OpenShift Console:
 
-![eventlistener-route](images/pipelines/eventlistener-route.png)
+<kbd>![eventlistener-route](images/pipelines/eventlistener-route.png)</kbd>
 
 Now let's test it out!
 

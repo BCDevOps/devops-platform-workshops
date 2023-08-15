@@ -1,6 +1,6 @@
 # Best Practices of Image Management
 
-[![Video Walkthrough Thumbnail](././images/image-management/image-management-thumbnail.png)](https://youtu.be/jQ15EXSuKL4)
+<kbd>[![Video Walkthrough Thumbnail](././images/image-management/image-management-thumbnail.png)](https://youtu.be/jQ15EXSuKL4)</kbd>
 
 [Video walkthrough](https://youtu.be/jQ15EXSuKL4)
 
@@ -47,7 +47,7 @@ imagestream.image.openshift.io "myapp" created
 
 As you can see there are a few resources create with the `new-app` command.  One is the `BuildConfig`.  To see the `myapp` `BuildConfig`, select Administrator view in the console. Next, click on the `Builds -> BuildConfigs` item in the left menu then choose `myapp` and select `YAML` or run `oc -n [-dev] get bc/myapp -o yaml`.  You should see something similar to the following:
 
-![buildconfig](images/image-management/buildconfig.png)
+<kbd>![buildconfig](images/image-management/buildconfig.png)</kbd>
 
 1. Name of BuildConfig
 2. Defines the output.  Where the image will go after it is successfully built.
@@ -71,7 +71,7 @@ Push successful
 
 Once the build is complete let's inspect the `ImageStream`.  To do so click on the `Builds -> ImageStreams` item in the left menu then choose `myapp` and select `YAML` or run `oc -n [-dev] get is/myapp -o yaml`.  You should see something similar to the following:
 
-![imagestream](images/image-management/imagestream.png)
+<kbd>![imagestream](images/image-management/imagestream.png)</kbd>
 
 1. Name of ImageStream
 2. Docker repository path where new images can be pushed to add/update them in this image stream.

@@ -2,7 +2,7 @@
 Since the build and deploy stages are separate, and we have a built image from the previous exercise, we can now deploy this 
 image into the dev project. 
 
-[![Video Walkthrough Thumbnail](././images/03_deployment_thumb.png)](https://youtu.be/MZHhj0yQn0M)
+<kbd>[![Video Walkthrough Thumbnail](././images/03_deployment_thumb.png)](https://youtu.be/MZHhj0yQn0M)</kbd>
 
 [Video walkthrough](https://youtu.be/MZHhj0yQn0M)
 
@@ -81,11 +81,11 @@ Note that since only admin users have access to manage rolebindings in a namespa
 
 - Navigate to `Topology` and click on the deployment to investigate further
 
-![](./images/03_deploy_image_04.png)
+<kbd>![](./images/03_deploy_image_04.png)</kbd>
 
 - Click on the pod within the deployment and navigate to the pods `Events` tab for more detail
 
-![](./images/03_deploy_image_05.png)
+<kbd>![](./images/03_deploy_image_05.png)</kbd>
 
 
 Now that we have identified the issue, next step is to create the rolebinding to allow image pulling from tools namespace.
@@ -125,13 +125,13 @@ When you ran `oc new-app` a new imagestream was created in your `dev` namespace 
 
 Notice that the deployment is still failing. 
 
-![](./images/03_deploy_image_08a.png)
+<kbd>![](./images/03_deploy_image_08a.png)</kbd>
 
 Navigate to the pod and review the logs to determine why the container will not start. 
 
 From the console click the deployment config and click __view logs__ beside the failing pod
 
-![](./images/03_deploy_image_08b.png)
+<kbd>![](./images/03_deploy_image_08b.png)</kbd>
 
 - Or from the CLI
 
@@ -203,9 +203,9 @@ oc -n openshift get template/mongodb-ephemeral -o json | oc process -f - --param
   - Click Instantiate Template
   - Ensure to customize the details with a service name such as `mongodb-[username]`, username/password and default database such as `rocketchat`
 
-![](./images/03_deploy_mongo_01.png)
-![](./images/03_deploy_mongo_02.png)
-![](./images/03_deploy_mongo_03.png)
+<kbd>![](./images/03_deploy_mongo_01.png)</kbd>
+<kbd>![](./images/03_deploy_mongo_02.png)</kbd>
+<kbd>![](./images/03_deploy_mongo_03.png)</kbd>
 
 ### Verify MongoDB is up
   - Find the mongodb deployment by going back to `Topology`
@@ -227,13 +227,13 @@ a database has been deployed, the app does not know how or where to connect to M
 - In the Web Console, navigate to `Topology` and select your rocketchat deployment
 - Click on the name of your rocketchat-[username] deployment in the right-hand menu pane
 - Click the `Environment` tab
-![](./images/03_deploy_env_02.png)
+<kbd>![](./images/03_deploy_env_02.png)</kbd>
 
 - Add the following environment variable with the connection string details configured for mongodb for key `MONGO_URL`:
 ```
 mongodb://dbuser:dbpass@mongodb-[username]:27017/rocketchat
 ```
-![](./images/03_deploy_config_01.png)
+<kbd>![](./images/03_deploy_config_01.png)</kbd>
 
  
 You can also use the CLI to apply the environment variable.
@@ -286,7 +286,7 @@ oc -n [-dev] create route edge rocketchat-[username] --service=rocketchat-[usern
 ```
 
 After creating the route you may access your application! 
-![rocketchat](./images/03_deploy_route.png)
+<kbd>![rocketchat](./images/03_deploy_route.png)</kbd>
 
 <!-- 
 not sure how to navigate to routes from web console in ocp4
@@ -306,8 +306,8 @@ Rocket Chat url.
 
 
 
-![](./images/03_deploy_pod_delete_01.png)
-![](./images/03_deploy_pod_delete_02.png)
+<kbd>![](./images/03_deploy_pod_delete_01.png)</kbd>
+<kbd>![](./images/03_deploy_pod_delete_02.png)</kbd>
 
 
 

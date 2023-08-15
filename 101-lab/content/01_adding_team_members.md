@@ -15,17 +15,17 @@ must navigate to each project and assign your users the appropriate permissions.
 As a team, find each project and add the rest of the team members. Feel free to experiment with
 the default roles.  
 
-![](./images/01_projects.png)
+<kbd>![](./images/01_projects.png)</kbd>
 
 - Once in the project, switch to `Developer view` and then navigate to `Project -> Project Access`
 
 - Select `Add Access` at the bottom
 
-![](./images/01_add_access.png)
+<kbd>![](./images/01_add_access.png)</kbd>
 
 - Add each user based on their GitHub id. Please note that we are using SSO with GitHub login at the moment, don't forget the suffix `@github`!
 
-![](./images/01_edit.png)
+<kbd>![](./images/01_edit.png)</kbd>
 
 - Select `Save`
 

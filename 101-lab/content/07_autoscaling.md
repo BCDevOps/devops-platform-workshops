@@ -7,7 +7,7 @@ Autoscaling can be configured on pods to enable OpenShift to add or remove pods 
 
 Currently CPU and memory metrics are supported, with additional arbitrary metrics support intended for the future. 
 
-[![Video Walkthrough Thumbnail](././images/07_autoscaling_thumb.png)](https://youtu.be/ot-pE495JLE)
+<kbd>[![Video Walkthrough Thumbnail](././images/07_autoscaling_thumb.png)](https://youtu.be/ot-pE495JLE)</kbd>
 
 [Video walkthrough](https://youtu.be/ot-pE495JLE)
 
@@ -39,11 +39,11 @@ oc -n [-dev] autoscale deployment/rocketchat-[username] --min 1 --max 10 --cpu-p
 
 - Review the deployment and try to add or remove replicas by editing its `.spec.replicas` YAML value
 
-  ![Editing a deployment's YAML to change the replica count](./images/07_autoscaling_01.png)
+  <kbd>![Editing a deployment's YAML to change the replica count](./images/07_autoscaling_01.png)</kbd>
 
 - Observe how the autoscaler reacts to your new replica count and changes it
 
-  ![Topology view showing the autoscaler changing the replica count](./images/07_autoscaling_02.png)
+  <kbd>![Topology view showing the autoscaler changing the replica count](./images/07_autoscaling_02.png)</kbd>
 
 - Remove the autoscaler
   ```oc:cli
