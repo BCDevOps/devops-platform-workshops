@@ -204,7 +204,7 @@ Provides an endpoint that listens for incoming HTTP-based event with JSON payloa
 
 When the `EventListener` is created OpenShift will automatically create a `Service` and `Pod` to handle events
 
-<kbd>![eventlistener-services](images/pipelines/even</kbd>tlistener-service.png)
+<kbd>![eventlistener-services](images/pipelines/eventlistener-service.png)</kbd>
 
 <kbd>![eventlistener-pod](images/pipelines/eventlistener-pod.png)
 
