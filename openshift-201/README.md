@@ -13,7 +13,9 @@ Welcome to the OpenShift 201 Training Labs.  You will find all of the lab materi
 ### Lab topics:
 
 The Openshift 201 Lab is divided into the following topics:
-* [OpenShift Pipelines](./react-pipelines.md)
+* Openshift Pipelines (you can choose to do either one)
+    * [React Application](./react-pipeline.md)
+    * [Java Application (Maven)](./pipelines.md)
 * [Resource Management](./resource-mgmt.md) 
 * [Network Policy & ACS](./network-policy.md)
 * [Application Logging with Kibana](./logging.md)
