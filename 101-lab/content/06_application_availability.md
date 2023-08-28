@@ -1,6 +1,6 @@
 # Application Availability
 
-[![Video Walkthrough Thumbnail](././images/06_application_availability_thumb.png)](https://youtu.be/42UxHJkNLwc)
+<kbd>[![Video Walkthrough Thumbnail](././images/06_application_availability_thumb.png)](https://youtu.be/42UxHJkNLwc)</kbd>
 
 [Video walkthrough](https://youtu.be/42UxHJkNLwc)
 
@@ -11,10 +11,10 @@ Ensure to select `Keep standlone` on the last page of the initial Rocket.Chat ap
 Adjust the settings to match the images below:
 
 
-![RocketChat Setup Wizard #1. Name: Matt Spencer, Username: mattspencer, Organization Email: matt.spencer@gov.bc.ca, Password: ********](./images/04_rc_setup_01.png)
-![RocketChat Setup Wizard #2. Organization Type: Nonprofit, Organization Name: OpenShift 101 Lab, Industry: Help Center, Size: 11-50 People, Country: Canada, Website: *blank*](./images/04_rc_setup_02.png)
-![RocketChat Setup Wizard #3. Site Name: Matt's Rocketchat, Language: Default, Server Type: Private Team](./images/04_rc_setup_03.png)
-![RocketChat Setup Wizard #4. Keep Standalone.](./images/04_rc_setup_04.png)
+<kbd>![RocketChat Setup Wizard #1. Name: Matt Spencer, Username: mattspencer, Organization Email: matt.spencer@gov.bc.ca, Password: ********](./images/04_rc_setup_01.png)</kbd>
+<kbd>![RocketChat Setup Wizard #2. Organization Type: Nonprofit, Organization Name: OpenShift 101 Lab, Industry: Help Center, Size: 11-50 People, Country: Canada, Website: *blank*](./images/04_rc_setup_02.png)</kbd>
+<kbd>![RocketChat Setup Wizard #3. Site Name: Matt's Rocketchat, Language: Default, Server Type: Private Team](./images/04_rc_setup_03.png)
+![RocketChat Setup Wizard #4. Keep Standalone.](./images/04_rc_setup_04.png)</kbd>
 
 
 
@@ -26,13 +26,13 @@ scheduled platform maintenance. In order to simulate the effect on an applicatio
 - Navigate to the pod, select `Actions` and `Delete`
     - Select `Delete pod immediately`
 
-![](./images/04_app_availability_01.png)
+<kbd>![](./images/04_app_availability_01.png)</kbd>
 
-![](./images/04_app_availability_02.png)
+<kbd>![](./images/04_app_availability_02.png)</kbd>
 
 - Refresh URL of application
 
-![](./images/04_app_availability_03.png)
+<kbd>![](./images/04_app_availability_03.png)</kbd>
 
 
 ### Scaling Pods
@@ -48,7 +48,7 @@ with multiple pods. Please refer to specific application documentaion for detail
 
 
 
-![](./images/04_app_availability_05.png)
+<kbd>![](./images/04_app_availability_05.png)</kbd>
 
 - Or from the CLI
 
@@ -56,8 +56,8 @@ with multiple pods. Please refer to specific application documentaion for detail
 oc -n [-dev] scale deployment/rocketchat-[username] --replicas=2
 ```
 - Notice the balancing across nodes by exploring the details of each pod
-![1st Pod is on Node mcs-silver-app-39.dmz](./images/06_application_availability_01.png)
-![2nd Pod is on Node mcs-silver-app-12.dmz](./images/06_application_availability_02.png)
+<kbd>![1st Pod is on Node mcs-silver-app-39.dmz](./images/06_application_availability_01.png)</kbd>
+<kbd>![2nd Pod is on Node mcs-silver-app-12.dmz](./images/06_application_availability_02.png)</kbd>
 
 - Or from the CLI notice the hosts the pod runs on (in the last field)
 

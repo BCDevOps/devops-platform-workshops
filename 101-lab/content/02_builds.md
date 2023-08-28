@@ -1,7 +1,7 @@
 # Builds
 In this lab, you will create a simple Docker based build for the Rocket Chat application.
 
-[![Video Walkthrough Thumbnail](././images/02_builds_thumb.png)](https://youtu.be/j7a74_I6MYw)
+<kbd>[![Video Walkthrough Thumbnail](././images/02_builds_thumb.png)](https://youtu.be/j7a74_I6MYw)<kbd>
 
 [Video walkthrough](https://youtu.be/j7a74_I6MYw)
 
@@ -60,7 +60,7 @@ oc -n [-tools] logs -f bc/rocketchat-[username]
 - You can now explore the Web Console to watch the build status from `Builds`
 *note* you will see multiple builds from each team member
 
-![](./images/01_builds.png)
+<kbd>![](./images/01_builds.png)</kbd>
 
 - Or this can be done on the CLI
 
@@ -71,8 +71,8 @@ oc -n [-tools] status
 
 - The build status can be monitored from the Web Console by selecting  the `Logs` link
 
-![](./images/01_build_logs.png)
-![](./images/01_build_logs_02.png)
-![](./images/01_build_logs_03.png)
+<kbd>![](./images/01_build_logs.png)</kbd>
+<kbd>![](./images/01_build_logs_02.png)</kbd>
+<kbd>![](./images/01_build_logs_03.png)</kbd>
 
 Next page - [Deployment](./03_deployment.md)

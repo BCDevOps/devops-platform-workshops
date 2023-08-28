@@ -329,7 +329,7 @@ You should be able to log into ACS by navigating to the URL: https://acs.develop
 
 Once logged in you should be able to click on `Network Graph` on the left navigation bar.
 
-![acs network graph](images/network-policy-acs/acs-network-graph.png) 
+<kbd>![acs network graph](images/network-policy-acs/acs-network-graph.png)</kbd>
 
 You will be scoped to see only your namspaces, so your network graph will not be identical to the image above.
 

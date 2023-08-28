@@ -4,7 +4,7 @@ A Pod can be extended beyond the normal operation of the container by allowing d
 - add `pre` and `post` lifecycle hooks
 - modify the default `entrypoint` of a container 
 
-[![Video Walkthrough Thumbnail](././images/15_pod_lifecycle_thumb.png)](https://youtu.be/T3n3i-ucmkE)
+<kbd>[![Video Walkthrough Thumbnail](././images/15_pod_lifecycle_thumb.png)](https://youtu.be/T3n3i-ucmkE)</kbd>
 
 [Video walkthrough](https://youtu.be/T3n3i-ucmkE)
 
@@ -18,30 +18,30 @@ __Objective__: Create an init container
 
 - Click on the three-dot icon to see more menu options, and choose 'Administration' 
 
-![](./images/15_pod_lifecycle_03.png)
+<kbd>![](./images/15_pod_lifecycle_03.png)</kbd>
 
 - Using the left navigation menu, select 'Integrations' and choose the 'New Integration' 
 
-![](./images/15_pod_lifecycle_04.png)
+<kbd>![](./images/15_pod_lifecycle_04.png)</kbd>
 
 - Next, select the option to create an 'Incoming WebHook' 
 
-![](./images/15_pod_lifecycle_05.png)
+<kbd>![](./images/15_pod_lifecycle_05.png)</kbd>
 
 - Configure the WebHook. Be sure to set 'enabled' to 'true', choose to post as the account name you set earlier, choose the default #general channel. Optionally, you can link to an avatar image or set and emoji as the avatar. Be sure to save the settings at the bottom right of the page, and confirm that no errors appear at the top right of the page. 
 
-![](./images/15_pod_lifecycle_06.png)
+<kbd>![](./images/15_pod_lifecycle_06.png)</kbd>
 
 - Once these settings are saved, navigate to the 'Integrations' page again and take note of the webhook URL that is generated.
 
-![](./images/15_pod_lifecycle_07.png)
+<kbd>![](./images/15_pod_lifecycle_07.png)</kbd>
 
 - Next the OpenShift Web Console, navigate to `Topology` and select your `rocketchat-[username]` deployment.
 - Navigate to the __YAML__ tab.
   > If you wish to perform this from the cli with the `oc` tool, type `oc edit deployment/rocketchat-[username]`
 
 
-![](./images/12_pod_lifecycle_01.png)
+<kbd>![](./images/12_pod_lifecycle_01.png)</kbd>
 
 - After replacing the URL below with the webhook URL from the previous step, add the following section of code under `spec: -> template: -> spec:`. As always with YAML, pay close attention to the formatting and indenting. 
 
@@ -64,16 +64,16 @@ initContainers:
 **Be careful when pasting your Webhook URL into the YAML above, you will need the ) after your URL.** 
 - Save your changes to the YAML. It should look similar to this: 
 
-![](./images/15_pod_lifecycle_08.png)
+<kbd>![](./images/15_pod_lifecycle_08.png)</kbd>
 
 
 - Now that you've added this init container, every time one of your Rocketchat pods initializes, the 'Say Hello' message will be posted to your #general channel on Rocketchat web application. You can test this by scaling up your rocketchat deployment to have an additional pod. 
 
-![](./images/15_pod_lifecycle_09.png)
+<kbd>![](./images/15_pod_lifecycle_09.png)</kbd>
 
 - Explore the `Pod Details` to notice the difference with the Init Container 
 
-![](./images/12_pod_lifecycle_02.png)
+<kbd>![](./images/12_pod_lifecycle_02.png)</kbd>
 
 In order to obtain logs from the init container, the `oc` command can be used by specifying `-c init`: 
 
@@ -98,7 +98,7 @@ lifecycle:
 ```
 -  Save your changes to the YAML. It should now look similar to this: 
 
-![](./images/15_pod_lifecycle_10.png)
+<kbd>![](./images/15_pod_lifecycle_10.png)</kbd>
 
 - Test your lifecycle hooks by scaling up your deployment to run on an extra pod. When you're finished, scale down to 1 pod again. 
 
@@ -115,7 +115,7 @@ command:  ["/bin/sh", "-c", "c=$(curl -X POST -H 'Content-Type: application/json
 
 Your rocketchat deployment YAML should look similar to this (some sections have been collapsed for easier viewing):
 
-![](./images/15_pod_lifecycle_11.png)
+<kbd>![](./images/15_pod_lifecycle_11.png)</kbd>
 
 
 Be sure to save the changes to your YAML. Then:

@@ -1,5 +1,9 @@
 # Templates
 
+<kbd>[![Video Walkthrough Thumbnail](././images/16_templates_thumb.png)](https://youtu.be/dJchvJAIVvs)</kbd>
+
+[Video walkthrough](https://youtu.be/dJchvJAIVvs)
+
 So far in the lab exercises, we've primarily used the 'new-app' command to create many our OpenShift objects. However, all objects can be created and modified using YAML. Templates can be used to rapidly create multiple OpenShift objects from a single YAML file. This can be useful for testing your application in different environments (dev, test, prod) or for recreating similar applications. It is also helpful to use manifests and templates as a strategy for recovering from an incident. 
 
 In this section, we'll create a template that includes all of the objects we've created for our rocketchat application and mongo database. 

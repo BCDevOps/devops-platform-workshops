@@ -1,6 +1,6 @@
 # Application Logging with Kibana
 
-[![Video Walkthrough Thumbnail](././images/logging/logging-with-kibana.png)](https://youtu.be/VnpelRzTjOw)
+<kbd>[![Video Walkthrough Thumbnail](././images/logging/logging-with-kibana.png)](https://youtu.be/VnpelRzTjOw)</kbd>
 
 [Video walkthrough](https://youtu.be/VnpelRzTjOw)
 
@@ -53,11 +53,11 @@ Note: If you receive an unauthorized error (e.g. `{"statusCode":401,"error":"Una
 
 Select the running pod that was just created:
 
-![pod-logs-1](images/logging/pod-logs-01.png)
+<kbd>![pod-logs-1](images/logging/pod-logs-01.png)</kbd>
 
 Navigate to the Logs tab and click the `Show in Kibana` link
 
-![pod-logs-2](images/logging/pod-logs-02.png)
+<kbd>![pod-logs-2](images/logging/pod-logs-02.png)</kbd>
 
 ### First time Setup
 If this is your first time logging in to Kibana you may see a screen to setup a search index.  See the steps in the Logging and Visualizations 101 lab [here](https://github.com/BCDevOps/devops-platform-workshops/blob/master/101-lab/content/12_logging_and_visualizations.md#logging-and-visualizations).
@@ -66,11 +66,11 @@ If this is your first time logging in to Kibana you may see a screen to setup a 
 ### View Logs
 To view logs click on the `Discover` tab on the left navigation pane.
 
-![kibana-discover](images/logging/kibana-discover.png)
+<kbd>![kibana-discover](images/logging/kibana-discover.png)</kbd>
 
 By default you will see something like this:
 
-![kibana-main](images/logging/kibana-main.png)
+<kbd>![kibana-main](images/logging/kibana-main.png)</kbd>
 
 1. Index Pattern you created above.
 2. Fields selected to show (`_source` is selected by default)
@@ -88,7 +88,7 @@ Let's select 2 fields for viewing from the `Available fields` panel on the left.
 
 Your screen should look similar to following:
 
-![kibana-selected-fields](images/logging/kibana-selected-fields.png)
+<kbd>![kibana-selected-fields](images/logging/</kbd>kibana-selected-fields.png)
 
 ### Queries
 
@@ -98,24 +98,24 @@ kubernetes.container_name:"logging-app" AND message:10
 ```
 __NOTE__ if you aren't seeing results it may have been more than 15 minutes since the entry with the number 10 was logged.  If so, change the timeframe in the upper right corner to `Last 30 minutes` or higher if needed.
 
-![kibana-search-10](images/logging/kibana-search-10.png)
+<kbd>![kibana-search-10](images/logging/kibana-search-10.png)</kbd>
 
 Notice Kibana highlights your search term.
 
 If you want to save your query (including the selected fields) click the save button at the top.
 
-![kibana-save-search](images/logging/kibana-save-search.png)
+<kbd>![kibana-save-search](images/logging/kibana-save-search.png)</kbd>
 
 ### Filters
 If you plan on doing a Google type search you can use a query.  If you are selecting a possible value from a drop down like the `kubernetes.container_name` it can be faster to use a filter.
 
 Clear out the text in your search bar and then click the `Add a filter +` button just below the search bar:
 
-![kibana-add-filter](images/logging/kibana-add-filter.png)
+<kbd>![kibana-add-filter](images/logging/kibana-add-filter.png)</kbd>
 
 Choose the `kubernetes.container_name` for the field, `is` as the operator and `logging-app` as the value and then click save.
 
-![kibana-filter](images/logging/kibana-filter.png)
+<kbd>![kibana-filter](images/logging/kibana-filter.png)</kbd>
 
 You should now only see your entries in the list similar to the query we performed above.  You can also save this filter by clicking the save button at the top just like we did with the query.
 
