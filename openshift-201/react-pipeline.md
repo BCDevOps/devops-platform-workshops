@@ -1,8 +1,10 @@
 # More about Pipelines
+<!-- new version needed of video and thumbnail
+<kbd>[![Video Walkthrough Thumbnail](././images/pipelines/pipelines-thumbnail.png)](https://youtu.be/WfR6rKGzi7Q)</kbd>
 
-[![Video Walkthrough Thumbnail](././images/pipelines/pipelines-thumbnail.png)](https://youtu.be/WfR6rKGzi7Q)
 
 [Video walkthrough](https://youtu.be/WfR6rKGzi7Q)
+-->
 
 ## Objectives:
 
@@ -36,12 +38,10 @@ In this pipeline, `runDeploy` is not a mandatory parameter unless it is the firs
 
 Besides these parameters, the pipelinerun is also required to provide a workspace. A workspace is similar to a Volume in openshift. In this pipeline, the workspace provides storage so that the different tasks can share the data that goes over the pipeline.
 
-The following shows the [`p-react-build`](https://github.com/bcgov/pipeline-templates/blob/main/tekton/base/tasks/generate-id.yaml) pipeline.
+The following shows the [`react-build`](https://github.com/bcgov/pipeline-templates/blob/main/tekton/base/pipelines/react.yaml) pipeline.
 
 
-![pipeline](images/pipelines/pipeline-yaml.png)
-<IMAGE p-react-build>
-
+<kbd>![pipeline](images/pipelines/react-pipeline-yaml.png)</kbd>
 
 1. The task that fetches the git repository. Provided the workspace, the result of this task will be stored in the workspace. In this case, the contents of the git repo will be stored in the directory `/workspace/source`
 2. 'Fixes' the directory for the next task
@@ -49,10 +49,9 @@ The following shows the [`p-react-build`](https://github.com/bcgov/pipeline-temp
 4. The last task deploys the application from an imagestream
 
 The details of the pipeline are as follows:
-![pipeline details](images/pipelines/pipeline-details.png)
-<IMAGE react-pipeline details>
+<kbd>![pipeline details](images/pipelines/react-pipeline-details.png)</kbd>
 
-Notice the triangle before `react-deploy` and `react-update`. This triangle indicates a `when` condition as shown here:
+Notice the diamond before `react-deploy` and `react-update`. This diamond indicates a `when` condition as shown here:
 ```yaml
 - name: react-deploy
   when:
@@ -80,10 +79,10 @@ oc get clustertask/s2i-nodejs
 
 ### React Workspace
 
-The following example shows the [`react-workspace`](https://github.com/bcgov/pipeline-templates/blob/main/tekton/base/pipelines/maven.yaml) task.
+The following example shows the [`react-workspace`](https://github.com/bcgov/pipeline-templates/blob/main/tekton/base/tasks/react-workspace.yaml) task.
 
-![task](images/pipelines/task-yaml.png)
-<IMAGE react-workspace>
+<kbd>![task](images/pipelines/react-workspace.png)</kbd>
+
 
 This task is fairly simple, but it shows how to run you bash commands in the pipeline. The idea behind this task is that s2i requires the source code to be in the `root` directory. Since the `fetch-repo` task clones the entire repository instead of just the demo app, we want to move it so that it is located in root. It is important to know that since we provided both `fetch-repo` and `react-worspace` with the same workspace, the location of the cloned git repo will be in `/workspace/source/`, with source being the name of the workspace that we gave to the tasks.
 
@@ -94,11 +93,10 @@ To initiate a bash command, we need a proper image and command. The `registry.re
 ### Building the image with s2i
 After 'fixing' the workspace, the s2i ClusterTask will run, and provide an image in the form of an ImageStream. If an imagestream with the same name is already present, s2i might encounter some problems creating a new one, which is why a unique Image tag should be provided. It is also good practice to provide an identifier as an imageTag, such as 'v1' or '1.0.0' when pushing it through Docker, Openshift, or any other tools.
 
-The following example shows the [`react-deploy`](https://github.com/bcgov/pipeline-templates/blob/main/tekton/base/pipelines/maven.yaml) task.
+The following example shows the [`react-deploy`](https://github.com/bcgov/pipeline-templates/blob/main/tekton/base/tasks/react-deploy.yaml) task.
 
 ### React-Deploy
-![task](images/pipelines/task-yaml.png)
-<IMAGE react-deploy task>
+<kbd>![task](images/pipelines/react-deploy-task.png)</kbd>
 
 Since we want to deploy our application to Openshift, we will need our tasks to run openshift commands such as `oc new-app`. Unilke the previous commands like `cp` that requires a bash, openshift requires a separate image, since running openshift commands requires the use of openshift's CLI. For this reason, we are using a different image, `openshift/origin-cli:latest`. After deploying from the imagestream, this task does 2 more things: 
   1. Reroute the service from 8080 (s2i default) to 3000 (react's default)
@@ -166,7 +164,7 @@ Triggers consist of the following main resources: (1)TriggerBinding, (2)TriggerT
 Trigger Bindings extract field from an event payload and stores them as parameters.
 
 
-<kbd>![triggerbinding](images/pipelines/triggerbinding.png)
+<kbd>![triggerbinding](images/pipelines/react-triggerbinding.png)</kbd>
 <IMAGE react-triggerbinding>
 
 `react-build-trigger-binding` takes in 4 parameters.
@@ -206,8 +204,7 @@ User-Agent: Mozilla/5.0
 ### (2) TriggerTemplate
 Trigger Templates receive input from the `TriggerBinding`, and then performs a series of action that result in the initiation of a new pipeline run.
 
-<kbd>![triggertemplate](images/pipelines/triggertemplate.png)
-<IMAGE react-triggertemplate>
+<kbd>![triggertemplate](images/pipelines/react-triggertemplate.png)</kbd>
 
 1. Parameters defined by this `TriggerTemplate`.  These usually include parameters needed to start a pipeline.  
 **Note:** in order to map values from the `TriggerBinding` these parameter names **must** match the parameter names in the `TriggerBinding`
@@ -217,7 +214,7 @@ Trigger Templates receive input from the `TriggerBinding`, and then performs a s
 ### (3) EventListener
 Provides an endpoint that listens for incoming HTTP-based event with JSON payload.  It will extract event parameters for each `TriggerBinding` and creates resources as specified by the `TriggerTemplate`
 
-<kbd>![eventlistener](images/pipelines/eventlistener.png)</kbd>
+<kbd>![eventlistener](images/pipelines/react-eventlistener.png)</kbd>
 <IMAGE react-eventlistener>
 
 1. Specifies the `ServiceAccount` that will be used to instantiate resources
@@ -227,11 +224,11 @@ Provides an endpoint that listens for incoming HTTP-based event with JSON payloa
 
 When the `EventListener` is created OpenShift will automatically create a `Service` and `Pod` to handle events
 
-<kbd>![eventlistener-services](images/pipelines/even</kbd>tlistener-service.png)
+<kbd>![eventlistener-services](images/pipelines/react-eventlistener-service.png)</kbd>
 
-<kbd>![eventlistener-pod](images/pipelines/eventlistener-pod.png)
+<kbd>![eventlistener-pod](images/pipelines/react-eventlistener-pod.png)</kbd>
 
-Fo</kbd>r the purposes of this lab we will edit the `EventListener` named `react-build-event-listener` to remove the GitHub `secretRef`.  This is **NOT** something you would do in production but to reduce the complexity of the lab we will remove it.
+For the purposes of this lab we will edit the `EventListener` named `react-build-event-listener` to remove the GitHub `secretRef`.  This is **NOT** something you would do in production but to reduce the complexity of the lab we will remove it.
 
 To remove the `secretRef` perform the following:
 ```bash
@@ -276,8 +273,7 @@ oc get route el-react-build-event-listener -o=jsonpath='{.spec.host}'
 
 Or by viewing the routes in the OpenShift Console:
 
-<kbd>![eventlistener-route](images/pipelines/eventlistener-route.png)</kbd>
-<IMAGE react-eventlistener-route>
+<kbd>![eventlistener-route](images/pipelines/react-eventlistener-route.png)</kbd>
 
 Now let's test it out!
 
