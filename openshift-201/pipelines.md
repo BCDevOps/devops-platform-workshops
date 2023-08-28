@@ -1,4 +1,4 @@
-# Introduction to OpenShift Pipelines
+# Introduction to OpenShift Pipelines (maven demo)
 
 <kbd>[![Video Walkthrough Thumbnail](././images/pipelines/pipelines-thumbnail.png)](https://youtu.be/Nm-uS5S--HQ)</kbd>
 
