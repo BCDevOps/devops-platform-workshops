@@ -1,4 +1,4 @@
-# More about Pipelines
+# Introduction to OpenShift Pipelines (react demo)
 <!-- new version needed of video and thumbnail
 <kbd>[![Video Walkthrough Thumbnail](././images/pipelines/pipelines-thumbnail.png)](https://youtu.be/WfR6rKGzi7Q)</kbd>
 
@@ -9,6 +9,8 @@
 ## Objectives:
 
 After completing this section, you should have a greater understanding of OpenShift Pipelines, and how to create tasks in order to deploy a react application. 
+
+As an alternative, we also have another [pipeline lab exercise](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/pipelines.md) that uses `maven` instead of `react`. Feel free to complete one or both of these as your prefer.
 
 ## Prerequisites
 These instructions assume the use of a bash-based shell such as `zsh` (included on OS X) or [WSL](https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/) for Windows. Please use one of these shells, or make the appropriate modifications to the commands shown in these instructions. 
