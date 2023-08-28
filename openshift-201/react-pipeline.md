@@ -1,10 +1,7 @@
 # Introduction to OpenShift Pipelines (react demo)
-<!-- new version needed of video and thumbnail
-<kbd>[![Video Walkthrough Thumbnail](././images/pipelines/pipelines-thumbnail.png)](https://youtu.be/WfR6rKGzi7Q)</kbd>
 
-
-[Video walkthrough](https://youtu.be/WfR6rKGzi7Q)
--->
+<kbd>[![Video Walkthrough Thumbnail](././images/pipelines/pipelines-thumbnail.png)](https://youtu.be/NQT-7Cf2IVA)</kbd>
+[Video walkthrough](https://youtu.be/NQT-7Cf2IVA)
 
 ## Objectives:
 
