@@ -177,7 +177,7 @@ EOF
 
 You can now access the application by going to your topology view and clicking the open URL icon on your pod.
 
-**Before continuing to the next sections, it is important to make sure that you have a properly deployed react application in your namespace.**
+> **Before continuing to the next sections, it is important to make sure that you have a properly deployed react application in your namespace.**
 
 ## Triggers
 As mentioned before triggers can be used to automatically start a pipeline.  An example of this is a git web hook (triggering the pipeline when a merge request happens).
