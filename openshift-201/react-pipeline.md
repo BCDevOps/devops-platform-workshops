@@ -145,7 +145,7 @@ The pipelineRef refers to the pipeline name that we want to trigger. If you reca
 
 For the params, it is important for you to first analyze the Pipeline that you want to run. We basically want to provide all the required params that is stated in the pipeline. What follows next is a workspace. The workspace is basically a Volume of storage that is given to the pipeline. It is important that we provide it with adequate storage, otherwise the pipeline will fail.
 
- **For our first run of the pipeline, it is important to set the `runDeploy` param to `true` to ensure that our image is deployed to our namespace.**
+ **For the sake of this lab, our first run of the pipeline will require you to set the `runDeploy` param to `true` to ensure that our image is deployed to our namespace.**
 
 > Note: If a new pipelineRun is failing with message about out of resource quota, then it's time for you to clean up some of the existing one to save up the space there. You can either go to the console Pipeline page and delete individual `PipelineRun` or through oc cli:
 
@@ -153,7 +153,32 @@ For the params, it is important for you to first analyze the Pipeline that you w
 oc get pipelinerun
 oc delete pipelinerun <name>
 ```
-#######
+
+Let's see the application!
+First thing first, let's create a network policy to allow traffic so that we can access the application:
+
+```bash
+cat <<EOF | kubectl create -f -
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-openshift-ingress
+spec:
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              network.openshift.io/policy-group: ingress
+  podSelector: {}
+  policyTypes:
+    - Ingress
+EOF
+```
+
+You can now access the application by going to your topology view and clicking the open URL icon on your pod.
+
+> **Note: Before continuing to the next sections, it is important to make sure that you have a properly deployed react application in your namespace.**
+
 ## Triggers
 As mentioned before triggers can be used to automatically start a pipeline.  An example of this is a git web hook (triggering the pipeline when a merge request happens).
 
@@ -275,28 +300,6 @@ Or by viewing the routes in the OpenShift Console:
 <kbd>![eventlistener-route](images/pipelines/react-eventlistener-route.png)</kbd>
 
 Now let's test it out!
-
-First thing first, let's create a network policy to allow traffic to the eventListener pod:
-
-```bash
-cat <<EOF | kubectl create -f -
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-from-openshift-ingress-to-eventlistener
-  labels:
-    eventlistener: react-build-event-listener
-spec:
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              network.openshift.io/policy-group: ingress
-  podSelector: {}
-  policyTypes:
-    - Ingress
-EOF
-```
 
 To simulate a github webhook perform the following replacing `$HOST` with the value you received in the previous step
 
