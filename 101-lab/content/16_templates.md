@@ -48,7 +48,7 @@ In this section, we're going to parameterize our OpenShift objects using the bui
 In order to tell OpenShift that we're creating a YAML file that should be used as a template, we need to make some more changes to our `template.yaml` file. 
 
 1. On the first line, replace  `apiVersion: v1` with `apiVersion: template.openshift.io/v1`
-2. On the second line, add a new field: `kind: Template` and then rename the `items:` field to `objects:`
+2. On the second line, add a new field: `kind: Template` **be sure capitilize the T in Template!!** and then rename the `items:` field to `objects:`
 3. Remove `kind: List`
 
 Next, add a new field called 'parameters' to our yaml file, above  `objects`. Replace `[username]` with your username. 
