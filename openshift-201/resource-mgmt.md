@@ -104,23 +104,18 @@ spec:
     - Ingress
 ```
 
-Next, create a new deployment for load testing. This will deploy an httpd container and use the `ab` (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment, that will trigger a pod redeployment to run the load test again. Update the deployment below with the URL to your nginx web server under the `SERVICE_HOST` variable.
+Next, create a new 'job' for load testing. This will deploy an httpd container and use the `ab` (apache benchmark) command to generate traffic to a URL and then print a summary. Then the pod will stop. If you update the environment variables for the deployment, that will trigger a pod redeployment to run the load test again. Update the deployment below with the URL to your nginx web server under the `SERVICE_HOST` variable. 
+
+**Note: this differs from the video where a Deployment is shown, we'll use a Job**
 
 ```yaml
-kind: Deployment
-apiVersion: apps/v1
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: load-test
-  labels:
-    app: load-test
+  name: load-test-job
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: load-test
   template:
     metadata:
-      annotations:
       labels:
         app: load-test
     spec:
@@ -128,21 +123,31 @@ spec:
         - name: load-test
           image: registry.access.redhat.com/rhscl/httpd-24-rhel7
           env:
-          - name: SERVICE_HOST
-            value: "hello-world-lab1.apps.ocp4.example.com"
-          - name: SERVICE_PORT
-            value: "443"
-          - name: REQUESTS
-            value: "500000"
-          - name: CONCURRENCY
-            value: "20"
+            - name: SERVICE_HOST
+              value: "hello-world-lab1.apps.ocp4.example.com"
+            - name: SERVICE_PORT
+              value: "443"
+            - name: REQUESTS
+              value: "500000"
+            - name: CONCURRENCY
+              value: "20"
+            - name: TIMELIMIT
+              value: "3600"
           command: ["/opt/rh/httpd24/root/usr/bin/ab"]
-          args: ["-dSrk", "-c $(CONCURRENCY)", "-n $(REQUESTS)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
+          args: ["-dSrk", "-c", "$(CONCURRENCY)", "-n", "$(REQUESTS)", "-t", "$(TIMELIMIT)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
+          resources:
+            requests:
+              memory: "256Mi"  
+              cpu: "100m"       
+            limits:
+              memory: "512Mi"  
+              cpu: "200m"       
+      restartPolicy: Never
+  backoffLimit: 1
+  activeDeadlineSeconds: 3660
 
 ```
-**Important:** When you're not actively working on the lab exercises, please set your load test to 0 pods. Please remember to do this when you're finished with this exercise too. 
-
-**Note:** As we don't set limits and request specifically in the deployment the default LimitRange will apply. Run `oc describe LimitRange/default-limits` to see what is set as defaults.
+**Important:** because we used a 'job' to run this load test, it is time limited to 3600 seconds - one hour. The ensures that our load test does not keep running unnecessarily beyond the time we need it.   
 
 From the web console, change to Developer view and navigate to the Observe tab. From the Dashboard dropdown list, pick `Kubernetes / Compute Resources / Workload`. Then in the `Workload` dropdown, select your nginx deployment. You should see the load-test pod traffic increasing CPU and memory usage metrics for the nginx workload.
 
