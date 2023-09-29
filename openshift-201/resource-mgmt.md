@@ -144,7 +144,7 @@ spec:
               cpu: "200m"       
       restartPolicy: Never
   backoffLimit: 1
-  ttlSecondsAfterFinished: 3600
+  activeDeadlineSeconds: 3660
 
 ```
 **Important:** because we used a 'job' to run this load test, it is time limited to 3600 seconds - one hour. The ensures that our load test does not keep running unnecessarily beyond the time we need it.   
