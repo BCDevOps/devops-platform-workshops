@@ -101,7 +101,7 @@ Before deleting objects, it's also good practice to do a dry run to make sure yo
 
 If you can see that you'll only be deleting your own objects, then proceed without the dry-run flag: 
 
-`oc delete deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-mattspencer`
+`oc delete deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-[username]`
 
 Now that we've deleted all of our objects that we created in the [-dev] namespace, let's use our template to recreate them. 
 
