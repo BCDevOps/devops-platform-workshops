@@ -26,7 +26,7 @@ The maximum and minimum values for the horizontal pod autoscaler resource serve 
 
 You will need to determine what metric is best for your application to trigger scale up. Maybe your application takes a while to spin up and get marked as ready so you could set the CPU percent to 60%. Your application could scale up really quickly so you set 90% as the threshold to trigger scaling.
 
-Run this load-test job to generate some traffic to nginx server. You should see the number of pods increase as the CPU metrics grow.
+Update the YAML below to add the SERVICE_HOST variable for your `hello-world-nginx` deployment. Run this load-test job to generate some traffic to nginx server. You should see the number of pods increase as the CPU metrics grow.
 
 ```
 apiVersion: batch/v1
@@ -246,7 +246,7 @@ spec:
     updateMode: "Off"
 ```
 
-If it's not still running, run the load test job again. Let the job fire up a new pod and send load to our hello-world-nginx pod.
+If it's not still running, run the load test job again. Be sure to first update the YAML below to add the SERVICE_HOST variable for your `hello-world-nginx` deployment.  Let the job fire up a new pod and send load to our hello-world-nginx pod.
 
 ```
 apiVersion: batch/v1
@@ -350,7 +350,7 @@ spec:
     updateMode: "Auto"
 EOF
 ```
-Again, unless it is still running, run the load test job again. Let the job fire up a new pod and send load to our hello-world-nginx pod.
+Again, unless it is still running, run the load test job again. Remember to update the YAML below to add the SERVICE_HOST variable for your `hello-world-nginx` deployment.  Let the job fire up a new pod and send load to our hello-world-nginx pod.
 
 ```
 apiVersion: batch/v1
