@@ -26,7 +26,46 @@ The maximum and minimum values for the horizontal pod autoscaler resource serve 
 
 You will need to determine what metric is best for your application to trigger scale up. Maybe your application takes a while to spin up and get marked as ready so you could set the CPU percent to 60%. Your application could scale up really quickly so you set 90% as the threshold to trigger scaling.
 
-Run load-test to generate some traffic to nginx server `oc scale deployment load-test --replicas=1`. You should see the number of pods increase as the CPU metrics grow.
+Run this load-test job to generate some traffic to nginx server. You should see the number of pods increase as the CPU metrics grow.
+
+```
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: load-test-job
+spec:
+  template:
+    metadata:
+      labels:
+        app: load-test
+    spec:
+      containers:
+        - name: load-test
+          image: registry.access.redhat.com/rhscl/httpd-24-rhel7
+          env:
+            - name: SERVICE_HOST
+              value: "hello-world-lab1.apps.ocp4.example.com"
+            - name: SERVICE_PORT
+              value: "443"
+            - name: REQUESTS
+              value: "500000"
+            - name: CONCURRENCY
+              value: "20"
+            - name: TIMELIMIT
+              value: "3600"
+          command: ["/opt/rh/httpd24/root/usr/bin/ab"]
+          args: ["-dSrk", "-c", "$(CONCURRENCY)", "-n", "$(REQUESTS)", "-t", "$(TIMELIMIT)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
+          resources:
+            requests:
+              memory: "256Mi"  
+              cpu: "100m"       
+            limits:
+              memory: "512Mi"  
+              cpu: "200m"       
+      restartPolicy: Never
+  backoffLimit: 1
+  activeDeadlineSeconds: 3660
+```
 
 To get information about horizontal pod autoscaler resources in the current project, use the `oc get hpa` command.
 
@@ -115,7 +154,7 @@ Specify averageUtilization and a target average memory utilization over all the 
 
 For memory-based autoscaling, memory usage must increase and decrease proportionally to the replica count. On average an increase in replica count must lead to an overall decrease in memory (working set) usage per-pod. A decrease in replica count must lead to an overall increase in per-pod memory usage.
 
-Replace your existing HPA with the `hello-world-nginx-mem-hpa` spec from above in your project. Trigger a re-deploy of the load-test deployment.
+Replace your existing HPA with the `hello-world-nginx-mem-hpa` spec from above in your project. If it's .
 
 Describe the HPA.
 
@@ -207,9 +246,48 @@ spec:
     updateMode: "Off"
 ```
 
-Re-trigger load-test deployment by updating the environment variable REQUESTS to a different number. Let the deployment fire up a new pod and send load to our hello-world-nginx pod.
+If it's not still running, run the load test job again. Let the job fire up a new pod and send load to our hello-world-nginx pod.
 
-Give it a few minutes and check the VPA status sections for recommendations.
+```
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: load-test-job
+spec:
+  template:
+    metadata:
+      labels:
+        app: load-test
+    spec:
+      containers:
+        - name: load-test
+          image: registry.access.redhat.com/rhscl/httpd-24-rhel7
+          env:
+            - name: SERVICE_HOST
+              value: "hello-world-lab1.apps.ocp4.example.com"
+            - name: SERVICE_PORT
+              value: "443"
+            - name: REQUESTS
+              value: "500000"
+            - name: CONCURRENCY
+              value: "20"
+            - name: TIMELIMIT
+              value: "3600"
+          command: ["/opt/rh/httpd24/root/usr/bin/ab"]
+          args: ["-dSrk", "-c", "$(CONCURRENCY)", "-n", "$(REQUESTS)", "-t", "$(TIMELIMIT)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
+          resources:
+            requests:
+              memory: "256Mi"  
+              cpu: "100m"       
+            limits:
+              memory: "512Mi"  
+              cpu: "200m"       
+      restartPolicy: Never
+  backoffLimit: 1
+  activeDeadlineSeconds: 3660
+```
+
+Give the load test a few minutes to run then check the VPA status sections for recommendations.
 
 
 ```yaml
@@ -272,11 +350,48 @@ spec:
     updateMode: "Auto"
 EOF
 ```
-Again update the load-test deployment environment variable REQUESTS to a different number to trigger a redeployment and the load-test pod to start sending traffic again.
+Again, unless it is still running, run the load test job again. Let the job fire up a new pod and send load to our hello-world-nginx pod.
+
+```
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: load-test-job
+spec:
+  template:
+    metadata:
+      labels:
+        app: load-test
+    spec:
+      containers:
+        - name: load-test
+          image: registry.access.redhat.com/rhscl/httpd-24-rhel7
+          env:
+            - name: SERVICE_HOST
+              value: "hello-world-lab1.apps.ocp4.example.com"
+            - name: SERVICE_PORT
+              value: "443"
+            - name: REQUESTS
+              value: "500000"
+            - name: CONCURRENCY
+              value: "20"
+            - name: TIMELIMIT
+              value: "3600"
+          command: ["/opt/rh/httpd24/root/usr/bin/ab"]
+          args: ["-dSrk", "-c", "$(CONCURRENCY)", "-n", "$(REQUESTS)", "-t", "$(TIMELIMIT)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
+          resources:
+            requests:
+              memory: "256Mi"  
+              cpu: "100m"       
+            limits:
+              memory: "512Mi"  
+              cpu: "200m"       
+      restartPolicy: Never
+  backoffLimit: 1
+  activeDeadlineSeconds: 3660
+```
 
 Give it a few minutes and observe the VPA and the hello-world-nginx pods. We should see them re-deploy based on updated values from the VPA.
-
-Scale the load-test deployment down to 0 once it's done, `oc -n [-dev] scale deployment/load-test --replicas=0`.
 
 ### Summary 
 
