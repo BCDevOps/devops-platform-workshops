@@ -479,7 +479,7 @@ Let's update our deployment to add an anti-affinity rule.
                   operator: In 
                   values:
                   - hello-world-nginx
-            topologyKey: kubernetes.io/hostname
+            topologyKey: topology.kubernetes.io/zone
       containers:
 .
 .
