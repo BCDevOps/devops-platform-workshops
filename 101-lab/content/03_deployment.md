@@ -269,33 +269,31 @@ brew install jq`
   ```
 
 ## Create a Route for your Rocket.Chat App
-Your rocketchat application should already have a route created for it. If you were using `oc new-app` however, a route would not have been created by default. 
+Your rocketchat application may already have a route created for it. If you were using `oc new-app` however, a route would not have been created by default. 
 
 ### CLI
 
-There are 2 ways of creating routes using CLI.
+You can create a secure https route using:
 
-  - Using `oc expose` for unsecure (http) route
-```
-oc -n [-dev] expose svc/rocketchat-[username]
-```
-  - Using `oc create route` for secure (https) route
-  
 ```oc:cli
 oc -n [-dev] create route edge rocketchat-[username] --service=rocketchat-[username] --insecure-policy=Redirect
 ```
 
-After creating the route you may access your application! 
+After creating the route you may access your application via the 'developer' view, navigating to the 'topology' menu and clicking on the link to follow your route!
+
 <kbd>![rocketchat](./images/03_deploy_route.png)</kbd>
 
-<!-- 
-not sure how to navigate to routes from web console in ocp4
 ### Web Console
-  
+Alternatively, you can use the web console to create or manage routes. 
+  - Choose the 'Administrator' view
+  - Select 'Networking' in the left menu, then 'Routes'
   - Select `Create Route`
-    - Customize the name of the route, such as `rocketchat-[username]`
-    - Ensure the service it points to is your particular service
-![](./images/03_deploy_route.png) -->
+  - Customize the name of the route, such as `rocketchat-[username]`
+  - Ensure the service it points to is your particular service
+  - After creating the route you may access your application via the 'developer' view, navigating to the 'topology' menu and clicking on the link to follow your route! 
+
+<kbd>![rocketchat](./images/03_deploy_route.png)</kbd>
+
 
 ## Exploring Health Checks
 
