@@ -283,6 +283,8 @@ After creating the route you may access your application via the 'developer' vie
 
 <kbd>![rocketchat](./images/03_deploy_route.png)</kbd>
 
+If you wish to create an insecure (http) route in OpenShift, you can do this by using `oc expose`. 
+
 ### Web Console
 Alternatively, you can use the web console to create or manage routes. 
   - Choose the 'Administrator' view
