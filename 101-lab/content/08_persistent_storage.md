@@ -97,14 +97,15 @@ __Objective__: Cause MongoDB to corrupt its data file by using the wrong storage
 
 RWX storage allows multiple pods to access the same PV at the same time. 
 
+
 - Scale down `mongodb-[username]` to 0 pods
   ```oc:cli
   oc -n [-dev] scale dc/mongodb-[username] --replicas=0
   ```
-
+- Create a new PVC as `netapp-file-standard', set the type to RWX and name it `mongodb-[username]-file-rwx`
 <kbd>![](./images/06_persistent_storage_09.png)</kbd>
 
-- Remove the previous storage volume and recreate as `netapp-file-standard` (mounting at `/var/lib/mongodb/data`) with type RWX, and naming it `mongodb-[username]-file-rwx`
+- Remove the previous storage volume and add your new `mongodb-[username]-file-rwx` storage, mounting at `/var/lib/mongodb/data`
 
   <kbd>![](./images/06_persistent_storage_10.png)</kbd>
   ```oc:cli
