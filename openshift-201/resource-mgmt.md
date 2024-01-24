@@ -128,9 +128,9 @@ spec:
             - name: SERVICE_PORT
               value: "443"
             - name: REQUESTS
-              value: "500000"
+              value: "1000000"
             - name: CONCURRENCY
-              value: "20"
+              value: "300"
             - name: TIMELIMIT
               value: "3600"
           command: ["/opt/rh/httpd24/root/usr/bin/ab"]
