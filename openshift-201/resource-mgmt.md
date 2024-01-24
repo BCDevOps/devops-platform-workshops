@@ -529,8 +529,6 @@ spec:
     type: Container
 ```
 
-> Note to turn off the load-test deployment when you have completed this session. `oc scale deployment load-test --replicas=0`
-
 Next topic - [Network Policy & ACS](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/network-policy.md)
 
 ## Further Reading
