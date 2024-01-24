@@ -87,8 +87,8 @@ There are different API versions for autoscaling. `autoscaling/v2` is the new de
 
 |Metric | Description | API version|
 |---|---|----|
-|CPU utilization| Number of CPU cores used. Can be used to calculate a percentage of the pod’s requested CPU.| autoscaling/v1, autoscaling/v2beta2|
-|Memory utilization| Amount of memory used. Can be used to calculate a percentage of the pod’s requested memory.| autoscaling/v2beta2|
+|CPU utilization| Number of CPU cores used. Can be used to calculate a percentage of the pod’s requested CPU.| autoscaling/v1, autoscaling/v2|
+|Memory utilization| Amount of memory used. Can be used to calculate a percentage of the pod’s requested memory.| autoscaling/v2|
 
 You can check the autoscaling API versions available in the cluster.
 
@@ -113,10 +113,10 @@ spec:
   targetCPUUtilizationPercentage: 80
 ```
 
-To create a v2beta2 autoscaler you need to define a yaml manifest for it, like the following.
+You can also create a v2 autoscaler by using a yaml manifest, as follows:
 
 ```yaml
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: hello-world-nginx-mem-hpa
@@ -136,7 +136,7 @@ spec:
         averageValue: 30Mi
 ```
 
-Under metrics.resource.target you can set type to AverageValue and specify averageValue memory. You can also specify Utilization in the metrics section of the v2beta2 HPA. Check out the available options by `oc explain --api-version='autoscaling/v2beta2' HorizontalPodAutoscaler.spec.metrics.resource.target`. Note you'll need to specify the API version as it defaults to v2.
+Under metrics.resource.target you can set type to AverageValue and specify averageValue memory. You can also specify Utilization in the metrics section of the v2 HPA. Check out the available options by `oc explain --api-version='autoscaling/v2' HorizontalPodAutoscaler.spec.metrics.resource.target`. Note you'll need to specify the API version as it defaults to v2.
 
 ```yaml
 metrics: 
