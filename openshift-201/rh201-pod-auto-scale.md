@@ -429,7 +429,7 @@ A maxUnavailable of 0% or 0 or a minAvailable of 100% or equal to the number of 
 Let's create a pod disruption budget where we always want at least 1 Nginx pod to be available for our deployment. Apply the following config to your project.
 
 ```yaml
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: hello-world-nginx-pdb
