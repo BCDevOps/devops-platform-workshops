@@ -88,7 +88,7 @@ Let's select 2 fields for viewing from the `Available fields` panel on the left.
 
 Your screen should look similar to following:
 
-<kbd>![kibana-selected-fields](images/logging/</kbd>kibana-selected-fields.png)
+<kbd>![kibana-selected-fields](images/logging/kibana-selected-fields.png)</kbd>
 
 ### Queries
 
