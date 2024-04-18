@@ -2,7 +2,7 @@
 
 # Welcome to the Openshift 101 Lab
 
-This lab has been designed as a do-it-at-your-own pace set of exercises. These exercsises are designed to support the material covered in the OpenShift 101 Workshop. Refer back to the [OpenShift 101 mural slides](https://app.mural.co/invitation/mural/platformservices5977/1646945371597?sender=uf0df5317d8dbea9ee48c7230&key=53ce5618-7a78-4548-b12c-c3495babe255) as you work through the lab. 
+This lab has been designed as a do-it-at-your-own pace set of exercises. These exercsises are designed to support the material covered in the OpenShift 101 Workshop. Refer back to the [OpenShift 101 Workshop Slides](https://docs.google.com/presentation/d/1VNxqtRRECNd4uzZZslpLsdKYYXN70Gpu-jCLCD1yF9Y) as you work through the lab. 
 
 During the lab period,  you are provided a set of training namespaces in an OpenShift environment to perform your work. You are apart of a cohort! So share, collaborate, and problem solve together as you would if you were all apart of the same project team :) 
 
