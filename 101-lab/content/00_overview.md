@@ -28,4 +28,4 @@ While we love the idea of everyone getting their hands onto Openshift. The indiv
 
 __Please be aware the throughout the labs, you will be guided to make common mistakes, and then guide you on how to fix them.__
 
-Next page - [Setup](./01_adding_team_members.md)
+Next page - [Setup](./01_setup.md)
