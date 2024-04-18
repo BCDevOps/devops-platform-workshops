@@ -56,7 +56,7 @@ metadata:
 <kbd>![](./images/07_persistent_config_06.png)</kbd>
 
 #### Changing Config Map Content
-The content in your `configMap` can be changed and in most cases it's NOT dynamically updated in the pod. With that said, a new deployment will be required for the changes to be picked up.
+When a `configMap` is referenced by a deployment that uses the `rolling` deployment strategy, any changes to that `configMap` will be automatically applied to the pods created by that deployment. <!-- #TBC If your deployment uses the `recreate` strategy, the changes from your configmap will apply when you next roll out new pods.  -->
 
 - Edit your `configMap` to add a new key-value pair that represents another file
 
