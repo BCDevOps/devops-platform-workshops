@@ -56,7 +56,7 @@ metadata:
 <kbd>![](./images/07_persistent_config_06.png)</kbd>
 
 #### Changing Config Map Content
-When a `configMap` is referenced by a deployment that uses the `rolling` deployment strategy, any changes to that `configMap` will be automatically applied to the pods created by that deployment. <!-- #TBC If your deployment uses the `recreate` strategy, the changes from your configmap will apply when you next roll out new pods.  -->
+When a mounted `configMap` is referenced by a deployment, any changes to that `configMap` will be [automatically applied to the pods created by that deployment](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#mounted-configmaps-are-updated-automatically). These changes can take up to 2 minutes to be applied.
 
 - Edit your `configMap` to add a new key-value pair that represents another file
 
