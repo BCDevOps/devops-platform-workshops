@@ -56,7 +56,7 @@ metadata:
 <kbd>![](./images/07_persistent_config_06.png)</kbd>
 
 #### Changing Config Map Content
-The content in your `configMap` can be changed and in most cases it's NOT dynamically updated in the pod. With that said, a new deployment will be required for the changes to be picked up.
+When a mounted `configMap` is referenced by a deployment, any changes to that `configMap` will be [automatically applied to the pods created by that deployment](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#mounted-configmaps-are-updated-automatically). These changes can take up to 2 minutes to be applied.
 
 - Edit your `configMap` to add a new key-value pair that represents another file
 
