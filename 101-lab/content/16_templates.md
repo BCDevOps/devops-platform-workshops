@@ -74,7 +74,7 @@ Below, we can use the pipe character `|` to take the output from the `oc process
 
 `oc -n [-dev] process -f template.yaml | oc create -f - --dry-run=client`
 
-Your output should look similar to the below: 
+Your output should look similar to the below. **Note, any object that already exists with these same names will not be created by oc create**: 
 ```
 oc -n d8f105-dev process -f template.yaml | oc apply -f - --dry-run=client  
 
@@ -93,7 +93,7 @@ If the dry run looks to be producing a successful output, let's move on to test 
 
 ## Delete objects, recreate them with the template
 
-Currently, out template would just be creating objects that already exist. Let's create a situation where all of the objects that we'd previously created in the `-dev` namespace have been deleted. 
+Currently, our template would not be very helpful as it is mostly trying to create objects that already exist. The **oc create** command won't overrite objects existing objects with the same names, and will skip these. **** Let's create a situation where all of the objects that we'd previously created in the `-dev` namespace have been deleted. 
 
 Before deleting objects, it's also good practice to do a dry run to make sure you're only deleing the objects you intend to: 
 
