@@ -93,7 +93,9 @@ If the dry run looks to be producing a successful output, let's move on to test 
 
 ## Delete objects, recreate them with the template
 
-Currently, our template would not be very helpful as it is mostly trying to create objects that already exist. The **oc create** command won't overrite objects existing objects with the same names, and will skip these. **** Let's create a situation where all of the objects that we'd previously created in the `-dev` namespace have been deleted. 
+Currently, our template would not be very helpful as it is mostly trying to create objects that already exist. The **oc create** command won't overrite objects existing objects with the same names, and will skip these. 
+
+Let's create a situation where all of the objects that we'd previously created in the `-dev` namespace have been deleted. 
 
 Before deleting objects, it's also good practice to do a dry run to make sure you're only deleing the objects you intend to: 
 
