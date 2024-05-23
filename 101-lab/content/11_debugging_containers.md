@@ -60,18 +60,106 @@ In this lab, we will scale down the database deployment so that application pods
     ```
 
 ### RSH and RSYNC
-RSH is available to all normal pods through the web console under the `Terminal` tab, as well as through the 
-`oc rsh` command. 
+RSH (**R**emote **SH**ell) is available to all normal pods through the web console under the `Terminal` tab, as well as through the 
+`oc rsh` command. This allows you to remotely execute commands from the pod. 
 
-- With your choice of access, rsh into one of the application pods and test access within the namespace
-    - cURL internal and external resources
-    - Test internal name resolution, external name resolution, etc. 
-    - Explore your userid
+- With your choice of access, rsh into one of the application pods and test access within the namespace. First, get a list of pods in the dev namespace. 
 
-RSYNC is also available in many pods, available through the `oc rsync` command. 
-- On the CLI, type `oc rsync -h` 
-- Using this command, copy the contents of the mongo data directory to your local machine, or from your machine to the remote pod
+``` 
+oc -n [dev] get pods
+```
+- Take note of the name of your currently running, ready rocketchat pod. Then, use rsh command to start a remote shell from the pod using your pod's name from the previous step's output. 
 
+```
+oc -n [dev] rsh [podname]
+```
+- Explore your userid 
+
+```
+ whoami
+```
+- This command identifies the userid of your rsh session. You can then try other commands to explore the pod. 
+
+- Now we'll try some other commands from the pod's shell. Try the 'print working directory' command to see the path of the directory you're currently in.
+```
+pwd
+``` 
+- Get a list of files in the directory 
+```
+ls
+```
+- Let's use the client URL command (cURL) to see if our pod can connect to external and internal resources. Let's test first test if our pod can get data from Google. 
+``` 
+curl -L http://www.google.com
+```
+The output may look jumbled as we're seeing a html file as plain text rather than being displayed graphically as it would in a web browser. 
+
+Now let's try connecting to an internal resource from the pod. We'll get a similar html output here.  
+
+```
+curl -L localhost:3000
+```
+
+Exit the rsh session. 
+
+```
+exit
+```
+
+Remote Sync(RSYNC) is also available in many pods, available through the `oc rsync` command and can be used to get files from the pod, or to move them from your local to the pod. To get help with this command, you can use `oc rsync -h`. We're going to use it to download the data file from the mongodb pod. 
+- Find the name of your running, ready mongodb pod
+
+```
+oc -n [-dev] get pods
+``` 
+
+- We want to use rsync to get the mongodb data files, and put them onto our local machine. The mongo pod will store files in the directory `var/lib/mongodb/data`. First, I'll make a new local directory called 'lab'.
+
+```
+mkdir lab
+```
+
+To confirm the directory exists, I'll switch to it with 
+
+```
+cd lab
+```
+
+Then, check that this new folder is empty with 
+
+```
+ls
+```
+
+Then check the path to this directory with 
+
+```
+pwd
+```
+
+Next, let's synchronise this new empty folder with the data folder on our mongodb pod. For me, this is `/users/matt/lab`. Add the podname and path to your lab folder in the command below.
+
+```
+oc rsync [mongopodname]:var/lib/mongodb/data [localpath]
+```
+Now let's confirm that these files have been copied locally. Let's get a list of folders in the current directory. 
+
+```
+ls
+```
+Notice the new `data` folder. Let's switch to it. 
+
+```
+cd data
+```
+
+Let's list the files in this folder. 
+
+```
+ls
+```
+
+Note that the data files from your mongo pod have been copied locally.
 
 ### Port Forwarding
 The `oc port-forward` command enables users to forward remote ports running in the cluster
