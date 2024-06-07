@@ -1,5 +1,6 @@
 # Debugging Containers
 ### Accessing Local Logs
+
 Logs of a running pod can be accessed from the Web Console or from the `oc` cli: 
 - The `Logs` tab of any running pod can be used to view active logs for the current pod
 
@@ -53,7 +54,7 @@ In this lab, we will scale down the database deployment so that application pods
     ```
 ### RSH and RSYNC
 RSH (**R**emote **SH**ell) is available to all normal pods through the web console under the `Terminal` tab, as well as through the 
-`oc rsh` command. This allows you to remotely execute commands from the pod. 
+`oc rsh` command. This allows you to remotely execute commands from the pod. For more information, you can view the [RedHat documentation](https://docs.openshift.com/container-platform/4.15/nodes/containers/nodes-containers-copying-files.html)
 - With your choice of access, rsh into one of the application pods and test access within the namespace. First, get a list of pods in the dev namespace. 
 ``` 
 oc -n [dev] get pods
