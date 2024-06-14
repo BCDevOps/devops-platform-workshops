@@ -45,7 +45,7 @@ oc -n [-dev] new-app [-tools]/rocketchat-[username]:dev --name=rocketchat-[usern
 
     Tags: builder, nodejs, nodejs8
 
-    * This image will be deployed in deployment config "rocketchat-[username]"
+    * This image will be deployed in deployment "rocketchat-[username]"
     * Ports 3000/tcp, 8080/tcp will be load balanced by service "rocketchat-[username]"
       * Other containers can access this service through the hostname "rocketchat-[username]"
     * This image declares volumes and will default to use non-persistent, host-local storage.
@@ -129,7 +129,7 @@ Notice that the deployment is still failing.
 
 Navigate to the pod and review the logs to determine why the container will not start. 
 
-From the console click the deployment config and click __view logs__ beside the failing pod
+From the console click the deployment and click __view logs__ beside the failing pod
 
 <kbd>![](./images/03_deploy_image_08b.png)</kbd>
 
@@ -149,63 +149,52 @@ In the steps that follow, we will deploy the database and give our RocketChat de
 
 ## Deploying the Database
 
+### Use a template to create the database, service and secret
 
-### Create Mongo Database with Ephemeral Storage
-Having identified that the application is trying to connect to a mongo database, add a mongo database to the project
-for your application. 
+In order to use deploy these objects, we are a going to use a template stored in the OpenShift 101 github repository. Managing OpenShift objects from a GitHub repository is a common strategy to ensure consistency, version control and history. In future you may use methods such as [Tekton Pipelines](https://github.com/bcgov/pipeline-templates/tree/main/tekton#tekton-pipelines), [github actions](https://github.blog/2022-02-02-build-ci-cd-pipeline-github-actions-four-steps/) or [HELM](https://helm.sh/) charts to allow changes to files in a repository to automatically make changes to the objects running in your OpenShift project. 
+
+The template we're going to use is located at: https://raw.githubusercontent.com/BCDevOps/devops-platform-workshops/master/101-lab/mongo-ephemeral-template.yaml
+
+If you browse this file, you'll notice in contains the YAML that defines our deployment, service and secret. We can apply parameters to this template to adjust particular values. 
 
 ### From CLI
-  - Find out what 'mongodb-ephemeral' is
+  - View the template file from the command line, output as YAML. 
 
 ```oc:cli
-oc -n [-dev] new-app --search mongodb-ephemeral -l ocp101=participant
+oc -n [-dev] get template -f https://raw.githubusercontent.com/BCDevOps/devops-platform-workshops/master/101-lab/mongo-ephemeral-template.yaml -o yaml
 ```
 
-  - The output will tell us that `mongodb-ephemeral` is a template in the `openshift` project:
-
-```
------
-mongodb-ephemeral
-  Project: openshift
-  MongoDB database service, without persistent storage. For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/mongodb-container/blob/master/3.2/README.md.
-
-WARNING: Any data stored will be lost upon pod destruction. Only use this template for testing
-```
+  - Note, any data stored in our database will be lost upon pod destruction. We're only using this ephemeral template for testing an we'll add storage later. 
 
   - List available parameters of the template
 
 ```oc:cli
-oc -n openshift get template/mongodb-ephemeral -o json | oc process -f - --parameters=true
+oc -n d8f105-dev process -f https://raw.githubusercontent.com/BCDevOps/devops-platform-workshops/master/101-lab/mongo-ephemeral-template.yaml --parameters=true
 ```
 
-  - Create MongoDB based on a template in the catalog
+  - Create MongoDB deployment, service and secret using this template. We'll need to specify some parameters, and add our username to make this object unique. We'll do a dry run first to see if the command will do what we expect. 
 
 ```oc:cli
-  oc -n [-dev] new-app --template=openshift/mongodb-ephemeral -p MONGODB_VERSION=3.6 -p DATABASE_SERVICE_NAME=mongodb-[username] -p MONGODB_USER=dbuser -p MONGODB_PASSWORD=dbpass -p MONGODB_DATABASE=rocketchat --name=rocketchat-[username] -l ocp101=participant
+ oc -n [dev] process -f https://raw.githubusercontent.com/BCDevOps/devops-platform-workshops/master/101-lab/mongo-ephemeral-template.yaml -p MONGODB_USER=dbuser MONGODB_PASSWORD=dbpass MONGODB_ADMIN_PASSWORD=admindbpass MONGODB_DATABASE=rocketchat MONGODB_NAME=mongodb-[username] -l ocp101=participant | oc create -f - --dry-run=client
 ```
-> If you ran the cli command you would get an output like this 
-  ```
-  Creating resources ...
-      secret "mongodb-patricksimonian" created
-      service "mongodb-patricksimonian" created
-      deployment.apps.openshift.io "mongodb-patricksimonian" created
-  --> Success
-      Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
-      'oc expose svc/mongodb-patricksimonian' 
-      Run 'oc status' to view your app.
-  ```
+> When you ran the cli command you should get an output like this 
+```
+deployment.apps/mongodb-mattspencer created (dry run)
+secret/mongodb-mattspencer created (dry run)
+service/mongodb-mattspencer created (dry run)
+```
+Now, let's run the command for real by removing the dry run. 
 
-### From the Web Console
+```oc:cli
+ oc -n [dev] process -f https://raw.githubusercontent.com/BCDevOps/devops-platform-workshops/master/101-lab/mongo-ephemeral-template.yaml -p MONGODB_USER=dbuser MONGODB_PASSWORD=dbpass MONGODB_ADMIN_PASSWORD=admindbpass MONGODB_DATABASE=rocketchat MONGODB_NAME=mongodb-[username] -l ocp101=participant | oc create -f - 
+```
 
-  - From the side menu click `+Add`, then select `From Catalog`
-
-  - In the search catalog area, type `mongo` and select `mongodb-ephemeral`
-  - Click Instantiate Template
-  - Ensure to customize the details with a service name such as `mongodb-[username]`, username/password and default database such as `rocketchat`
-
-<kbd>![](./images/03_deploy_mongo_01.png)</kbd>
-<kbd>![](./images/03_deploy_mongo_02.png)</kbd>
-<kbd>![](./images/03_deploy_mongo_03.png)</kbd>
+Your output should be similar to: 
+```
+deployment.apps/mongodb-mattspencer created
+secret/mongodb-mattspencer created
+service/mongodb-mattspencer created
+```
 
 ### Verify MongoDB is up
   - Find the mongodb deployment by going back to `Topology`
@@ -217,12 +206,9 @@ oc -n openshift get template/mongodb-ephemeral -o json | oc process -f - --param
   2020-02-06T06:23:41.391+0000 [conn11041]  authenticate db: rocketchat { authenticate: 1, nonce: "xxx", user: "dbuser", key: "xxx" }
   ```
 
-### Deployment Configuration Options
-As a result of using a generic `new-app` style deployment, as opposed to openshift specific templates, a lot of defaults are leveraged. 
-
 ### Environment Variables
 By default your rocketchat deployment has no environment variables defined. So while RocketChat is trying to start and 
-a database has been deployed, the app does not know how or where to connect to MongoDB. We will need to add environment variables to the deployment configuration.
+a database has been deployed, the app does not know how or where to connect to MongoDB. We will need to add environment variables to the deployment.
 
 - In the Web Console, navigate to `Topology` and select your rocketchat deployment
 - Click on the name of your rocketchat-[username] deployment in the right-hand menu pane
@@ -242,7 +228,7 @@ oc -n [-dev] set env deployment/rocketchat-[username] "MONGO_URL=mongodb://dbuse
 ```
 
 - Click Save 
-- Navigate to `Topology` and investigate your RocketChat Deployment Config. It should be redeploying (successfully this time)
+- Navigate to `Topology` and investigate your RocketChat Deployment. It should be redeploying (successfully this time)
 
 
 #### STRETCH: Sensitive Configurations

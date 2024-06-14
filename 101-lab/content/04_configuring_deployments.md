@@ -19,8 +19,8 @@ Additional actions are available to edit your deployment. Review and explore:
   - From this view you can see that `replicas` are configurable 
 
 ## Versioning a Deployment Configuration
-At this point in time, your deployment configuration has undergone many changes, such as adding environment variables and adding health checks. 
-Review the deployment configuration `ReplicaSets` tab: 
+At this point in time, your deployment has undergone many changes, such as adding environment variables and adding health checks. 
+Review your rocketchat deployment's `ReplicaSets` tab: 
   - Navigate to your Deployment and select `ReplicaSets`
   <kbd>![Rocketchat deployment details screen showing ReplicaSets tabs](./images/04_deployment_configuration.png)</kbd>
   - Select your latest replica set and select `edit`

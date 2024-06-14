@@ -50,7 +50,7 @@ The shortcut towards accessing the Kibana is from the `Logs` tab of a running po
   ```
 - Use application labels to query logs from the same deployment:
   ```sql
-    kubernetes.namespace_name:"<namespace_name>" AND kubernetes.flat_labels:"deploymentconfig=<dc_name>"
+    kubernetes.namespace_name:"<namespace_name>" AND kubernetes.flat_labels:"deployment=<deployment_name>"
   ```
 - Get error logs only:
   ```sql
