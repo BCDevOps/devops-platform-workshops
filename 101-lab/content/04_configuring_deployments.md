@@ -18,7 +18,7 @@ Additional actions are available to edit your deployment. Review and explore:
   - `oc explain deployment.spec`
   - From this view you can see that `replicas` are configurable 
 
-## Versioning a Deployment Configuration
+## Versioning a Deployment 
 At this point in time, your deployment has undergone many changes, such as adding environment variables and adding health checks. 
 Review your rocketchat deployment's `ReplicaSets` tab: 
   - Navigate to your Deployment and select `ReplicaSets`
@@ -27,7 +27,7 @@ Review your rocketchat deployment's `ReplicaSets` tab:
   - Compare the differences between that replica set and an older one - this can be done through the UI or by comparing the YAML
 
 ## Changing the Deployment Strategy Option
-The default deployment configuration provides a `RollingUpdate` deployment strategy, which waits for the container to be ready prior to cutting over traffic and terminating the previous container. Explore what happens when you change your deployment strategy.
+The default deployment provides a `RollingUpdate` deployment strategy, which waits for the container to be ready prior to cutting over traffic and terminating the previous container. Explore what happens when you change your deployment strategy.
   - Navigate back to your rocketchat-[username] deployment.
   - Edit your deployment strategy using one of the methods below:
     - From the Actions menu, select "Edit update strategy". Change the strategy to a `Recreate`. Or,

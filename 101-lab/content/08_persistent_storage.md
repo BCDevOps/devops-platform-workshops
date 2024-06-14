@@ -26,7 +26,7 @@ To understand what will happen when a pod with ephemeral storage is removed,
   ```
 <kbd>![](./images/06_persistent_storage_02.png)</kbd>
 
-### Adding Storage to Existing Deployment Configurations
+### Adding Storage to Existing Deployment
 __Objective__: Add persistent storage to MongoDB so that it won't lose data created by RocketChat.
 
 Now that we notice all messages and configuration is gone whenever pods cycle, let's add persistent storage to the mongodb pod. 
@@ -34,7 +34,7 @@ Now that we notice all messages and configuration is gone whenever pods cycle, l
   ```oc:cli
   oc -n [-dev] scale deployment/rocketchat-[username] deployment/mongodb-[username] --replicas=0
   ```
-- Remove the emptyDir Storage by navigating to the mongodb deploymentconfig
+- Remove the emptyDir Storage by navigating to the mongodb deployment
 <kbd>![](./images/06_persistent_storage_03.png)</kbd>
 
 - Add a new volume by navigating to `Administrator -> Storage -> Persitant Volume Claims -> Create Persistant Volume Claims` and name it `mongodb-[username]-file`
