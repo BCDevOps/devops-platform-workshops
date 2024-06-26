@@ -111,9 +111,9 @@ Then check the path to this directory with
 ```
 pwd
 ```
-Next, let's synchronise this new empty folder with the data folder on our mongodb pod. For me, this is `/users/matt/lab`. Add the podname and path to your lab folder in the command below.
+Next, let's synchronise this new empty folder with the data folder on our mongodb pod. For me, this local path is `/users/matt/lab`. Add the podname and path to your lab folder in the command below.
 ```
-oc rsync [mongopodname]:var/lib/mongodb/data [localpath]
+oc -n [-dev] rsync [mongopodname]:/var/lib/mongodb/data [localpath]
 ```
 Now let's confirm that these files have been copied locally. Let's get a list of folders in the current directory. 
 ```
