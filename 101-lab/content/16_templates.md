@@ -15,7 +15,7 @@ You may find it helpful to install a tool such as [Visual Studio Code](https://c
 We can use the `oc get` command to gather the YAML files that represent our OpenShift commands and their configuration. We need to collect the YAML for a variety of objects. After replacing [username] we can do this with the following command: 
 
 ```
-oc -n [-dev] get deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-[username] -o yaml > template.yaml
+oc -n [-dev] get deployment,route,service,configmap,pvc,secrets -l app=rocketchat-[username] -o yaml > template.yaml
 ```
 The command above will save the YAML definitions for these objects on your local machine in a file named `template.yaml`. 
 
@@ -99,11 +99,11 @@ Let's create a situation where all of the objects that we'd previously created i
 
 Before deleting objects, it's also good practice to do a dry run to make sure you're only deleing the objects you intend to: 
 
-`oc -n [-dev] delete deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-[username] --dry-run=client`
+`oc -n [-dev] delete deployment,route,service,configmap,pvc,secrets -l app=rocketchat-[username] --dry-run=client`
 
 If you can see that you'll only be deleting your own objects, then proceed without the dry-run flag: 
 
-`oc delete deployment,dc,route,service,configmap,pvc,secrets -l app=rocketchat-[username]`
+`oc delete deployment,route,service,configmap,pvc,secrets -l app=rocketchat-[username]`
 
 Now that we've deleted all of our objects that we created in the [-dev] namespace, let's use our template to recreate them. 
 

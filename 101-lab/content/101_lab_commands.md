@@ -68,24 +68,24 @@ oc -n d8f105-dev delete hpa/rocketchat-mattspencer
 ```
 ## Persistent Storage 
 ```
-oc -n d8f105-dev scale deployment/rocketchat-mattspencer dc/mongodb-mattspencer --replicas=0
-oc -n d8f105-dev scale dc/mongodb-mattspencer --replicas=1
+oc -n d8f105-dev scale deployment/rocketchat-mattspencer deployment/mongodb-mattspencer --replicas=0
+oc -n d8f105-dev scale deployment/mongodb-mattspencer --replicas=1
 oc -n d8f105-dev scale deployment/rocketchat-mattspencer --replicas=1
-oc -n d8f105-dev scale dc/mongodb-mattspencer --replicas=0 
-oc -n d8f105-dev rollout pause dc/mongodb-mattspencer 
-oc -n d8f105-dev get dc/mongodb-mattspencer -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n d8f105-dev set volumes dc/mongodb-mattspencer --remove '--name={}'
-oc -n d8f105-dev set volume dc/mongodb-mattspencer --add --name=mongodb-mattspencer-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-mattspencer-file
-oc -n d8f105-dev scale dc/mongodb-mattspencer --replicas=1 
-oc -n d8f105-dev rollout resume dc/mongodb-mattspencer
+oc -n d8f105-dev scale deployment/mongodb-mattspencer --replicas=0 
+oc -n d8f105-dev rollout pause deployment/mongodb-mattspencer 
+oc -n d8f105-dev get deployment/mongodb-mattspencer -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n d8f105-dev set volumes deployment/mongodb-mattspencer --remove '--name={}'
+oc -n d8f105-dev set volume deployment/mongodb-mattspencer --add --name=mongodb-mattspencer-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-mattspencer-file
+oc -n d8f105-dev scale deployment/mongodb-mattspencer --replicas=1 
+oc -n d8f105-dev rollout resume deployment/mongodb-mattspencer
 oc -n d8f105-dev scale deployment/rocketchat-mattspencer --replicas=0
-oc -n d8f105-dev scale dc/mongodb-mattspencer --replicas=0 
-oc -n d8f105-dev rollout pause dc/mongodb-mattspencer
-oc -n d8f105-dev get dc/mongodb-mattspencer -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n d8f105-dev set volumes dc/mongodb-mattspencer --remove '--name={}'
-oc -n d8f105-dev set volume dc/mongodb-mattspencer --add --name=mongodb-mattspencer-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-mattspencer-file
-oc -n d8f105-dev patch dc/mongodb-mattspencer -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"recreateParams":{"timeoutSeconds":600},"resources":{},"type":"Recreate"}}}'
-oc -n d8f105-dev rollout resume dc/mongodb-mattspencer
-oc -n d8f105-dev rollout latest dc/mongodb-mattspencer
-oc -n d8f105-dev scale dc/mongodb-mattspencer --replicas=1 
+oc -n d8f105-dev scale deployment/mongodb-mattspencer --replicas=0 
+oc -n d8f105-dev rollout pause deployment/mongodb-mattspencer
+oc -n d8f105-dev get deployment/mongodb-mattspencer -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n d8f105-dev set volumes deployment/mongodb-mattspencer --remove '--name={}'
+oc -n d8f105-dev set volume deployment/mongodb-mattspencer --add --name=mongodb-mattspencer-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-mattspencer-file
+oc -n d8f105-dev patch deployment/mongodb-mattspencer -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"recreateParams":{"timeoutSeconds":600},"resources":{},"type":"Recreate"}}}'
+oc -n d8f105-dev rollout resume deployment/mongodb-mattspencer
+oc -n d8f105-dev rollout latest deployment/mongodb-mattspencer
+oc -n d8f105-dev scale deployment/mongodb-mattspencer --replicas=1 
 oc -n d8f105-dev scale deployment/rocketchat-mattspencer --replicas=1
 oc -n d8f105-dev delete pvc/mongodb-mattspencer-file-rwx
 ```
@@ -103,7 +103,7 @@ oc -n d8f105-dev get secret rocketchat-mattspencer-secret -o yaml
 ## Debugging Containers
 ```
 oc -n [-dev] logs -f <pod name>
-oc -n d8f105-dev scale dc/mongodb-mattspencer --replicas=0 
+oc -n d8f105-dev scale deployment/mongodb-mattspencer --replicas=0 
 oc -n d8f105-dev rollout restart deployment/rocketchat-mattspencer
 oc -n d8f105-dev get pods
 oc -n d8f105-dev debug <podname>

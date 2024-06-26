@@ -18,23 +18,23 @@ __Objective__: Observe that by using ephemeral storage causes RocketChat to lose
 To understand what will happen when a pod with ephemeral storage is removed,
 - Scale down both the rocketchat and mongo applications to 0 pods
   ```oc:cli
-  oc -n [-dev] scale deployment/rocketchat-[username] dc/mongodb-[username] --replicas=0
+  oc -n [-dev] scale deployment/rocketchat-[username] deployment/mongodb-[username] --replicas=0
   ```
 - Scale back up each application pod to 1 replica
   ```oc:cli
-  oc -n [-dev] scale deployment/rocketchat-[username] dc/mongodb-[username] --replicas=1
+  oc -n [-dev] scale deployment/rocketchat-[username] deployment/mongodb-[username] --replicas=1
   ```
 <kbd>![](./images/06_persistent_storage_02.png)</kbd>
 
-### Adding Storage to Existing Deployment Configurations
+### Adding Storage to Existing Deployment
 __Objective__: Add persistent storage to MongoDB so that it won't lose data created by RocketChat.
 
 Now that we notice all messages and configuration is gone whenever pods cycle, let's add persistent storage to the mongodb pod. 
 - Scale down both the rocketchat and mongo applications to 0 pods
   ```oc:cli
-  oc -n [-dev] scale deployment/rocketchat-[username] dc/mongodb-[username] --replicas=0
+  oc -n [-dev] scale deployment/rocketchat-[username] deployment/mongodb-[username] --replicas=0
   ```
-- Remove the emptyDir Storage by navigating to the mongodb deploymentconfig
+- Remove the emptyDir Storage by navigating to the mongodb deployment
 <kbd>![](./images/06_persistent_storage_03.png)</kbd>
 
 - Add a new volume by navigating to `Administrator -> Storage -> Persitant Volume Claims -> Create Persistant Volume Claims` and name it `mongodb-[username]-file`
@@ -55,7 +55,7 @@ Now that we notice all messages and configuration is gone whenever pods cycle, l
 
 - Scale up `mongodb-[username]` instance to 1 pod
   ```oc:cli
-  oc -n [-dev] scale dc/mongodb-[username] --replicas=1
+  oc -n [-dev] scale deployment/mongodb-[username] --replicas=1
   ```
 - When mongo is running, scale `rocketchat-[username]` to 1 pod
   ```oc:cli
@@ -64,9 +64,9 @@ Now that we notice all messages and configuration is gone whenever pods cycle, l
 - Access the RocketChat URL and complete the Setup Wizard again
 - Scale down and scale back up both the database and the rocketchat app
   ```oc:cli
-  oc -n [-dev] scale deployment/rocketchat-[username] dc/mongodb-[username] --replicas=0
+  oc -n [-dev] scale deployment/rocketchat-[username] deployment/mongodb-[username] --replicas=0
   # Scale up MongoDB to 1 replica; and
-  oc -n [-dev] scale dc/mongodb-[username] --replicas=1
+  oc -n [-dev] scale deployment/mongodb-[username] --replicas=1
   # Scale up RocketChat to 1 replica
   oc -n [-dev] scale deployment/rocketchat-[username] --replicas=1
   ```
@@ -100,7 +100,7 @@ RWX storage allows multiple pods to access the same PV at the same time.
 
 - Scale down `mongodb-[username]` to 0 pods
   ```oc:cli
-  oc -n [-dev] scale dc/mongodb-[username] --replicas=0
+  oc -n [-dev] scale deployment/mongodb-[username] --replicas=0
   ```
 - Create a new PVC as `netapp-file-standard', set the type to RWX and name it `mongodb-[username]-file-rwx`
 <kbd>![](./images/06_persistent_storage_09.png)</kbd>
@@ -109,22 +109,22 @@ RWX storage allows multiple pods to access the same PV at the same time.
 
   <kbd>![](./images/06_persistent_storage_10.png)</kbd>
   ```oc:cli
-  oc -n [-dev] rollout pause dc/mongodb-[username] 
+  oc -n [-dev] rollout pause deployment/mongodb-[username] 
   # Remove all volumes
-  oc -n [-dev] get dc/mongodb-[username] -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n [-dev] set volumes dc/mongodb-[username] --remove '--name={}'
+  oc -n [-dev] get deployment/mongodb-[username] -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n [-dev] set volumes deployment/mongodb-[username] --remove '--name={}'
 
   # Add a new volume by creating a PVC. If the PVC already exists, omit '--claim-class', '--claim-mode', and '--claim-size' arguments
-  oc -n [-dev] set volume dc/mongodb-[username] --add --name=mongodb-[username]-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-[username]-file --claim-class=netapp-file-standard --claim-mode=ReadWriteMany --claim-size=1G
+  oc -n [-dev] set volume deployment/mongodb-[username] --add --name=mongodb-[username]-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-[username]-file --claim-class=netapp-file-standard --claim-mode=ReadWriteMany --claim-size=1G
   ```
 - Scale up `mongodb-[username]` to 1 pods
   ```oc:cli
-  oc -n [-dev] scale dc/mongodb-[username] --replicas=1
+  oc -n [-dev] scale deployment/mongodb-[username] --replicas=1
   ```
 - Redeploy with Rolling deployment
   ```oc:cli
   # you can resume rollout; or
-  oc -n [-dev] rollout resume dc/mongodb-[username]
-  oc -n [-dev] rollout latest dc/mongodb-[username]
+  oc -n [-dev] rollout resume deployment/mongodb-[username]
+  oc -n [-dev] rollout latest deployment/mongodb-[username]
   ```
 
 ### Fixing it
@@ -139,36 +139,36 @@ To fix that we will need to replace the `RWX` PVC with a `RWO` PVC and change th
     ```
   - Scale down `mongodb-[username]` to 0 pods
     ```oc:cli
-    oc -n [-dev] scale dc/mongodb-[username] --replicas=0
+    oc -n [-dev] scale deployment/mongodb-[username] --replicas=0
     ```
   - Go to the `mongodb-[username]` DeploymentConfig and `Pause Rollouts` (under `Actions` menu on the top right side)
     ```oc:cli
-      oc -n [-dev] rollout pause dc/mongodb-[username]
+      oc -n [-dev] rollout pause deployment/mongodb-[username]
     ```
   - Remove all existing volumes on `mongodb-[username]`
     ```oc:cli
     # Remove all volumes
-    oc -n [-dev] get dc/mongodb-[username] -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n [-dev] set volumes dc/mongodb-[username] --remove '--name={}'
+    oc -n [-dev] get deployment/mongodb-[username] -o jsonpath='{.spec.template.spec.volumes[].name}{"\n"}' | xargs -I {} oc -n [-dev] set volumes deployment/mongodb-[username] --remove '--name={}'
     ```
   - Attach a new volume using the existing `mongodb-[username]-file` PVC
     ```oc:cli
-    oc -n [-dev] set volume dc/mongodb-[username] --add --name=mongodb-[username]-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-[username]-file
+    oc -n [-dev] set volume deployment/mongodb-[username] --add --name=mongodb-[username]-data -m /var/lib/mongodb/data -t pvc --claim-name=mongodb-[username]-file
     ```
   - Change the deployment strategy to use `Recreate` deployment strategy
     ```oc:cli
-    oc -n [-dev] patch dc/mongodb-[username] -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"recreateParams":{"timeoutSeconds":600},"resources":{},"type":"Recreate"}}}'
+    oc -n [-dev] patch deployment/mongodb-[username] -p '{"spec":{"strategy":{"activeDeadlineSeconds":21600,"recreateParams":{"timeoutSeconds":600},"resources":{},"type":"Recreate"}}}'
     ```
   - Go to the `mongodb-[username]` DeploymentConfig and `Resume Rollouts` (under `Actions` menu on the top right side)
     ```oc:cli
-    oc -n [-dev] rollout resume dc/mongodb-[username]
+    oc -n [-dev] rollout resume deployment/mongodb-[username]
     ```
   - Check if a new deployment is being rollout. If not, please do a manual deployment by clicking on `Deploy`
     ```oc:cli
-      oc -n [-dev] rollout latest dc/mongodb-[username]
+      oc -n [-dev] rollout latest deployment/mongodb-[username]
     ```
   - Scale up `mongodb-[username]` to 1 pod, and wait for the pod to become ready
     ```oc:cli
-    oc -n [-dev] scale dc/mongodb-[username] --replicas=1
+    oc -n [-dev] scale deployment/mongodb-[username] --replicas=1
     ```
   - Scale up `rocketchat-[username]` to 1 pod, and wait for the pod to become ready
     ```oc:cli
