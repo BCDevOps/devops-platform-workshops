@@ -26,7 +26,7 @@ The shortcut towards accessing the Kibana is from the `Logs` tab of a running po
 <kbd>![](./images/10_logging_setup_02.png)</kbd>
 
 
-- Review the logging interface and the query that has been automatically populated (there are more examples to explore at the end of this section)
+- Click the 'discover' tab and review the logging interface and the query that has been automatically populated (there are more examples to explore at the end of this section)
 
 <kbd>![](./images/10_logging_02.png)</kbd>
 
