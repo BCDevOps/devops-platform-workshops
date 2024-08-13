@@ -52,6 +52,11 @@ In this lab, we will scale down the database deployment so that application pods
     ```
     oc -n [-dev] scale deployment/mongodb-[username] --replicas=1
     ```
+
+- Then, restart your rocketchat pod:
+    ```
+    oc -n [-dev] rollout restart deployment/rocketchat-[username]
+    ```
 ### RSH and RSYNC
 RSH (**R**emote **SH**ell) is available to all normal pods through the web console under the `Terminal` tab, as well as through the 
 `oc rsh` command. This allows you to remotely execute commands from the pod. For more information, you can view the [RedHat documentation](https://docs.openshift.com/container-platform/4.15/nodes/containers/nodes-containers-copying-files.html)
@@ -111,9 +116,9 @@ Then check the path to this directory with
 ```
 pwd
 ```
-Next, let's synchronise this new empty folder with the data folder on our mongodb pod. For me, this is `/users/matt/lab`. Add the podname and path to your lab folder in the command below.
+Next, let's synchronise this new empty folder with the data folder on our mongodb pod. For me, this local path is `/users/matt/lab`. Add the podname and path to your lab folder in the command below.
 ```
-oc rsync [mongopodname]:var/lib/mongodb/data [localpath]
+oc -n [-dev] rsync [mongopodname]:/var/lib/mongodb/data [localpath]
 ```
 Now let's confirm that these files have been copied locally. Let's get a list of folders in the current directory. 
 ```

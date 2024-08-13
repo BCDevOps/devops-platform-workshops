@@ -1,5 +1,7 @@
 # Logging and Visualizations
 
+<kbd>[![Video Walkthrough Thumbnail](././images/12_logging_thumb.png)](https://youtu.be/zDAJcN5yTCg)</kbd>
+
 ### EFK for Aggregated Logs
 The OpenShift platform provides an aggregated logging stack that is automatically configured to centralize and store logs from application pods. These logs are only retained for a short period of time, currently about 14 days, but can be used to help identify issues with application pods. 
 
@@ -26,35 +28,38 @@ The shortcut towards accessing the Kibana is from the `Logs` tab of a running po
 <kbd>![](./images/10_logging_setup_02.png)</kbd>
 
 
-- Review the logging interface and the query that has been automatically populated (there are more examples to explore at the end of this section)
+- Click the 'discover' tab and review the logging interface and the query that has been automatically populated (there are more examples to explore at the end of this section)
 
 <kbd>![](./images/10_logging_02.png)</kbd>
 
-- Modify the query and time picker to select the entire namespace within the last few hours
+- Modify the query and time picker to select the entire namespace within the last few hours. First, I'm going to edit the query `kubernetes.namespace_name:"[-dev]"`, but replacing `[-dev]` with the name of the namespace I'm using. In the example, this is `kubernetes.namespace_name:"d8f105-dev"`. Next, I'll add a filter based on the `@timestamp` of the log messages, checking if each log entry `is between` the time periods `now-3h` and `now` and only displaying those logs.    
 
 <kbd>![](./images/10_logging_03.png)</kbd>
 
-- Review how Kibana surfaces key information about the log sources in the left panel
+<kbd>![](./images/12_kibana_filter.png)</kbd>
 
-<kbd>![](./images/10_logging_04.png)</kbd>
+- To see quick summary charts of a particular field, click the field name in the left menu of selected or available fields. In this case, let's click on the `kubernetes.pod_name` field. 
 
-- Create a simple visualization of the information surfaced by Kibana
+<kbd>![](./images/12_kibana_timestamp.png)</kbd>
 
-<kbd>![](./images/10_logging_viz_01.png)</kbd>
+- Let's visualize which pods have been generating the most logs in the last 15 minutes.  Click the 'visualize' button at the bottom of our `kubernetes.pod_name` field. Then, in the top right hand corner of the Kibana interface, look for the option to change the time range. Change this to `Last 15 minutes` from the `Quick` menu. You may wish to explore experimenting with visualizing other fields and time ranges. 
 
+<kbd>![](./images/12_kibana_time_range.png)</kbd>
+
+<kbd>![](./images/12_kibana_visualization.png)</kbd>
 
 #### Some useful queries you can try on:
 - Get logs for the whole namespace: 
   ```sql
-    kubernetes.namespace_name:"<namespace_name>"
+    kubernetes.namespace_name:"[-dev]"
   ```
 - Use application labels to query logs from the same deployment:
   ```sql
-    kubernetes.namespace_name:"<namespace_name>" AND kubernetes.flat_labels:"deployment=<deployment_name>"
+    kubernetes.namespace_name:"[-dev]" AND kubernetes.flat_labels:"deployment=[deployment_name]"
   ```
 - Get error logs only:
   ```sql
-    kubernetes.namespace_name:"<namespace_name>" AND level:error
+    kubernetes.namespace_name:"[-dev]" AND level:error
   ```
 
 Next page - [Metrics](./13_metrics.md)
