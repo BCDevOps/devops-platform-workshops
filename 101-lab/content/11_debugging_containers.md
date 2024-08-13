@@ -52,6 +52,11 @@ In this lab, we will scale down the database deployment so that application pods
     ```
     oc -n [-dev] scale dc/mongodb-[username] --replicas=1
     ```
+
+- Then, restart your rocketchat pod:
+    ```
+    oc -n [-dev] rollout restart deployment/rocketchat-[username]
+    ```
 ### RSH and RSYNC
 RSH (**R**emote **SH**ell) is available to all normal pods through the web console under the `Terminal` tab, as well as through the 
 `oc rsh` command. This allows you to remotely execute commands from the pod. For more information, you can view the [RedHat documentation](https://docs.openshift.com/container-platform/4.15/nodes/containers/nodes-containers-copying-files.html)
