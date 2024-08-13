@@ -1,0 +1,121 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: mongodb-ephemeral-template
+  annotations:
+    description: "MongoDB ephemeral template"
+    tags: "mongodb,ephemeral"
+parameters:
+- name: MONGODB_USER
+  displayName: MongoDB User
+  description: The MongoDB user
+  required: true
+- name: MONGODB_PASSWORD
+  displayName: MongoDB Password
+  description: The password for the MongoDB user
+  required: true
+- name: MONGODB_ADMIN_PASSWORD
+  displayName: MongoDB Admin Password
+  description: The password for the MongoDB admin user
+  required: true
+- name: MONGODB_DATABASE
+  displayName: MongoDB Database
+  description: The name of the MongoDB database
+  required: true
+- name: MONGODB_NAME
+  displayName: MongoDB Name
+  description: The name used for the Kubernetes objects
+  required: true
+objects:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: ${MONGODB_NAME}
+      template: mongodb-ephemeral-template
+    name: ${MONGODB_NAME}
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: ${MONGODB_NAME}
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          name: ${MONGODB_NAME}
+      spec:
+        containers:
+        - name: mongodb
+          image: image-registry.openshift-image-registry.svc:5000/openshift/mongodb:3.6
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: MONGODB_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: ${MONGODB_NAME}
+          - name: MONGODB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: ${MONGODB_NAME}
+          - name: MONGODB_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-admin-password
+                name: ${MONGODB_NAME}
+          - name: MONGODB_DATABASE
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: ${MONGODB_NAME}
+          livenessProbe:
+            initialDelaySeconds: 30
+            tcpSocket:
+              port: 27017
+            timeoutSeconds: 1
+          readinessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -i
+              - -c
+              - mongo 127.0.0.1:27017/$MONGODB_DATABASE -u $MONGODB_USER -p $MONGODB_PASSWORD --eval="quit()"
+            initialDelaySeconds: 3
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 512Mi
+          volumeMounts:
+          - mountPath: /var/lib/mongodb/data
+            name: ${MONGODB_NAME}-data
+        volumes:
+        - emptyDir: {}
+          name: ${MONGODB_NAME}-data
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: ${MONGODB_NAME}
+  stringData:
+    database-admin-password: ${MONGODB_ADMIN_PASSWORD}
+    database-name: ${MONGODB_DATABASE}
+    database-password: ${MONGODB_PASSWORD}
+    database-user: ${MONGODB_USER}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${MONGODB_NAME}
+      template: mongodb-ephemeral-template
+    name: ${MONGODB_NAME}
+  spec:
+    ports:
+    - name: mongo
+      port: 27017
+      protocol: TCP
+      targetPort: 27017
+    selector:
+      name: ${MONGODB_NAME}
+    type: ClusterIP

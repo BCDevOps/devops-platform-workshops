@@ -17,7 +17,7 @@ __Objective__: Create some error on app pod to start debugging:
 In this lab, we will scale down the database deployment so that application pods will experience errors and crash.
 - Scale down database:  
     ```
-    oc -n [-dev] scale dc/mongodb-[username] --replicas=0
+    oc -n [-dev] scale deployment/mongodb-[username] --replicas=0
     ```
 - Restart rocketchat:
     ```
@@ -50,7 +50,7 @@ In this lab, we will scale down the database deployment so that application pods
 - Investigate the logs of your rocketchat application pod to get further information about the errors we caused by shutting down the database. 
 - Resolve the crash loop backoff by scaling your database back to have 1 replica: 
     ```
-    oc -n [-dev] scale dc/mongodb-[username] --replicas=1
+    oc -n [-dev] scale deployment/mongodb-[username] --replicas=1
     ```
 
 - Then, restart your rocketchat pod:

@@ -38,7 +38,7 @@ If you have access to the Openshift cluster you can simply download directly fro
 <kbd>![cluster download link](./images/01_setup_cli_tools.png)</kbd>
 
 2. Option 2:
-Alternativly, navigate to the [Openshift CLI Mirror](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/) and download the version of `oc` that matches your operating system. 
+Alternatively, navigate to the [Openshift CLI Mirror](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/) and download the version of `oc` that matches your operating system. 
 
 > For Linux/Mac users that may be working with multiple versions of `oc`, it is helpful to have both versions of `oc` (3.xx/4.xx) on your machine. You can create an `alias` to `oc 3.xx` instead of adding it to your path. This way you can utilize the different versions for different OpenShift environment.
 
