@@ -158,11 +158,6 @@ The template we're going to use is located at: https://raw.githubusercontent.com
 If you browse this file, you'll notice in contains the YAML that defines our deployment, service and secret. We can apply parameters to this template to adjust particular values. 
 
 ### From CLI
-  - View the template file from the command line, output as YAML. 
-
-```oc:cli
-oc -n [-dev] get template -f https://raw.githubusercontent.com/BCDevOps/devops-platform-workshops/master/101-lab/mongo-ephemeral-template.yaml -o yaml
-```
 
   - Note, any data stored in our database will be lost upon pod destruction. We're only using this ephemeral template for testing an we'll add storage later. 
 
