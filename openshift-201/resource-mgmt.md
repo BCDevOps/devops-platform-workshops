@@ -134,7 +134,7 @@ spec:
             - name: TIMELIMIT
               value: "3600"
           command: ["/opt/rh/httpd24/root/usr/bin/ab"]
-          args: ["-dSrk", "-c", "$(CONCURRENCY)", "-n", "$(REQUESTS)", "-t", "$(TIMELIMIT)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
+          args: ["-dSrk", "-c", "$(CONCURRENCY)", "-n", "$(REQUESTS)", "https://$(SERVICE_HOST):$(SERVICE_PORT)/index.html"]
           resources:
             requests:
               memory: "256Mi"  
@@ -147,7 +147,9 @@ spec:
   activeDeadlineSeconds: 3660
 
 ```
-**Important:** because we used a 'job' to run this load test, it is time limited to 3600 seconds - one hour. The ensures that our load test does not keep running unnecessarily beyond the time we need it.   
+<!-- Note for Matt: we'll need to figure out another way to limit the time **Important:** because we used a 'job' to run this load test, it is time limited to 3600 seconds - one hour. The ensures that our load test does not keep running unnecessarily beyond the time we need it. -->
+
+**Important:** This job runs a large number of request, which might take quite some time to finish. Please make sure to shutdown the job once you complete this section. You can simply delete it by `oc delete job load-test-job`.
 
 From the web console, change to Developer view and navigate to the Observe tab. From the Dashboard dropdown list, pick `Kubernetes / Compute Resources / Workload`. Then in the `Workload` dropdown, select your nginx deployment. You should see the load-test pod traffic increasing CPU and memory usage metrics for the nginx workload.
 
