@@ -27,7 +27,7 @@ In this lab, we will test the communication between our pods. A debug pod create
 ```
 You can also find the hostname listed in the web console in the `Adminstrator->Networking->Services` menu.
 
-- Curl the rocketchat service from your mongodb debug pod. Our service has the name `rocketchat-[username]`
+- Curl the rocketchat service from your mongodb debug pod. Our rocketchat service has the name `rocketchat-[username]`
     ```
     curl [servicename].[-dev].svc.cluster.local:3000
     ```
