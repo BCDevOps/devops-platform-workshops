@@ -13,50 +13,43 @@ oc -n [-dev] logs -f <pod name>
 If there is more than one container in a given pod, the `-c <container-name>` switch is used to specify the desired container logs. 
 
 ### Using a Debug Container
-__Objective__: Create some error on app pod to start debugging:
-In this lab, we will scale down the database deployment so that application pods will experience errors and crash.
-- Scale down database:  
-    ```
-    oc -n [-dev] scale deployment/mongodb-[username] --replicas=0
-    ```
-- Restart rocketchat:
-    ```
-    oc -n [-dev] rollout restart deployment/rocketchat-[username]
-    ```
-- Once the new pod starts, notice the CrashLoopBackOff
+__Objective__: Create a problem with our app  to start debugging:
+In this lab, we will test the communication between our pods. A debug pod creates a new version of your pod (but without running the usual `init:` command). This can allow for troubleshooting of issues during the pod's startup. The debug pod also allows you to run commands from within your pod, which we can use to troubleshoot. In this section, we'll shut down our rocketchat pods, and then try to ping them from our database debug pod. 
 
-<kbd>![](./images/09_debugging_01.png)</kbd>
+- In a new terminal window, start a debug pod for your mongodb deployment. 
 
-#### Using the `oc` command to start a debug container
-- Find the name of a pod you would like to debug 
     ```
-    oc -n [-dev] get pods
+    oc -n [-dev] debug [mongodb-pod-name]
     ```
-- Run the `oc debug` command to start a debug pod (your output will vary)
+- In openshift, local hostnames follow this format
+```
+[service-name].[namespace].svc.cluster.local
+```
+You can also find the hostname listed in the web console in the `Adminstrator->Networking->Services` menu.
+
+- Curl the rocketchat service from your mongodb debug pod. Our service has the name `rocketchat-[username]`
     ```
-    $ oc -n [-dev] debug [rocketchat-pod-name]
+    curl [servicename].[-dev].svc.cluster.local:3000
     ```
-- Open a new separate terminal window, and view all of the containers in your debug pod using:
+
+- From our original terminal window (not the debug pod), let's scale down the rocketchat deployment:    
     ```
-    oc describe pod/[rocketchat-debug-pod-name] -n [-dev]
+    oc -n [-dev] scale deployment/rocketchat-[username] --replicas=0
     ```
-- After this is complete, return to your debug pod terminal and run the `exit` command. This will remove the debug pod.
+- Now switching terminals again, to the mongdb debug pod, we'll try to curl the rokcetchat service:
+    ```
+    curl [servicename].[-dev].svc.cluster.local:3000
+    ```
+- As expected, since we shut down the rocketchat deployment, we get an error when trying to connect to it. If we were experiencing a problem with our pods in OpenShift, we could use this method to test that they can communicate properly. 
+
+- In your debug pod terminal and run the `exit` command. This will remove the debug pod.
     ```
     sh-4.2$ exit
     exit
 
     Removing debug pod ...
     ```
-- Investigate the logs of your rocketchat application pod to get further information about the errors we caused by shutting down the database. 
-- Resolve the crash loop backoff by scaling your database back to have 1 replica: 
-    ```
-    oc -n [-dev] scale deployment/mongodb-[username] --replicas=1
-    ```
 
-- Then, restart your rocketchat pod:
-    ```
-    oc -n [-dev] rollout restart deployment/rocketchat-[username]
-    ```
 ### RSH and RSYNC
 RSH (**R**emote **SH**ell) is available to all normal pods through the web console under the `Terminal` tab, as well as through the 
 `oc rsh` command. This allows you to remotely execute commands from the pod. For more information, you can view the [RedHat documentation](https://docs.openshift.com/container-platform/4.15/nodes/containers/nodes-containers-copying-files.html)
