@@ -14,7 +14,7 @@ If there is more than one container in a given pod, the `-c <container-name>` sw
 
 ### Using a Debug Container
 __Objective__: Create a problem with our app  to start debugging:
-In this lab, we will test the communication between our pods. A debug pod creates a new version of your pod (but without running the usual `init:` command). This can allow for troubleshooting of issues during the pod's startup. The debug pod also allows you to run commands from within your pod, which we can use to troubleshoot. In this section, we'll shut down our rocketchat pods, and then try to ping them from our database debug pod. 
+In this lab, we will test the communication between our pods. A debug pod creates a new version of your pod, but without running the usual `init:` command. This can allow for troubleshooting of issues during the pod's startup. The debug pod also allows you to run commands from within your pod, which we can use to troubleshoot. In this section, we'll shut down our rocketchat pods, and then try to ping them from our database debug pod. 
 
 - In a new terminal window, start a debug pod for your mongodb deployment. 
 
