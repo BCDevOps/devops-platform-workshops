@@ -1,4 +1,7 @@
 # Debugging Containers
+
+<kbd>[![Video Walkthrough Thumbnail](././images/11_logging_thumb.png)](https://youtu.be/UYbtIXYpMkI)</kbd>
+
 ### Accessing Local Logs
 
 Logs of a running pod can be accessed from the Web Console or from the `oc` cli: 
