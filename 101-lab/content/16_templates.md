@@ -79,7 +79,7 @@ Your output should look similar to the below. **Note, any object that already ex
 oc -n d8f105-dev process -f template.yaml | oc apply -f - --dry-run=client  
 
 deployment.apps/rocketchat-mattspencer configured (dry run)
-deploymentconfig.apps.openshift.io/mongodb-mattspencer configured (dry run)
+deployment.apps.openshift.io/mongodb-mattspencer configured (dry run)
 route.route.openshift.io/rocketchat-mattspencer configured (dry run)
 service/mongodb-mattspencer configured (dry run)
 service/rocketchat-mattspencer configured (dry run)
