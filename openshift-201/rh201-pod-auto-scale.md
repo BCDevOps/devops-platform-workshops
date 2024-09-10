@@ -438,6 +438,7 @@ spec:
   selector:
     matchLabels:
       deployment: hello-world-nginx
+  unhealthyPodEvictionPolicy: AlwaysAllow
 ```
 
 This indicates to OpenShift that we want at least 1 pod that matches the label Deployment: hello-world-nginx to be available at any given time. This means OpenShift will wait for the pod in one node drain request to be replaced before evicting the pods in a second node drain request.
