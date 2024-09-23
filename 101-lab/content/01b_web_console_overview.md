@@ -1,6 +1,6 @@
 # OCP 4 Web Console
 
-If you have previous experience with Openshift (version 3.11) the web console is going to look very different
+If you have previous experience with an old version of Openshift (version 3) the web console is going to look very different
 to what you are used to. 
 
 ## Highlights

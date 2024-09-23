@@ -1,19 +1,26 @@
-# Adding Team Members
+# Adding team members 
 
->Depending on the Lab Format, this section may have already been done. If you are not the 'devops' admins for the openshift 101 dev/tools projects you can check to see if you have access to the projects with `oc projects`. If you have access to the openshift 101 project you will see something like this. 
+## Namespace access (live training)
+
+In the live training, we ask for volunteer admins to help grant access to the training namespaces for all other members of the lab. If you are not one of the 'devops' admins for the openshift 101 dev/tools projects you can check to see if you have access to the projects with the `oc projects` command in your terminal. If you have access to the openshift 101 project you will see something like this:
 >```shell
->* ocp101-june-dev - OpenShift 101 (dev)
-> ocp101-june-tools - OpenShift 101 (tools)
+>* d8f105-dev - OpenShift 101 (dev)
+> d8f105-tools - OpenShift 101 (tools)
 >```
 
+## Namespace access (self-paced training)
+If you're doing the self-paced training, you can instead request a temporary project set in the [Product Registry](https://registry.developer.gov.bc.ca/private-cloud/products/all). 
 
-## Team Permissions
+Make sure you're in the 'Private Cloud OpenShift' tab, then click 'Request a new product'. 
 
-Once all projects have been created by the Platform Services team, the team admin
-must navigate to each project and assign your users the appropriate permissions. 
+Check the box to choose a 'temporary product set'. Please note, your project will be deleted after 30 days, so don't create this until right before you plan to start working on the lab. 
 
-As a team, find each project and add the rest of the team members. Feel free to experiment with
-the default roles.  
+You can skip the remaining steps in this section if you're doing the self paced lab, but take note of the instructions below for adding team members. You may need to do this in the future as people join your team and need access. 
+
+
+## Team Permissions (live training)
+
+When the lab begins, our volunteer admins will navigate to each project and assign everyone else the appropriate permissions. 
 
 <kbd>![](./images/01_projects.png)</kbd>
 
@@ -23,7 +30,7 @@ the default roles.
 
 <kbd>![](./images/01_add_access.png)</kbd>
 
-- Add each user based on their GitHub id. Please note that we are using SSO with GitHub login at the moment, don't forget the suffix `@github`!
+- Add each user based on their GitHub id, granting 'edit' access. Please note that we are using SSO with GitHub login at the moment, don't forget the suffix `@github`!
 
 <kbd>![](./images/01_edit.png)</kbd>
 
