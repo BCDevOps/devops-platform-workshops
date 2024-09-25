@@ -2,7 +2,7 @@
 
 # Welcome to the Openshift 101 Lab
 
-This lab has been designed as a do-it-at-your-own pace set of exercises. These exercsises are designed to support the material covered in the OpenShift 101 Workshop. Refer back to the [OpenShift 101 Workshop Slides](https://docs.google.com/presentation/d/1VNxqtRRECNd4uzZZslpLsdKYYXN70Gpu-jCLCD1yF9Y) as you work through the lab. 
+This lab has been designed as a do-it-at-your-own pace set of exercises. These exercises are designed to support the material covered in the OpenShift 101 Workshop. Refer back to the [OpenShift 101 Workshop Slides](https://docs.google.com/presentation/d/1VNxqtRRECNd4uzZZslpLsdKYYXN70Gpu-jCLCD1yF9Y) as you work through the lab. 
 
 During the lab period,  you are provided a set of training namespaces in an OpenShift environment to perform your work. You are apart of a cohort! So share, collaborate, and problem solve together as you would if you were all apart of the same project team :) 
 
@@ -14,7 +14,7 @@ The lab follows a continuous improvement model. This means we track suggestions,
 
 ## Get prepared for
 
-- hands on exerecises using the tools that are commonly leveraged by teams when working on the platform
+- hands on exercises using the tools that are commonly leveraged by teams when working on the platform
 - running into issues as you debug the build and deployment of a RocketChat Application
 
 ## Unknown Territory
@@ -23,7 +23,7 @@ The OCP 101 Lab was initially delivered as a 2 day session pre-covid. The delive
 
 ## Touch Points and Support
 
-You are not alone! The lab, when scheduled, has at least one touch point scheduled mid way to address any questions/concerns. There is also a RocketChat channel that will be created specifically for the scheduled lab to be used by the cohort and facilitators. 
+You are not alone! The lab for the live training has touch points scheduled along the way to address any questions/concerns. There is also a RocketChat channel that will be created specifically for the scheduled lab to be used by the cohort and facilitators. 
 
 ## Table of Contents: 
 

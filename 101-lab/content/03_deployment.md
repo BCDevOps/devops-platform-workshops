@@ -227,7 +227,7 @@ oc -n [-dev] set env deployment/rocketchat-[username] "MONGO_URL=mongodb://dbuse
 
 
 #### STRETCH: Sensitive Configurations
-> this is a stretch exercise, completing this section is not a requirement for the next section of the lab
+> this step is a stretch exercise, completing this section is not a requirement for the next section of the lab
 
 If you are feeling at odds with things like __dbpass__ being out in the open as an environment variable. That is a good thing! For demonstration purposes you are creating a `Single Value Env`. Sensitive information like passwords should be stored in a `Secret` and referenced as `envFrom`. In addition, you can also use the [Downward API](https://docs.openshift.com/container-platform/4.4/nodes/containers/nodes-containers-downward-api.html#nodes-containers-downward-api-container-secrets_nodes-containers-downward-api) to refer to the secret created by MongoDB.
 
@@ -248,12 +248,63 @@ brew install jq`
   # Check environment variables configuration
   oc -n [-dev] get deployment/rocketchat-[username] -o json | jq '.spec.template.spec.containers[].env'
   ```
+## Network policies (self-paced training)
+
+**Note: if you're doing the live training in the d8f105-dev and d8f105-tools namespaces, skip this step**
+In your dev namespace, create the following network policies, replacing [-dev] with the name of your dev namespace.
+
+```
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-openshift-ingress
+  namespace: [-dev]
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              network.openshift.io/policy-group: ingress
+  policyTypes:
+    - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-same-namespace
+  namespace: [-dev]
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+        - podSelector: {}
+  policyTypes:
+    - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: intra-namespace-comms
+  namespace: [-dev]
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              environment: tools
+              name: [licenseplate]
+  policyTypes:
+    - Ingress
+```
+
+You can do this by selecting your dev namespace in the web console. Click on the '+add' menu option. Paste the YAML above into window, and edit the namespace name and licenseplate to match your namespace. The licenseplate is the 6-digit alphanumeric part of the namespace name. 
 
 ## Create a Route for your Rocket.Chat App
 Your rocketchat application may already have a route created for it. If you were using `oc new-app` however, a route would not have been created by default. 
 
 ### CLI
-
 You can create a secure https route using:
 
 ```oc:cli
@@ -284,13 +335,8 @@ Alternatively, you can use the web console to create or manage routes.
 - You can check this by killing the pod, waiting for the pod to redeploy and be `ready` and then visit your
 Rocket Chat url. 
 
-
-
-
 <kbd>![](./images/03_deploy_pod_delete_01.png)</kbd>
 <kbd>![](./images/03_deploy_pod_delete_02.png)</kbd>
-
-
 
 ### Adding a Healthcheck
 A container that is marked `ready` when it is not is an indication of a lack of (or misconfigured) healthcheck. 
@@ -300,9 +346,7 @@ You can add a healthcheck for `readiness` and `liveness`.
 ### Using cli
 ```oc:cli
 oc -n [-dev] set probe deployment/rocketchat-[username] --readiness --get-url=http://:3000/ --initial-delay-seconds=15
-
 ```
-
 
 ### Summary
 
