@@ -8,10 +8,12 @@
     "OCIO",
     "parkade"
   ],
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
   "markdownlint.config": {
         
     "MD033": {
       "allowed_elements": ["kbd"]
     }
-}
+  }
 }
