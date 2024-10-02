@@ -7,5 +7,11 @@
     "openshift",
     "OCIO",
     "parkade"
-  ]
+  ],
+  "markdownlint.config": {
+        
+    "MD033": {
+      "allowed_elements": ["kbd"]
+    }
+}
 }
