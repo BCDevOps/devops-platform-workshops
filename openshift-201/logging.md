@@ -48,43 +48,40 @@ Storing signatures
 Push successful
 ```
 
-## Kibana
+## Loki
 
-### Accessing Kibana
+### Accessing Logs
 
-You can access Kibana directly at this [url](https://kibana-openshift-logging.apps.silver.devops.gov.bc.ca/) or it is also accessible from the OpenShift console.
+You can access Loki in the OpenShift console in the Developer mode under Observe -> Logs.
 
-Note: If you receive an unauthorized error (e.g. `{"statusCode":401,"error":"Unauthorized","message":"Authentication Exception"}`), follow steps here to fix: <https://stackoverflow.developer.gov.bc.ca/a/119/16>
+<kbd>![loki-logs-1](images/logging/loki-logs-01.png)</kbd>
 
-Select the running pod that was just created:
+Or, you can access it from a pods tabs.
+
+Select the running pod that was just created
 
 <kbd>![pod-logs-1](images/logging/pod-logs-01.png)</kbd>
 
-Navigate to the Logs tab and click the `Show in Kibana` link
+Navigate to the Aggregated Logs tab
 
 <kbd>![pod-logs-2](images/logging/pod-logs-02.png)</kbd>
 
-### First time Setup
-
-If this is your first time logging in to Kibana you may see a screen to setup a search index.  See the steps in the Logging and Visualizations 101 lab [here](https://github.com/BCDevOps/devops-platform-workshops/blob/master/101-lab/content/12_logging_and_visualizations.md#logging-and-visualizations).
-
 ### View Logs
-
-To view logs click on the `Discover` tab on the left navigation pane.
-
-<kbd>![kibana-discover](images/logging/kibana-discover.png)</kbd>
 
 By default you will see something like this:
 
-<kbd>![kibana-main](images/logging/kibana-main.png)</kbd>
+<kbd>![kibana-main](images/logging/loki-main.png)</kbd>
 
-1. Index Pattern you created above.
-2. Fields selected to show (`_source` is selected by default)
-3. Available Fields to add to your display
-4. Log entries that match the filter, search, etc.
-5. Current activity given the time frame chosen
-6. Search bar used to search for specific entries
-7. Time frame chosen for the logs shown (default is last 15 minutes)
+1. You can select to filter on the content of logs, or by namespace, pod, or container name.
+2. Current applied filters
+3. This will show a bar chart of the number of logs per time period that match your filter
+4. Time range to show logs for
+5. Set the page to refresh the log results every X time period
+6. Adds the namespace, pod, and container names to all the log entries displayed below
+7. Some detailed stats on how your query was performed
+8. Button to run the query again
+9. Show the LogQL query being used
+10. Log entries that match the filter, search, etc.
 
 ### Fields
 
