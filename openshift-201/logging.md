@@ -70,7 +70,7 @@ Navigate to the Aggregated Logs tab
 
 By default you will see something like this:
 
-<kbd>![kibana-main](images/logging/loki-main.png)</kbd>
+<kbd>![loki-main](images/logging/loki-main.png)</kbd>
 
 1. You can select to filter on the content of logs, or by namespace, pod, or container name.
 2. Current applied filters
@@ -83,48 +83,66 @@ By default you will see something like this:
 9. Show the LogQL query being used
 10. Log entries that match the filter, search, etc.
 
-### Fields
+### Histogram
 
-Let's select 2 fields for viewing from the `Available fields` panel on the left.
+If you click on `Show Histogram` a bar chart will appear. It is color coded to the log level tag of each log message.
 
-1. `kubernetes.container_name` - this is the name of the container running in kubernetes.  This should be `logging-app`
-2. `message` - is the message from our application
+<kbd>![loki-histogram](images/logging/loki-histogram.png)</kbd>
 
-Your screen should look similar to following:
+### Log Levels
 
-<kbd>![kibana-selected-fields](images/logging/kibana-selected-fields.png)</kbd>
-
-### Queries
-
-Let's say we are only interested in the messages with the number 10 in them.  Change the search terms to be the following:
+The log level of that is tagged onto any log line comes from some regular expressions run on the logs as they are collected. If you are creating your own log messages in your app, you can include the appropriate keywords to help differentiate your logs.
 
 ```text
-kubernetes.container_name:"logging-app" AND message:10
+    if match!(.message, r'Warning|WARN|^W[0-9]+|level=warn|Value:warn|"level":"warn"|<warn>') {
+      .level = "warn"
+    } else if match!(.message, r'Error|ERROR|^E[0-9]+|level=error|Value:error|"level":"error"|<error>') {
+      .level = "error"
+    } else if match!(.message, r'Critical|CRITICAL|^C[0-9]+|level=critical|Value:critical|"level":"critical"|<critical>') {
+      .level = "critical"
+    } else if match!(.message, r'Debug|DEBUG|^D[0-9]+|level=debug|Value:debug|"level":"debug"|<debug>') {
+      .level = "debug"
+    } else if match!(.message, r'Notice|NOTICE|^N[0-9]+|level=notice|Value:notice|"level":"notice"|<notice>') {
+      .level = "notice"
+    } else if match!(.message, r'Alert|ALERT|^A[0-9]+|level=alert|Value:alert|"level":"alert"|<alert>') {
+      .level = "alert"
+    } else if match!(.message, r'Emergency|EMERGENCY|^EM[0-9]+|level=emergency|Value:emergency|"level":"emergency"|<emergency>') {
+      .level = "emergency"
+    } else if match!(.message, r'(?i)\b(?:info)\b|^I[0-9]+|level=info|Value:info|"level":"info"|<info>') {
+      .level = "info"
+    }
 ```
 
-__NOTE__ if you aren't seeing results it may have been more than 15 minutes since the entry with the number 10 was logged.  If so, change the timeframe in the upper right corner to `Last 30 minutes` or higher if needed.
+### Resources
 
-<kbd>![kibana-search-10](images/logging/kibana-search-10.png)</kbd>
+If you click the `Show Resources` link, then the namespace name, pod name, and container name will show up below each log line. Clicking on the resource will take you to that item in the web console.
 
-Notice Kibana highlights your search term.
+<kbd>![loki-resources](images/logging/loki-resources.png)</kbd>
 
-If you want to save your query (including the selected fields) click the save button at the top.
+### Query
 
-<kbd>![kibana-save-search](images/logging/kibana-save-search.png)</kbd>
+If you click on `Show Query` you will see the LogQL query being used. You can then adjust it and make more complex queries than the basic filters support.
 
-### Filters
+```text
+{ log_type="application", kubernetes_namespace_name="be1c6b-dev" } | json
+```
 
-If you plan on doing a Google type search you can use a query.  If you are selecting a possible value from a drop down like the `kubernetes.container_name` it can be faster to use a filter.
+You can read all about LogQL on the [Loki docs](https://grafana.com/docs/loki/latest/query/log_queries/) site.
 
-Clear out the text in your search bar and then click the `Add a filter +` button just below the search bar:
+The indexed fields you can query inside stream selector are:
 
-<kbd>![kibana-add-filter](images/logging/kibana-add-filter.png)</kbd>
+- kubernetes_namespace_name
+- kubernetes_pod_name
+- kubernetes_container_name
+- log_type=application
 
-Choose the `kubernetes.container_name` for the field, `is` as the operator and `logging-app` as the value and then click save.
+All other filtering should be done after the `json` bit.
 
-<kbd>![kibana-filter](images/logging/kibana-filter.png)</kbd>
+You can do a case insensitive search on the message string like this
 
-You should now only see your entries in the list similar to the query we performed above.  You can also save this filter by clicking the save button at the top just like we did with the query.
+```text
+{ log_type="application", kubernetes_namespace_name="be1c6b-dev" } |~ `(?i)hello` | json
+```
 
 ## Conclusion
 
