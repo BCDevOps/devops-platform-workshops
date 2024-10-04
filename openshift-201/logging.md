@@ -155,7 +155,8 @@ apiVersion: loki.grafana.com/v1
 kind: AlertingRule
 metadata:
   labels:
-    openshift.io/loki: "true"
+    openshift.io/loki: "true" # This is required for Loki to pick up the config
+    app: "logging-app"
   name: logging-app-alerts
   namespace: be1c6b-dev
 spec:
@@ -178,6 +179,14 @@ spec:
         severity: critical
   tenantID: application
 ```
+
+After a minute or two the alert will show up in the Observe section, and then after a little bit it will switch to Firing.
+
+<kbd>![loki-alert-1](images/logging/loki-alert-1.png)</kbd>
+
+If you select the alert, you'll get to see a graph of the metric query, and the summary and description you provided for the alert.
+
+<kbd>![loki-alert-2](images/logging/loki-alert-2.png)</kbd>
 
 ## Conclusion
 
