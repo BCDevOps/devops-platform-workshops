@@ -144,11 +144,44 @@ You can do a case insensitive search on the message string like this
 { log_type="application", kubernetes_namespace_name="be1c6b-dev" } |~ `(?i)hello` | json
 ```
 
+### Alerting
+
+You can create an alert based on log data using LogQL [metric queries](https://grafana.com/docs/loki/latest/query/metric_queries/).
+
+Your namespace already contains an AlertmanagerConfig object that will direct alerts as emails to your Product Owner and Tech Leads.
+
+```yaml
+apiVersion: loki.grafana.com/v1
+kind: AlertingRule
+metadata:
+  labels:
+    openshift.io/loki: "true"
+  name: logging-app-alerts
+  namespace: be1c6b-dev
+spec:
+  groups:
+  - interval: 1m
+    name: LoggingAlerts
+    rules:
+    - alert: TooManyHellos
+      annotations:
+        description: A longer description and possibly a link to how to fix it goes here
+        summary: The logging app is generating too many Hellos
+      # Get the rate of Hellos per second over the last minute from each
+      # logging pod, sum those together. If they are higher than 0.1 Hellos per second
+      # for more than 5 minutes, generate an alert
+      expr: |
+        sum(rate({ kubernetes_namespace_name="be1c6b-dev", log_type="application", kubernetes_pod_name=~"logging-app-.+" } |= ` Hello ` [1m])) > 0.1
+      for: 5m
+      labels:
+        namespace: be1c6b-dev
+        severity: critical
+  tenantID: application
+```
+
 ## Conclusion
 
-There are many fields available to choose from.  Feel free to experiment with adding other fields to your results.  For example you could add the `kubernetes.container_image` to your list if you are interested in looking at which version of the app the logs are from.
-
-The queries we did in this lab are pretty simple.  Take a look at the [Kibana Query Language](https://www.elastic.co/guide/en/kibana/current/kuery-query.html) for more information on how to write complex queries.
+Loki is a powerful tool for observing your application. The queries we did in this lab are pretty simple. Take a look at the [LogQL examples](https://grafana.com/docs/loki/latest/query/query_examples/) for more information on how to write complex queries.
 
 ### Clean up
 
