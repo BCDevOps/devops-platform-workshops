@@ -1,12 +1,12 @@
-# Application Logging with Kibana
+# Application Logging with Loki
 
-<kbd>[![Video Walkthrough Thumbnail](././images/logging/logging-with-kibana.png)](https://youtu.be/VnpelRzTjOw)</kbd>
+<kbd>[![Video Walkthrough Thumbnail](././images/logging/logging-with-loki.png)](TBD)</kbd>
 
 [Video walkthrough](https://youtu.be/VnpelRzTjOw)
 
 ## Objectives
 
-After completing this section, you should know how to view application logs in Kibana, navigate the list of fields, and create/save queries.
+After completing this section, you should know how to view application logs in Loki, navigate the list of fields, and create/save queries.
 
 ## Setup
 
