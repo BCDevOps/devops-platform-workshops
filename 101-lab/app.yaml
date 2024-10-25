@@ -85,7 +85,6 @@ objects:
         format single_field common_log
         level info
       }
-
 - apiVersion: v1
   kind: Service
   metadata:
@@ -101,13 +100,13 @@ objects:
       targetPort: 2015
     selector:
       app: ${APP}
-      deploymentconfig: ${APP}-${COMPONENT}${SUFFIX}
+      deployment: ${APP}-${COMPONENT}${SUFFIX}
     sessionAffinity: None
     type: ClusterIP
   status:
     loadBalancer: {}
-- apiVersion: apps.openshift.io/v1
-  kind: DeploymentConfig
+- apiVersion: apps/v1
+  kind: Deployment
   metadata:
     labels:
       app: ${APP}
@@ -117,23 +116,19 @@ objects:
     replicas: 1
     revisionHistoryLimit: 5
     selector:
-      app: ${APP}
-      deploymentconfig: ${APP}-${COMPONENT}${SUFFIX}
+      matchLabels:
+        app: ${APP}
+        deployment: ${APP}-${COMPONENT}${SUFFIX}
     strategy:
-      activeDeadlineSeconds: 21600
-      resources: {}
-      rollingParams:
-        intervalSeconds: 1
+      type: RollingUpdate
+      rollingUpdate:
         maxSurge: 25%
         maxUnavailable: 25%
-        timeoutSeconds: 600
-        updatePeriodSeconds: 1
-      type: Rolling
     template:
       metadata:
         labels:
           app: ${APP}
-          deploymentconfig: ${APP}-${COMPONENT}${SUFFIX}
+          deployment: ${APP}-${COMPONENT}${SUFFIX}
       spec:
         containers:
         - env:
@@ -141,7 +136,7 @@ objects:
             value: ${GIT_BRANCH}
           - name: GIT_URL
             value: ${GIT_URL}
-          image: ${APP}-${COMPONENT}${SUFFIX}:${IMAGE_TAG}
+          image: image-registry.openshift-image-registry.svc:5000/d8f105-tools/${APP}-${COMPONENT}${SUFFIX}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: ${APP}-${COMPONENT}${SUFFIX}
           ports:
@@ -178,17 +173,6 @@ objects:
         schedulerName: default-scheduler
         securityContext: {}
         terminationGracePeriodSeconds: 30
-    test: false
-    triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-          - ${APP}-${COMPONENT}${SUFFIX}
-        from:
-          kind: ImageStreamTag
-          name: ${APP}-${COMPONENT}${SUFFIX}:${IMAGE_TAG}
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
