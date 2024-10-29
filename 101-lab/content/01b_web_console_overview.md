@@ -22,9 +22,6 @@ This view is more detailed and provides access to more of the Openshift Infrastr
 required to deploy a project
 <kbd>![admin view](./images/01b_console_view_02.png)</kbd>
 
-
-
-
 During this workshop you will be interacting with both views.
 
 Next page - [Builds](./02_builds.md)

@@ -15,7 +15,7 @@ For example, if the lab says to create an application named `app1-[username]`, I
 These labs will require access to the lab ocp environment:
 - [Silver Web Console](https://console.apps.silver.devops.gov.bc.ca/)
 
-Access requires an IDIR account. You can log in directly via IDIR (preferred), or alternatively if your github account is a member of the `bcgov` github organisation and linked to an IDIR, you can login with github. 
+Access requires an IDIR account. You can log in to OpenShift's web console via IDIR (preferred). For the self paced lab, your namespace access will be provisioned to your IDIR account, so you must use IDIR login. If your github account is a member of the `bcgov` github organisation and linked to an IDIR, it is also possible login with github, but your access will need to be set up manually. Github and IDIR accounts are treated seperately by OpenShift, so namespace access between these is independent. 
 
 ## Installing OC
 
@@ -30,16 +30,9 @@ __If you do not have `oc` installed__ or your version is incorrect follow these 
 
 ## Login with OC command line
 
-1. Use a web browser to open the web console: - [Silver Web Console](https://console.apps.silver.devops.gov.bc.ca/)
+1. In your command line interface, run the command `oc login -w`. This prompts your web browser to open.
 
-2. Click your username in the top right corner of the screen and choose 'copy login command' 
-
-<kbd>![](./images/01_login.png)</kbd>
-
-3. Log in again as prompted, then click 'display token'. 
-
-4. Copy the 'oc login' command including the token and servo information. Paste this command into your command-line interface (CLI) and run it to log in.
-
+2. Login with your IDIR account (unless you've manually setup access via github)
 
 ## Other Requirements
 

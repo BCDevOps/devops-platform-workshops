@@ -15,7 +15,7 @@ Make sure you're in the 'Private Cloud OpenShift' tab, then click 'Request a new
 
 Check the box to choose a 'temporary product set'. Please note, your project will be deleted after 30 days, so don't create this until right before you plan to start working on the lab. 
 
-You can skip the remaining steps in this section if you're doing the self paced lab, but take note of the instructions below for adding team members. You may need to do this in the future as people join your team and need access. 
+You can skip the remaining steps in this section if you're doing the self paced lab, but take note of the instructions below for adding team members. You may need to do this in the future as people join your team and need access. The registry will automatically provision your access to the 'temporary product set' to your IDIR email, so please use the IDIR login method when accessing OpenShift.  
 
 
 ## Team Permissions (live training)

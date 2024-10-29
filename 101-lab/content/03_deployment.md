@@ -77,7 +77,7 @@ oc -n [-dev] set resources deployment/rocketchat-[username] --requests='cpu=500m
 As the Web UI indicated, the `dev` project service accounts do not have the appropriate access to pull the image from the `tools`
 project. Admin users manage service accounts and will need to grant rolebindings in order to provide image pull access from two respective namespaces.
 
-Note that since only admin users have access to manage rolebindings in a namespace, the following action will need to be done by DevOps in the team. Reach out to the team if you don't have access to do so! This step only needs to be completed once for the shared namespace that the lab class is working in. If somebody else has completed this step already and you're not experienceing the ImagePull error, move on to the next step _Objective 2_. 
+Note that since only admin users have access to manage rolebindings in a namespace, the following action will need to be done by DevOps in the team. Reach out to the team if you don't have access to do so! This step only needs to be completed once for the shared namespace that the lab class is working in. If somebody else has completed this step already and you're not experiencing the ImagePull error, move on to the next step _Objective 2_. 
 
 - Navigate to `Topology` and click on the deployment to investigate further
 

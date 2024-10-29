@@ -37,6 +37,6 @@ This course has been newly redesigned and is constantly evolving with OpenShift 
 
 ## Who is this for?
 
-While we love the idea of everyone getting their hands onto Openshift, the individuals that will get the most value out of the workshop are members that will be performing active development in Openshift. This includes Application Development as well as Operational Management. The course is technical, but does have step-by-step instructions and video guides. The course is open to anyone working with the platform. People with roles such as  product owners, data scientists, service designers and many others regularly complete this course.  
+While we love the idea of everyone getting their hands onto OpenShift, the individuals that will get the most value out of the workshop are members that will be performing active development in OpenShift. This includes Application Development as well as Operational Management. The course is technical, but does have step-by-step instructions and video guides. The course is open to anyone working with the platform. People with roles such as product owners, data scientists, service designers and many others regularly complete this course.  
 
 Next page - [Setup](./01_adding_team_members.md)
