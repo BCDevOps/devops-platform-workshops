@@ -7,10 +7,10 @@
 
 After completing this section, you should have a greater understanding of OpenShift Pipelines, and how to create tasks in order to deploy a react application. 
 
-As an alternative, we also have another [pipeline lab exercise](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/pipelines.md) that uses `maven` instead of `react`. Feel free to complete one or both of these as your prefer.
+As an alternative, we also have another [pipeline lab exercise](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/pipelines.md) that uses `maven` instead of `react`. Please choose one of these to complete.
 
 ## Prerequisites
-These instructions assume the use of a bash-based shell such as `zsh` (included on OS X) or [WSL](https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/) for Windows. Please use one of these shells, or make the appropriate modifications to the commands shown in these instructions. 
+These instructions assume the use of a bash-based shell such as `zsh` (included on OS X) or [WSL](https://developer.gov.bc.ca/docs/default/component/platform-developer-docs/docs/openshift-projects-and-access/install-the-oc-command-line-tool/) for Windows. Please use one of these shells, or make the appropriate modifications to the commands shown in these instructions. 
 
 This lab is based on the `pipeline-templates` which has it's own set of [prerequisites and installation instructions](https://github.com/bcgov/pipeline-templates/tree/main/tekton#install-in-docker-container). You'll need to choose either the docker installation method, or building on your own machine. If you follow the docker method shown in the video, you'll need to install and run [docker desktop](https://www.docker.com/).
 
@@ -20,7 +20,7 @@ Please follow those instructions before continuing on, and apply the tekton reso
 ### What is a Pipeline?
 A pipeline refers to a set of automated processes and tools that enable the CI/CD of software applications. It's a fundamental concept that helps development and operations teams work together to streamline the software development lifecycle. A DevOps pipeline automates and orchestrates the steps required to build, test, and deploy software changes, ensuring a smooth and consistent flow of code from development to production.
 
-### Pipelines in Openshift
+### Pipelines in OpenShift
 In OpenShift, pipelines are built with [Tekton](https://tekton.dev/), a Kubernetes-native framework that provides the building blocks for creating pipelines in OpenShift. Being Kubernetes-native essentially means that tekton acts as an OpenShift resource, managed using the same tools and principles as other OpenShift resources. 
 
 ## How This Pipeline Works
