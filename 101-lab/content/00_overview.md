@@ -21,7 +21,7 @@ For the self-paced training, you can view the slides and recordings of them bein
 
 The lab materials have been designed so that you generally follow a happy path for a simple two-tier deployment. There will be many intentional bugs along the way that will have you encounter real-life troubleshooting techniques.
 
-__Please be aware the throughout the labs, you will be guided to make common mistakes, and then guide you on how to fix them.__
+__Please be aware throughout the labs, you will be guided to make common mistakes, and then guide you on how to fix them.__
 
 The live training has several live lab sessions scheduled for participants. These offer a chance to explore some additional topics, and to ask questions. 
 
