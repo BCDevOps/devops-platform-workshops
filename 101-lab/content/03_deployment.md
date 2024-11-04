@@ -251,6 +251,7 @@ brew install jq`
 ## Network policies (self-paced training)
 
 **Note: if you're doing the live training in the d8f105-dev and d8f105-tools namespaces, skip this step**
+
 In your dev namespace, create the following network policies, replacing [-dev] with the name of your dev namespace.
 
 ```
