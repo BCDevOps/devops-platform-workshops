@@ -152,7 +152,7 @@ type: Opaque
 echo "SSdtIFVMVFJBIFNFQ1JFVA==" | base64 -d
 ```
 
-- To edit an existing secret, from the webconsole you can navigate to the secret and select the `YAML` tab or `oc edit secret rocketchat-[username]-secret` from the cli. Secrets are base64 encoded. If adding new values or editing existing values of a Secret it is often easier to
+- To edit an existing secret, from the webconsole you can navigate to the secret and select the `YAML` tab or `oc -n [-dev] edit secret rocketchat-[username]-secret` from the cli. Secrets are base64 encoded. If adding new values or editing existing values of a Secret it is often easier to
 edit in plain text and have it b64 encoded for you. To do this you will need to modify the `data` field and change it to
 `stringData` prior to adding or editing values.
 
