@@ -19,6 +19,7 @@ Create a configMap with arbitrary data and mount it inside of your `rocketchat-[
 ```yaml
 apiVersion: v1
 data:
+  data.json: '{ "message": "This is a sample json data")'
   myfile.txt: Hello world
 kind: ConfigMap
 metadata:
