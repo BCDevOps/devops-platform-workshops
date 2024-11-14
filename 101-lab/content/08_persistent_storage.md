@@ -80,7 +80,7 @@ __Objective__: Cause deployment error by using the wrong deployment strategy for
 
 RWO storage (which was selected above) can only be attached to a single pod at a time, which causes issues in certain deployment strategies. 
 
-- Ensure your `mongodb-[username]` deployment strategy is set to `RollingUpdate' and then trigger a redeployment.
+- Ensure your `mongodb-[username]` deployment strategy is set to `RollingUpdate' and then scale down to zero replicas, then back up to 1.
 
 <kbd>![](./images/06_persistent_storage_07.png)</kbd>
 
@@ -119,12 +119,6 @@ RWX storage allows multiple pods to access the same PV at the same time.
 - Scale up `mongodb-[username]` to 1 pods
   ```oc:cli
   oc -n [-dev] scale deployment/mongodb-[username] --replicas=1
-  ```
-- Redeploy with Rolling deployment
-  ```oc:cli
-  # you can resume rollout; or
-  oc -n [-dev] rollout resume deployment/mongodb-[username]
-  oc -n [-dev] rollout latest deployment/mongodb-[username]
   ```
 
 ### Fixing it
