@@ -8,6 +8,8 @@ RUN mkdir -p /app && \
     chown -R 0:0 /app && \
     chmod -R g=u /app
 
+RUN  chmod 0755 /usr/bin/caddy
+
 # Set the working directory
 WORKDIR /app
 
