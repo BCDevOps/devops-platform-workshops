@@ -1,20 +1,24 @@
 FROM caddy:alpine
 
-# Install envsubst tool (gettext package)
+# Install envsubst for runtime variable substitution
 RUN apk add --no-cache gettext
 
-ADD Caddyfile /opt/app-root/etc/Caddyfile
+# Create and set up a non-root user and group
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
-RUN chown -R 1001:0 /opt/app-root/src
-RUN chmod -R 775 /opt/app-root/*
+# Set the working directory
+WORKDIR /app
 
-USER 1001
+# Copy static file templates and scripts
+COPY index.html.template /app/index.html.template
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
-EXPOSE 2015
+# Create the directory where Caddy will serve files
+RUN mkdir -p /srv && chown -R appuser:appgroup /srv
 
-# Copy the template file for the index
-COPY index.html.template /opt/app-root/src/index.html.template
+# Ensure the container uses the non-root user
+USER appuser
 
-# Run envsubst to replace environment variables in the template, then start Caddy
-CMD ["sh", "-c", "envsubst < /opt/app-root/src/index.html.template > /opt/app-root/src/index.html && caddy run --config /opt/app-root/etc/Caddyfile"]
-
+# Default command
+CMD ["/app/entrypoint.sh"]
