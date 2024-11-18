@@ -27,4 +27,7 @@ USER 1001
 # Expose port
 EXPOSE 8080
 
+# Override default entrypoint (comment out default entrypoint)
+ENTRYPOINT ["/bin/sh", "-c"]
+
 CMD ["nginx", "-g", "daemon off;", "-c", "/app/html/nginx.conf"]
