@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Env Message</title>
+</head>
+<body>
+    <h1>Hello world from  ${NAME} ${APP_MSG} ${SECRET_APP_MSG}</h1>
+</body>
+</html>

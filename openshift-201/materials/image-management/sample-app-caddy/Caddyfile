@@ -1,0 +1,30 @@
+# Where caddy should listen
+:2015
+
+# Turn on the Web/file server
+file_server
+
+# The site root
+root * /opt/app-root/src
+
+# Because we should
+encode zstd gzip
+
+# This rewrite rule may be required to get React apps
+# to deal with trailing slashes properly.
+#@filter {
+#	not path_regexp ^\/0.0.0.0
+#	file {
+#		try_files {path} {path}/ /?url={uri}
+#	}
+#}
+#rewrite @try_files {http.matchers.file.relative}
+
+# On OCP we should log to stdout so Prometheus can
+# slurp up the logs for human consumption.
+log {
+  #errors stdout
+  output stdout 
+  format single_field common_log
+  level info
+}
