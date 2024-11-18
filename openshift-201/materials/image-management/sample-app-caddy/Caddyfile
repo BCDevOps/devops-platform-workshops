@@ -5,7 +5,7 @@
 file_server
 
 # The site root
-root * /opt/app-root/src
+root * /tmp
 
 # Because we should
 encode zstd gzip

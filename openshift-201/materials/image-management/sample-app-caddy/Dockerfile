@@ -12,8 +12,8 @@ USER 1001
 EXPOSE 2015
 
 # Copy the template file for the index
-COPY index.html.template /opt/app-root/src/index.html.template
+COPY index.html.template /tmp/index.html.template
 
 # Run envsubst to replace environment variables in the template, then start Caddy
-CMD ["sh", "-c", "envsubst < /opt/app-root/src/index.html.template > /opt/app-root/src/index.html && caddy run --config /opt/app-root/etc/Caddyfile"]
+CMD ["sh", "-c", "envsubst < /tmp/index.html.template > /tmp/index.html && caddy run --config /opt/app-root/etc/Caddyfile"]
 
