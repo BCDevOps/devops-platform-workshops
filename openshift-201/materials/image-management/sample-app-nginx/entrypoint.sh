@@ -7,8 +7,8 @@
 
 # Substitute the environment variables in the template file
 envsubst '${NAME} ${APP_MSG} ${SECRET_APP_MSG}' \
-    < /usr/share/nginx/html/index.html.template \
-    > /usr/share/nginx/html/index.html
+    < /app/html/index.html.template \
+    > /app/html/index.html
 
 # Start Nginx
 exec "$@"

@@ -8,13 +8,15 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Copy entrypoint script and HTML template
 COPY entrypoint.sh /entrypoint.sh
-COPY index.html.template /usr/share/nginx/html/index.html.template
+
+# Create a custom directory for serving files
+RUN mkdir -p /app/html && chown -R 1001:0 /app/html && chmod -R g+w /app/html
+
+# Copy template to the custom directory
+COPY index.html.template /app/html/index.html.template
 
 # Make the entrypoint script executable
 RUN chmod +x /entrypoint.sh
-
-# Change permissions of the HTML directory to be writable
-RUN chown -R 1001:0 /usr/share/nginx/html && chmod -R g+w /usr/share/nginx/html
 
 # Set the default user to a non-root user (OpenShift default user)
 USER 1001
