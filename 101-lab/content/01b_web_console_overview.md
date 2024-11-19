@@ -1,6 +1,6 @@
 # OCP 4 Web Console
 
-If you have previous experience with Openshift (version 3.11) the web console is going to look very different
+If you have previous experience with an old version of Openshift (version 3) the web console is going to look very different
 to what you are used to. 
 
 ## Highlights
@@ -21,9 +21,6 @@ that developers perform.
 This view is more detailed and provides access to more of the Openshift Infrastructure Objects that are
 required to deploy a project
 <kbd>![admin view](./images/01b_console_view_02.png)</kbd>
-
-
-
 
 During this workshop you will be interacting with both views.
 

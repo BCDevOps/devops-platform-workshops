@@ -327,11 +327,13 @@ Lets now check out Red Hat Advanced Cluster Security (ACS) manager and see how w
 
 You should be able to log into ACS by navigating to the URL: https://acs.developer.gov.bc.ca
 
+If you have trouble logging in to ACS, please post in the lab rocketchat channel that was created for your live class, or if you're completing the course self-paced post [here](https://chat.developer.gov.bc.ca/channel/openshift-201-selfpaced).
+
 Once logged in you should be able to click on `Network Graph` on the left navigation bar.
 
 <kbd>![acs network graph](images/network-policy-acs/acs-network-graph.png)</kbd>
 
-You will be scoped to see only your namspaces, so your network graph will not be identical to the image above.
+You will be scoped to see only your namespaces, so your network graph will not be identical to the image above.
 
 We won't go through all the details for `Network Graph` web interface to get a better understanding please walkthrough the documentation:
 
