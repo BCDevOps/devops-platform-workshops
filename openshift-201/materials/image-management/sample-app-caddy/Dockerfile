@@ -21,4 +21,6 @@ COPY index.html.template /app/index.html.template
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
-CMD ["/app/entrypoint.sh"]
+# CMD ["/app/entrypoint.sh"]
+
+CMD ["caddy run --config /etc/caddy/Caddyfile"]
