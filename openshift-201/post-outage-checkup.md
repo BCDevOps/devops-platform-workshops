@@ -62,7 +62,7 @@ Push successful
 ### Verify Application is running
 Our sample application should be running and you can access it using the following command:
 ```bash
-curl http://$MY_HOST/hello
+curl http://$MY_HOST
 ```
 <pre>
 &lt;html&gt;
@@ -155,7 +155,7 @@ Crash App starting now! Server running at http://localhost:8080
 
 Now let's verify the app is accessible via the route.
 ```bash
-curl http://$MY_HOST/hello
+curl http://$MY_HOST
 
 Hello world from crash app
 ```

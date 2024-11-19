@@ -113,7 +113,7 @@ or run `oc get routes myapp` and copy the host name.
 
 Then run the following:
 ```bash
-curl http://$MY_HOST/hello
+curl http://$MY_HOST
 
 Hello world from unknown
 ```
@@ -150,7 +150,7 @@ Wait for the new pod to be in the `Running` status.
 We should now see our name when calling our `hello` endpoint
 
 ```bash
-curl http://$MY_HOST/hello
+curl http://$MY_HOST
 
 Hello world from YOUR_NAME_HERE
 ```
@@ -186,7 +186,7 @@ Wait for the new pod to be in the `Running` status.
 #### Test Application
 We should now see our message when calling our `hello` endpoint
 ```bash
-curl http://$MY_HOST/hello
+curl http://$MY_HOST
 
 Hello world from [YOUR_NAME_HERE]. Message received = Containers are fun
 ```
@@ -221,7 +221,7 @@ Wait for the new pod to be in the `Running` status.
 #### Test Application
 We should now see our message when calling our `hello` endpoint
 ```bash
-curl http://$MY_HOST/hello
+curl http://$MY_HOST
 
 Hello world from [YOUR_NAME_HERE]. Message received = Containers are fun with secret message: Shh... It is a secret
 ```
