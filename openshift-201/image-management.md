@@ -29,8 +29,7 @@ The following commands are used to create a new application.  The `myapp` applic
 ### Create a new application 
 ```bash
 oc -n [-dev] new-app --name myapp \
---image-stream=redhat-openjdk18-openshift:1.8 \
---context-dir=openshift-201/materials/image-management/sample-app \
+--context-dir=openshift-201/materials/image-management/sample-app-nodejs \
 https://github.com/BCDevOps/devops-platform-workshops
 ```
 
@@ -51,7 +50,7 @@ As you can see there are a few resources create with the `new-app` command.  One
 
 1. Name of BuildConfig
 2. Defines the output.  Where the image will go after it is successfully built.
-3. The `strategy` section describes the build strategy used to execute the build. You can specify a `Source` , `Docker`, or `Custom` strategy here. This example uses the `redhat-openjdk18-openshift` container image that Source-to-image (S2I) uses for the application build.
+3. The `strategy` section describes the build strategy used to execute the build. You can specify a `Source` , `Docker`, or `Custom` strategy here. This example uses a `node` image for the application build.
 4. The `source` section defines the source of the build. The source type determines the primary source of input, and can be either `Git`, to point to a code repository location, `Dockerfile`, to build from an inline Dockerfile, or `Binary`, to accept binary payloads.
 5. You can specify a list of triggers, which cause a new build to be created.
 
