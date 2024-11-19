@@ -14,8 +14,7 @@ We will setup a sample application and proceed with what steps should be taken a
 ### Create a new application 
 ```bash
 oc -n [-dev] new-app --name crash-app \
--i redhat-openjdk18-openshift:1.8 \
---context-dir=openshift-201/materials/post-outage-checkup/crash-app \
+--context-dir=openshift-201/materials/post-outage-checkup/crash-app-nodejs \
 https://github.com/BCDevOps/devops-platform-workshops
 
 ```
@@ -63,7 +62,7 @@ Push successful
 ### Verify Application is running
 Our sample application should be running and you can access it using the following command:
 ```bash
-curl http://$MY_HOST/hello
+curl http://$MY_HOST
 ```
 <pre>
 &lt;html&gt;
@@ -125,19 +124,15 @@ Use the new pod name shown above (the characters after `crash-app-` will be diff
 oc -n [-dev] logs crash-app-65887546-9z8rv
 ```
 <pre>
-Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
-...<em>output omitted</em>...
-Starting Crash App
-Missing DEPLOY_ENV variable
-...<em>output omitted</em>...
+Error: Missing required environment variable: NAME
 </pre>
 
 __NOTE:__ Sometimes the restarting of the container occurs so quickly that you cannot see the log file.  You can add the `-p` or `--previous` option to the `oc logs` command to print the logs for the previous instance of the container in a pod if it exists.
 
-As we can see we are missing a `DEPLOY_ENV` environment variable.  Let's set that on our deployment and see if we can resolve the `CrashLoopBackOff` error.
+As we can see we are missing a `NAME` environment variable.  Let's set that on our deployment and see if we can resolve the `CrashLoopBackOff` error.
 
 ```bash
-oc -n [-dev] set env deployment/crash-app DEPLOY_ENV='YES'
+oc -n [-dev] set env deployment/crash-app NAME='crash app'
 ```
 
 This should automatically redeploy the app.
@@ -155,18 +150,14 @@ Our pod should eventually get to and stay in the `Running` status.  We can check
 oc -n [-dev] logs crash-app-c97b5b874-zsz2j
 ```
 <pre>
-Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
-...<em>output omitted</em>...
-Starting Crash App
-...<em>output omitted</em>...
-... Started MyApp in 18.206 seconds (JVM running for 23.387)
+Crash App starting now! Server running at http://localhost:8080
 </pre>
 
 Now let's verify the app is accessible via the route.
 ```bash
-curl http://$MY_HOST/hello
+curl http://$MY_HOST
 
-Hello world from Crash App
+Hello world from crash app
 ```
 
 > Note: scale down the application to save resources with `oc scale deployment/crash-app --replicas=0`.
