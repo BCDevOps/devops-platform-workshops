@@ -29,7 +29,7 @@ The live training has several live lab sessions scheduled for participants. Thes
 
 If you register for live training, a rocketchat channel will be created for your cohort. This can be found in the [channel directory](https://chat.developer.gov.bc.ca/directory/channels) and the course are named in this format, based on the starting date `ocp101-YYYY-MM-DD`. 
 
-For the self-paced training, please join the [#openshift-101-selfpaced](https://chat.developer.gov.bc.ca/channel/openshift-101-selfpaced) rocketchat channel. 
+For the self-paced training, please join the [#openshift-101-selfpaced](https://chat.developer.gov.bc.ca/channel/openshift-101-selfpaced) rocketchat channel. Refer to the first post in each channel, which can also be found in the 'pinned posts' section.
 
 ### Problems
 
