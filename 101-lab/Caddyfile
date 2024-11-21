@@ -1,0 +1,18 @@
+:2015
+# Turn on the Web/file server
+file_server
+# The site root
+root * /opt/app-root
+# Because we should
+encode zstd gzip
+header / {
+  # prevent any static html from being cached
+  Cache-Control "public, max-age=0, must-revalidate"
+}
+ # slurp up the logs for human consumption.
+  log {
+    #errors stdout
+    output stdout 
+    format single_field common_log
+    level info
+  }
