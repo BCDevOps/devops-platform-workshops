@@ -186,7 +186,7 @@ git push origin
 ```
 
 ### Create an Argo CD Application
-Use the [Argo CD UI](https://gitops-shared.apps.silver.devops.gov.bc.ca/) to create a new application that is configured for the directory that you created in your GitOps repository.
+Use the [Argo CD UI](https://gitops-shared.apps.gold.devops.gov.bc.ca/) to create a new application that is configured for the directory that you created in your GitOps repository.
 - Click the 'New App' button and enter the following information...
 - General
     - Application Name: LICENSEPLATE-app1
@@ -248,8 +248,8 @@ For reference, if you find yourself using a repository that does not already hav
 In the GitHub UI for your repository, click 'Settings' --> 'Webhooks' --> 'Add webhook'
 
 Enter the following information:
-* Payload URL: `https://gitops-shared.apps.silver.devops.gov.bc.ca/api/webhook`
-    * (Note: If you were adding a webhook for a project in a cluster other than Silver, change the URL, replacing "silver" with the other cluster's name.)
+* Payload URL: `https://gitops-shared.apps.gold.devops.gov.bc.ca/api/webhook`
+    * (Note: If you were adding a webhook for a project in a cluster other than Gold, change the URL, replacing "Gold" with the other cluster's name.)
 * Content type: `application/json`
 * Secret: `bcgovprivatecloud`
 * Click 'Add webhook'
@@ -566,7 +566,7 @@ Create an environment variable for the JWT token, as in `export ARGOCD_TOKEN=you
 
 Assuming the token is valid, you can interact with Argo CD using commands like the following.
 ```
-argocd app list --server gitops-shared.apps.silver.devops.gov.bc.ca --auth-token $ARGOCD_TOKEN
+argocd app list --server gitops-shared.apps.gold.devops.gov.bc.ca --auth-token $ARGOCD_TOKEN
 ```
 
 To explore the functionality of the CLI, run `argocd --help`.
