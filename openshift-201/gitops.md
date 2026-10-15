@@ -23,9 +23,9 @@
 - [References](#references)
 
 ## Video walkthrough
-<kbd>[![Video Walkthrough Thumbnail](././images/gitops/gitops-thumbnail.png)](https://youtu.be/d_wsorGZyqo)</kbd>
+<kbd>[![Video Walkthrough Thumbnail](././images/gitops/gitops-thumbnail.png)](https://youtu.be/VyHE70uTvl8)</kbd>
 
-[Video walkthrough](https://youtu.be/d_wsorGZyqo)
+[Video walkthrough](https://youtu.be/VyHE70uTvl8)
 
 **Note:** where the written instructions and video differ, please follow the written instructions. 
 
