@@ -485,20 +485,24 @@ When deleting an app, you can choose to do a cascading deletion in which all dep
 
 Additionally, when doing a cascading deletion, you can choose between a foreground or background deletion.  In a foreground deletion, the app remains until all dependent objects are deleted and then the app itself is deleted.  This is the default.  A background deletion will immediately delete the Argo CD app and then proceed to delete all dependent objects.
 
-Delete the app 'LICENSEPLATE-my-kustomize-app'.
+Delete the applications created in this exercise, except for `openshift-bcgov-gitops-shared/LICENSEPLATE-app1`. Keep cascading deletion enabled and leave Foreground selected. The `LICENSEPLATE-app1` application is required for the App of Apps section that follows.
 
 You can find more information on this process in the [Kubernetes garbage collection documentation](https://kubernetes.io/docs/concepts/architecture/garbage-collection/#foreground-deletion)
 
 
 ### App of apps
-When you get to setting up production resources in Argo CD, it's a good idea to manage your Argo CD applications by way of another application - an app of apps.  This is done just like setting up an app that points to a directory of plain YAML manifests.
+When a project has multiple Argo CD applications, creating and maintaining each one manually can become difficult. An app of apps is a parent Argo CD application that manages other Argo CD applications. The YAML manifests for the child applications are stored together in Git. These manifests define settings such as each application’s name, source repository, source path, and destination namespace.
+
+Earlier, we created an application that pointed to a directory containing a ConfigMap manifest. In this exercise, the parent application will instead point to a directory containing a manifest for the "app1" application.
+
+This exercise uses only "app1" to demonstrate the setup, but manifests for additional applications can be added to the same directory.
 
 Create a new top-level directory in your repository called 'argocd_apps':
 ```
 mkdir argocd_apps
 ```
 
-Now create a manifest for your "app1" app at `argocd_apps/app.app1.yaml`.  Start with the standard fields:
+In the `argocd_apps` folder, create a file called `app.app1.yaml`. This file will contain the Argo CD application manifest for the existing "app1" application. Add the following initial fields, replacing LICENSEPLATE with your project licence plate:
 ```
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -507,9 +511,22 @@ metadata:
 spec:
 ```
 
-Copy the 'spec' for the existing application by clicking on the app, then the Details button, then the Manifest tab.  This only shows the spec.  You can copy and paste this below the snippet above, making sure to properly indent the fields.
+In Argo CD, open the existing `openshift-bcgov-gitops-shared/LICENSEPLATE-app1` application. Click 'Details', then open the 'Manifest' tab. The Manifest tab displays the fields that belong under `spec:`. Copy the displayed content and paste it below the `spec:` line in `argocd_apps/app.app1.yaml`. Select the entire pasted block and move it one indentation level to the right so that it is nested beneath `spec:`. After pasting and indenting these sections, the file should follow the general structure shown below. The ellipses represent values copied from Argo CD and should not be included in your file.
 
-Save the file to `argocd_apps/app.app1.yaml`.  Add, commit, and push the new directory. Add you name and email if prompted. 
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: LICENSEPLATE-app1
+spec:
+  project: ...
+  source:
+    ...
+  destination:
+    ...
+```
+
+Save the file to `argocd_apps/app.app1.yaml`.  Add, commit, and push the new directory. Add your name and email if prompted. 
 ```
 git add .
 git commit -a -m "Add argocd_apps"
