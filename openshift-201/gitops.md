@@ -598,6 +598,10 @@ Remember that **the Git repository is the source of truth**.  If you need to do 
 
 To avoid problems, consider keeping your commits relatively small in scope, use the diff feature to check updates before they are applied, and disable auto-sync during testing.
 
+### Cleanup
+
+In Argo CD, delete the `LICENSEPLATE-app-of-apps` application using foreground cascading deletion. This removes the app of apps, the child application it manages, and the resources managed by that child application.
+
 Next Topic - [Resource Management](https://github.com/BCDevOps/devops-platform-workshops/blob/master/openshift-201/resource-mgmt.md)
 
 ## References
