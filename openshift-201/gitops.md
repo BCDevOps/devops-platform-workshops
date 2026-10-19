@@ -485,7 +485,7 @@ When deleting an app, you can choose to do a cascading deletion in which all dep
 
 Additionally, when doing a cascading deletion, you can choose between a foreground or background deletion.  In a foreground deletion, the app remains until all dependent objects are deleted and then the app itself is deleted.  This is the default.  A background deletion will immediately delete the Argo CD app and then proceed to delete all dependent objects.
 
-Delete the applications created in this exercise, except for `openshift-bcgov-gitops-shared/LICENSEPLATE-app1`. Keep cascading deletion enabled and leave Foreground selected. The `LICENSEPLATE-app1` application is required for the App of Apps section that follows.
+Delete the applications created in this exercise, **except** for `openshift-bcgov-gitops-shared/LICENSEPLATE-app1`. Keep cascading deletion enabled and leave Foreground selected. The `LICENSEPLATE-app1` application is required for the App of Apps section that follows.
 
 You can find more information on this process in the [Kubernetes garbage collection documentation](https://kubernetes.io/docs/concepts/architecture/garbage-collection/#foreground-deletion)
 
@@ -526,10 +526,10 @@ spec:
     ...
 ```
 
-Save the file to `argocd_apps/app.app1.yaml`.  Add, commit, and push the new directory. Add your name and email if prompted. 
+Save the file.  Add, commit, and push the new directory. Add your name and email if prompted. 
 ```
-git add .
-git commit -a -m "Add argocd_apps"
+git add argocd_apps
+git commit -m "Add argocd_apps"
 git push origin
 ```
 
@@ -547,18 +547,19 @@ Now create a new app in Argo CD for the app of apps:
 
 Click **Create**. 
 
-After the app is created, open `LICENSEPLATE-app-of-apps`. The `LICENSEPLATE-app1` application should appear as a dependent resource.
+After the application is created, open `LICENSEPLATE-app-of-apps`. The `LICENSEPLATE-app1` application should appear in the resource tree as a dependent resource. It will initially be marked Missing and OutOfSync because it has not yet been created.
 
-
-But you will notice that you now have two "app1" apps!
+Click 'Sync', then 'Synchronize'. After the sync completes, return to the Applications page. In addition to the `LICENSEPLATE-app-of-apps` application, you will notice that you now have two "app1" applications!
 * `openshift-bcgov-gitops-shared/LICENSEPLATE-app1`
 * `LICENSEPLATE-dev/LICENSEPLATE-app1`
 
-This is because when the "apps in any namespace" feature is in use, the full name of the app is "NAMESPACE/APP_NAME".  Because they are in different namespaces, they are treated as different apps.
+The part before the slash is the OpenShift namespace where each Argo CD application exists. The original `LICENSEPLATE-app1` application exists in the `openshift-bcgov-gitops-shared` namespace, while the application created by the app of apps exists in your `LICENSEPLATE-dev` namespace.
 
-Click on the new "app1" app.  In the top right, under App Conditions, you should see a warning.  Click on the Warnings link.  It will indicate that the ConfigMap managed by this app is now being managed by two applications.  Using the non-cascading delete option, delete the original app with the name openshift-bcgov-gitops-shared/LICENSEPLATE-app1.
+Argo CD’s "applications in any namespace" feature allows Argo CD applications to exist outside the `openshift-bcgov-gitops-shared` namespace. Argo CD identifies each application using its namespace and application name in the format "NAMESPACE/APP_NAME". Because the two `LICENSEPLATE-app1` applications exist in different namespaces, Argo CD treats them as separate applications.
 
-Add as many application manifests as you like to the apps directory.  In this way, if any of your apps were ever deleted or modified in error, they are easily restored.
+Open the `LICENSEPLATE-dev/LICENSEPLATE-app1` application that was created by the app of apps. In the top-right, under 'App Conditions', you should see a warning. Click on the Warnings link. The warning indicates that both "app1" applications are trying to manage the same ConfigMap. To resolve the duplication, return to the Applications page and delete the original `openshift-bcgov-gitops-shared/LICENSEPLATE-app1` application. Use non-cascading deletion so that the ConfigMap is not deleted. Open `LICENSEPLATE-dev/LICENSEPLATE-app1`, then click Sync and Synchronize. The application should become Synced and remain responsible for managing the ConfigMap.
+
+You can use an app of apps to manage as many Argo CD application manifests as needed. Because the application definitions are stored in Git, applications that are accidentally deleted or modified can be restored to the state defined in the repository by synchronising the app of apps.
 
 
 ### Optional task: JWT tokens and Argo CD CLI
